@@ -344,6 +344,32 @@ Write-Host "`nOutput directory: $outputDir`n"
 $fullCommandLine = $MyInvocation.Line
 $fullCommandLine | Out-File -FilePath "$outputDir\command_line_arguments.txt"
 
+# ------------------------------------------------- Optional: Create a gif using ffmpeg -------------------------------------------------
+
+# Check if ffmpeg.exe is in the current directory or in the system path
+$ffmpegFound = $false
+
+# Check current directory first
+if (Test-Path ".\ffmpeg.exe") {
+    $ffmpegFound = $true
+} else {
+    # If not found in current directory, check the system path
+    try {
+        Get-Command "ffmpeg.exe" -ErrorAction Stop # Will throw an error if ffmpeg.exe is not found in the system path
+        $ffmpegFound = $true
+    } catch {
+        $ffmpegFound = $false
+    }
+}
+# Output the result based on whether ffmpeg.exe was found or not
+if (-not $ffmpegFound) {
+    Write-Host "Note: ffmpeg.exe not found. If you would like to automatically create gifs after running this script, install ffmpeg."
+    Write-Host "    It can be placed in the current directory or added to the system path.`n"
+    return
+} else {
+    Write-Host "ffmpeg.exe is available."
+}
+
 # Optional integration with ffmpeg to create a gif from the generated frames. Asking user if they wish to proceed with this step.
 if ($ffmpegMakeGif -eq 'ask') {
     $runFFMPEG = Read-Host "Do you want to run ffmpeg to create a gif? (y/n)"
@@ -355,6 +381,8 @@ if ($ffmpegMakeGif -eq 'ask') {
     $runFFMPEG = $ffmpegMakeGif
     }
 }
+
+# Automatically create a gif from the frames using FFMPEG if the user chooses to proceed or if the ffmpeg-gif parameter was set to 'y'.
 
 if ($runFFMPEG -eq "y") {
     # Setting up the ffmpeg command with the appropriate frame rate and file naming scheme.
