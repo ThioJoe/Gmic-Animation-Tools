@@ -189,7 +189,7 @@ function InterpolateValues {
                         $currentValue = $startParamsLocal[$i] + ($exponentialFactor * ($endParamsLocal[$i] - $startParamsLocal[$i]))
                     } else {
                         # For non-master parameters, linear interpolation is used.
-                        $currentValue += (($endParamsLocal[$i] - $startParamsLocal[$i]) / ($totalFramesLocal - 1)) * $frame
+                        $currentValue = $startParamsLocal[$i] + (($endParamsLocal[$i] - $startParamsLocal[$i]) / ($totalFramesLocal - 1)) * $frame
                     }
                 }
                 # If the user has specified a custom array of exponents for all parameters via the exponentArray parameter, and exponential increments are enabled via the exponentialIncrements switch.
@@ -213,13 +213,13 @@ function InterpolateValues {
                         $currentValue = $startParamsLocal[$i] + ($exponentialFactor * ($endParamsLocal[$i] - $startParamsLocal[$i]))
                     } else {
                         # For non-master parameters, linear interpolation is used.
-                        $currentValue += (($endParamsLocal[$i] - $startParamsLocal[$i]) / ($totalFramesLocal - 1)) * $frame
+                        $currentValue = $startParamsLocal[$i] + (($endParamsLocal[$i] - $startParamsLocal[$i]) / ($totalFramesLocal - 1)) * $frame
                     }
                 }
                 # If exponential increments are not enabled, default to linear interpolation for all parameters.
                 default {  # Handle the linear interpolation as the default case
                     # Apply linear interpolation for parameters where no specific mode is set.
-                    $currentValue += (($endParamsLocal[$i] - $startParamsLocal[$i]) / ($totalFramesLocal - 1)) * $frame
+                    $currentValue = $startParamsLocal[$i] + (($endParamsLocal[$i] - $startParamsLocal[$i]) / ($totalFramesLocal - 1)) * $frame
                 }
             }
             # Formatting the interpolated value to three decimal places and adding to the current values array.
