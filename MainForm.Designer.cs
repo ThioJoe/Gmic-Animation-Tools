@@ -159,9 +159,19 @@
             0,
             65536});
             this.nudMasterParamIncrement.Location = new System.Drawing.Point(153, 178);
+            this.nudMasterParamIncrement.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
             this.nudMasterParamIncrement.Name = "nudMasterParamIncrement";
             this.nudMasterParamIncrement.Size = new System.Drawing.Size(80, 20);
             this.nudMasterParamIncrement.TabIndex = 10;
+            this.nudMasterParamIncrement.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // chkExponentialIncrements
             // 

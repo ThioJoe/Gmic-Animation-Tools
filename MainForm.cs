@@ -73,6 +73,14 @@ namespace DrosteEffectApp
             endParams = txtEndParams.Text;
             masterParamIndex = (int)nudMasterParamIndex.Value;
             masterParamIncrement = (double)nudMasterParamIncrement.Value;
+
+            // Validate Master Param Increment
+            if (masterParamIncrement <= 0)
+            {
+                MessageBox.Show("Master Param Increment must be greater than zero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             exponentialIncrements = chkExponentialIncrements.Checked;
             masterExponent = double.TryParse(txtMasterExponent.Text, out double tempMasterExponent) ? tempMasterExponent : 0;
             exponentArray = txtExponentArray.Text;
