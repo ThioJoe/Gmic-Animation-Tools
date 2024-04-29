@@ -1,18 +1,18 @@
 # The script begins by defining a Cmdlet binding attribute, which allows it to be used as a PowerShell command with parameters.
 [CmdletBinding()]
 
-# Below are the parameter declarations for the script, with extensive descriptions of each.
-# They are: 
-    # inputFile (string)
-    # startParams (string)
-    # endParams (string)
-    # userEnteredMasterParamIndex (int)
-    # masterParamIncrement (double)
-    # maxJobs (int)
-    # showParams (switch)
-    # exponentialIncrements (switch)
-    # masterExponent (double)
-    # exponentArray (string)
+# Below are the OPTIONAL parameter declarations for the script. Read the comments further down for details on each parameter.
+    # -input                  | Possible Values: Path to an image file | Default: None
+    # -start                  | Possible Values: Comma-separated (no spaces) 31-parameter string of number/decimal values  | Default: None
+    # -end                    | Possible Values: Comma-separated (no spaces) 31-parameter string of number/decimal values  | Default: None
+    # -master                 | Possible Values: 1-31 | Default: None
+    # -master-increment       | Possible Values: Any positive or negative number and/or decimal value | Default: None
+    # -threads                | Possible Values: Any positive integer | Default: 10
+    # -show-params            | Possible Values: None  | Default: False
+    # -exponential-increments | Possible Values: None  | Default: False
+    # -master-exponent        | Possible Values: Any positive or negative number and/or decimal value | Default: None
+    # -exponent-array         | Possible Values: Comma-separated (no spaces) 31-parameter string of number/decimal values  | Default: None
+    # -ffmpeg-gif             | Possible Values: 'y', 'n', 'ask' | Default: 'ask'
 
 param (
     # $inputFile represents the path to the image file on which the Droste effect will be applied. Can be relative or absolute.
@@ -79,7 +79,12 @@ param (
     # If linear interpolation is desired for some parameters, the corresponding exponent value should be set to 1.
     [Parameter(Mandatory=$false)]
     [Alias("exponent-array")]
-    [string]$exponentArray
+    [string]$exponentArray,
+
+    # $ffmpegMakeGif can be used to skip the prompt asking if the user wants to run ffmpeg to create a gif, either positively or negatively, by setting it to "y" or "n". Default is 'ask'
+    [Parameter(Mandatory=$false)]
+    [Alias("ffmpeg-gif")]
+    [string]$ffmpegMakeGif = 'ask'
 )
 
 # User input handling: If parameters are not provided, the script prompts the user to enter them manually.
@@ -340,7 +345,17 @@ $fullCommandLine = $MyInvocation.Line
 $fullCommandLine | Out-File -FilePath "$outputDir\command_line_arguments.txt"
 
 # Optional integration with ffmpeg to create a gif from the generated frames. Asking user if they wish to proceed with this step.
-$runFFMPEG = Read-Host "Do you want to run ffmpeg to create a gif? (y/n)"
+if ($ffmpegMakeGif -eq 'ask') {
+    $runFFMPEG = Read-Host "Do you want to run ffmpeg to create a gif? (y/n)"
+} else {
+    # Validate / normalize the input to ensure it's either 'y' or 'n'.
+    if ($ffmpegMakeGif -ne 'y' -and $ffmpegMakeGif -ne 'n') {
+        $runFFMPEG = Read-Host "Invalid value ${ffmpegMakeGif} for ffmpeg-gif parameter. Do you want to run ffmpeg to create a gif? (y/n)"
+    } else {
+    $runFFMPEG = $ffmpegMakeGif
+    }
+}
+
 if ($runFFMPEG -eq "y") {
     # Setting up the ffmpeg command with the appropriate frame rate and file naming scheme.
     $digitCountString = $digitCount.ToString()
