@@ -25,6 +25,9 @@ namespace DrosteEffectApp
         private string exponentArray;
         private bool createGif;
 
+        // Variables for default exponent array
+        private double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
         public MainForm()
         {
             InitializeComponent();
@@ -35,14 +38,19 @@ namespace DrosteEffectApp
         {
             // Set default values for user inputs and settings
             inputFilePath = string.Empty;
-            startParams = "1,100,1,1,1,0,0,0,0,0,9,12,1,0,90";
-            endParams = "100,100,1,1,50,0,0,0,0,0,9,12,1,0,90";
+            startParams = "34,100,1,1,1,0,0,-11,-32,-46,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
+            endParams = "100,100,1,1,1,0,0,0,0,0,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
             masterParamIndex = 1;
             masterParamIncrement = 1;
             exponentialIncrements = false;
             masterExponent = 0;
             exponentArray = string.Empty;
             createGif = false;
+
+            // Set default values for the new controls
+            chkExponentialIncrements.Checked = false;
+            txtMasterExponent.Text = "0";
+            txtExponentArray.Text = string.Empty;
         }
 
         private void btnSelectInputFile_Click(object sender, EventArgs e)
@@ -82,8 +90,8 @@ namespace DrosteEffectApp
             }
 
             exponentialIncrements = chkExponentialIncrements.Checked;
-            masterExponent = double.TryParse(txtMasterExponent.Text, out double tempMasterExponent) ? tempMasterExponent : 0;
-            exponentArray = txtExponentArray.Text;
+            double.TryParse(txtMasterExponent.Text, out double masterExponent);
+            string exponentArray = txtExponentArray.Text;
             createGif = chkCreateGif.Checked;
 
             if (string.IsNullOrEmpty(startParams) || string.IsNullOrEmpty(endParams))
@@ -117,11 +125,52 @@ namespace DrosteEffectApp
             // Calculate total frames based on master parameter increment
             int totalFrames = (int)Math.Ceiling((Math.Abs(endValues[masterParamIndex - 1] - startValues[masterParamIndex - 1])) / masterParamIncrement) + 1;
 
+            // Determine the exponent mode based on user inputs
+            string exponentMode = null;
+            double[] exponents = null;
+
+            if (exponentialIncrements)
+            {
+                if (!string.IsNullOrEmpty(exponentArray))
+                {
+                    if (exponentArray.Trim().ToLower() == "default")
+                    {
+                        exponents = defaultExponents;
+                        exponentMode = "default-apply-all";
+                    }
+                    else
+                    {
+                        string[] exponentArrayValues = exponentArray.Split(',');
+                        if (exponentArrayValues.Length == 31)
+                        {
+                            exponents = Array.ConvertAll(exponentArrayValues, double.Parse);
+                            exponentMode = "custom-array";
+                        }
+                        else
+                        {
+                            MessageBox.Show("Exponent array must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                }
+                else if (masterExponent != 0)
+                {
+                    exponents = (double[])defaultExponents.Clone();
+                    exponents[masterParamIndex - 1] = masterExponent;
+                    exponentMode = "custom-master";
+                }
+                else
+                {
+                    exponents = defaultExponents;
+                    exponentMode = "default-array";
+                }
+            }
+
             // Create output directory
             string outputDir = CreateOutputDirectory();
 
             // Generate interpolated parameter values for each frame
-            List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndex - 1, masterParamIncrement);
+            List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndex - 1, masterParamIncrement, exponents, exponentMode);
 
             // Process frames using gmic.exe
             ProcessFrames(outputDir, interpolatedParams);
@@ -153,7 +202,7 @@ namespace DrosteEffectApp
             return outputDir;
         }
 
-        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double increment)
+        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double increment, double[] exponents, string exponentMode)
         {
             List<string> interpolatedValues = new List<string>();
 
@@ -164,22 +213,47 @@ namespace DrosteEffectApp
                 for (int i = 0; i < 31; i++)
                 {
                     double currentValue = startValues[i];
+                    double exponentialFactor = 1;
 
-                    if (exponentialIncrements)
+                    switch (exponentMode)
                     {
-                        if (i == masterIndex)
-                        {
-                            double exponentialFactor = Math.Pow(frame / (totalFrames - 1.0), masterExponent);
+                        case "custom-master":
+                            if (i == masterIndex)
+                            {
+                                exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
+                                currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
+                            }
+                            else
+                            {
+                                currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
+                            }
+                            break;
+
+                        case "custom-array":
+                            exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
                             currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
-                        }
-                        else
-                        {
-                            currentValue += (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
-                        }
-                    }
-                    else
-                    {
-                        currentValue += (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
+                            break;
+
+                        case "default-apply-all":
+                            exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
+                            currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
+                            break;
+
+                        case "default-array":
+                            if (i == masterIndex)
+                            {
+                                exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
+                                currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
+                            }
+                            else
+                            {
+                                currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
+                            }
+                            break;
+
+                        default:
+                            currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
+                            break;
                     }
 
                     currentValues[i] = Math.Round(currentValue, 3);
