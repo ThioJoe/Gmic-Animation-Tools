@@ -218,66 +218,90 @@ namespace DrosteEffectApp
             return outputDir;
         }
 
+        // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.
+        // Returns a list of strings representing the interpolated parameter values for each frame.
         private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double increment, double[] exponents, string exponentMode)
         {
+            // List to store all interpolated values for each frame.
             List<string> interpolatedValues = new List<string>();
 
+            // Loop through each frame to calculate parameter values.
             for (int frame = 0; frame < totalFrames; frame++)
             {
+                // Array to hold the current set of interpolated parameters.
                 double[] currentValues = new double[31];
 
+                // Loop through each parameter to interpolate its value.
                 for (int i = 0; i < 31; i++)
                 {
+                    // Initialize the current value with the start value of the parameter.
                     double currentValue = startValues[i];
+                    // Initialize the exponential factor to 1.
                     double exponentialFactor = 1;
 
+                    // Decide the interpolation method for the current individual parameter based on the mode set.
                     switch (exponentMode)
                     {
+                        // If the user has specified a custom exponent for the master parameter and exponential increments are enabled.
                         case "custom-master":
+                            // If the current index is the master index, apply exponential interpolation.
                             if (i == masterIndex)
                             {
                                 exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
                                 currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
                             }
+                            // For non-master parameters, linear interpolation is used.
                             else
                             {
                                 currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
                             }
                             break;
 
+                        // If the user has specified a custom array of exponents for all parameters and exponential increments are enabled.
                         case "custom-array":
+                            // If the user has used the string 'default' for the exponentArray parameter and exponential increments are enabled.
                             exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
                             currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
                             break;
 
                         case "default-apply-all":
+                            // Apply exponential interpolation using the given exponents for all parameters.
                             exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
                             currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
                             break;
 
+                        // If exponential increments are enabled but no custom master exponent or full array is specified.
+                        // Only the master parameter will be interpolated exponentially, while the rest will be linearly interpolated.
                         case "default-array":
+                            // Apply exponential interpolation using a default array, but only for the master parameter.
                             if (i == masterIndex)
                             {
                                 exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
                                 currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
                             }
+                            // For non-master parameters, linear interpolation is used.
                             else
                             {
                                 currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
                             }
                             break;
 
+                        // If exponential increments are not enabled, default to linear interpolation for all parameters.
                         default:
+                            // Apply linear interpolation for parameters where no specific mode is set.
                             currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
                             break;
                     }
 
+                    // Round the interpolated value to three decimal places and add it to the current values array.
                     currentValues[i] = Math.Round(currentValue, 3);
                 }
 
+                // Add the concatenated string of current values for the frame to the interpolated values list.
                 interpolatedValues.Add(string.Join(",", currentValues));
             }
 
+            // Return the list of interpolated values for all frames.
             return interpolatedValues;
         }
 
