@@ -209,7 +209,7 @@ namespace DrosteEffectApp
             }
 
             // Open the output directory in Windows Explorer for user review.
-            Process.Start("explorer.exe", outputDir);
+            //Process.Start("explorer.exe", outputDir);
         }
 
         private string CreateOutputDirectory()
