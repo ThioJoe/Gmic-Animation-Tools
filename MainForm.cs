@@ -14,18 +14,27 @@ namespace DrosteEffectApp
 {
     public partial class MainForm : Form
     {
-        // Variables to store user inputs and settings
+        // Variables to hold the state of the application and user input.
+        // inputFilePath stores the path to the image file selected by the user.
         private string inputFilePath;
+        // startParams stores the initial parameters for the Droste effect.
         private string startParams;
+        // endParams stores the final parameters for the Droste effect to create a transition effect.
         private string endParams;
+        // masterParamIndex indicates the index of the parameter that drives the transformation.
         private int masterParamIndex;
+        // masterParamIncrement defines the increment by which the master parameter changes.
         private double masterParamIncrement;
+        // exponentialIncrements indicates whether exponential interpolation is used.
         private bool exponentialIncrements;
+        // masterExponent specifies the exponent used if exponential interpolation is enabled.
         private double masterExponent;
+        // exponentArray can contain a custom or default set of exponents for all parameters.
         private string exponentArray;
+        // createGif determines whether a GIF should be created from the resulting images.
         private bool createGif;
 
-        // Variables for default exponent array
+        // Default exponents used for interpolation, can be overridden by user input.
         private double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
         public MainForm()
@@ -36,7 +45,7 @@ namespace DrosteEffectApp
 
         private void InitializeDefaults()
         {
-            // Set default values for user inputs and settings
+            // Set initial values for form fields and internal variables to ensure a consistent starting state.
             inputFilePath = string.Empty;
             startParams = "34,100,1,1,1,0,0,-11,-32,-46,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
             endParams = "100,100,1,1,1,0,0,0,0,0,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
@@ -55,13 +64,14 @@ namespace DrosteEffectApp
 
         private void btnSelectInputFile_Click(object sender, EventArgs e)
         {
-            // Open file dialog to select input image file
+            // Create an OpenFileDialog to select an image file.
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image Files (*.png, *.jpg, *.jpeg, *.bmp)|*.png;*.jpg;*.jpeg;*.bmp";
             openFileDialog.Title = "Select Input Image File";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                // Store the selected file path in inputFilePath and display it in txtInputFilePath textbox.
                 inputFilePath = openFileDialog.FileName;
                 txtInputFilePath.Text = inputFilePath;
             }
@@ -69,41 +79,47 @@ namespace DrosteEffectApp
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            // Validate user inputs
+            // Validate that an input file has been selected.
             if (string.IsNullOrEmpty(inputFilePath))
             {
                 MessageBox.Show("Please select an input image file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Retrieve user-entered values from the GUI
+            // Retrieve and store user inputs from the form controls.
             startParams = txtStartParams.Text;
             endParams = txtEndParams.Text;
             masterParamIndex = (int)nudMasterParamIndex.Value;
             masterParamIncrement = (double)nudMasterParamIncrement.Value;
 
-            // Validate Master Param Increment
+            // Validate the increment for the master parameter.
             if (masterParamIncrement <= 0)
             {
                 MessageBox.Show("Master Param Increment must be greater than zero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+            // Read the state of the checkbox to determine if exponential increments are to be used.
             exponentialIncrements = chkExponentialIncrements.Checked;
+            // Try to parse the exponent entered by the user; if parsing fails, masterExponent remains at its previously set value (initially 0).
             double.TryParse(txtMasterExponent.Text, out double masterExponent);
+            // Store any custom exponent array or use a default one.
             string exponentArray = txtExponentArray.Text;
+            // Read the state of the GIF creation option.
             createGif = chkCreateGif.Checked;
 
+            // Check if the start and end parameters are valid.
             if (string.IsNullOrEmpty(startParams) || string.IsNullOrEmpty(endParams))
             {
                 MessageBox.Show("Please enter start and end parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Parse user inputs
+            // Parse the start and end parameters into arrays of doubles for processing.
             string[] startParamsArray = startParams.Split(',');
             string[] endParamsArray = endParams.Split(',');
 
+            // Ensure both parameter arrays have exactly 31 elements.
             if (startParamsArray.Length != 31 || endParamsArray.Length != 31)
             {
                 MessageBox.Show("Start and end parameters must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -122,10 +138,10 @@ namespace DrosteEffectApp
                 }
             }
 
-            // Calculate total frames based on master parameter increment
+            // Calculate the total number of frames required based on the master parameter's range and increment.
             int totalFrames = (int)Math.Ceiling((Math.Abs(endValues[masterParamIndex - 1] - startValues[masterParamIndex - 1])) / masterParamIncrement) + 1;
 
-            // Determine the exponent mode based on user inputs
+            // Determine the exponent mode and set up the exponents array based on user selections.
             string exponentMode = null;
             double[] exponents = null;
 
@@ -166,28 +182,28 @@ namespace DrosteEffectApp
                 }
             }
 
-            // Create output directory
+            // Generate a unique output directory for storing generated frames based on the input file's name.
             string outputDir = CreateOutputDirectory();
 
-            // Generate interpolated parameter values for each frame
+            // Calculate interpolated parameter values for each frame using the selected interpolation method.
             List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndex - 1, masterParamIncrement, exponents, exponentMode);
 
-            // Process frames using gmic.exe
+            // Process each frame using the specified parameters and gmic.exe.
             ProcessFrames(outputDir, interpolatedParams);
 
-            // Create GIF using ffmpeg if selected
+            // Optionally create a GIF from the generated frames using ffmpeg.
             if (createGif)
             {
                 CreateGif(outputDir);
             }
 
-            // Open output directory
+            // Open the output directory in Windows Explorer for user review.
             Process.Start("explorer.exe", outputDir);
         }
 
         private string CreateOutputDirectory()
         {
-            // Create unique output directory based on input file name
+            // Create a unique output directory based on the input file name, appending numbers to avoid conflicts.
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
             string outputDir = fileNameWithoutExtension;
             int folderCount = 1;
@@ -275,7 +291,7 @@ namespace DrosteEffectApp
                 string outputFile = Path.Combine(outputDir, $"{Path.GetFileNameWithoutExtension(inputFilePath)}_{(i + 1).ToString($"D{digitCount}")}.png");
                 string parameters = interpolatedParams[i];
 
-                // Execute gmic.exe to process frame
+                // Execute gmic.exe to process frame									
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = "gmic.exe";
                 startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"DrosteSingleThread.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
@@ -293,14 +309,14 @@ namespace DrosteEffectApp
 
         private void CreateGif(string outputDir)
         {
-            // Check if ffmpeg.exe exists
+            // Check if ffmpeg.exe exists							 
             if (!File.Exists("ffmpeg.exe"))
             {
                 MessageBox.Show("ffmpeg.exe not found. Please make sure it is in the same directory as the application.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Execute ffmpeg.exe to create GIF
+            // Execute ffmpeg.exe to create GIF								   
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
             int totalFrames = Directory.GetFiles(outputDir, "*.png").Length;
             int digitCount = (int)Math.Floor(Math.Log10(totalFrames)) + 1;
@@ -345,6 +361,7 @@ namespace DrosteEffectApp
 
         private void chkExponentialIncrements_CheckedChanged(object sender, EventArgs e)
         {
+            // Update the state of controls based on whether exponential increments are enabled.
             exponentialIncrements = chkExponentialIncrements.Checked;
             txtMasterExponent.Enabled = exponentialIncrements;
             txtExponentArray.Enabled = exponentialIncrements;
@@ -352,6 +369,7 @@ namespace DrosteEffectApp
 
         private void chkCreateGif_CheckedChanged(object sender, EventArgs e)
         {
+            // Update the internal flag to reflect whether a GIF should be created.
             createGif = chkCreateGif.Checked;
         }
     }
