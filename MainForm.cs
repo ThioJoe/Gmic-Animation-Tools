@@ -61,7 +61,7 @@ namespace DrosteEffectApp
 
             // Set default values for the new controls
             chkExponentialIncrements.Checked = false;
-            txtMasterExponent.Text = "0";
+            //txtMasterExponent.Text = "0";
             txtExponentArray.Text = string.Empty;
         }
 
@@ -154,14 +154,17 @@ namespace DrosteEffectApp
             double[] exponents = null;
 
             if (exponentialIncrements)
-            {
+            {   
+                // Exponent array field is either default or a custom array
                 if (!string.IsNullOrEmpty(exponentArray))
                 {
+                    //User wants to apply default exponent array to all parameters, not just master
                     if (exponentArray.Trim().ToLower() == "default")
                     {
                         exponents = defaultExponents;
                         exponentMode = "default-apply-all";
                     }
+                    // User has entered custom array of exponents
                     else
                     {
                         string[] exponentArrayValues = exponentArray.Split(',');
@@ -177,16 +180,21 @@ namespace DrosteEffectApp
                         }
                     }
                 }
+                // Master exponent field has been filled
                 else if (masterExponent != 0)
                 {
                     exponents = (double[])defaultExponents.Clone();
                     exponents[masterParamIndex - 1] = masterExponent;
                     exponentMode = "custom-master";
                 }
+                // No custom exponents have been entered at all, so use exponent from default array for master parameter only
                 else
                 {
                     exponents = defaultExponents;
                     exponentMode = "default-array";
+                    // Set master exponent from default array
+                    masterExponent = defaultExponents[masterParamIndex - 1];
+                    
                 }
             }
 
@@ -195,6 +203,9 @@ namespace DrosteEffectApp
 
             // Calculate interpolated parameter values for each frame using the selected interpolation method.
             List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndex - 1, masterParamIncrement, exponents, exponentMode);
+
+            // Create the log file with metadata and interpolated parameters
+            CreateLogFile(outputDir, interpolatedParams, exponentMode, defaultExponents, masterExponent);
 
             btnStart.Visible = false;
             btnCancel.Visible = true;
@@ -425,6 +436,76 @@ namespace DrosteEffectApp
                 process.StartInfo = startInfo;
                 process.Start();
                 process.WaitForExit();
+            }
+        }
+
+        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, double masterExponent)
+        {
+            string logFilePath = Path.Combine(outputDir, $"{outputDir}_log.txt");
+
+            string exponentModeString;
+            string masterExponentString;
+            string exponentArrayString;
+            // If exponent mode is 'default-apply-all' or 'default-array', set exponent array to string with values from defaultExponents array.
+            // Because in those cases all parameters are interpolated exponentially via array
+            if (exponentMode == "default-apply-all" || exponentMode == "custom-array")
+            {
+                exponentArrayString = string.Join(",", defaultExponents);
+                masterExponentString = "From Exponent Array";
+                if (exponentMode == "default-apply-all")
+                {
+                    exponentModeString = "Default Array (Apply to All)";
+                }
+                else
+                {
+                    exponentModeString = "Custom Array (Apply to All)";
+                }
+            }
+            // If exponent mode is 'custom-master' or 'default-array', set master exponent to the value entered by the user.
+            // Because in those cases only the master parameter is interpolated exponentially
+            else if (exponentMode == "custom-master" || exponentMode == "default-array")
+            {
+                masterExponentString = masterExponent.ToString();
+                exponentArrayString = "N/A";
+                if (exponentMode == "custom-master")
+                {
+                    exponentModeString = "Custom Master Parameter Exponent";
+                }
+                else
+                {
+                    exponentModeString = "Master Parameter Only (From Default Array)";
+                }
+            // If exponent mode is not set (exponentialIncrements is false), set all values to N/A. They won't be used anyway.
+            } else {
+                masterExponentString = "N/A";
+                exponentArrayString = "N/A";
+                exponentModeString = "N/A";
+            }
+
+
+            using (StreamWriter writer = new StreamWriter(logFilePath))
+            {
+                writer.WriteLine("Run Metadata:");
+                writer.WriteLine($"Start Parameters: {startParams}");
+                writer.WriteLine($"End Parameters: {endParams}");
+                writer.WriteLine($"Master Parameter Index: {masterParamIndex}");
+                writer.WriteLine($"Master Parameter Increment: {masterParamIncrement}");
+                writer.WriteLine($"Exponential Increments: {exponentialIncrements}");
+
+                if (exponentialIncrements)
+                {
+                    writer.WriteLine($"Exponent Mode: {exponentModeString}");
+                    writer.WriteLine($"Master Exponent: {masterExponentString}");
+                    writer.WriteLine($"Exponent Array: {exponentArrayString}");
+                }
+
+                writer.WriteLine();
+                writer.WriteLine("Interpolated Parameters:");
+
+                for (int i = 0; i < interpolatedParams.Count; i++)
+                {
+                    writer.WriteLine($"Frame {i + 1}: {interpolatedParams[i]}");
+                }
             }
         }
 
