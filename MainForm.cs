@@ -122,6 +122,9 @@ namespace DrosteEffectApp
                 MessageBox.Show("Please enter start and end parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there
+            startParams = startParams.Replace("souphead_droste10", "").Trim();
+            endParams = endParams.Replace("souphead_droste10", "").Trim();
 
             // Parse the start and end parameters into arrays of doubles for processing.
             string[] startParamsArray = startParams.Split(',');
@@ -148,6 +151,20 @@ namespace DrosteEffectApp
 
             // Calculate the total number of frames required based on the master parameter's range and increment.
             int totalFrames = (int)Math.Ceiling((Math.Abs(endValues[masterParamIndex - 1] - startValues[masterParamIndex - 1])) / masterParamIncrement) + 1;
+            // If totalFrames is 0, alert user with message box
+            if (totalFrames == 1)
+            {
+                if (endValues[masterParamIndex - 1] == startValues[masterParamIndex - 1])
+                {
+                    MessageBox.Show("Start and end values for the master parameter are the same so no frames would be generated.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Something is wrong - no frames would be generated with the current settings. Check the master parameter increment or start and end parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return;
+            }
+            
 
             // Determine the exponent mode and set up the exponents array based on user selections.
             string exponentMode = null;
@@ -187,6 +204,9 @@ namespace DrosteEffectApp
                 string exponentArray = txtExponentArray.Text;
                 if (!string.IsNullOrEmpty(exponentArray))
                 {
+                    // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there
+                    exponentArray = exponentArray.Replace("souphead_droste10", "").Trim();
+                    
                     string[] exponentArrayValues = exponentArray.Split(',');
                     if (exponentArrayValues.Length == 31)
                     {
