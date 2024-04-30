@@ -85,7 +85,7 @@ namespace DrosteEffectApp
             }
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
             // Validate that an input file has been selected.
             if (string.IsNullOrEmpty(inputFilePath))
@@ -200,7 +200,7 @@ namespace DrosteEffectApp
             btnCancel.Visible = true;
 
             // Process each frame using the specified parameters and gmic.exe.
-            ProcessFrames(outputDir, interpolatedParams);
+            await Task.Run(() => ProcessFrames(outputDir, interpolatedParams));
 
             // Optionally create a GIF from the generated frames using ffmpeg.
             if (createGif)
@@ -316,7 +316,7 @@ namespace DrosteEffectApp
             return interpolatedValues;
         }
 
-        private void ProcessFrames(string outputDir, List<string> interpolatedParams)
+        private async Task ProcessFrames(string outputDir, List<string> interpolatedParams)
         {
             int parallelJobs = 7;
             int maxAttempts = 3;
@@ -334,32 +334,35 @@ namespace DrosteEffectApp
 
             while (attempt <= maxAttempts)
             {
-                Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = parallelJobs }, i =>
+                await Task.Run(() =>
                 {
-                    if (cancellationRequested)
+                    Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = parallelJobs }, i =>
                     {
-                        return;
-                    }
-
-                    string outputFile = expectedFiles[i];
-                    string parameters = interpolatedParams[i];
-
-                    if (!File.Exists(outputFile))
-                    {
-                        // Execute gmic.exe to process frame
-                        ProcessStartInfo startInfo = new ProcessStartInfo();
-                        startInfo.FileName = "gmic.exe";
-                        startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"DrosteSingleThread.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
-                        startInfo.UseShellExecute = false;
-                        startInfo.CreateNoWindow = true;
-
-                        using (Process process = new Process())
+                        if (cancellationRequested)
                         {
-                            process.StartInfo = startInfo;
-                            process.Start();
-                            process.WaitForExit();
+                            return;
                         }
-                    }
+
+                        string outputFile = expectedFiles[i];
+                        string parameters = interpolatedParams[i];
+
+                        if (!File.Exists(outputFile))
+                        {
+                            // Execute gmic.exe to process frame
+                            ProcessStartInfo startInfo = new ProcessStartInfo();
+                            startInfo.FileName = "gmic.exe";
+                            startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"DrosteSingleThread.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
+                            startInfo.UseShellExecute = false;
+                            startInfo.CreateNoWindow = true;
+
+                            using (Process process = new Process())
+                            {
+                                process.StartInfo = startInfo;
+                                process.Start();
+                                process.WaitForExit();
+                            }
+                        }
+                    });
                 });
 
                 List<string> missingFiles = expectedFiles.Where(file => !File.Exists(file)).ToList();
@@ -374,16 +377,25 @@ namespace DrosteEffectApp
             List<string> missingFilesAfterRerun = expectedFiles.Where(file => !File.Exists(file)).ToList();
             if (missingFilesAfterRerun.Count > 0)
             {
-                MessageBox.Show($"Warning: Not all of the {totalFrames} frames have been generated. Missing files:\n{string.Join("\n", missingFilesAfterRerun)}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                BeginInvoke((MethodInvoker)(() =>
+                {
+                    MessageBox.Show($"Warning: Not all of the {totalFrames} frames have been generated. Missing files:\n{string.Join("\n", missingFilesAfterRerun)}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }));
             }
             else
             {
-                MessageBox.Show($"All {totalFrames} frames have been verified and generated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                BeginInvoke((MethodInvoker)(() =>
+                {
+                    MessageBox.Show($"All {totalFrames} frames have been verified and generated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }));
             }
 
-            cancellationRequested = false;
-            btnStart.Visible = true;
-            btnCancel.Visible = false;
+            BeginInvoke((MethodInvoker)(() =>
+            {
+                cancellationRequested = false;
+                btnStart.Visible = true;
+                btnCancel.Visible = false;
+            }));
         }
 
         private void CreateGif(string outputDir)

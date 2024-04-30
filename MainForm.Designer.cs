@@ -84,7 +84,7 @@
             this.lblStartParams.AutoSize = true;
             this.lblStartParams.Location = new System.Drawing.Point(12, 60);
             this.lblStartParams.Name = "lblStartParams";
-            this.lblStartParams.Size = new System.Drawing.Size(72, 13);
+            this.lblStartParams.Size = new System.Drawing.Size(70, 13);
             this.lblStartParams.TabIndex = 3;
             this.lblStartParams.Text = "Start Params:";
             // 
@@ -116,7 +116,7 @@
             this.lblMasterParamIndex.AutoSize = true;
             this.lblMasterParamIndex.Location = new System.Drawing.Point(12, 150);
             this.lblMasterParamIndex.Name = "lblMasterParamIndex";
-            this.lblMasterParamIndex.Size = new System.Drawing.Size(113, 13);
+            this.lblMasterParamIndex.Size = new System.Drawing.Size(104, 13);
             this.lblMasterParamIndex.TabIndex = 7;
             this.lblMasterParamIndex.Text = "Master Param Index:";
             // 
@@ -147,7 +147,7 @@
             this.lblMasterParamIncrement.AutoSize = true;
             this.lblMasterParamIncrement.Location = new System.Drawing.Point(12, 180);
             this.lblMasterParamIncrement.Name = "lblMasterParamIncrement";
-            this.lblMasterParamIncrement.Size = new System.Drawing.Size(135, 13);
+            this.lblMasterParamIncrement.Size = new System.Drawing.Size(125, 13);
             this.lblMasterParamIncrement.TabIndex = 9;
             this.lblMasterParamIncrement.Text = "Master Param Increment:";
             // 
@@ -179,7 +179,7 @@
             this.chkExponentialIncrements.AutoSize = true;
             this.chkExponentialIncrements.Location = new System.Drawing.Point(15, 210);
             this.chkExponentialIncrements.Name = "chkExponentialIncrements";
-            this.chkExponentialIncrements.Size = new System.Drawing.Size(135, 17);
+            this.chkExponentialIncrements.Size = new System.Drawing.Size(143, 21);
             this.chkExponentialIncrements.TabIndex = 11;
             this.chkExponentialIncrements.Text = "Exponential Increments";
             this.chkExponentialIncrements.UseVisualStyleBackColor = true;
@@ -224,7 +224,7 @@
             this.chkCreateGif.AutoSize = true;
             this.chkCreateGif.Location = new System.Drawing.Point(15, 320);
             this.chkCreateGif.Name = "chkCreateGif";
-            this.chkCreateGif.Size = new System.Drawing.Size(75, 17);
+            this.chkCreateGif.Size = new System.Drawing.Size(84, 21);
             this.chkCreateGif.TabIndex = 16;
             this.chkCreateGif.Text = "Create GIF";
             this.chkCreateGif.UseVisualStyleBackColor = true;
@@ -252,7 +252,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(130, 350);
+            this.btnCancel.Location = new System.Drawing.Point(15, 350);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 30);
             this.btnCancel.TabIndex = 19;
