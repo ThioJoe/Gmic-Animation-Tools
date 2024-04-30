@@ -317,6 +317,8 @@ namespace DrosteEffectApp
 
                 // Execute gmic.exe to process frame									
                 ProcessStartInfo startInfo = new ProcessStartInfo();
+                // Executing the gmic tool with arguments provided. This includes specifying input and output files, and the filter file (via -command) containing the version of the droste effect.
+                // "-souphead_droste10" is the actual filter/effect name for the 'continuous droste' effect from the G'MIC GUI.
                 startInfo.FileName = "gmic.exe";
                 startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"DrosteSingleThread.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
                 startInfo.UseShellExecute = false;
