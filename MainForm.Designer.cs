@@ -39,10 +39,11 @@
             this.nudMasterParamIndex = new System.Windows.Forms.NumericUpDown();
             this.lblMasterParamIncrement = new System.Windows.Forms.Label();
             this.nudMasterParamIncrement = new System.Windows.Forms.NumericUpDown();
-            this.chkExponentialIncrements = new System.Windows.Forms.CheckBox();
-            this.lblMasterExponent = new System.Windows.Forms.Label();
+            this.rbNoExponents = new System.Windows.Forms.RadioButton();
+            this.rbMasterExponent = new System.Windows.Forms.RadioButton();
+            this.rbDefaultExponents = new System.Windows.Forms.RadioButton();
+            this.rbCustomExponents = new System.Windows.Forms.RadioButton();
             this.txtMasterExponent = new System.Windows.Forms.TextBox();
-            this.lblExponentArray = new System.Windows.Forms.Label();
             this.txtExponentArray = new System.Windows.Forms.TextBox();
             this.chkCreateGif = new System.Windows.Forms.CheckBox();
             this.btnStart = new System.Windows.Forms.Button();
@@ -116,13 +117,13 @@
             this.lblMasterParamIndex.AutoSize = true;
             this.lblMasterParamIndex.Location = new System.Drawing.Point(12, 150);
             this.lblMasterParamIndex.Name = "lblMasterParamIndex";
-            this.lblMasterParamIndex.Size = new System.Drawing.Size(104, 13);
+            this.lblMasterParamIndex.Size = new System.Drawing.Size(122, 13);
             this.lblMasterParamIndex.TabIndex = 7;
-            this.lblMasterParamIndex.Text = "Master Param Index:";
+            this.lblMasterParamIndex.Text = "Master Parameter Index:";
             // 
             // nudMasterParamIndex
             // 
-            this.nudMasterParamIndex.Location = new System.Drawing.Point(131, 148);
+            this.nudMasterParamIndex.Location = new System.Drawing.Point(145, 150);
             this.nudMasterParamIndex.Maximum = new decimal(new int[] {
             31,
             0,
@@ -159,7 +160,7 @@
             0,
             0,
             65536});
-            this.nudMasterParamIncrement.Location = new System.Drawing.Point(153, 178);
+            this.nudMasterParamIncrement.Location = new System.Drawing.Point(145, 180);
             this.nudMasterParamIncrement.Minimum = new decimal(new int[] {
             1,
             0,
@@ -174,55 +175,75 @@
             0,
             0});
             // 
-            // chkExponentialIncrements
+            // rbNoExponents
             // 
-            this.chkExponentialIncrements.AutoSize = true;
-            this.chkExponentialIncrements.Location = new System.Drawing.Point(15, 210);
-            this.chkExponentialIncrements.Name = "chkExponentialIncrements";
-            this.chkExponentialIncrements.Size = new System.Drawing.Size(143, 21);
-            this.chkExponentialIncrements.TabIndex = 11;
-            this.chkExponentialIncrements.Text = "Exponential Increments";
-            this.chkExponentialIncrements.UseVisualStyleBackColor = true;
-            this.chkExponentialIncrements.CheckedChanged += new System.EventHandler(this.chkExponentialIncrements_CheckedChanged);
+            this.rbNoExponents.AutoSize = true;
+            this.rbNoExponents.Checked = true;
+            this.rbNoExponents.Location = new System.Drawing.Point(15, 210);
+            this.rbNoExponents.Name = "rbNoExponents";
+            this.rbNoExponents.Size = new System.Drawing.Size(128, 20);
+            this.rbNoExponents.TabIndex = 11;
+            this.rbNoExponents.TabStop = true;
+            this.rbNoExponents.Text = "Linear Interopolation";
+            this.rbNoExponents.UseVisualStyleBackColor = true;
+            this.rbNoExponents.CheckedChanged += new System.EventHandler(this.rbNoExponents_CheckedChanged);
             // 
-            // lblMasterExponent
+            // rbMasterExponent
             // 
-            this.lblMasterExponent.AutoSize = true;
-            this.lblMasterExponent.Location = new System.Drawing.Point(12, 240);
-            this.lblMasterExponent.Name = "lblMasterExponent";
-            this.lblMasterExponent.Size = new System.Drawing.Size(90, 13);
-            this.lblMasterExponent.TabIndex = 12;
-            this.lblMasterExponent.Text = "Master Exponent:";
+            this.rbMasterExponent.AutoSize = true;
+            this.rbMasterExponent.Location = new System.Drawing.Point(15, 240);
+            this.rbMasterExponent.Name = "rbMasterExponent";
+            this.rbMasterExponent.Size = new System.Drawing.Size(112, 20);
+            this.rbMasterExponent.TabIndex = 12;
+            this.rbMasterExponent.TabStop = true;
+            this.rbMasterExponent.Text = "Master Exponent";
+            this.rbMasterExponent.UseVisualStyleBackColor = true;
+            this.rbMasterExponent.CheckedChanged += new System.EventHandler(this.rbMasterExponent_CheckedChanged);
+            // 
+            // rbDefaultExponents
+            // 
+            this.rbDefaultExponents.AutoSize = true;
+            this.rbDefaultExponents.Location = new System.Drawing.Point(15, 300);
+            this.rbDefaultExponents.Name = "rbDefaultExponents";
+            this.rbDefaultExponents.Size = new System.Drawing.Size(119, 20);
+            this.rbDefaultExponents.TabIndex = 13;
+            this.rbDefaultExponents.TabStop = true;
+            this.rbDefaultExponents.Text = "Default Exponents";
+            this.rbDefaultExponents.UseVisualStyleBackColor = true;
+            this.rbDefaultExponents.CheckedChanged += new System.EventHandler(this.rbDefaultExponents_CheckedChanged);
+            // 
+            // rbCustomExponents
+            // 
+            this.rbCustomExponents.AutoSize = true;
+            this.rbCustomExponents.Location = new System.Drawing.Point(15, 270);
+            this.rbCustomExponents.Name = "rbCustomExponents";
+            this.rbCustomExponents.Size = new System.Drawing.Size(120, 20);
+            this.rbCustomExponents.TabIndex = 14;
+            this.rbCustomExponents.TabStop = true;
+            this.rbCustomExponents.Text = "Custom Exponents";
+            this.rbCustomExponents.UseVisualStyleBackColor = true;
+            this.rbCustomExponents.CheckedChanged += new System.EventHandler(this.rbCustomExponents_CheckedChanged);
             // 
             // txtMasterExponent
             // 
             this.txtMasterExponent.Enabled = false;
-            this.txtMasterExponent.Location = new System.Drawing.Point(108, 237);
+            this.txtMasterExponent.Location = new System.Drawing.Point(135, 240);
             this.txtMasterExponent.Name = "txtMasterExponent";
             this.txtMasterExponent.Size = new System.Drawing.Size(80, 20);
-            this.txtMasterExponent.TabIndex = 13;
-            // 
-            // lblExponentArray
-            // 
-            this.lblExponentArray.AutoSize = true;
-            this.lblExponentArray.Location = new System.Drawing.Point(12, 270);
-            this.lblExponentArray.Name = "lblExponentArray";
-            this.lblExponentArray.Size = new System.Drawing.Size(82, 13);
-            this.lblExponentArray.TabIndex = 14;
-            this.lblExponentArray.Text = "Exponent Array:";
+            this.txtMasterExponent.TabIndex = 16;
             // 
             // txtExponentArray
             // 
             this.txtExponentArray.Enabled = false;
-            this.txtExponentArray.Location = new System.Drawing.Point(15, 286);
+            this.txtExponentArray.Location = new System.Drawing.Point(135, 270);
             this.txtExponentArray.Name = "txtExponentArray";
-            this.txtExponentArray.Size = new System.Drawing.Size(381, 20);
-            this.txtExponentArray.TabIndex = 15;
+            this.txtExponentArray.Size = new System.Drawing.Size(261, 20);
+            this.txtExponentArray.TabIndex = 18;
             // 
             // chkCreateGif
             // 
             this.chkCreateGif.AutoSize = true;
-            this.chkCreateGif.Location = new System.Drawing.Point(15, 320);
+            this.chkCreateGif.Location = new System.Drawing.Point(15, 343);
             this.chkCreateGif.Name = "chkCreateGif";
             this.chkCreateGif.Size = new System.Drawing.Size(84, 21);
             this.chkCreateGif.TabIndex = 16;
@@ -232,7 +253,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(15, 350);
+            this.btnStart.Location = new System.Drawing.Point(16, 386);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(100, 30);
             this.btnStart.TabIndex = 17;
@@ -242,7 +263,7 @@
             // 
             // btnViewOutputDirectory
             // 
-            this.btnViewOutputDirectory.Location = new System.Drawing.Point(130, 350);
+            this.btnViewOutputDirectory.Location = new System.Drawing.Point(131, 386);
             this.btnViewOutputDirectory.Name = "btnViewOutputDirectory";
             this.btnViewOutputDirectory.Size = new System.Drawing.Size(130, 30);
             this.btnViewOutputDirectory.TabIndex = 18;
@@ -252,7 +273,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(15, 350);
+            this.btnCancel.Location = new System.Drawing.Point(16, 386);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 30);
             this.btnCancel.TabIndex = 19;
@@ -265,15 +286,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(414, 391);
+            this.ClientSize = new System.Drawing.Size(414, 441);
+            this.Controls.Add(this.rbCustomExponents);
+            this.Controls.Add(this.rbDefaultExponents);
+            this.Controls.Add(this.rbMasterExponent);
+            this.Controls.Add(this.rbNoExponents);
             this.Controls.Add(this.btnViewOutputDirectory);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.chkCreateGif);
             this.Controls.Add(this.txtExponentArray);
-            this.Controls.Add(this.lblExponentArray);
             this.Controls.Add(this.txtMasterExponent);
-            this.Controls.Add(this.lblMasterExponent);
-            this.Controls.Add(this.chkExponentialIncrements);
             this.Controls.Add(this.nudMasterParamIncrement);
             this.Controls.Add(this.lblMasterParamIncrement);
             this.Controls.Add(this.nudMasterParamIndex);
@@ -310,14 +332,15 @@
         private System.Windows.Forms.NumericUpDown nudMasterParamIndex;
         private System.Windows.Forms.Label lblMasterParamIncrement;
         private System.Windows.Forms.NumericUpDown nudMasterParamIncrement;
-        private System.Windows.Forms.CheckBox chkExponentialIncrements;
-        private System.Windows.Forms.Label lblMasterExponent;
         private System.Windows.Forms.TextBox txtMasterExponent;
-        private System.Windows.Forms.Label lblExponentArray;
         private System.Windows.Forms.TextBox txtExponentArray;
         private System.Windows.Forms.CheckBox chkCreateGif;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnViewOutputDirectory;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.RadioButton rbNoExponents;
+        private System.Windows.Forms.RadioButton rbMasterExponent;
+        private System.Windows.Forms.RadioButton rbDefaultExponents;
+        private System.Windows.Forms.RadioButton rbCustomExponents;
     }
 }

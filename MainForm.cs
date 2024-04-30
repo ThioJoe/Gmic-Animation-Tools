@@ -60,7 +60,7 @@ namespace DrosteEffectApp
             createGif = false;
 
             // Set default values for the new controls
-            chkExponentialIncrements.Checked = false;
+            //chkExponentialIncrements.Checked = false;
             //txtMasterExponent.Text = "0";
             txtExponentArray.Text = string.Empty;
         }
@@ -108,11 +108,11 @@ namespace DrosteEffectApp
             }
 
             // Read the state of the checkbox to determine if exponential increments are to be used.
-            exponentialIncrements = chkExponentialIncrements.Checked;
+            //exponentialIncrements = chkExponentialIncrements.Checked;
             // Try to parse the exponent entered by the user; if parsing fails, masterExponent remains at its previously set value (initially 0).
-            double.TryParse(txtMasterExponent.Text, out double masterExponent);
+            //double.TryParse(txtMasterExponent.Text, out double masterExponent);
             // Store any custom exponent array or use a default one.
-            string exponentArray = txtExponentArray.Text;
+            //string exponentArray = txtExponentArray.Text;
             // Read the state of the GIF creation option.
             createGif = chkCreateGif.Checked;
 
@@ -152,49 +152,57 @@ namespace DrosteEffectApp
             // Determine the exponent mode and set up the exponents array based on user selections.
             string exponentMode = null;
             double[] exponents = null;
+            double masterExponent = 0;
 
-            if (exponentialIncrements)
-            {   
-                // Exponent array field is either default or a custom array
-                if (!string.IsNullOrEmpty(exponentArray))
-                {
-                    //User wants to apply default exponent array to all parameters, not just master
-                    if (exponentArray.Trim().ToLower() == "default")
-                    {
-                        exponents = defaultExponents;
-                        exponentMode = "default-apply-all";
-                    }
-                    // User has entered custom array of exponents
-                    else
-                    {
-                        string[] exponentArrayValues = exponentArray.Split(',');
-                        if (exponentArrayValues.Length == 31)
-                        {
-                            exponents = Array.ConvertAll(exponentArrayValues, double.Parse);
-                            exponentMode = "custom-array";
-                        }
-                        else
-                        {
-                            MessageBox.Show("Exponent array must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
-                }
-                // Master exponent field has been filled
-                else if (masterExponent != 0)
+
+            if (rbNoExponents.Checked)
+            {
+                exponentialIncrements = false;
+            }
+            else if (rbMasterExponent.Checked)
+            {
+                exponentialIncrements = true;
+                if (double.TryParse(txtMasterExponent.Text, out masterExponent))
                 {
                     exponents = (double[])defaultExponents.Clone();
                     exponents[masterParamIndex - 1] = masterExponent;
                     exponentMode = "custom-master";
                 }
-                // No custom exponents have been entered at all, so use exponent from default array for master parameter only
                 else
                 {
                     exponents = defaultExponents;
                     exponentMode = "default-array";
-                    // Set master exponent from default array
                     masterExponent = defaultExponents[masterParamIndex - 1];
-                    
+                }
+            }
+            else if (rbDefaultExponents.Checked)
+            {
+                exponentialIncrements = true;
+                exponents = defaultExponents;
+                exponentMode = "default-apply-all";
+            }
+            else if (rbCustomExponents.Checked)
+            {
+                exponentialIncrements = true;
+                string exponentArray = txtExponentArray.Text;
+                if (!string.IsNullOrEmpty(exponentArray))
+                {
+                    string[] exponentArrayValues = exponentArray.Split(',');
+                    if (exponentArrayValues.Length == 31)
+                    {
+                        exponents = Array.ConvertAll(exponentArrayValues, double.Parse);
+                        exponentMode = "custom-array";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Exponent array must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please enter custom exponent values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
             }
 
@@ -531,13 +539,37 @@ namespace DrosteEffectApp
             }
         }
 
-        private void chkExponentialIncrements_CheckedChanged(object sender, EventArgs e)
+        private void rbNoExponents_CheckedChanged(object sender, EventArgs e)
         {
-            // Update the state of controls based on whether exponential increments are enabled.
-            exponentialIncrements = chkExponentialIncrements.Checked;
-            txtMasterExponent.Enabled = exponentialIncrements;
-            txtExponentArray.Enabled = exponentialIncrements;
+            txtMasterExponent.Enabled = false;
+            txtExponentArray.Enabled = false;
         }
+
+        private void rbMasterExponent_CheckedChanged(object sender, EventArgs e)
+        {
+            txtMasterExponent.Enabled = rbMasterExponent.Checked;
+            txtExponentArray.Enabled = false;
+        }
+
+        private void rbDefaultExponents_CheckedChanged(object sender, EventArgs e)
+        {
+            txtMasterExponent.Enabled = false;
+            txtExponentArray.Enabled = false;
+        }
+
+        private void rbCustomExponents_CheckedChanged(object sender, EventArgs e)
+        {
+            txtMasterExponent.Enabled = false;
+            txtExponentArray.Enabled = rbCustomExponents.Checked;
+        }
+
+        //private void chkExponentialIncrements_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    // Update the state of controls based on whether exponential increments are enabled.
+        //    exponentialIncrements = chkExponentialIncrements.Checked;
+        //    txtMasterExponent.Enabled = exponentialIncrements;
+        //    txtExponentArray.Enabled = exponentialIncrements;
+        //}
 
         private void chkCreateGif_CheckedChanged(object sender, EventArgs e)
         {
