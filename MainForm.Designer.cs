@@ -47,6 +47,7 @@
             this.chkCreateGif = new System.Windows.Forms.CheckBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnViewOutputDirectory = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             this.SuspendLayout();
@@ -249,6 +250,17 @@
             this.btnViewOutputDirectory.UseVisualStyleBackColor = true;
             this.btnViewOutputDirectory.Click += new System.EventHandler(this.btnViewOutputDirectory_Click);
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(130, 350);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(100, 30);
+            this.btnCancel.TabIndex = 19;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Visible = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -273,6 +285,7 @@
             this.Controls.Add(this.btnSelectInputFile);
             this.Controls.Add(this.txtInputFilePath);
             this.Controls.Add(this.lblInputFile);
+            this.Controls.Add(this.btnCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
@@ -305,5 +318,6 @@
         private System.Windows.Forms.CheckBox chkCreateGif;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnViewOutputDirectory;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

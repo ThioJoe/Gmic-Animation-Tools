@@ -33,8 +33,11 @@ namespace DrosteEffectApp
         private string exponentArray;
         // createGif determines whether a GIF should be created from the resulting images.
         private bool createGif;
+        // Flag to indicate if a cancellation has been requested by the user. To stop image generation process
+        private bool cancellationRequested = false;
 
-        // Default exponents used for interpolation, can be overridden by user input.
+        // Setting a default array of exponents for use with exponential interpolation if no custom array is provided.
+        // These are arbitrarily chosen values based on experience.
         private double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
         public MainForm()
@@ -60,6 +63,11 @@ namespace DrosteEffectApp
             chkExponentialIncrements.Checked = false;
             txtMasterExponent.Text = "0";
             txtExponentArray.Text = string.Empty;
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            cancellationRequested = true;
         }
 
         private void btnSelectInputFile_Click(object sender, EventArgs e)
@@ -188,6 +196,9 @@ namespace DrosteEffectApp
             // Calculate interpolated parameter values for each frame using the selected interpolation method.
             List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndex - 1, masterParamIncrement, exponents, exponentMode);
 
+            btnStart.Visible = false;
+            btnCancel.Visible = true;
+
             // Process each frame using the specified parameters and gmic.exe.
             ProcessFrames(outputDir, interpolatedParams);
 
@@ -307,16 +318,25 @@ namespace DrosteEffectApp
 
         private void ProcessFrames(string outputDir, List<string> interpolatedParams)
         {
+            // For parallel processing, set the number of parallel jobs to the number of logical processors.
+            int parallelJobs = 7;
+
             int totalFrames = interpolatedParams.Count;
             int digitCount = (int)Math.Floor(Math.Log10(totalFrames)) + 1;
 
-            for (int i = 0; i < totalFrames; i++)
+            Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = parallelJobs }, i =>
             {
+                if (cancellationRequested)
+                {
+                    return;
+                }
+
                 string outputFile = Path.Combine(outputDir, $"{Path.GetFileNameWithoutExtension(inputFilePath)}_{(i + 1).ToString($"D{digitCount}")}.png");
                 string parameters = interpolatedParams[i];
 
                 // Execute gmic.exe to process frame									
                 ProcessStartInfo startInfo = new ProcessStartInfo();
+
                 // Executing the gmic tool with arguments provided. This includes specifying input and output files, and the filter file (via -command) containing the version of the droste effect.
                 // "-souphead_droste10" is the actual filter/effect name for the 'continuous droste' effect from the G'MIC GUI.
                 startInfo.FileName = "gmic.exe";
@@ -330,7 +350,10 @@ namespace DrosteEffectApp
                     process.Start();
                     process.WaitForExit();
                 }
-            }
+            });
+            cancellationRequested = false;
+            btnStart.Visible = true;
+            btnCancel.Visible = false;
         }
 
         private void CreateGif(string outputDir)
