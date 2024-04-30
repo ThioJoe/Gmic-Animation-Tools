@@ -318,39 +318,69 @@ namespace DrosteEffectApp
 
         private void ProcessFrames(string outputDir, List<string> interpolatedParams)
         {
-            // For parallel processing, set the number of parallel jobs to the number of logical processors.
             int parallelJobs = 7;
+            int maxAttempts = 3;
+            int attempt = 1;
 
             int totalFrames = interpolatedParams.Count;
             int digitCount = (int)Math.Floor(Math.Log10(totalFrames)) + 1;
 
-            Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = parallelJobs }, i =>
+            List<string> expectedFiles = new List<string>();
+            for (int i = 0; i < totalFrames; i++)
             {
-                if (cancellationRequested)
-                {
-                    return;
-                }
-
                 string outputFile = Path.Combine(outputDir, $"{Path.GetFileNameWithoutExtension(inputFilePath)}_{(i + 1).ToString($"D{digitCount}")}.png");
-                string parameters = interpolatedParams[i];
+                expectedFiles.Add(outputFile);
+            }
 
-                // Execute gmic.exe to process frame									
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-
-                // Executing the gmic tool with arguments provided. This includes specifying input and output files, and the filter file (via -command) containing the version of the droste effect.
-                // "-souphead_droste10" is the actual filter/effect name for the 'continuous droste' effect from the G'MIC GUI.
-                startInfo.FileName = "gmic.exe";
-                startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"DrosteSingleThread.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
-
-                using (Process process = new Process())
+            while (attempt <= maxAttempts)
+            {
+                Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = parallelJobs }, i =>
                 {
-                    process.StartInfo = startInfo;
-                    process.Start();
-                    process.WaitForExit();
+                    if (cancellationRequested)
+                    {
+                        return;
+                    }
+
+                    string outputFile = expectedFiles[i];
+                    string parameters = interpolatedParams[i];
+
+                    if (!File.Exists(outputFile))
+                    {
+                        // Execute gmic.exe to process frame
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = "gmic.exe";
+                        startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"DrosteSingleThread.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
+                        startInfo.UseShellExecute = false;
+                        startInfo.CreateNoWindow = true;
+
+                        using (Process process = new Process())
+                        {
+                            process.StartInfo = startInfo;
+                            process.Start();
+                            process.WaitForExit();
+                        }
+                    }
+                });
+
+                List<string> missingFiles = expectedFiles.Where(file => !File.Exists(file)).ToList();
+                if (missingFiles.Count == 0)
+                {
+                    break;
                 }
-            });
+
+                attempt++;
+            }
+
+            List<string> missingFilesAfterRerun = expectedFiles.Where(file => !File.Exists(file)).ToList();
+            if (missingFilesAfterRerun.Count > 0)
+            {
+                MessageBox.Show($"Warning: Not all of the {totalFrames} frames have been generated. Missing files:\n{string.Join("\n", missingFilesAfterRerun)}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                MessageBox.Show($"All {totalFrames} frames have been verified and generated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
             cancellationRequested = false;
             btnStart.Visible = true;
             btnCancel.Visible = false;
