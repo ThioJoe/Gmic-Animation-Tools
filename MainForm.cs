@@ -227,7 +227,7 @@ namespace DrosteEffectApp
             }
 
             // Generate a unique output directory for storing generated frames based on the input file's name.
-            string outputDir = CreateOutputDirectory();
+            string outputDir = CreateOutputDirectory(inputFilePath);
 
             // Calculate interpolated parameter values for each frame using the selected interpolation method.
             List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndex - 1, masterParamIncrement, exponents, exponentMode);
@@ -251,21 +251,45 @@ namespace DrosteEffectApp
             //Process.Start("explorer.exe", outputDir);
         }
 
-        private string CreateOutputDirectory()
+        private string CreateOutputDirectory(string inputFilePath)
         {
-            // Create a unique output directory based on the input file name, appending numbers to avoid conflicts.
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
-            string outputDir = fileNameWithoutExtension;
-            int folderCount = 1;
-
-            while (Directory.Exists(outputDir))
-            {
-                outputDir = $"{fileNameWithoutExtension}_{folderCount}";
-                folderCount++;
-            }
+            string outputDir = GetLatestDirectory(inputFilePath, true);
 
             Directory.CreateDirectory(outputDir);
             return outputDir;
+        }
+
+        // Get the latest directory that exists already, or none if none exist. Uses the input file name as a base, returns the latest directory with the same name.
+        private string GetLatestDirectory(string inputFilePath, bool getNextAvailable=false)
+        {
+            // Extract the file name without extension from the input file path
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
+
+            // Initialize the output directory name to the file name without extension
+            string availableDir = fileNameWithoutExtension;
+            // This variable will store the name of the latest existing directory found
+            string latestExisting = null;
+
+            // This will count the existing directories with similar names
+            int folderCount = 1;            
+
+            // Loop through directory names to find the last existing one or find the next available if specified
+            while (Directory.Exists(availableDir))
+            {
+                latestExisting = availableDir;
+                folderCount++;
+                availableDir = $"{fileNameWithoutExtension}_{folderCount}";
+            }
+
+            // If getNextAvailable is true, return the next directory name that does not exist
+            if (getNextAvailable)
+            {
+                return availableDir;
+            }
+            else 
+            {
+                return latestExisting;
+            }
         }
 
         // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.
@@ -541,17 +565,15 @@ namespace DrosteEffectApp
         {
             if (!string.IsNullOrEmpty(inputFilePath))
             {
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
-                string outputDir = fileNameWithoutExtension;
-                int folderCount = 1;
+                string directoryToOpen = GetLatestDirectory(inputFilePath, false);
 
-                while (!Directory.Exists(outputDir))
+                if (string.IsNullOrEmpty(directoryToOpen))
                 {
-                    outputDir = $"{fileNameWithoutExtension}_{folderCount}";
-                    folderCount++;
+                    MessageBox.Show("No output directories found for the selected input file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
-                Process.Start("explorer.exe", outputDir);
+                Process.Start("explorer.exe", directoryToOpen);
             }
             else
             {
@@ -582,14 +604,6 @@ namespace DrosteEffectApp
             txtMasterExponent.Enabled = false;
             txtExponentArray.Enabled = rbCustomExponents.Checked;
         }
-
-        //private void chkExponentialIncrements_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    // Update the state of controls based on whether exponential increments are enabled.
-        //    exponentialIncrements = chkExponentialIncrements.Checked;
-        //    txtMasterExponent.Enabled = exponentialIncrements;
-        //    txtExponentArray.Enabled = exponentialIncrements;
-        //}
 
         private void chkCreateGif_CheckedChanged(object sender, EventArgs e)
         {
