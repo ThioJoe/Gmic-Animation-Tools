@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.nudTotalFrames = new DrosteEffectApp.MainForm.InvisibleNumericUpDown();
+            this.nudMasterParamIncrement = new DrosteEffectApp.MainForm.InvisibleNumericUpDown();
             this.lblInputFile = new System.Windows.Forms.Label();
             this.txtInputFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectInputFile = new System.Windows.Forms.Button();
@@ -40,7 +42,6 @@
             this.lblMasterParamIndex = new System.Windows.Forms.Label();
             this.nudMasterParamIndex = new System.Windows.Forms.NumericUpDown();
             this.lblMasterParamIncrement = new System.Windows.Forms.Label();
-            this.nudMasterParamIncrement = new System.Windows.Forms.NumericUpDown();
             this.rbNoExponents = new System.Windows.Forms.RadioButton();
             this.rbMasterExponent = new System.Windows.Forms.RadioButton();
             this.rbDefaultExponents = new System.Windows.Forms.RadioButton();
@@ -60,11 +61,12 @@
             this.InfoIconLinearInterpolation = new System.Windows.Forms.PictureBox();
             this.InfoIconCreateGif = new System.Windows.Forms.PictureBox();
             this.btnShowParamNames = new System.Windows.Forms.Button();
-            this.nudTotalFrames = new System.Windows.Forms.NumericUpDown();
             this.labelTotalFrames = new System.Windows.Forms.Label();
             this.TextLabelNearStartButton = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
+            this.TestButton1 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterExponent)).BeginInit();
@@ -72,8 +74,59 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconDefaultExponents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             this.SuspendLayout();
+            // 
+            // nudTotalFrames
+            // 
+            this.nudTotalFrames.Location = new System.Drawing.Point(69, 180);
+            this.nudTotalFrames.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudTotalFrames.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nudTotalFrames.Name = "nudTotalFrames";
+            this.nudTotalFrames.Size = new System.Drawing.Size(78, 20);
+            this.nudTotalFrames.TabIndex = 28;
+            this.nudTotalFrames.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nudTotalFrames.ValueChanged += new System.EventHandler(this.nudTotalFrames_ValueChanged);
+            // 
+            // nudMasterParamIncrement
+            // 
+            this.nudMasterParamIncrement.DecimalPlaces = 2;
+            this.nudMasterParamIncrement.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nudMasterParamIncrement.Location = new System.Drawing.Point(292, 183);
+            this.nudMasterParamIncrement.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudMasterParamIncrement.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            589824});
+            this.nudMasterParamIncrement.Name = "nudMasterParamIncrement";
+            this.nudMasterParamIncrement.Size = new System.Drawing.Size(80, 20);
+            this.nudMasterParamIncrement.TabIndex = 10;
+            this.nudMasterParamIncrement.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudMasterParamIncrement.ValueChanged += new System.EventHandler(this.nudMasterParamIncrement_ValueChanged);
             // 
             // lblInputFile
             // 
@@ -179,35 +232,6 @@
             this.lblMasterParamIncrement.Text = ".................Master Increment:";
             this.lblMasterParamIncrement.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lblMasterParamIncrement.Click += new System.EventHandler(this.lblMasterParamIncrement_Click);
-            // 
-            // nudMasterParamIncrement
-            // 
-            this.nudMasterParamIncrement.DecimalPlaces = 2;
-            this.nudMasterParamIncrement.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.nudMasterParamIncrement.Location = new System.Drawing.Point(292, 183);
-            this.nudMasterParamIncrement.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.nudMasterParamIncrement.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            589824});
-            this.nudMasterParamIncrement.Name = "nudMasterParamIncrement";
-            this.nudMasterParamIncrement.Size = new System.Drawing.Size(80, 20);
-            this.nudMasterParamIncrement.TabIndex = 10;
-            this.nudMasterParamIncrement.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudMasterParamIncrement.ValueChanged += new System.EventHandler(this.nudMasterParamIncrement_ValueChanged);
             // 
             // rbNoExponents
             // 
@@ -403,29 +427,6 @@
             this.btnShowParamNames.UseVisualStyleBackColor = true;
             this.btnShowParamNames.Click += new System.EventHandler(this.btnShowParamNames_Click);
             // 
-            // nudTotalFrames
-            // 
-            this.nudTotalFrames.Location = new System.Drawing.Point(69, 180);
-            this.nudTotalFrames.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.nudTotalFrames.Minimum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.nudTotalFrames.Name = "nudTotalFrames";
-            this.nudTotalFrames.Size = new System.Drawing.Size(78, 20);
-            this.nudTotalFrames.TabIndex = 28;
-            this.nudTotalFrames.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.nudTotalFrames.ValueChanged += new System.EventHandler(this.nudTotalFrames_ValueChanged);
-            // 
             // labelTotalFrames
             // 
             this.labelTotalFrames.AutoSize = true;
@@ -446,11 +447,23 @@
             this.TextLabelNearStartButton.Text = "Status";
             this.TextLabelNearStartButton.Visible = false;
             // 
+            // TestButton1
+            // 
+            this.TestButton1.Location = new System.Drawing.Point(297, 327);
+            this.TestButton1.Name = "TestButton1";
+            this.TestButton1.Size = new System.Drawing.Size(75, 23);
+            this.TestButton1.TabIndex = 31;
+            this.TestButton1.Text = "Test";
+            this.TestButton1.UseVisualStyleBackColor = true;
+            this.TestButton1.Visible = false;
+            this.TestButton1.Click += new System.EventHandler(this.TestButton1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.TestButton1);
             this.Controls.Add(this.TextLabelNearStartButton);
             this.Controls.Add(this.labelTotalFrames);
             this.Controls.Add(this.nudTotalFrames);
@@ -488,8 +501,9 @@
             this.Name = "MainForm";
             this.Text = "Droste Effect App";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIncrement)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterExponent)).EndInit();
@@ -497,7 +511,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconDefaultExponents)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -515,7 +528,7 @@
         private System.Windows.Forms.Label lblMasterParamIndex;
         private System.Windows.Forms.NumericUpDown nudMasterParamIndex;
         private System.Windows.Forms.Label lblMasterParamIncrement;
-        private System.Windows.Forms.NumericUpDown nudMasterParamIncrement;
+        //private System.Windows.Forms.NumericUpDown nudMasterParamIncrement;
         private System.Windows.Forms.TextBox txtMasterExponent;
         private System.Windows.Forms.TextBox txtExponentArray;
         private System.Windows.Forms.CheckBox chkCreateGif;
@@ -535,8 +548,11 @@
         private System.Windows.Forms.PictureBox InfoIconLinearInterpolation;
         private System.Windows.Forms.PictureBox InfoIconCreateGif;
         private System.Windows.Forms.Button btnShowParamNames;
-        private System.Windows.Forms.NumericUpDown nudTotalFrames;
+        //private System.Windows.Forms.NumericUpDown nudTotalFrames;
         private System.Windows.Forms.Label labelTotalFrames;
         private System.Windows.Forms.Label TextLabelNearStartButton;
+        private InvisibleNumericUpDown nudTotalFrames;
+        private System.Windows.Forms.Button TestButton1;
+        private InvisibleNumericUpDown nudMasterParamIncrement;
     }
 }

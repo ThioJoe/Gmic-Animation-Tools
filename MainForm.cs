@@ -70,6 +70,8 @@ namespace DrosteEffectApp
             txtStartParams.Text = startParams;
             txtEndParams.Text = endParams;
             inputFilePath = txtInputFilePath.Text;
+            //Enable test button for debugging only
+            TestButton1.Visible = true;
             #endif
 
             // Set default values for the new controls
@@ -906,6 +908,39 @@ namespace DrosteEffectApp
             //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
         }
 
+        public class InvisibleNumericUpDown : NumericUpDown
+        {
+            public InvisibleNumericUpDown()
+            {
+            }
+
+            protected override void UpdateEditText()
+            {   
+                if (!this.Enabled)
+                {
+                    // Clear the text area only
+                    // Modify text to add or change
+                    this.Text = "";
+                }
+                else
+                {
+                    this.Text = this.Value.ToString();
+                    base.UpdateEditText();
+                    
+                }
+                
+                //Examples
+                //this.Text = this.Value + " uA";
+                //this.Text = "";
+            }
+            protected override void OnEnabledChanged(EventArgs e)
+            {
+                base.OnEnabledChanged(e);
+                this.UpdateEditText();  // Ensure text updates when the enabled state changes
+                //this.Invalidate();
+            }
+        }
+
         private void DisableFrameAndMasterParamBoxes()
         {
             nudMasterParamIncrement.Enabled = false;
@@ -917,8 +952,14 @@ namespace DrosteEffectApp
         {
             nudMasterParamIncrement.Enabled = true;
             nudTotalFrames.Enabled = true;
-            nudMasterParamIncrement.ForeColor = SystemColors.WindowText; // To make the text visible
-            nudTotalFrames.ForeColor = SystemColors.WindowText; // To make the text visible
+            //nudMasterParamIncrement.ForeColor = SystemColors.WindowText; // To make the text visible
+            //nudTotalFrames.ForeColor = SystemColors.WindowText; // To make the text visible
+        }
+
+        private void TestButton1_Click(object sender, EventArgs e)
+        {
+            //Show message box that says the value of the master param increment and total frames
+            MessageBox.Show($"Master Param Increment Box Value: {nudMasterParamIncrement.Value}\nTotal Frames Box Value: {nudTotalFrames.Value}\nMaster Param Increment Box Text: {nudMasterParamIncrement.Text}\nTotal Frames Box Text: {nudTotalFrames.Text}");
         }
     }
 }
