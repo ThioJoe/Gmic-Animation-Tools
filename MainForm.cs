@@ -117,8 +117,8 @@ namespace DrosteEffectApp
             // Retrieve and store user inputs from the form controls.
             startParams = txtStartParams.Text;
             endParams = txtEndParams.Text;
-            masterParamIndex = (int)nudMasterParamIndex.Value;
-            masterParamIncrement = (double)nudMasterParamIncrement.Value;
+            int masterParamIndexAtTimeOfClick = (int)nudMasterParamIndex.Value-1;
+            double masterParamIncrementAtTimeOfClick = (double)nudMasterParamIncrement.Value;
 
             // Validate the increment for the master parameter.
             if (masterParamIncrement <= 0)
@@ -146,13 +146,12 @@ namespace DrosteEffectApp
 
 
             // Calculate the total number of frames required based on the master parameter's range and increment.
-            UpdateTotalFrames();
-            //int totalFrames = (int)Math.Ceiling((Math.Abs(endValues[masterParamIndex - 1] - startValues[masterParamIndex - 1])) / masterParamIncrement) + 1;
-            int totalFrames = CalcTotalFrames(startValues[masterParamIndex - 1], endValues[masterParamIndex - 1], masterParamIncrement);
+            //UpdateTotalFrames();
+            int totalFrames = CalcTotalFrames(startValues[masterParamIndexAtTimeOfClick], endValues[masterParamIndexAtTimeOfClick], masterParamIncrementAtTimeOfClick);
             // If totalFrames is 0, alert user with message box
-            if (totalFrames == 1)
+            if (totalFrames <= 1)
             {
-                if (endValues[masterParamIndex - 1] == startValues[masterParamIndex - 1])
+                if (endValues[masterParamIndexAtTimeOfClick] == startValues[masterParamIndexAtTimeOfClick])
                 {
                     MessageBox.Show("Start and end values for the master parameter are the same so no frames would be generated.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -180,14 +179,14 @@ namespace DrosteEffectApp
                 if (double.TryParse(txtMasterExponent.Text, out masterExponent))
                 {
                     exponents = (double[])defaultExponents.Clone();
-                    exponents[masterParamIndex - 1] = masterExponent;
+                    exponents[masterParamIndexAtTimeOfClick] = masterExponent;
                     exponentMode = "custom-master";
                 }
                 else
                 {
                     exponents = defaultExponents;
                     exponentMode = "default-array";
-                    masterExponent = defaultExponents[masterParamIndex - 1];
+                    masterExponent = defaultExponents[masterParamIndexAtTimeOfClick];
                 }
             }
             else if (rbDefaultExponents.Checked)
@@ -228,7 +227,7 @@ namespace DrosteEffectApp
             string outputDir = CreateOutputDirectory(inputFilePath);
 
             // Calculate interpolated parameter values for each frame using the selected interpolation method.
-            List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndex - 1, masterParamIncrement, exponents, exponentMode);
+            List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndexAtTimeOfClick, masterParamIncrementAtTimeOfClick, exponents, exponentMode);
 
             // Create the log file with metadata and interpolated parameters
             CreateLogFile(outputDir, interpolatedParams, exponentMode, defaultExponents, masterExponent);
@@ -675,7 +674,7 @@ namespace DrosteEffectApp
                 endParamArray = ParseParamsToArray(endParamString, true);
             }
 
-            ParamNamesForm paramNamesForm = new ParamNamesForm(startParamArray, endParamArray, masterParamIndex);
+            ParamNamesForm paramNamesForm = new ParamNamesForm(startParamArray, endParamArray, (int)nudMasterParamIndex.Value-1);
             paramNamesForm.Show();
         }
 
@@ -689,8 +688,8 @@ namespace DrosteEffectApp
             //Ensure increment doesn't go higher than the difference between start and end values
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
-                double startValue = ParseParamsToArray(txtStartParams.Text, silent: true)[masterParamIndex - 1];
-                double endValue = ParseParamsToArray(txtEndParams.Text, silent: true)[masterParamIndex - 1];
+                double startValue = ParseParamsToArray(txtStartParams.Text, silent: true)[(int)nudMasterParamIndex.Value - 1];
+                double endValue = ParseParamsToArray(txtEndParams.Text, silent: true)[(int)nudMasterParamIndex.Value - 1];
                 double increment = (double)nudMasterParamIncrement.Value;
 
                 if (increment > Math.Abs(endValue - startValue))
@@ -722,8 +721,8 @@ namespace DrosteEffectApp
 
                 if (startParamsArray.Length == 31 && endParamsArray.Length == 31)
                 {
-                    double startValue = double.Parse(startParamsArray[masterParamIndex - 1]);
-                    double endValue = double.Parse(endParamsArray[masterParamIndex - 1]);
+                    double startValue = double.Parse(startParamsArray[(int)nudMasterParamIndex.Value - 1]);
+                    double endValue = double.Parse(endParamsArray[(int)nudMasterParamIndex.Value - 1]);
                     double increment = (double)nudMasterParamIncrement.Value;
 
                     int totalFrames = CalcTotalFrames(startValue, endValue, increment);
@@ -754,8 +753,8 @@ namespace DrosteEffectApp
         {
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
-                double startValue = ParseParamsToArray(txtStartParams.Text, silent:true)[masterParamIndex -1];
-                double endValue = ParseParamsToArray(txtEndParams.Text, silent:true)[masterParamIndex - 1];
+                double startValue = ParseParamsToArray(txtStartParams.Text, silent:true)[(int)nudMasterParamIndex.Value - 1];
+                double endValue = ParseParamsToArray(txtEndParams.Text, silent:true)[(int)nudMasterParamIndex.Value - 1];
 
                 int totalFrames = (int)nudTotalFrames.Value;
                 double increment = Math.Abs(endValue - startValue) / (totalFrames - 1);
@@ -803,8 +802,8 @@ namespace DrosteEffectApp
                     // Update listview in other window
                     if (Application.OpenForms["ParamNamesForm"] != null)
                     {
-                        //ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
-                        //paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true));
+                        ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                        paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value-1);
                     }
 
                     // Return so the rest of the code is not executed, otherwise will disable the boxes again
@@ -829,6 +828,13 @@ namespace DrosteEffectApp
                     // Update total frames
                     UpdateTotalFrames();
 
+                    // Update listview in other window
+                    if (Application.OpenForms["ParamNamesForm"] != null)
+                    {
+                        ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                        paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value-1);
+                    }
+
                     // Return so the rest of the code is not executed, otherwise will disable the boxes again
                     return;
                 }
@@ -836,6 +842,51 @@ namespace DrosteEffectApp
             // If proper start params are not set, disable the total frames and master increment boxes
             nudMasterParamIncrement.Enabled = false;
             nudTotalFrames.Enabled = false;
+        }
+
+        private void nudMasterParamIndex_ValueChanged(object sender, EventArgs e)
+        {
+            // Update other form if open with new index
+            if (Application.OpenForms["ParamNamesForm"] != null)
+            {
+                ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+            }
+
+            double[] startValueArray = ParseParamsToArray(txtStartParams.Text, silent: true);
+            double[] endValueArray = ParseParamsToArray(txtEndParams.Text, silent: true);
+
+            // If difference between start and end values is zero, or both param strings invalid, disable the total frames and master increment boxes
+            if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
+            {
+                double startValue = startValueArray[(int)nudMasterParamIndex.Value - 1];
+                double endValue = endValueArray[(int)nudMasterParamIndex.Value - 1];
+
+                if (startValueArray != null && endValueArray != null && startValue != endValue)
+                {
+                    // Update total frames and master increment
+                    nudMasterParamIncrement.Enabled = true;
+                    nudTotalFrames.Enabled = true;
+
+                    UpdateTotalFrames();
+                    UpdateMasterParamIncrement();
+
+                    return;
+                }
+            }
+            //Disable the ValueChanged event of nudMasterParamIncrement and set value to 0
+            //nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
+            //nudTotalFrames.ValueChanged -= nudTotalFrames_ValueChanged;
+
+            //nudTotalFrames.Value = 0;
+            //nudMasterParamIncrement.Value = 0;
+
+            nudMasterParamIncrement.Enabled = false;
+            nudTotalFrames.Enabled = false;
+
+            //Re-enable the ValueChanged event of nudMasterParamIncrement
+            //nudTotalFrames.ValueChanged += nudTotalFrames_ValueChanged;
+            //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
         }
     }
 }

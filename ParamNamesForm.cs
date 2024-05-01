@@ -29,6 +29,11 @@ namespace GmicDrosteAnimate
             UpdateListView(startParamValues, endParamValues, masterParamIndex);
         }
 
+        public void UpdateParamValues(double[] startParamValues, double[] endParamValues, int masterParamIndex)
+        {
+            UpdateListView(startParamValues, endParamValues, masterParamIndex);
+        }
+
         // Function to update the ListView with the parameter values
         private void UpdateListView(double[] startParamValues, double[] endParamValues, int masterParamIndex)
         {

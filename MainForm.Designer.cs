@@ -165,6 +165,7 @@
             0,
             0,
             0});
+            this.nudMasterParamIndex.ValueChanged += new System.EventHandler(this.nudMasterParamIndex_ValueChanged);
             // 
             // lblMasterParamIncrement
             // 
