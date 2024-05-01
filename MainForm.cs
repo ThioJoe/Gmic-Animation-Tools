@@ -60,6 +60,14 @@ namespace DrosteEffectApp
             exponentArray = string.Empty;
             createGif = false;
 
+            #if DEBUG
+            // Set default value text in parameter value textboxes
+            txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
+            txtStartParams.Text = startParams;
+            txtEndParams.Text = endParams;
+            inputFilePath = txtInputFilePath.Text;
+            #endif
+
             // Set default values for the new controls
             //chkExponentialIncrements.Checked = false;
             //txtMasterExponent.Text = "0";
@@ -134,7 +142,9 @@ namespace DrosteEffectApp
 
 
             // Calculate the total number of frames required based on the master parameter's range and increment.
-            int totalFrames = (int)Math.Ceiling((Math.Abs(endValues[masterParamIndex - 1] - startValues[masterParamIndex - 1])) / masterParamIncrement) + 1;
+            UpdateTotalFrames();
+            //int totalFrames = (int)Math.Ceiling((Math.Abs(endValues[masterParamIndex - 1] - startValues[masterParamIndex - 1])) / masterParamIncrement) + 1;
+            int totalFrames = CalcTotalFrames(startValues[masterParamIndex - 1], endValues[masterParamIndex - 1], masterParamIncrement);
             // If totalFrames is 0, alert user with message box
             if (totalFrames == 1)
             {
@@ -663,6 +673,114 @@ namespace DrosteEffectApp
 
             ParamNamesForm paramNamesForm = new ParamNamesForm(startParamArray, endParamArray);
             paramNamesForm.Show();
+        }
+
+        private void nudTotalFrames_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateMasterParamIncrement();
+        }
+
+        private void nudMasterParamIncrement_ValueChanged(object sender, EventArgs e)
+        {
+            //Ensure increment doesn't go higher than the difference between start and end values
+            if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
+            {
+                double startValue = ParseParamsToArray(txtStartParams.Text, silent: true)[masterParamIndex - 1];
+                double endValue = ParseParamsToArray(txtEndParams.Text, silent: true)[masterParamIndex - 1];
+                double increment = (double)nudMasterParamIncrement.Value;
+
+                if (increment > Math.Abs(endValue - startValue))
+                {
+                    //Disable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
+                    nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
+                    nudMasterParamIncrement.Value = (decimal)Math.Abs(endValue - startValue);
+                    //Re-enable the ValueChanged event of nudMasterParamIncrement
+                    nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+                }
+            }
+
+            UpdateTotalFrames();
+        }
+
+        private int CalcTotalFrames(double masterStartValue, double masterEndValue, double masterIncrement)
+        {
+            int totalFrames = (int)Math.Ceiling((Math.Abs(masterStartValue - masterEndValue)) / masterIncrement) + 1;
+            //nudTotalFrames.Value = totalFrames;
+            return totalFrames;
+        }
+
+        private void UpdateTotalFrames()
+        {       
+            if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
+            {
+                string[] startParamsArray = txtStartParams.Text.Split(',');
+                string[] endParamsArray = txtEndParams.Text.Split(',');
+
+                if (startParamsArray.Length == 31 && endParamsArray.Length == 31)
+                {
+                    double startValue = double.Parse(startParamsArray[masterParamIndex - 1]);
+                    double endValue = double.Parse(endParamsArray[masterParamIndex - 1]);
+                    double increment = (double)nudMasterParamIncrement.Value;
+
+                    int totalFrames = CalcTotalFrames(startValue, endValue, increment);
+
+                    // Ensure increment will not cause total frames to go above its maximum value, if so set total frames to max and change increment accordingly
+                    // Also check for negative because of overflow
+                    if (totalFrames > nudTotalFrames.Maximum || totalFrames < 2)
+                    {
+                        totalFrames = (int)nudTotalFrames.Maximum;
+                        increment = Math.Abs(endValue - startValue) / (totalFrames - 1);
+                        //Disable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
+                        nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
+                        nudMasterParamIncrement.Value = (decimal)increment;
+                        //Re-enable the ValueChanged event of nudMasterParamIncrement
+                        nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+                    }
+
+                    // Disable the ValueChanged event of nudTotalFrames so it doesn't create circular calls
+                    nudTotalFrames.ValueChanged -= nudTotalFrames_ValueChanged;
+                    nudTotalFrames.Value = totalFrames;
+                    // Re-enable the ValueChanged event of nudTotalFrames
+                    nudTotalFrames.ValueChanged += nudTotalFrames_ValueChanged;
+                }
+            }
+        }
+
+        private void UpdateMasterParamIncrement()
+        {
+            if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
+            {
+                double startValue = ParseParamsToArray(txtStartParams.Text, silent:true)[masterParamIndex -1];
+                double endValue = ParseParamsToArray(txtEndParams.Text, silent:true)[masterParamIndex - 1];
+
+                int totalFrames = (int)nudTotalFrames.Value;
+                double increment = Math.Abs(endValue - startValue) / (totalFrames - 1);
+
+
+                // Disable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
+                // Update decimal places to match the number of decimal places in the increment, but keep a minimum of 2 and maximum of 5
+                nudMasterParamIncrement.DecimalPlaces = Math.Min(Math.Max(2, increment.ToString().Length - increment.ToString().IndexOf('.') - 1), 5);
+                nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
+                nudMasterParamIncrement.Value = (decimal)increment;
+                // Re-enable the ValueChanged event of nudMasterParamIncrement
+                nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+            }
+            
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblMasterParamIncrement_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

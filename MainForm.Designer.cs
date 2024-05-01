@@ -60,6 +60,8 @@
             this.InfoIconLinearInterpolation = new System.Windows.Forms.PictureBox();
             this.InfoIconCreateGif = new System.Windows.Forms.PictureBox();
             this.btnShowParamNames = new System.Windows.Forms.Button();
+            this.nudTotalFrames = new System.Windows.Forms.NumericUpDown();
+            this.labelTotalFrames = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIndex)).BeginInit();
@@ -69,6 +71,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconDefaultExponents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             this.SuspendLayout();
             // 
             // lblInputFile
@@ -164,35 +167,43 @@
             // lblMasterParamIncrement
             // 
             this.lblMasterParamIncrement.AutoSize = true;
-            this.lblMasterParamIncrement.Location = new System.Drawing.Point(12, 182);
+            this.lblMasterParamIncrement.Location = new System.Drawing.Point(147, 187);
             this.lblMasterParamIncrement.Name = "lblMasterParamIncrement";
-            this.lblMasterParamIncrement.Size = new System.Drawing.Size(125, 13);
+            this.lblMasterParamIncrement.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblMasterParamIncrement.Size = new System.Drawing.Size(143, 13);
             this.lblMasterParamIncrement.TabIndex = 9;
-            this.lblMasterParamIncrement.Text = "Master Param Increment:";
+            this.lblMasterParamIncrement.Text = ".................Master Increment:";
+            this.lblMasterParamIncrement.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblMasterParamIncrement.Click += new System.EventHandler(this.lblMasterParamIncrement_Click);
             // 
             // nudMasterParamIncrement
             // 
-            this.nudMasterParamIncrement.DecimalPlaces = 3;
+            this.nudMasterParamIncrement.DecimalPlaces = 2;
             this.nudMasterParamIncrement.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.nudMasterParamIncrement.Location = new System.Drawing.Point(145, 180);
+            this.nudMasterParamIncrement.Location = new System.Drawing.Point(292, 183);
+            this.nudMasterParamIncrement.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.nudMasterParamIncrement.Minimum = new decimal(new int[] {
             1,
             0,
             0,
-            196608});
+            589824});
             this.nudMasterParamIncrement.Name = "nudMasterParamIncrement";
             this.nudMasterParamIncrement.Size = new System.Drawing.Size(80, 20);
             this.nudMasterParamIncrement.TabIndex = 10;
-            this.nudMasterParamIncrement.Maximum = 1000000;
             this.nudMasterParamIncrement.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
+            this.nudMasterParamIncrement.ValueChanged += new System.EventHandler(this.nudMasterParamIncrement_ValueChanged);
             // 
             // rbNoExponents
             // 
@@ -315,7 +326,7 @@
             // InfoIconMasterParamIncrement
             // 
             this.InfoIconMasterParamIncrement.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconMasterParamIncrement.Image")));
-            this.InfoIconMasterParamIncrement.Location = new System.Drawing.Point(231, 182);
+            this.InfoIconMasterParamIncrement.Location = new System.Drawing.Point(377, 185);
             this.InfoIconMasterParamIncrement.Name = "InfoIconMasterParamIncrement";
             this.InfoIconMasterParamIncrement.Size = new System.Drawing.Size(16, 16);
             this.InfoIconMasterParamIncrement.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -380,19 +391,54 @@
             // 
             // btnShowParamNames
             // 
-            this.btnShowParamNames.Location = new System.Drawing.Point(267, 147);
+            this.btnShowParamNames.Location = new System.Drawing.Point(273, 386);
             this.btnShowParamNames.Name = "btnShowParamNames";
-            this.btnShowParamNames.Size = new System.Drawing.Size(129, 23);
+            this.btnShowParamNames.Size = new System.Drawing.Size(129, 30);
             this.btnShowParamNames.TabIndex = 27;
             this.btnShowParamNames.Text = "Show Parameter Names";
             this.btnShowParamNames.UseVisualStyleBackColor = true;
             this.btnShowParamNames.Click += new System.EventHandler(this.btnShowParamNames_Click);
             // 
+            // nudTotalFrames
+            // 
+            this.nudTotalFrames.Location = new System.Drawing.Point(69, 180);
+            this.nudTotalFrames.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudTotalFrames.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nudTotalFrames.Name = "nudTotalFrames";
+            this.nudTotalFrames.Size = new System.Drawing.Size(78, 20);
+            this.nudTotalFrames.TabIndex = 28;
+            this.nudTotalFrames.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nudTotalFrames.ValueChanged += new System.EventHandler(this.nudTotalFrames_ValueChanged);
+            // 
+            // labelTotalFrames
+            // 
+            this.labelTotalFrames.AutoSize = true;
+            this.labelTotalFrames.Location = new System.Drawing.Point(12, 183);
+            this.labelTotalFrames.Name = "labelTotalFrames";
+            this.labelTotalFrames.Size = new System.Drawing.Size(54, 13);
+            this.labelTotalFrames.TabIndex = 29;
+            this.labelTotalFrames.Text = "# Frames:";
+            this.labelTotalFrames.Click += new System.EventHandler(this.label1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(414, 441);
+            this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.labelTotalFrames);
+            this.Controls.Add(this.nudTotalFrames);
             this.Controls.Add(this.btnShowParamNames);
             this.Controls.Add(this.InfoIconCreateGif);
             this.Controls.Add(this.InfoIconLinearInterpolation);
@@ -426,6 +472,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Droste Effect App";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIndex)).EndInit();
@@ -435,6 +482,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconDefaultExponents)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -472,5 +520,7 @@
         private System.Windows.Forms.PictureBox InfoIconLinearInterpolation;
         private System.Windows.Forms.PictureBox InfoIconCreateGif;
         private System.Windows.Forms.Button btnShowParamNames;
+        private System.Windows.Forms.NumericUpDown nudTotalFrames;
+        private System.Windows.Forms.Label labelTotalFrames;
     }
 }
