@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using GmicDrosteAnimate;
 
 namespace DrosteEffectApp
 {
@@ -123,40 +124,20 @@ namespace DrosteEffectApp
             // Read the state of the GIF creation option.
             createGif = chkCreateGif.Checked;
 
-            // Check if the start and end parameters are valid.
-            if (string.IsNullOrEmpty(startParams) || string.IsNullOrEmpty(endParams))
+            // Get the start and end parameter values as a tuple of array of doubles.
+            double[] startValues;
+            double[] endValues;
+
+            var bothSetsOfParamsTuple = ParseParamsToArray(startParams, endParams);
+            if (bothSetsOfParamsTuple != null)
             {
-                MessageBox.Show("Please enter start and end parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                (startValues, endValues) = bothSetsOfParamsTuple;
             }
-            // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there. Also remove spaces from inside the string.
-            startParams = startParams.Replace("souphead_droste10", "").Replace(" ", "").Trim();
-            endParams = endParams.Replace("souphead_droste10", "").Replace(" ", "").Trim();
-
-
-            // Parse the start and end parameters into arrays of doubles for processing.
-            string[] startParamsArray = startParams.Split(',');
-            string[] endParamsArray = endParams.Split(',');
-
-            // Ensure both parameter arrays have exactly 31 elements.
-            if (startParamsArray.Length != 31 || endParamsArray.Length != 31)
+            else
             {
-                MessageBox.Show("Start and end parameters must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Convert the parameter strings to double values and store them in arrays.
-            double[] startValues = new double[31];
-            double[] endValues = new double[31];
-
-            for (int i = 0; i < 31; i++)
-            {
-                if (!double.TryParse(startParamsArray[i], out startValues[i]) || !double.TryParse(endParamsArray[i], out endValues[i]))
-                {
-                    MessageBox.Show("Invalid start or end parameter values. Please enter valid numbers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
 
             // Calculate the total number of frames required based on the master parameter's range and increment.
             int totalFrames = (int)Math.Ceiling((Math.Abs(endValues[masterParamIndex - 1] - startValues[masterParamIndex - 1])) / masterParamIncrement) + 1;
@@ -258,6 +239,48 @@ namespace DrosteEffectApp
 
             // Open the output directory in Windows Explorer for user review.
             //Process.Start("explorer.exe", outputDir);
+        }
+
+        // Function to parse parameter values from a string and return them as an array of doubles.
+        private Tuple<double[], double[]> ParseParamsToArray(string startParams, string endParams)
+        {
+            // Check if the start and end parameters are valid.
+            if (string.IsNullOrEmpty(startParams) || string.IsNullOrEmpty(endParams))
+            {
+                MessageBox.Show("Please enter start and end parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+            // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there. Also remove spaces from inside the string.
+            startParams = startParams.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+            endParams = endParams.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+
+
+            // Parse the start and end parameters into arrays of doubles for processing.
+            string[] startParamsArray = startParams.Split(',');
+            string[] endParamsArray = endParams.Split(',');
+
+            // Ensure both parameter arrays have exactly 31 elements.
+            if (startParamsArray.Length != 31 || endParamsArray.Length != 31)
+            {
+                MessageBox.Show("Start and end parameters must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            // Convert the parameter strings to double values and store them in arrays.
+            double[] startValues = new double[31];
+            double[] endValues = new double[31];
+
+            for (int i = 0; i < 31; i++)
+            {
+                if (!double.TryParse(startParamsArray[i], out startValues[i]) || !double.TryParse(endParamsArray[i], out endValues[i]))
+                {
+                    MessageBox.Show("Invalid start or end parameter values. Please enter valid numbers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return null;
+                }
+            }
+
+            // Return both arrays of parameter values.
+            return Tuple.Create(startValues, endValues);
         }
 
         private string CreateOutputDirectory(string inputFilePath)
@@ -618,6 +641,14 @@ namespace DrosteEffectApp
         {
             // Update the internal flag to reflect whether a GIF should be created.
             createGif = chkCreateGif.Checked;
+        }
+
+        private void btnShowParamNames_Click(object sender, EventArgs e)
+        {
+            string startParamValues = txtStartParams.Text.Trim();
+            string endParamValues = txtEndParams.Text.Trim();
+            ParamNamesForm paramNamesForm = new ParamNamesForm(StartParamValues);
+            paramNamesForm.Show();
         }
     }
 }

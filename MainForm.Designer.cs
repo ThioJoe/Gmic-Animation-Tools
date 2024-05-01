@@ -59,6 +59,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.InfoIconLinearInterpolation = new System.Windows.Forms.PictureBox();
             this.InfoIconCreateGif = new System.Windows.Forms.PictureBox();
+            this.btnShowParamNames = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIndex)).BeginInit();
@@ -376,11 +377,22 @@
             this.InfoIconCreateGif.TabStop = false;
             this.toolTip1.SetToolTip(this.InfoIconCreateGif, resources.GetString("InfoIconCreateGif.ToolTip"));
             // 
+            // btnShowParamNames
+            // 
+            this.btnShowParamNames.Location = new System.Drawing.Point(267, 147);
+            this.btnShowParamNames.Name = "btnShowParamNames";
+            this.btnShowParamNames.Size = new System.Drawing.Size(129, 23);
+            this.btnShowParamNames.TabIndex = 27;
+            this.btnShowParamNames.Text = "Show Parameter Names";
+            this.btnShowParamNames.UseVisualStyleBackColor = true;
+            this.btnShowParamNames.Click += new System.EventHandler(this.btnShowParamNames_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(414, 441);
+            this.Controls.Add(this.btnShowParamNames);
             this.Controls.Add(this.InfoIconCreateGif);
             this.Controls.Add(this.InfoIconLinearInterpolation);
             this.Controls.Add(this.InfoIconDefaultExponents);
@@ -458,5 +470,6 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.PictureBox InfoIconLinearInterpolation;
         private System.Windows.Forms.PictureBox InfoIconCreateGif;
+        private System.Windows.Forms.Button btnShowParamNames;
     }
 }
