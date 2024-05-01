@@ -116,6 +116,7 @@
             this.txtStartParams.Name = "txtStartParams";
             this.txtStartParams.Size = new System.Drawing.Size(381, 20);
             this.txtStartParams.TabIndex = 4;
+            this.txtStartParams.TextChanged += new System.EventHandler(this.txtStartParams_TextChanged);
             // 
             // lblEndParams
             // 
@@ -132,6 +133,7 @@
             this.txtEndParams.Name = "txtEndParams";
             this.txtEndParams.Size = new System.Drawing.Size(381, 20);
             this.txtEndParams.TabIndex = 6;
+            this.txtEndParams.TextChanged += new System.EventHandler(this.txtEndParams_TextChanged);
             // 
             // lblMasterParamIndex
             // 

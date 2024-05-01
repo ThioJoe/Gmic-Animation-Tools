@@ -60,13 +60,17 @@ namespace DrosteEffectApp
             exponentArray = string.Empty;
             createGif = false;
 
-            #if DEBUG
-            // Set default value text in parameter value textboxes
-            txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
-            txtStartParams.Text = startParams;
-            txtEndParams.Text = endParams;
-            inputFilePath = txtInputFilePath.Text;
-            #endif
+            // Start with totalframes box and master increment box read only
+            nudTotalFrames.Enabled = false;
+            nudMasterParamIncrement.Enabled = false;
+
+            //#if DEBUG
+            //// Set default value text in parameter value textboxes
+            //txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
+            //txtStartParams.Text = startParams;
+            //txtEndParams.Text = endParams;
+            //inputFilePath = txtInputFilePath.Text;
+            //#endif
 
             // Set default values for the new controls
             //chkExponentialIncrements.Checked = false;
@@ -781,6 +785,46 @@ namespace DrosteEffectApp
         private void MainForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtStartParams_TextChanged(object sender, EventArgs e)
+        {
+            // Silently check if both this and end parameters are correctly set
+            if (!string.IsNullOrEmpty(txtEndParams.Text) && !string.IsNullOrEmpty(txtStartParams.Text))
+            {
+                if (ParseParamsToArray(txtStartParams.Text, silent: true) != null && ParseParamsToArray(txtEndParams.Text, silent: true) != null)
+                {
+                    // Enable the total frames and master increment boxes
+                    nudMasterParamIncrement.Enabled = true;
+                    nudTotalFrames.Enabled = true;
+                    // Update total frames
+                    UpdateTotalFrames();
+                    return;
+                }
+            }   
+            // If proper start params are not set, disable the total frames and master increment boxes
+            nudMasterParamIncrement.Enabled = false;
+            nudTotalFrames.Enabled = false;
+        }
+
+        private void txtEndParams_TextChanged(object sender, EventArgs e)
+        {
+            // Silently check if both this and start parameters are correctly set
+            if (!string.IsNullOrEmpty(txtEndParams.Text) && !string.IsNullOrEmpty(txtStartParams.Text))
+            {
+                if (ParseParamsToArray(txtStartParams.Text, silent: true) != null && ParseParamsToArray(txtEndParams.Text, silent: true) != null)
+                {
+                    // Enable the total frames and master increment boxes
+                    nudMasterParamIncrement.Enabled = true;
+                    nudTotalFrames.Enabled = true;
+                    // Update total frames
+                    UpdateTotalFrames();
+                    return;
+                }
+            }
+            // If proper start params are not set, disable the total frames and master increment boxes
+            nudMasterParamIncrement.Enabled = false;
+            nudTotalFrames.Enabled = false;
         }
     }
 }
