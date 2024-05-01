@@ -129,9 +129,10 @@ namespace DrosteEffectApp
                 MessageBox.Show("Please enter start and end parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there
-            startParams = startParams.Replace("souphead_droste10", "").Trim();
-            endParams = endParams.Replace("souphead_droste10", "").Trim();
+            // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there. Also remove spaces from inside the string.
+            startParams = startParams.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+            endParams = endParams.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+
 
             // Parse the start and end parameters into arrays of doubles for processing.
             string[] startParamsArray = startParams.Split(',');
@@ -144,6 +145,7 @@ namespace DrosteEffectApp
                 return;
             }
 
+            // Convert the parameter strings to double values and store them in arrays.
             double[] startValues = new double[31];
             double[] endValues = new double[31];
 
