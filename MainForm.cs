@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using GmicDrosteAnimate;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace DrosteEffectApp
 {
@@ -63,6 +64,13 @@ namespace DrosteEffectApp
             // Start with totalframes box and master increment box read only
             nudTotalFrames.Enabled = false;
             nudMasterParamIncrement.Enabled = false;
+
+            #if !DEBUG
+            // Apply placeholders
+            PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)startParams);
+            PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)endParams);
+            #endif
+
 
             #if DEBUG
             // Set default value text in parameter value textboxes
@@ -864,6 +872,48 @@ namespace DrosteEffectApp
             DisableFrameAndMasterParamBoxes();
         }
 
+        public static class PlaceholderManager
+        {
+            public static void SetPlaceholder(System.Windows.Forms.TextBox textBox, string placeholderText)
+            {
+                textBox.Tag = placeholderText;  // Store the placeholder text in the Tag property for easy access
+                SetPlaceholderText(textBox);  // Set the initial placeholder
+
+                // Attach event handlers
+                textBox.Enter += TextBox_Enter;
+                textBox.Leave += TextBox_Leave;
+            }
+
+            private static void SetPlaceholderText(System.Windows.Forms.TextBox textBox)
+            {
+                if (textBox.Text == "")
+                {
+                    textBox.Text = textBox.Tag.ToString();
+                    textBox.ForeColor = Color.Gray;
+                }
+            }
+
+            private static void TextBox_Enter(object sender, EventArgs e)
+            {
+                System.Windows.Forms.TextBox textBox = sender as System.Windows.Forms.TextBox;
+                if (textBox.Text == textBox.Tag.ToString())
+                {
+                    textBox.Text = "";
+                    textBox.ForeColor = Color.Black;
+                }
+            }
+
+            private static void TextBox_Leave(object sender, EventArgs e)
+            {
+                System.Windows.Forms.TextBox textBox = sender as System.Windows.Forms.TextBox;
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    SetPlaceholderText(textBox);
+                }
+            }
+        }
+
+
         private void nudMasterParamIndex_ValueChanged(object sender, EventArgs e)
         {
             // Update other form if open with new index
@@ -876,13 +926,13 @@ namespace DrosteEffectApp
             double[] startValueArray = ParseParamsToArray(txtStartParams.Text, silent: true);
             double[] endValueArray = ParseParamsToArray(txtEndParams.Text, silent: true);
 
-            // If difference between start and end values is zero, or both param strings invalid, disable the total frames and master increment boxes
-            if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
+            if (startValueArray != null && endValueArray != null)
             {
                 double startValue = startValueArray[(int)nudMasterParamIndex.Value - 1];
                 double endValue = endValueArray[(int)nudMasterParamIndex.Value - 1];
 
-                if (startValueArray != null && endValueArray != null && startValue != endValue)
+                // If difference between start and end values is zero, or both param strings invalid, disable the total frames and master increment boxes
+                if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text) && startValue != endValue)
                 {
                     // Update total frames and master increment
                     EnableFrameAndMasterParamBoxes();
@@ -923,7 +973,8 @@ namespace DrosteEffectApp
                     this.Text = "";
                 }
                 else
-                {
+                {   
+                    // This needs to go before the base.UpdateEditText() call or else stack overflow exception
                     this.Text = this.Value.ToString();
                     base.UpdateEditText();
                     
