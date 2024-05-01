@@ -13,25 +13,34 @@ namespace GmicDrosteAnimate
 {
     public partial class ParamNamesForm : Form
     {
-        public ParamNamesForm(double[] startParamValues, double[] endParamValues)
+        private string[] paramNames = {
+            "Inner Radius", "Outer Radius", "Periodicity", "Strands", "Zoom",
+            "Rotate", "X-Shift", "Y-Shift", "Center X-Shift", "Center Y-Shift",
+            "Starting Level", "Number of Levels", "Level Frequency", "Show Both Poles",
+            "Pole Rotation", "Pole Long", "Pole Lat", "Tile Poles", "Hyper Droste",
+            "Fractal Points", "Auto-Set Periodicity", "No Transparency", "External Transparency",
+            "Mirror Effect", "Untwist", "Do Not Flatten Transparency", "Show Grid",
+            "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
+        };
+
+        public ParamNamesForm(double[] startParamValues, double[] endParamValues, int masterParamIndex)
         {
             InitializeComponent();
+            UpdateListView(startParamValues, endParamValues, masterParamIndex);
+        }
 
-            string[] paramNames = {
-                "Inner Radius", "Outer Radius", "Periodicity", "Strands", "Zoom",
-                "Rotate", "X-Shift", "Y-Shift", "Center X-Shift", "Center Y-Shift",
-                "Starting Level", "Number of Levels", "Level Frequency", "Show Both Poles",
-                "Pole Rotation", "Pole Long", "Pole Lat", "Tile Poles", "Hyper Droste",
-                "Fractal Points", "Auto-Set Periodicity", "No Transparency", "External Transparency",
-                "Mirror Effect", "Untwist", "Do Not Flatten Transparency", "Show Grid",
-                "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
-            };
+        // Function to update the ListView with the parameter values
+        private void UpdateListView(double[] startParamValues, double[] endParamValues, int masterParamIndex)
+        {
+            // Clear existing items
+            listView1.Items.Clear();
+            listView1.Columns.Clear();
 
             // Initialize the ListView properties
             listView1.GridLines = true;
             listView1.View = View.Details; // Ensure the view is set to Details
             listView1.FullRowSelect = true; // Optional: makes it easier to select items
-            
+
             // Add a dummy first column
             listView1.Columns.Add("", 0); // Minimal width
 
@@ -39,6 +48,7 @@ namespace GmicDrosteAnimate
             listView1.Columns.Add("Start", 50).TextAlign = HorizontalAlignment.Right;
             listView1.Columns.Add("End", 50).TextAlign = HorizontalAlignment.Right;
             listView1.Columns.Add("Parameter Name", 150).TextAlign = HorizontalAlignment.Left;
+            listView1.Columns.Add("Difference", 100).TextAlign = HorizontalAlignment.Left;
 
             for (int i = 0; i < paramNames.Length; i++)
             {
@@ -54,6 +64,21 @@ namespace GmicDrosteAnimate
 
                 // Add the parameter name as another subitem
                 item.SubItems.Add(paramNames[i]);
+
+                // If the parameter is the master parameter, highlight it
+                if (i == masterParamIndex)
+                {
+                    item.BackColor = Color.LightGreen;
+                }
+
+                // If both start and end values are available, calculate difference
+                if (!string.IsNullOrEmpty(startValue) && !string.IsNullOrEmpty(endValue))
+                {
+                    double start = double.Parse(startValue);
+                    double end = double.Parse(endValue);
+                    double diff = Math.Abs(end - start);
+                    item.SubItems.Add(diff.ToString());
+                }
 
                 listView1.Items.Add(item);
             }

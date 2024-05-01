@@ -64,13 +64,13 @@ namespace DrosteEffectApp
             nudTotalFrames.Enabled = false;
             nudMasterParamIncrement.Enabled = false;
 
-            //#if DEBUG
-            //// Set default value text in parameter value textboxes
-            //txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
-            //txtStartParams.Text = startParams;
-            //txtEndParams.Text = endParams;
-            //inputFilePath = txtInputFilePath.Text;
-            //#endif
+            #if DEBUG
+            // Set default value text in parameter value textboxes
+            txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
+            txtStartParams.Text = startParams;
+            txtEndParams.Text = endParams;
+            inputFilePath = txtInputFilePath.Text;
+            #endif
 
             // Set default values for the new controls
             //chkExponentialIncrements.Checked = false;
@@ -675,7 +675,7 @@ namespace DrosteEffectApp
                 endParamArray = ParseParamsToArray(endParamString, true);
             }
 
-            ParamNamesForm paramNamesForm = new ParamNamesForm(startParamArray, endParamArray);
+            ParamNamesForm paramNamesForm = new ParamNamesForm(startParamArray, endParamArray, masterParamIndex);
             paramNamesForm.Show();
         }
 
@@ -799,6 +799,15 @@ namespace DrosteEffectApp
                     nudTotalFrames.Enabled = true;
                     // Update total frames
                     UpdateTotalFrames();
+
+                    // Update listview in other window
+                    if (Application.OpenForms["ParamNamesForm"] != null)
+                    {
+                        //ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                        //paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true));
+                    }
+
+                    // Return so the rest of the code is not executed, otherwise will disable the boxes again
                     return;
                 }
             }   
@@ -819,6 +828,8 @@ namespace DrosteEffectApp
                     nudTotalFrames.Enabled = true;
                     // Update total frames
                     UpdateTotalFrames();
+
+                    // Return so the rest of the code is not executed, otherwise will disable the boxes again
                     return;
                 }
             }
