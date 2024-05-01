@@ -62,6 +62,7 @@
             this.btnShowParamNames = new System.Windows.Forms.Button();
             this.nudTotalFrames = new System.Windows.Forms.NumericUpDown();
             this.labelTotalFrames = new System.Windows.Forms.Label();
+            this.TextLabelNearStartButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIndex)).BeginInit();
@@ -296,7 +297,7 @@
             // 
             // btnViewOutputDirectory
             // 
-            this.btnViewOutputDirectory.Location = new System.Drawing.Point(131, 386);
+            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 386);
             this.btnViewOutputDirectory.Name = "btnViewOutputDirectory";
             this.btnViewOutputDirectory.Size = new System.Drawing.Size(130, 30);
             this.btnViewOutputDirectory.TabIndex = 18;
@@ -394,9 +395,9 @@
             // 
             // btnShowParamNames
             // 
-            this.btnShowParamNames.Location = new System.Drawing.Point(273, 386);
+            this.btnShowParamNames.Location = new System.Drawing.Point(262, 143);
             this.btnShowParamNames.Name = "btnShowParamNames";
-            this.btnShowParamNames.Size = new System.Drawing.Size(129, 30);
+            this.btnShowParamNames.Size = new System.Drawing.Size(132, 22);
             this.btnShowParamNames.TabIndex = 27;
             this.btnShowParamNames.Text = "Show Parameter Names";
             this.btnShowParamNames.UseVisualStyleBackColor = true;
@@ -435,11 +436,22 @@
             this.labelTotalFrames.Text = "# Frames:";
             this.labelTotalFrames.Click += new System.EventHandler(this.label1_Click);
             // 
+            // TextLabelNearStartButton
+            // 
+            this.TextLabelNearStartButton.AutoSize = true;
+            this.TextLabelNearStartButton.Location = new System.Drawing.Point(122, 386);
+            this.TextLabelNearStartButton.Name = "TextLabelNearStartButton";
+            this.TextLabelNearStartButton.Size = new System.Drawing.Size(37, 13);
+            this.TextLabelNearStartButton.TabIndex = 30;
+            this.TextLabelNearStartButton.Text = "Status";
+            this.TextLabelNearStartButton.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.TextLabelNearStartButton);
             this.Controls.Add(this.labelTotalFrames);
             this.Controls.Add(this.nudTotalFrames);
             this.Controls.Add(this.btnShowParamNames);
@@ -525,5 +537,6 @@
         private System.Windows.Forms.Button btnShowParamNames;
         private System.Windows.Forms.NumericUpDown nudTotalFrames;
         private System.Windows.Forms.Label labelTotalFrames;
+        private System.Windows.Forms.Label TextLabelNearStartButton;
     }
 }

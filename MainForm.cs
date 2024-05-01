@@ -107,6 +107,9 @@ namespace DrosteEffectApp
 
         private async void btnStart_Click(object sender, EventArgs e)
         {
+            //Set label to invisible until the process is done
+            TextLabelNearStartButton.Visible = false;
+
             // Validate that an input file has been selected.
             if (string.IsNullOrEmpty(inputFilePath))
             {
@@ -495,7 +498,12 @@ namespace DrosteEffectApp
             {
                 BeginInvoke((MethodInvoker)(() =>
                 {
-                    MessageBox.Show($"All {totalFrames} frames have been verified and generated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show($"All {totalFrames} frames have been verified and generated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //Set label next to start button with success message in green
+                    TextLabelNearStartButton.Visible = true;
+                    TextLabelNearStartButton.ForeColor = Color.Green;
+                    TextLabelNearStartButton.Text = $"Done!\n{totalFrames} frames created in {outputDir}.";
+                    
                 }));
             }
 
@@ -731,7 +739,7 @@ namespace DrosteEffectApp
                     // Also check for negative because of overflow
                     if (totalFrames > nudTotalFrames.Maximum || totalFrames < 2)
                     {
-                        totalFrames = (int)nudTotalFrames.Maximum;
+                        totalFrames = (int)nudTotalFrames.Value;
                         increment = Math.Abs(endValue - startValue) / (totalFrames - 1);
                         //Disable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
                         nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
@@ -788,60 +796,70 @@ namespace DrosteEffectApp
 
         private void txtStartParams_TextChanged(object sender, EventArgs e)
         {
-            // Silently check if both this and end parameters are correctly set
+            // Check if both parameter strings exist
             if (!string.IsNullOrEmpty(txtEndParams.Text) && !string.IsNullOrEmpty(txtStartParams.Text))
             {
-                if (ParseParamsToArray(txtStartParams.Text, silent: true) != null && ParseParamsToArray(txtEndParams.Text, silent: true) != null)
+                double[] startParamArray = ParseParamsToArray(txtStartParams.Text, silent: true);
+                double[] endParamArray = ParseParamsToArray(txtEndParams.Text, silent: true);
+                // Silently check if both parameter strings are valid
+                if (startParamArray != null && endParamArray != null)
                 {
-                    // Enable the total frames and master increment boxes
-                    nudMasterParamIncrement.Enabled = true;
-                    nudTotalFrames.Enabled = true;
-                    // Update total frames
-                    UpdateTotalFrames();
-
-                    // Update listview in other window
-                    if (Application.OpenForms["ParamNamesForm"] != null)
+                    //Check if the start and end parameters for master parameter are different
+                    if (startParamArray[(int)nudMasterParamIndex.Value - 1] != endParamArray[(int)nudMasterParamIndex.Value - 1])
                     {
-                        ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
-                        paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value-1);
-                    }
+                        // Enable the total frames and master increment boxes
+                        EnableFrameAndMasterParamBoxes();
+                        // Update total frames
+                        UpdateTotalFrames();
 
-                    // Return so the rest of the code is not executed, otherwise will disable the boxes again
-                    return;
+                        // Update listview in other window
+                        if (Application.OpenForms["ParamNamesForm"] != null)
+                        {
+                            ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                            paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                        }
+
+                        // Return so the rest of the code is not executed, otherwise will disable the boxes again
+                        return;
+                    }
                 }
-            }   
+            }
             // If proper start params are not set, disable the total frames and master increment boxes
-            nudMasterParamIncrement.Enabled = false;
-            nudTotalFrames.Enabled = false;
+            DisableFrameAndMasterParamBoxes();
         }
 
         private void txtEndParams_TextChanged(object sender, EventArgs e)
         {
-            // Silently check if both this and start parameters are correctly set
+            // Silently check if both parameter strings exist
             if (!string.IsNullOrEmpty(txtEndParams.Text) && !string.IsNullOrEmpty(txtStartParams.Text))
             {
-                if (ParseParamsToArray(txtStartParams.Text, silent: true) != null && ParseParamsToArray(txtEndParams.Text, silent: true) != null)
+                double[] startParamArray = ParseParamsToArray(txtStartParams.Text, silent: true);
+                double[] endParamArray = ParseParamsToArray(txtEndParams.Text, silent: true);
+
+                // Check if both parameter strings are valid
+                if (startParamArray != null && endParamArray != null)
                 {
-                    // Enable the total frames and master increment boxes
-                    nudMasterParamIncrement.Enabled = true;
-                    nudTotalFrames.Enabled = true;
-                    // Update total frames
-                    UpdateTotalFrames();
-
-                    // Update listview in other window
-                    if (Application.OpenForms["ParamNamesForm"] != null)
+                    //Check if the start and end parameters for master parameter are different
+                    if (startParamArray[(int)nudMasterParamIndex.Value-1] != endParamArray[(int)nudMasterParamIndex.Value-1])
                     {
-                        ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
-                        paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value-1);
-                    }
+                        // Enable the total frames and master increment boxes
+                        EnableFrameAndMasterParamBoxes();
+                        // Update total frames
+                        UpdateTotalFrames();
 
-                    // Return so the rest of the code is not executed, otherwise will disable the boxes again
-                    return;
+                        // Update listview in other window
+                        if (Application.OpenForms["ParamNamesForm"] != null)
+                        {
+                            ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                            paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                        }
+                        // Return so the rest of the code is not executed, otherwise will disable the boxes again
+                        return;
+                    }
                 }
             }
             // If proper start params are not set, disable the total frames and master increment boxes
-            nudMasterParamIncrement.Enabled = false;
-            nudTotalFrames.Enabled = false;
+            DisableFrameAndMasterParamBoxes();
         }
 
         private void nudMasterParamIndex_ValueChanged(object sender, EventArgs e)
@@ -865,8 +883,7 @@ namespace DrosteEffectApp
                 if (startValueArray != null && endValueArray != null && startValue != endValue)
                 {
                     // Update total frames and master increment
-                    nudMasterParamIncrement.Enabled = true;
-                    nudTotalFrames.Enabled = true;
+                    EnableFrameAndMasterParamBoxes();
 
                     UpdateTotalFrames();
                     UpdateMasterParamIncrement();
@@ -881,12 +898,27 @@ namespace DrosteEffectApp
             //nudTotalFrames.Value = 0;
             //nudMasterParamIncrement.Value = 0;
 
-            nudMasterParamIncrement.Enabled = false;
-            nudTotalFrames.Enabled = false;
+            DisableFrameAndMasterParamBoxes();
+            //nudMasterParamIncrement.ForeColor = SystemColors.WindowText; // To make the text visible
 
             //Re-enable the ValueChanged event of nudMasterParamIncrement
             //nudTotalFrames.ValueChanged += nudTotalFrames_ValueChanged;
             //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+        }
+
+        private void DisableFrameAndMasterParamBoxes()
+        {
+            nudMasterParamIncrement.Enabled = false;
+            nudTotalFrames.Enabled = false;
+
+        }
+
+        private void EnableFrameAndMasterParamBoxes()
+        {
+            nudMasterParamIncrement.Enabled = true;
+            nudTotalFrames.Enabled = true;
+            nudMasterParamIncrement.ForeColor = SystemColors.WindowText; // To make the text visible
+            nudTotalFrames.ForeColor = SystemColors.WindowText; // To make the text visible
         }
     }
 }
