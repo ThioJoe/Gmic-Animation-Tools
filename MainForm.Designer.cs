@@ -187,6 +187,7 @@
             this.nudMasterParamIncrement.Name = "nudMasterParamIncrement";
             this.nudMasterParamIncrement.Size = new System.Drawing.Size(80, 20);
             this.nudMasterParamIncrement.TabIndex = 10;
+            this.nudMasterParamIncrement.Maximum = 1000000;
             this.nudMasterParamIncrement.Value = new decimal(new int[] {
             1,
             0,

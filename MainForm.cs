@@ -414,8 +414,8 @@ namespace DrosteEffectApp
 
         private async Task ProcessFrames(string outputDir, List<string> interpolatedParams)
         {
-            int parallelJobs = 7;
-            int maxAttempts = 3;
+            int parallelJobs = 10;
+            int maxAttempts = 7;
             int attempt = 1;
 
             int totalFrames = interpolatedParams.Count;
