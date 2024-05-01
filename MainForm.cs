@@ -125,15 +125,9 @@ namespace DrosteEffectApp
             createGif = chkCreateGif.Checked;
 
             // Get the start and end parameter values as a tuple of array of doubles.
-            double[] startValues;
-            double[] endValues;
-
-            var bothSetsOfParamsTuple = ParseParamsToArray(startParams, endParams);
-            if (bothSetsOfParamsTuple != null)
-            {
-                (startValues, endValues) = bothSetsOfParamsTuple;
-            }
-            else
+            double[] startValues = ParseParamsToArray(startParams);
+            double[] endValues = ParseParamsToArray(endParams);
+            if (startValues == null || endValues == null)
             {
                 return;
             }
@@ -242,46 +236,53 @@ namespace DrosteEffectApp
         }
 
         // Function to parse parameter values from a string and return them as an array of doubles.
-        private Tuple<double[], double[]> ParseParamsToArray(string startParams, string endParams)
+        private double[] ParseParamsToArray(string paramsString, bool silent = false)
         {
-            // Check if the start and end parameters are valid.
-            if (string.IsNullOrEmpty(startParams) || string.IsNullOrEmpty(endParams))
+            // Check if the parameters string is valid.
+            if (string.IsNullOrEmpty(paramsString))
             {
-                MessageBox.Show("Please enter start and end parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!silent)
+                {
+                    MessageBox.Show("Please enter the parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 return null;
             }
+
             // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there. Also remove spaces from inside the string.
-            startParams = startParams.Replace("souphead_droste10", "").Replace(" ", "").Trim();
-            endParams = endParams.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+            paramsString = paramsString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
 
+            // Split the parameters string into an array.
+            string[] paramsArray = paramsString.Split(',');
 
-            // Parse the start and end parameters into arrays of doubles for processing.
-            string[] startParamsArray = startParams.Split(',');
-            string[] endParamsArray = endParams.Split(',');
-
-            // Ensure both parameter arrays have exactly 31 elements.
-            if (startParamsArray.Length != 31 || endParamsArray.Length != 31)
+            // Ensure the parameter array has exactly 31 elements.
+            if (paramsArray.Length != 31)
             {
-                MessageBox.Show("Start and end parameters must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!silent)
+                {
+                    MessageBox.Show("Parameters must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 return null;
             }
 
-            // Convert the parameter strings to double values and store them in arrays.
-            double[] startValues = new double[31];
-            double[] endValues = new double[31];
+            // Convert the parameter strings to double values and store them in an array.
+            double[] paramValuesArray = new double[31];
 
             for (int i = 0; i < 31; i++)
             {
-                if (!double.TryParse(startParamsArray[i], out startValues[i]) || !double.TryParse(endParamsArray[i], out endValues[i]))
+                if (!double.TryParse(paramsArray[i], out paramValuesArray[i]))
                 {
-                    MessageBox.Show("Invalid start or end parameter values. Please enter valid numbers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!silent)
+                    {
+                        MessageBox.Show("Invalid parameter value at position " + (i + 1) + ". Please enter valid numbers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     return null;
                 }
             }
 
-            // Return both arrays of parameter values.
-            return Tuple.Create(startValues, endValues);
+            // Return the array of parameter values.
+            return paramValuesArray;
         }
+
 
         private string CreateOutputDirectory(string inputFilePath)
         {
@@ -645,9 +646,22 @@ namespace DrosteEffectApp
 
         private void btnShowParamNames_Click(object sender, EventArgs e)
         {
-            string startParamValues = txtStartParams.Text.Trim();
-            string endParamValues = txtEndParams.Text.Trim();
-            ParamNamesForm paramNamesForm = new ParamNamesForm(StartParamValues);
+            string startParamString = txtStartParams.Text.Trim();
+            string endParamString = txtEndParams.Text.Trim();
+
+            double[] startParamArray = null;
+            double[] endParamArray = null;
+
+            if (!string.IsNullOrEmpty(startParamString))
+            {
+                startParamArray = ParseParamsToArray(startParamString, true);
+            }
+            if (!string.IsNullOrEmpty(endParamString))
+            {
+                endParamArray = ParseParamsToArray(endParamString, true);
+            }
+
+            ParamNamesForm paramNamesForm = new ParamNamesForm(startParamArray, endParamArray);
             paramNamesForm.Show();
         }
     }

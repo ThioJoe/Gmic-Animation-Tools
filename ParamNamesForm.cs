@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace GmicDrosteAnimate
 {
     public partial class ParamNamesForm : Form
     {
-        public ParamNamesForm(string startParamValues)
+        public ParamNamesForm(double[] startParamValues, double[] endParamValues)
         {
             InitializeComponent();
 
@@ -26,21 +27,34 @@ namespace GmicDrosteAnimate
             "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
         };
 
-            string[] values = startParamValues.Split(',');
+            // Initialize the ListView properties
+            listView1.GridLines = true;
+            listView1.View = View.Details; // Ensure the view is set to Details
+            listView1.FullRowSelect = true; // Optional: makes it easier to select items
 
-            listView1.Columns.Add("Parameter", 200);
-            listView1.Columns.Add("Start Value", 100);
+            // Add Columns - 2nd argument is the width of the column
+            listView1.Columns.Add("Start Value", 65);
+            listView1.Columns.Add("End Value", 65);
+            listView1.Columns.Add("Parameter", 150);
+
 
             for (int i = 0; i < paramNames.Length; i++)
             {
-                ListViewItem item = new ListViewItem(paramNames[i]);
-                if (i < values.Length)
-                    item.SubItems.Add(values[i]);
-                else
-                    item.SubItems.Add("");
+                // Initialize ListViewItem with the start value or empty string
+                string startValue = startParamValues != null && i < startParamValues.Length ? startParamValues[i].ToString() : "";
+                ListViewItem item = new ListViewItem(startValue);
+
+                // Add end values as a subitem, check for bounds
+                string endValue = endParamValues != null && i < endParamValues.Length ? endParamValues[i].ToString() : "";
+                item.SubItems.Add(endValue);
+
+                // Finally, add the parameter name as a subitem
+                item.SubItems.Add(paramNames[i]);
 
                 listView1.Items.Add(item);
             }
+
+
         }
     }
 }
