@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lblInputFile = new System.Windows.Forms.Label();
             this.txtInputFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectInputFile = new System.Windows.Forms.Button();
@@ -49,8 +51,23 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.btnViewOutputDirectory = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.InfoIconMasterParamIndex = new System.Windows.Forms.PictureBox();
+            this.InfoIconMasterParamIncrement = new System.Windows.Forms.PictureBox();
+            this.InfoIconMasterExponent = new System.Windows.Forms.PictureBox();
+            this.InfoIconCustomExponents = new System.Windows.Forms.PictureBox();
+            this.InfoIconDefaultExponents = new System.Windows.Forms.PictureBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.InfoIconLinearInterpolation = new System.Windows.Forms.PictureBox();
+            this.InfoIconCreateGif = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIndex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIncrement)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterExponent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconCustomExponents)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconDefaultExponents)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).BeginInit();
             this.SuspendLayout();
             // 
             // lblInputFile
@@ -85,9 +102,9 @@
             this.lblStartParams.AutoSize = true;
             this.lblStartParams.Location = new System.Drawing.Point(12, 60);
             this.lblStartParams.Name = "lblStartParams";
-            this.lblStartParams.Size = new System.Drawing.Size(70, 13);
+            this.lblStartParams.Size = new System.Drawing.Size(132, 13);
             this.lblStartParams.TabIndex = 3;
-            this.lblStartParams.Text = "Start Params:";
+            this.lblStartParams.Text = "Starting Parameter Values:";
             // 
             // txtStartParams
             // 
@@ -101,9 +118,9 @@
             this.lblEndParams.AutoSize = true;
             this.lblEndParams.Location = new System.Drawing.Point(12, 105);
             this.lblEndParams.Name = "lblEndParams";
-            this.lblEndParams.Size = new System.Drawing.Size(67, 13);
+            this.lblEndParams.Size = new System.Drawing.Size(129, 13);
             this.lblEndParams.TabIndex = 5;
-            this.lblEndParams.Text = "End Params:";
+            this.lblEndParams.Text = "Ending Parameter Values:";
             // 
             // txtEndParams
             // 
@@ -115,7 +132,7 @@
             // lblMasterParamIndex
             // 
             this.lblMasterParamIndex.AutoSize = true;
-            this.lblMasterParamIndex.Location = new System.Drawing.Point(12, 150);
+            this.lblMasterParamIndex.Location = new System.Drawing.Point(12, 152);
             this.lblMasterParamIndex.Name = "lblMasterParamIndex";
             this.lblMasterParamIndex.Size = new System.Drawing.Size(122, 13);
             this.lblMasterParamIndex.TabIndex = 7;
@@ -146,7 +163,7 @@
             // lblMasterParamIncrement
             // 
             this.lblMasterParamIncrement.AutoSize = true;
-            this.lblMasterParamIncrement.Location = new System.Drawing.Point(12, 180);
+            this.lblMasterParamIncrement.Location = new System.Drawing.Point(12, 182);
             this.lblMasterParamIncrement.Name = "lblMasterParamIncrement";
             this.lblMasterParamIncrement.Size = new System.Drawing.Size(125, 13);
             this.lblMasterParamIncrement.TabIndex = 9;
@@ -181,7 +198,7 @@
             this.rbNoExponents.Checked = true;
             this.rbNoExponents.Location = new System.Drawing.Point(15, 210);
             this.rbNoExponents.Name = "rbNoExponents";
-            this.rbNoExponents.Size = new System.Drawing.Size(128, 20);
+            this.rbNoExponents.Size = new System.Drawing.Size(121, 17);
             this.rbNoExponents.TabIndex = 11;
             this.rbNoExponents.TabStop = true;
             this.rbNoExponents.Text = "Linear Interopolation";
@@ -193,7 +210,7 @@
             this.rbMasterExponent.AutoSize = true;
             this.rbMasterExponent.Location = new System.Drawing.Point(15, 240);
             this.rbMasterExponent.Name = "rbMasterExponent";
-            this.rbMasterExponent.Size = new System.Drawing.Size(112, 20);
+            this.rbMasterExponent.Size = new System.Drawing.Size(105, 17);
             this.rbMasterExponent.TabIndex = 12;
             this.rbMasterExponent.TabStop = true;
             this.rbMasterExponent.Text = "Master Exponent";
@@ -205,7 +222,7 @@
             this.rbDefaultExponents.AutoSize = true;
             this.rbDefaultExponents.Location = new System.Drawing.Point(15, 300);
             this.rbDefaultExponents.Name = "rbDefaultExponents";
-            this.rbDefaultExponents.Size = new System.Drawing.Size(119, 20);
+            this.rbDefaultExponents.Size = new System.Drawing.Size(112, 17);
             this.rbDefaultExponents.TabIndex = 13;
             this.rbDefaultExponents.TabStop = true;
             this.rbDefaultExponents.Text = "Default Exponents";
@@ -217,7 +234,7 @@
             this.rbCustomExponents.AutoSize = true;
             this.rbCustomExponents.Location = new System.Drawing.Point(15, 270);
             this.rbCustomExponents.Name = "rbCustomExponents";
-            this.rbCustomExponents.Size = new System.Drawing.Size(120, 20);
+            this.rbCustomExponents.Size = new System.Drawing.Size(113, 17);
             this.rbCustomExponents.TabIndex = 14;
             this.rbCustomExponents.TabStop = true;
             this.rbCustomExponents.Text = "Custom Exponents";
@@ -237,7 +254,7 @@
             this.txtExponentArray.Enabled = false;
             this.txtExponentArray.Location = new System.Drawing.Point(135, 270);
             this.txtExponentArray.Name = "txtExponentArray";
-            this.txtExponentArray.Size = new System.Drawing.Size(261, 20);
+            this.txtExponentArray.Size = new System.Drawing.Size(237, 20);
             this.txtExponentArray.TabIndex = 18;
             // 
             // chkCreateGif
@@ -245,7 +262,7 @@
             this.chkCreateGif.AutoSize = true;
             this.chkCreateGif.Location = new System.Drawing.Point(15, 343);
             this.chkCreateGif.Name = "chkCreateGif";
-            this.chkCreateGif.Size = new System.Drawing.Size(84, 21);
+            this.chkCreateGif.Size = new System.Drawing.Size(77, 17);
             this.chkCreateGif.TabIndex = 16;
             this.chkCreateGif.Text = "Create GIF";
             this.chkCreateGif.UseVisualStyleBackColor = true;
@@ -282,11 +299,95 @@
             this.btnCancel.Visible = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // InfoIconMasterParamIndex
+            // 
+            this.InfoIconMasterParamIndex.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconMasterParamIndex.Image")));
+            this.InfoIconMasterParamIndex.Location = new System.Drawing.Point(201, 152);
+            this.InfoIconMasterParamIndex.Name = "InfoIconMasterParamIndex";
+            this.InfoIconMasterParamIndex.Size = new System.Drawing.Size(16, 16);
+            this.InfoIconMasterParamIndex.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.InfoIconMasterParamIndex.TabIndex = 20;
+            this.InfoIconMasterParamIndex.TabStop = false;
+            this.toolTip1.SetToolTip(this.InfoIconMasterParamIndex, resources.GetString("InfoIconMasterParamIndex.ToolTip"));
+            // 
+            // InfoIconMasterParamIncrement
+            // 
+            this.InfoIconMasterParamIncrement.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconMasterParamIncrement.Image")));
+            this.InfoIconMasterParamIncrement.Location = new System.Drawing.Point(231, 182);
+            this.InfoIconMasterParamIncrement.Name = "InfoIconMasterParamIncrement";
+            this.InfoIconMasterParamIncrement.Size = new System.Drawing.Size(16, 16);
+            this.InfoIconMasterParamIncrement.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.InfoIconMasterParamIncrement.TabIndex = 21;
+            this.InfoIconMasterParamIncrement.TabStop = false;
+            this.toolTip1.SetToolTip(this.InfoIconMasterParamIncrement, resources.GetString("InfoIconMasterParamIncrement.ToolTip"));
+            // 
+            // InfoIconMasterExponent
+            // 
+            this.InfoIconMasterExponent.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconMasterExponent.Image")));
+            this.InfoIconMasterExponent.Location = new System.Drawing.Point(221, 241);
+            this.InfoIconMasterExponent.Name = "InfoIconMasterExponent";
+            this.InfoIconMasterExponent.Size = new System.Drawing.Size(16, 16);
+            this.InfoIconMasterExponent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.InfoIconMasterExponent.TabIndex = 22;
+            this.InfoIconMasterExponent.TabStop = false;
+            this.toolTip1.SetToolTip(this.InfoIconMasterExponent, resources.GetString("InfoIconMasterExponent.ToolTip"));
+            // 
+            // InfoIconCustomExponents
+            // 
+            this.InfoIconCustomExponents.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconCustomExponents.Image")));
+            this.InfoIconCustomExponents.Location = new System.Drawing.Point(378, 274);
+            this.InfoIconCustomExponents.Name = "InfoIconCustomExponents";
+            this.InfoIconCustomExponents.Size = new System.Drawing.Size(16, 16);
+            this.InfoIconCustomExponents.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.InfoIconCustomExponents.TabIndex = 23;
+            this.InfoIconCustomExponents.TabStop = false;
+            this.toolTip1.SetToolTip(this.InfoIconCustomExponents, resources.GetString("InfoIconCustomExponents.ToolTip"));
+            // 
+            // InfoIconDefaultExponents
+            // 
+            this.InfoIconDefaultExponents.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconDefaultExponents.Image")));
+            this.InfoIconDefaultExponents.Location = new System.Drawing.Point(131, 301);
+            this.InfoIconDefaultExponents.Name = "InfoIconDefaultExponents";
+            this.InfoIconDefaultExponents.Size = new System.Drawing.Size(16, 16);
+            this.InfoIconDefaultExponents.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.InfoIconDefaultExponents.TabIndex = 24;
+            this.InfoIconDefaultExponents.TabStop = false;
+            this.toolTip1.SetToolTip(this.InfoIconDefaultExponents, resources.GetString("InfoIconDefaultExponents.ToolTip"));
+            // 
+            // InfoIconLinearInterpolation
+            // 
+            this.InfoIconLinearInterpolation.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconLinearInterpolation.Image")));
+            this.InfoIconLinearInterpolation.Location = new System.Drawing.Point(135, 211);
+            this.InfoIconLinearInterpolation.Name = "InfoIconLinearInterpolation";
+            this.InfoIconLinearInterpolation.Size = new System.Drawing.Size(16, 16);
+            this.InfoIconLinearInterpolation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.InfoIconLinearInterpolation.TabIndex = 25;
+            this.InfoIconLinearInterpolation.TabStop = false;
+            this.toolTip1.SetToolTip(this.InfoIconLinearInterpolation, resources.GetString("InfoIconLinearInterpolation.ToolTip"));
+            // 
+            // InfoIconCreateGif
+            // 
+            this.InfoIconCreateGif.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconCreateGif.Image")));
+            this.InfoIconCreateGif.Location = new System.Drawing.Point(98, 343);
+            this.InfoIconCreateGif.Name = "InfoIconCreateGif";
+            this.InfoIconCreateGif.Size = new System.Drawing.Size(16, 16);
+            this.InfoIconCreateGif.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.InfoIconCreateGif.TabIndex = 26;
+            this.InfoIconCreateGif.TabStop = false;
+            this.toolTip1.SetToolTip(this.InfoIconCreateGif, resources.GetString("InfoIconCreateGif.ToolTip"));
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(414, 441);
+            this.Controls.Add(this.InfoIconCreateGif);
+            this.Controls.Add(this.InfoIconLinearInterpolation);
+            this.Controls.Add(this.InfoIconDefaultExponents);
+            this.Controls.Add(this.InfoIconCustomExponents);
+            this.Controls.Add(this.InfoIconMasterExponent);
+            this.Controls.Add(this.InfoIconMasterParamIncrement);
+            this.Controls.Add(this.InfoIconMasterParamIndex);
             this.Controls.Add(this.rbCustomExponents);
             this.Controls.Add(this.rbDefaultExponents);
             this.Controls.Add(this.rbMasterExponent);
@@ -314,6 +415,13 @@
             this.Text = "Droste Effect App";
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIndex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterParamIncrement)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconMasterExponent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconCustomExponents)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconDefaultExponents)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -342,5 +450,13 @@
         private System.Windows.Forms.RadioButton rbMasterExponent;
         private System.Windows.Forms.RadioButton rbDefaultExponents;
         private System.Windows.Forms.RadioButton rbCustomExponents;
+        private System.Windows.Forms.PictureBox InfoIconMasterParamIndex;
+        private System.Windows.Forms.PictureBox InfoIconMasterParamIncrement;
+        private System.Windows.Forms.PictureBox InfoIconMasterExponent;
+        private System.Windows.Forms.PictureBox InfoIconCustomExponents;
+        private System.Windows.Forms.PictureBox InfoIconDefaultExponents;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.PictureBox InfoIconLinearInterpolation;
+        private System.Windows.Forms.PictureBox InfoIconCreateGif;
     }
 }

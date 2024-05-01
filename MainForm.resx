@@ -117,4 +117,189 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="InfoIconMasterParamIndex.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EQAACxEBf2RfkQAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="InfoIconMasterParamIndex.ToolTip" xml:space="preserve">
+    <value>This identifies which of the 31 parameters will be used
+when calculating the number of frames based on
+your selected Master Parameter Increment.
+
+The index number is the position (starting from 1 at the first position)
+in the comma-separated list of parameters.
+
+For example, with starting/ending parameters like this:
+Start: 50,100,1,1,1,0,0,0,0,0,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0
+End:   100,100,1,1,1,0,0,0,0,0,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0
+
+A master index of 1 would refer to the parameter with values 50 and 100.</value>
+  </data>
+  <data name="InfoIconMasterParamIncrement.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EAAACxABrSO9dQAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="InfoIconMasterParamIncrement.ToolTip" xml:space="preserve">
+    <value>The size of the divisions between the starting and ending
+values of the master parameter.
+
+This will be used when calculating the total number of frames.
+
+As example, if the starting and ending values of the chosen master parameter are 50 and 100
+   - Increment of 1 would mean 50 frames would be created
+   - Increment of 0.5 would be 100 frames
+   - Increment of 2 would be 25 frames
+
+The increments between the start/end of all other parameters are calculated automatically
+based on the number of frames.</value>
+  </data>
+  <data name="InfoIconMasterExponent.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DwAACw8BkvkDpQAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="InfoIconMasterExponent.ToolTip" xml:space="preserve">
+    <value>Master Exponent: Allows you to apply exponential interpolation to the
+'master parameter' (the parameter you select to drive the transformation).
+
+Usage:
+   - If left empty will apply a default value that was selected for each parameter.
+   - Can be any positive or negative number including decimals
+   - When using an exponential mode, the master increment will still be used to
+      calculate the number of frames
+
+
+With this setting, instead of incrementing linearly (evenly spaced), the master parameter
+will change more slowly at first and then more quickly towards the end, or vice versa,
+depending on the exponent value. The other parameters will still use linear interpolation.
+
+This can create interesting non-linear effects in the transition.
+A value of 1 is equivalent to linear interpolation, while values greater than 1 will cause
+the master parameter to change slowly at first and then quickly, and values
+between 0 and 1 will cause it to change quickly at first and then slowly.
+
+This can be helpful because some parameters visually don't seem to change much
+at lower values, but do at higher values (or vice-versa). This can make the animation
+appear too slow or fast near the beginning or end. This lets you compensate for this
+and get a more uniform looking animation.
+
+Note: Look up 'exponential curves' to get an idea of how this will affect the in-between 
+parameter values. </value>
+  </data>
+  <data name="InfoIconCustomExponents.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DgAACw4BQL7hQQAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="InfoIconCustomExponents.ToolTip" xml:space="preserve">
+    <value>This allows you to enter a custom array of 31 comma-separated
+values which will set the incremental exponent not just for the
+master parameter, but all parameters.
+
+The list should look just like the list of starting/ending parameters,
+except instead of starting/ending values, each number will
+be the exponent applied to its corresponding parameter.
+
+Unlike the Master Exponent option, this lets you apply exponential
+incrementation to everything. If you want a parameter to just be linear
+like normal, you can set the exponent to 1.
+
+Example:
+2,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1</value>
+  </data>
+  <data name="InfoIconDefaultExponents.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DQAACw0B7QfALAAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="InfoIconDefaultExponents.ToolTip" xml:space="preserve">
+    <value>A pre-selected set  of exponents for each parameter to use in exponential mode.
+
+Note: This will result in exponential interpolation for all parameters,
+and might not give results as you might expect. The default mode
+is Linear Interpolation, this is just some values I've arbitrarily selected
+that look decent, but I haven't gone through them all.</value>
+  </data>
+  <data name="InfoIconLinearInterpolation.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DgAACw4BQL7hQQAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="InfoIconLinearInterpolation.ToolTip" xml:space="preserve">
+    <value>Default Mode - Linear Interpolation: The simplest method of calculating
+intermediate values between two known points.
+
+It is the default and calculates the intermediate values
+for the frames just the way you'd expect.
+
+The values calculated between the starting/ending parameter sets
+will be equally "spaced".  It simply takes the difference in start/end
+values for each parameter, divides by the number of frames,
+and uses that for how much that parameter will change per frame.</value>
+  </data>
+  <data name="InfoIconCreateGif.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DQAACw0B7QfALAAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="InfoIconCreateGif.ToolTip" xml:space="preserve">
+    <value>If checked, the program will use FFMPEG to automatically
+combine all the images into a gif file. ffmpeg.exe must
+either be in the same directory or the system PATH.
+
+Sometimes blank frames will be generated so you'll want to
+manually create the gif yourself, or you want a different framerate.
+
+You can do so with the ffmpeg command like this:
+ffmpeg -framerate 25 -i Image_SomePattern_%d.png output.gif
+
+The %d is like a wildcard for numbers. 
+     %d says to look for files numbered with single digits.
+     %02d is for number series like 01, 02, 03
+     %03d is for number series like 001, 002, 003
+
+
+</value>
+  </data>
 </root>
