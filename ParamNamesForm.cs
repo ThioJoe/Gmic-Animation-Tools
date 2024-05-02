@@ -25,16 +25,22 @@ namespace GmicDrosteAnimate
 
         private double[] startParamValuesFromMainWindow;
         private double[] endParamValuesFromMainWindow;
-        private int masterParamIndexFromMainWIndow;
+        private int masterParamIndexFromMainWindow;
+
+        //Global checkbox for whether to sync with other window
+        public bool syncWithOtherWindow = true;
 
         public ParamNamesForm(double[] incomingStartParamValues, double[] incomingEndParamValues, int incomingMasterParamIndex)
         {
             startParamValuesFromMainWindow = incomingStartParamValues;
             endParamValuesFromMainWindow = incomingEndParamValues;
-            masterParamIndexFromMainWIndow = incomingMasterParamIndex;
+            masterParamIndexFromMainWindow = incomingMasterParamIndex;
 
             InitializeComponent();
-            UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWIndow);
+            if (syncWithOtherWindow)
+            {
+                UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
+            }
 
             // Register the ItemChecked event handler
             listView1.ItemChecked += new ItemCheckedEventHandler(listView1_ItemChecked);
@@ -47,7 +53,10 @@ namespace GmicDrosteAnimate
 
         public void UpdateParamValues(double[] startParamValues, double[] endParamValues, int masterParamIndex)
         {
-            UpdateListView(startParamValues, endParamValues, masterParamIndex);
+            if (syncWithOtherWindow)
+            {
+                UpdateListView(startParamValues, endParamValues, masterParamIndex);
+            }
         }
 
         private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
@@ -55,19 +64,19 @@ namespace GmicDrosteAnimate
             // Retrieve the item that was checked or unchecked
             ListViewItem item = e.Item;
 
-            // Example logic that might be performed
-            if (item.Checked)
-            {
-                // Code to execute when the item is checked
-                // For example, enabling a button to apply changes
-                Console.WriteLine("Item checked: " + item.SubItems[3].Text); // Assuming the name is in the 4th subitem
-                Console.WriteLine("Entire Item:" + item.Text + " " + item.SubItems[1].Text + " " + item.SubItems[2].Text + " " + item.SubItems[3].Text + " " + item.SubItems[4].Text);
-            }
-            else
-            {
-                // Code to execute when the item is unchecked
-                Console.WriteLine("Item unchecked: " + item.SubItems[3].Text); // Same assumption as above
-            }
+            //// Example logic that might be performed
+            //if (item.Checked)
+            //{
+            //    // Code to execute when the item is checked
+            //    // For example, enabling a button to apply changes
+            //    Console.WriteLine("Item checked: " + item.SubItems[3].Text); // Assuming the name is in the 4th subitem
+            //    Console.WriteLine("Entire Item:" + item.Text + " " + item.SubItems[1].Text + " " + item.SubItems[2].Text + " " + item.SubItems[3].Text + " " + item.SubItems[4].Text);
+            //}
+            //else
+            //{
+            //    // Code to execute when the item is unchecked
+            //    Console.WriteLine("Item unchecked: " + item.SubItems[3].Text); // Same assumption as above
+            //}
         }
 
         // Function to update the ListView with the parameter values
@@ -166,6 +175,11 @@ namespace GmicDrosteAnimate
             // Set the values for the current start and end param strings
             SetCurrentEndParamString(newEndParamValues);
             SetCurrentStartParamString(newStartParamValues);
+
+            // Uncheck checkbox for syncing and disable syncing
+            checkBoxSyncFromOtherWindow.Checked = false;
+            syncWithOtherWindow = false;
+
         }
 
         private void labelCurrentParamString_Click(object sender, EventArgs e)
@@ -194,7 +208,16 @@ namespace GmicDrosteAnimate
         private void btnResetAll_Click(object sender, EventArgs e)
         {
             // Reset all items in the ListView to the original values from other form
-            UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWIndow);
+            UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
+            // Enabling syncing
+            syncWithOtherWindow = true;
+            checkBoxSyncFromOtherWindow.Checked = true;
+        }
+
+        private void checkBoxSyncFromOtherWindow_CheckedChanged(object sender, EventArgs e)
+        {
+            //Update the global variable for syncing
+            syncWithOtherWindow = checkBoxSyncFromOtherWindow.Checked;
         }
     }
 }

@@ -38,6 +38,7 @@
             this.btnUncheckAll = new System.Windows.Forms.Button();
             this.btnResetAll = new System.Windows.Forms.Button();
             this.checkBoxStaticOptions = new System.Windows.Forms.CheckBox();
+            this.checkBoxSyncFromOtherWindow = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // listView1
@@ -130,18 +131,32 @@
             this.checkBoxStaticOptions.AutoSize = true;
             this.checkBoxStaticOptions.Checked = true;
             this.checkBoxStaticOptions.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxStaticOptions.Location = new System.Drawing.Point(261, 738);
+            this.checkBoxStaticOptions.Location = new System.Drawing.Point(247, 708);
             this.checkBoxStaticOptions.Name = "checkBoxStaticOptions";
             this.checkBoxStaticOptions.Size = new System.Drawing.Size(176, 17);
             this.checkBoxStaticOptions.TabIndex = 9;
             this.checkBoxStaticOptions.Text = "Don\'t Randomize Static Options";
             this.checkBoxStaticOptions.UseVisualStyleBackColor = true;
             // 
+            // checkBoxSyncFromOtherWindow
+            // 
+            this.checkBoxSyncFromOtherWindow.AutoSize = true;
+            this.checkBoxSyncFromOtherWindow.Checked = true;
+            this.checkBoxSyncFromOtherWindow.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSyncFromOtherWindow.Location = new System.Drawing.Point(247, 731);
+            this.checkBoxSyncFromOtherWindow.Name = "checkBoxSyncFromOtherWindow";
+            this.checkBoxSyncFromOtherWindow.Size = new System.Drawing.Size(192, 17);
+            this.checkBoxSyncFromOtherWindow.TabIndex = 10;
+            this.checkBoxSyncFromOtherWindow.Text = "Sync Changes From Other Window";
+            this.checkBoxSyncFromOtherWindow.UseVisualStyleBackColor = true;
+            this.checkBoxSyncFromOtherWindow.CheckedChanged += new System.EventHandler(this.checkBoxSyncFromOtherWindow_CheckedChanged);
+            // 
             // ParamNamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 774);
+            this.ClientSize = new System.Drawing.Size(449, 766);
+            this.Controls.Add(this.checkBoxSyncFromOtherWindow);
             this.Controls.Add(this.checkBoxStaticOptions);
             this.Controls.Add(this.btnResetAll);
             this.Controls.Add(this.btnUncheckAll);
@@ -171,5 +186,6 @@
         private System.Windows.Forms.Button btnUncheckAll;
         private System.Windows.Forms.Button btnResetAll;
         private System.Windows.Forms.CheckBox checkBoxStaticOptions;
+        private System.Windows.Forms.CheckBox checkBoxSyncFromOtherWindow;
     }
 }
