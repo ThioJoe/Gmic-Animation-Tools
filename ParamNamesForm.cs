@@ -23,15 +23,51 @@ namespace GmicDrosteAnimate
             "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
         };
 
-        public ParamNamesForm(double[] startParamValues, double[] endParamValues, int masterParamIndex)
+        private double[] startParamValuesFromMainWindow;
+        private double[] endParamValuesFromMainWindow;
+        private int masterParamIndexFromMainWIndow;
+
+        public ParamNamesForm(double[] incomingStartParamValues, double[] incomingEndParamValues, int incomingMasterParamIndex)
         {
+            startParamValuesFromMainWindow = incomingStartParamValues;
+            endParamValuesFromMainWindow = incomingEndParamValues;
+            masterParamIndexFromMainWIndow = incomingMasterParamIndex;
+
             InitializeComponent();
-            UpdateListView(startParamValues, endParamValues, masterParamIndex);
+            UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWIndow);
+
+            // Register the ItemChecked event handler
+            listView1.ItemChecked += new ItemCheckedEventHandler(listView1_ItemChecked);
+            
+            // Set the values for the current start and end param strings
+            SetCurrentEndParamString(endParamValuesFromMainWindow);
+            SetCurrentStartParamString(startParamValuesFromMainWindow);
+            
         }
 
         public void UpdateParamValues(double[] startParamValues, double[] endParamValues, int masterParamIndex)
         {
             UpdateListView(startParamValues, endParamValues, masterParamIndex);
+        }
+
+        private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            // Retrieve the item that was checked or unchecked
+            ListViewItem item = e.Item;
+
+            // Example logic that might be performed
+            if (item.Checked)
+            {
+                // Code to execute when the item is checked
+                // For example, enabling a button to apply changes
+                Console.WriteLine("Item checked: " + item.SubItems[3].Text); // Assuming the name is in the 4th subitem
+                Console.WriteLine("Entire Item:" + item.Text + " " + item.SubItems[1].Text + " " + item.SubItems[2].Text + " " + item.SubItems[3].Text + " " + item.SubItems[4].Text);
+            }
+            else
+            {
+                // Code to execute when the item is unchecked
+                Console.WriteLine("Item unchecked: " + item.SubItems[3].Text); // Same assumption as above
+            }
         }
 
         // Function to update the ListView with the parameter values
@@ -44,16 +80,17 @@ namespace GmicDrosteAnimate
             // Initialize the ListView properties
             listView1.GridLines = true;
             listView1.View = View.Details; // Ensure the view is set to Details
-            listView1.FullRowSelect = true; // Optional: makes it easier to select items
+            listView1.FullRowSelect = true; // Makes it easier to select items
+            listView1.CheckBoxes = true; // Enable checkboxes next to each item
 
             // Add a dummy first column
-            listView1.Columns.Add("", 0); // Minimal width
+            listView1.Columns.Add("", 20); // Minimal width
 
             // Add visible columns - 2nd argument is the width of the column
             listView1.Columns.Add("Start", 50).TextAlign = HorizontalAlignment.Right;
             listView1.Columns.Add("End", 50).TextAlign = HorizontalAlignment.Right;
             listView1.Columns.Add("Parameter Name", 150).TextAlign = HorizontalAlignment.Left;
-            listView1.Columns.Add("Difference", 100).TextAlign = HorizontalAlignment.Left;
+            listView1.Columns.Add("Difference", 75).TextAlign = HorizontalAlignment.Left;
 
             for (int i = 0; i < paramNames.Length; i++)
             {
@@ -87,6 +124,77 @@ namespace GmicDrosteAnimate
 
                 listView1.Items.Add(item);
             }
+
+            // Set the values for the current start and end param strings
+            SetCurrentEndParamString(endParamValues);
+            SetCurrentStartParamString(startParamValues);
+        }
+
+        // Function to set current start param string from array
+        public void SetCurrentStartParamString(double[] currentParamString)
+        {
+            txtCurrentStartParamString.Text = string.Join(",", currentParamString);
+        }
+        // Function to set current end param string from array
+        public void SetCurrentEndParamString(double[] currentParamString)
+        {
+            txtCurrentEndParamString.Text = string.Join(",", currentParamString);
+        }
+
+        private void btnRandom_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            foreach (ListViewItem item in listView1.Items)
+            {
+                if (item.Checked)
+                {
+                    // Randomize example: modifying the 'Start' value (subitem 1) and 'End' value (subitem 2)
+                    // Assuming the values are numeric and the random range is 0 to 100 for demonstration
+                    item.SubItems[1].Text = rnd.Next(0, 101).ToString();  // Random 'Start' value
+                    item.SubItems[2].Text = rnd.Next(0, 101).ToString();  // Random 'End' value
+                }
+            }
+            // Get new arrays from the ListView to put into new start and end param arrays
+            double[] newStartParamValues = new double[paramNames.Length];
+            double[] newEndParamValues = new double[paramNames.Length];
+            for (int i = 0; i < paramNames.Length; i++)
+            {
+                newStartParamValues[i] = double.Parse(listView1.Items[i].SubItems[1].Text);
+                newEndParamValues[i] = double.Parse(listView1.Items[i].SubItems[2].Text);
+            }
+
+            // Set the values for the current start and end param strings
+            SetCurrentEndParamString(newEndParamValues);
+            SetCurrentStartParamString(newStartParamValues);
+        }
+
+        private void labelCurrentParamString_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCheckAll_Click(object sender, EventArgs e)
+        {
+            //Check all items in the ListView
+            foreach (ListViewItem item in listView1.Items)
+            {
+                item.Checked = true;
+            }
+        }
+
+        private void btnUncheckAll_Click(object sender, EventArgs e)
+        {
+            //Uncheck all items in the ListView
+            foreach (ListViewItem item in listView1.Items)
+            {
+                item.Checked = false;
+            }
+        }
+
+        private void btnResetAll_Click(object sender, EventArgs e)
+        {
+            // Reset all items in the ListView to the original values from other form
+            UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWIndow);
         }
     }
 }
