@@ -37,7 +37,7 @@
             this.btnCheckAll = new System.Windows.Forms.Button();
             this.btnUncheckAll = new System.Windows.Forms.Button();
             this.btnResetAll = new System.Windows.Forms.Button();
-            this.checkBoxStaticOptions = new System.Windows.Forms.CheckBox();
+            this.checkBoxDisableBinaryRandom = new System.Windows.Forms.CheckBox();
             this.checkBoxSyncFromOtherWindow = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
@@ -77,7 +77,6 @@
             this.labelCurrentStartParamString.Size = new System.Drawing.Size(167, 13);
             this.labelCurrentStartParamString.TabIndex = 3;
             this.labelCurrentStartParamString.Text = "Current String of Start Parameters:";
-            this.labelCurrentStartParamString.Click += new System.EventHandler(this.labelCurrentParamString_Click);
             // 
             // labelCurrentEndParamString
             // 
@@ -126,17 +125,17 @@
             this.btnResetAll.UseVisualStyleBackColor = true;
             this.btnResetAll.Click += new System.EventHandler(this.btnResetAll_Click);
             // 
-            // checkBoxStaticOptions
+            // checkBoxDisableBinaryRandom
             // 
-            this.checkBoxStaticOptions.AutoSize = true;
-            this.checkBoxStaticOptions.Checked = true;
-            this.checkBoxStaticOptions.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxStaticOptions.Location = new System.Drawing.Point(247, 708);
-            this.checkBoxStaticOptions.Name = "checkBoxStaticOptions";
-            this.checkBoxStaticOptions.Size = new System.Drawing.Size(176, 17);
-            this.checkBoxStaticOptions.TabIndex = 9;
-            this.checkBoxStaticOptions.Text = "Don\'t Randomize Static Options";
-            this.checkBoxStaticOptions.UseVisualStyleBackColor = true;
+            this.checkBoxDisableBinaryRandom.AutoSize = true;
+            this.checkBoxDisableBinaryRandom.Checked = true;
+            this.checkBoxDisableBinaryRandom.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(247, 708);
+            this.checkBoxDisableBinaryRandom.Name = "checkBoxDisableBinaryRandom";
+            this.checkBoxDisableBinaryRandom.Size = new System.Drawing.Size(195, 17);
+            this.checkBoxDisableBinaryRandom.TabIndex = 9;
+            this.checkBoxDisableBinaryRandom.Text = "Don\'t Randomize Binary Parameters";
+            this.checkBoxDisableBinaryRandom.UseVisualStyleBackColor = true;
             // 
             // checkBoxSyncFromOtherWindow
             // 
@@ -157,7 +156,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(449, 766);
             this.Controls.Add(this.checkBoxSyncFromOtherWindow);
-            this.Controls.Add(this.checkBoxStaticOptions);
+            this.Controls.Add(this.checkBoxDisableBinaryRandom);
             this.Controls.Add(this.btnResetAll);
             this.Controls.Add(this.btnUncheckAll);
             this.Controls.Add(this.btnCheckAll);
@@ -185,7 +184,7 @@
         private System.Windows.Forms.Button btnCheckAll;
         private System.Windows.Forms.Button btnUncheckAll;
         private System.Windows.Forms.Button btnResetAll;
-        private System.Windows.Forms.CheckBox checkBoxStaticOptions;
+        private System.Windows.Forms.CheckBox checkBoxDisableBinaryRandom;
         private System.Windows.Forms.CheckBox checkBoxSyncFromOtherWindow;
     }
 }

@@ -13,7 +13,7 @@ namespace GmicDrosteAnimate
 {
     public partial class ParamNamesForm : Form
     {
-        private string[] paramNames = {
+        private static string[] paramNames = {
             "Inner Radius", "Outer Radius", "Periodicity", "Strands", "Zoom",
             "Rotate", "X-Shift", "Y-Shift", "Center X-Shift", "Center Y-Shift",
             "Starting Level", "Number of Levels", "Level Frequency", "Show Both Poles",
@@ -22,6 +22,9 @@ namespace GmicDrosteAnimate
             "Mirror Effect", "Untwist", "Do Not Flatten Transparency", "Show Grid",
             "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
         };
+
+        // Parameters that are either on or off
+        private static int[] binaryParamIndexes = { 13, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 
         private double[] startParamValuesFromMainWindow;
         private double[] endParamValuesFromMainWindow;
@@ -37,6 +40,10 @@ namespace GmicDrosteAnimate
             masterParamIndexFromMainWindow = incomingMasterParamIndex;
 
             InitializeComponent();
+
+            //Update sync option from checkbox
+            syncWithOtherWindow = checkBoxSyncFromOtherWindow.Checked;
+
             if (syncWithOtherWindow)
             {
                 UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
@@ -52,9 +59,17 @@ namespace GmicDrosteAnimate
         }
 
         public void UpdateParamValues(double[] startParamValues, double[] endParamValues, int masterParamIndex)
-        {
+        {   
+            //Update sync option from checkbox
+            syncWithOtherWindow = checkBoxSyncFromOtherWindow.Checked;
+
+            // Update the global variables for the start and end param values even if they don't get used, so can be used for reset
+            startParamValuesFromMainWindow = startParamValues;
+            endParamValuesFromMainWindow = endParamValues;
+            masterParamIndexFromMainWindow = masterParamIndex;
+
             if (syncWithOtherWindow)
-            {
+            {   
                 UpdateListView(startParamValues, endParamValues, masterParamIndex);
             }
         }
@@ -182,17 +197,14 @@ namespace GmicDrosteAnimate
 
         }
 
-        private void labelCurrentParamString_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnCheckAll_Click(object sender, EventArgs e)
         {
-            //Check all items in the ListView
+            //Check all items in the ListView unless they are binary parameters
             foreach (ListViewItem item in listView1.Items)
             {
-                item.Checked = true;
+                if (!binaryParamIndexes.Contains(item.Index)) { 
+                    item.Checked = true;
+                }
             }
         }
 
@@ -219,5 +231,6 @@ namespace GmicDrosteAnimate
             //Update the global variable for syncing
             syncWithOtherWindow = checkBoxSyncFromOtherWindow.Checked;
         }
+
     }
 }
