@@ -19,7 +19,7 @@ namespace GmicDrosteAnimate
             "Starting Level", "Number of Levels", "Level Frequency", "Show Both Poles",
             "Pole Rotation", "Pole Long", "Pole Lat", "Tile Poles", "Hyper Droste",
             "Fractal Points", "Auto-Set Periodicity", "No Transparency", "External Transparency",
-            "Mirror Effect", "Untwist", "Do Not Flatten Transparency", "Show Grid",
+            "Mirror Effect", "Untwist", "No Flatten Transparency", "Show Grid",
             "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
         };
 
@@ -113,7 +113,7 @@ namespace GmicDrosteAnimate
             // Add visible columns - 2nd argument is the width of the column
             listView1.Columns.Add("Start", 50).TextAlign = HorizontalAlignment.Right;
             listView1.Columns.Add("End", 50).TextAlign = HorizontalAlignment.Right;
-            listView1.Columns.Add("Parameter Name", 150).TextAlign = HorizontalAlignment.Left;
+            listView1.Columns.Add("Parameter Name", 130).TextAlign = HorizontalAlignment.Left;
             listView1.Columns.Add("Difference", 75).TextAlign = HorizontalAlignment.Left;
 
             for (int i = 0; i < paramNames.Length; i++)
@@ -142,7 +142,7 @@ namespace GmicDrosteAnimate
                 {
                     double start = double.Parse(startValue);
                     double end = double.Parse(endValue);
-                    double diff = Math.Abs(end - start);
+                    double diff = end - start;
                     item.SubItems.Add(diff.ToString());
                 }
 
@@ -174,8 +174,14 @@ namespace GmicDrosteAnimate
                 {
                     // Randomize example: modifying the 'Start' value (subitem 1) and 'End' value (subitem 2)
                     // Assuming the values are numeric and the random range is 0 to 100 for demonstration
-                    item.SubItems[1].Text = rnd.Next(0, 101).ToString();  // Random 'Start' value
-                    item.SubItems[2].Text = rnd.Next(0, 101).ToString();  // Random 'End' value
+                    double start = rnd.Next(0, 101);
+                    double end = rnd.Next(0, 101);
+                    item.SubItems[1].Text = start.ToString();  // Random 'Start' value
+                    item.SubItems[2].Text = end.ToString();  // Random 'End' value
+                    // Update difference column
+                    double diff = end - start;
+                    item.SubItems[4].Text = diff.ToString();
+
                 }
             }
             // Get new arrays from the ListView to put into new start and end param arrays
