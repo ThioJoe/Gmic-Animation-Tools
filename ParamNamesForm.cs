@@ -26,9 +26,13 @@ namespace GmicDrosteAnimate
         // Parameters that are either on or off
         private static int[] binaryParamIndexes = { 13, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 
+        // Parameter ranges for randomization
+        private List<ParameterInfo> parameterInfos = InitializeParameterRanges();
+
         private double[] startParamValuesFromMainWindow;
         private double[] endParamValuesFromMainWindow;
         private int masterParamIndexFromMainWindow;
+
 
         //Global checkbox for whether to sync with other window
         public bool syncWithOtherWindow = true;
@@ -172,16 +176,34 @@ namespace GmicDrosteAnimate
             {
                 if (item.Checked)
                 {
-                    // Randomize example: modifying the 'Start' value (subitem 1) and 'End' value (subitem 2)
-                    // Assuming the values are numeric and the random range is 0 to 100 for demonstration
-                    double start = rnd.Next(0, 101);
-                    double end = rnd.Next(0, 101);
-                    item.SubItems[1].Text = start.ToString();  // Random 'Start' value
-                    item.SubItems[2].Text = end.ToString();  // Random 'End' value
-                    // Update difference column
-                    double diff = end - start;
-                    item.SubItems[4].Text = diff.ToString();
+                    int index = item.Index;
+                    ParameterInfo paramInfo = parameterInfos[index];
 
+                    int min, max;
+
+                    // Determine the range based on the checkBoxExtendedRange
+                    if (checkBoxExtendedRange.Checked)
+                    {
+                        min = (int)Math.Ceiling(paramInfo.ExtendedMin);
+                        max = (int)Math.Floor(paramInfo.ExtendedMax);
+                    }
+                    else
+                    {
+                        min = (int)Math.Ceiling(paramInfo.Min);
+                        max = (int)Math.Floor(paramInfo.Max);
+                    }
+
+                    // Generate random integer values within the specified range
+                    int start = rnd.Next(min, max + 1);
+                    int end = rnd.Next(min, max + 1);
+
+                    // Update the ListView item subitems with the random values
+                    item.SubItems[1].Text = start.ToString("F2");  // Random 'Start' value, formatted to 2 decimal places
+                    item.SubItems[2].Text = end.ToString("F2");    // Random 'End' value, formatted to 2 decimal places
+
+                    // Calculate and update the difference column
+                    double diff = end - start;
+                    item.SubItems[4].Text = diff.ToString("F2");
                 }
             }
             // Get new arrays from the ListView to put into new start and end param arrays
@@ -205,14 +227,24 @@ namespace GmicDrosteAnimate
 
         private void btnCheckAll_Click(object sender, EventArgs e)
         {
-            //Check all items in the ListView unless they are binary parameters
+            // Determine which types should be included based on checkbox states
+            List<string> includedTypes = new List<string>();
+            if (!checkBoxDisableBinaryRandom.Checked) includedTypes.Add("Binary");
+            if (!checkBoxDisableStepRandom.Checked) includedTypes.Add("Step");
+            // Add more checks as necessary for other types - Never add 'choice' type because it doesn't make sense to randomize
+            includedTypes.Add("Continuous");
+
+            // Iterate through each ListViewItem in the ListView
             foreach (ListViewItem item in listView1.Items)
             {
-                if (!binaryParamIndexes.Contains(item.Index)) { 
-                    item.Checked = true;
-                }
+                // Get the type of the current parameter
+                string paramType = parameterInfos[item.Index].Type;
+
+                // Check the item if its type is in the list of included types
+                item.Checked = includedTypes.Contains(paramType);
             }
         }
+
 
         private void btnUncheckAll_Click(object sender, EventArgs e)
         {
@@ -238,35 +270,11 @@ namespace GmicDrosteAnimate
             syncWithOtherWindow = checkBoxSyncFromOtherWindow.Checked;
         }
 
-        public class ParameterInfo
-        {
-            public int ParamIndex { get; set; }
-            public string Name { get; set; }
-            public double DefaultStart { get; set; }
-            public double Min { get; set; } // Default from gmic GUI
-            public double Max { get; set; } // Default from gmic GUI
-            public double ExtendedMin { get; set; }
-            public double ExtendedMax { get; set; }
-            public string Type { get; set; } // "Binary", "Step", "Continuous"
 
-
-            public ParameterInfo(int paramIndex, string name, double defaultStart, double min, double max, double extendedMin, double extendedMax, string type)
-            {
-                ParamIndex = paramIndex;
-                Name = name;
-                DefaultStart = defaultStart;
-                Min = min;
-                Max = max;
-                ExtendedMin = extendedMin;
-                ExtendedMax = extendedMax;
-                Type = type;
-
-            }
-        }
 
         // This function will return the ranges that might be used for randomizing the parameters. It defines ranges for each individual parameter.
         // Laid out verbosely for clary
-        private List<ParameterInfo> InitializeParameterRanges()
+        private static List<ParameterInfo> InitializeParameterRanges()
         {
             {
                 //Define array of arrays containing parameter index, name, min, max, and type (binary,primarily step, or continuous)
@@ -277,7 +285,7 @@ namespace GmicDrosteAnimate
                     new ParameterInfo(2,"Periodicity", 1, -6, 6, -6, 6, "Continuous"),
                     new ParameterInfo(3,"Strands", 1, -6, 6, -100, 100, "Step"),
                     new ParameterInfo(4,"Zoom", 1, 1, 100, -1000, 1000, "Continuous"),
-                    new ParameterInfo(5,"Rotate", 0, -360, 360, 360, 360, "Continuous"),
+                    new ParameterInfo(5,"Rotate", 0, -360, 360, -360, 360, "Continuous"),
                     new ParameterInfo(6,"X-Shift", 0, -100, 100, -200, 200, "Continuous"),
                     new ParameterInfo(7,"Y-Shift", 0, -100, 100, -200, 200, "Continuous"),
                     new ParameterInfo(8,"Center X-Shift", 0, -100, 100, -200, 200, "Continuous"),
@@ -306,6 +314,36 @@ namespace GmicDrosteAnimate
                 };
                 return parameters;
             }
+        }
+
+        private void checkBoxDisableStepRandom_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+    public class ParameterInfo
+    {
+        public int ParamIndex { get; set; }
+        public string Name { get; set; }
+        public double DefaultStart { get; set; }
+        public double Min { get; set; } // Default from gmic GUI
+        public double Max { get; set; } // Default from gmic GUI
+        public double ExtendedMin { get; set; }
+        public double ExtendedMax { get; set; }
+        public string Type { get; set; } // "Binary", "Step", "Continuous"
+
+
+        public ParameterInfo(int paramIndex, string name, double defaultStart, double min, double max, double extendedMin, double extendedMax, string type)
+        {
+            ParamIndex = paramIndex;
+            Name = name;
+            DefaultStart = defaultStart;
+            Min = min;
+            Max = max;
+            ExtendedMin = extendedMin;
+            ExtendedMax = extendedMax;
+            Type = type;
+
         }
     }
 }

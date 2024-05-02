@@ -39,6 +39,8 @@
             this.btnResetAll = new System.Windows.Forms.Button();
             this.checkBoxDisableBinaryRandom = new System.Windows.Forms.CheckBox();
             this.checkBoxSyncFromOtherWindow = new System.Windows.Forms.CheckBox();
+            this.checkBoxDisableStepRandom = new System.Windows.Forms.CheckBox();
+            this.checkBoxExtendedRange = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // listView1
@@ -130,7 +132,7 @@
             this.checkBoxDisableBinaryRandom.AutoSize = true;
             this.checkBoxDisableBinaryRandom.Checked = true;
             this.checkBoxDisableBinaryRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(247, 708);
+            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 740);
             this.checkBoxDisableBinaryRandom.Name = "checkBoxDisableBinaryRandom";
             this.checkBoxDisableBinaryRandom.Size = new System.Drawing.Size(195, 17);
             this.checkBoxDisableBinaryRandom.TabIndex = 9;
@@ -142,7 +144,7 @@
             this.checkBoxSyncFromOtherWindow.AutoSize = true;
             this.checkBoxSyncFromOtherWindow.Checked = true;
             this.checkBoxSyncFromOtherWindow.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxSyncFromOtherWindow.Location = new System.Drawing.Point(247, 731);
+            this.checkBoxSyncFromOtherWindow.Location = new System.Drawing.Point(12, 763);
             this.checkBoxSyncFromOtherWindow.Name = "checkBoxSyncFromOtherWindow";
             this.checkBoxSyncFromOtherWindow.Size = new System.Drawing.Size(192, 17);
             this.checkBoxSyncFromOtherWindow.TabIndex = 10;
@@ -150,11 +152,36 @@
             this.checkBoxSyncFromOtherWindow.UseVisualStyleBackColor = true;
             this.checkBoxSyncFromOtherWindow.CheckedChanged += new System.EventHandler(this.checkBoxSyncFromOtherWindow_CheckedChanged);
             // 
+            // checkBoxDisableStepRandom
+            // 
+            this.checkBoxDisableStepRandom.AutoSize = true;
+            this.checkBoxDisableStepRandom.Checked = true;
+            this.checkBoxDisableStepRandom.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxDisableStepRandom.Location = new System.Drawing.Point(245, 718);
+            this.checkBoxDisableStepRandom.Name = "checkBoxDisableStepRandom";
+            this.checkBoxDisableStepRandom.Size = new System.Drawing.Size(206, 17);
+            this.checkBoxDisableStepRandom.TabIndex = 11;
+            this.checkBoxDisableStepRandom.Text = "Don\'t Randomize Stepped Parameters";
+            this.checkBoxDisableStepRandom.UseVisualStyleBackColor = true;
+            this.checkBoxDisableStepRandom.CheckedChanged += new System.EventHandler(this.checkBoxDisableStepRandom_CheckedChanged);
+            // 
+            // checkBoxExtendedRange
+            // 
+            this.checkBoxExtendedRange.AutoSize = true;
+            this.checkBoxExtendedRange.Location = new System.Drawing.Point(245, 763);
+            this.checkBoxExtendedRange.Name = "checkBoxExtendedRange";
+            this.checkBoxExtendedRange.Size = new System.Drawing.Size(176, 17);
+            this.checkBoxExtendedRange.TabIndex = 12;
+            this.checkBoxExtendedRange.Text = "Use Extended Random Ranges";
+            this.checkBoxExtendedRange.UseVisualStyleBackColor = true;
+            // 
             // ParamNamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 766);
+            this.ClientSize = new System.Drawing.Size(452, 792);
+            this.Controls.Add(this.checkBoxExtendedRange);
+            this.Controls.Add(this.checkBoxDisableStepRandom);
             this.Controls.Add(this.checkBoxSyncFromOtherWindow);
             this.Controls.Add(this.checkBoxDisableBinaryRandom);
             this.Controls.Add(this.btnResetAll);
@@ -186,5 +213,7 @@
         private System.Windows.Forms.Button btnResetAll;
         private System.Windows.Forms.CheckBox checkBoxDisableBinaryRandom;
         private System.Windows.Forms.CheckBox checkBoxSyncFromOtherWindow;
+        private System.Windows.Forms.CheckBox checkBoxDisableStepRandom;
+        private System.Windows.Forms.CheckBox checkBoxExtendedRange;
     }
 }
