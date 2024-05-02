@@ -1012,5 +1012,27 @@ namespace DrosteEffectApp
             //Show message box that says the value of the master param increment and total frames
             MessageBox.Show($"Master Param Increment Box Value: {nudMasterParamIncrement.Value}\nTotal Frames Box Value: {nudTotalFrames.Value}\nMaster Param Increment Box Text: {nudMasterParamIncrement.Text}\nTotal Frames Box Text: {nudTotalFrames.Text}");
         }
+
+        private void txtMasterExponent_TextChanged(object sender, EventArgs e)
+        {
+            //If exponent is 0 or 1 or other notable, change labelMasterExponent text to tell user
+            if (txtMasterExponent.Text == "0")
+            {
+                labelMasterExponent.ForeColor = Color.Red;
+                labelMasterExponent.Text = "Note: 0 exponent means it won't change.";
+                labelMasterExponent.Visible = true;
+            }
+            else if (txtMasterExponent.Text == "1")
+            {
+                labelMasterExponent.ForeColor = Color.Red;
+                labelMasterExponent.Text = "Note: Exponent of 1 is the same as linear.";
+                labelMasterExponent.Visible = true;
+            }
+            else
+            {
+                labelMasterExponent.Visible = false;
+            }
+
+        }
     }
 }

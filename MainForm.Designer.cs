@@ -64,6 +64,7 @@
             this.labelTotalFrames = new System.Windows.Forms.Label();
             this.TextLabelNearStartButton = new System.Windows.Forms.Label();
             this.TestButton1 = new System.Windows.Forms.Button();
+            this.labelMasterExponent = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -287,8 +288,9 @@
             this.txtMasterExponent.Enabled = false;
             this.txtMasterExponent.Location = new System.Drawing.Point(135, 240);
             this.txtMasterExponent.Name = "txtMasterExponent";
-            this.txtMasterExponent.Size = new System.Drawing.Size(80, 20);
+            this.txtMasterExponent.Size = new System.Drawing.Size(46, 20);
             this.txtMasterExponent.TabIndex = 16;
+            this.txtMasterExponent.TextChanged += new System.EventHandler(this.txtMasterExponent_TextChanged);
             // 
             // txtExponentArray
             // 
@@ -365,7 +367,7 @@
             // InfoIconMasterExponent
             // 
             this.InfoIconMasterExponent.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconMasterExponent.Image")));
-            this.InfoIconMasterExponent.Location = new System.Drawing.Point(221, 241);
+            this.InfoIconMasterExponent.Location = new System.Drawing.Point(187, 242);
             this.InfoIconMasterExponent.Name = "InfoIconMasterExponent";
             this.InfoIconMasterExponent.Size = new System.Drawing.Size(16, 16);
             this.InfoIconMasterExponent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -458,11 +460,22 @@
             this.TestButton1.Visible = false;
             this.TestButton1.Click += new System.EventHandler(this.TestButton1_Click);
             // 
+            // labelMasterExponent
+            // 
+            this.labelMasterExponent.AutoSize = true;
+            this.labelMasterExponent.Location = new System.Drawing.Point(206, 244);
+            this.labelMasterExponent.Name = "labelMasterExponent";
+            this.labelMasterExponent.Size = new System.Drawing.Size(51, 13);
+            this.labelMasterExponent.TabIndex = 32;
+            this.labelMasterExponent.Text = "InfoLabel";
+            this.labelMasterExponent.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.labelMasterExponent);
             this.Controls.Add(this.TestButton1);
             this.Controls.Add(this.TextLabelNearStartButton);
             this.Controls.Add(this.labelTotalFrames);
@@ -554,5 +567,6 @@
         private InvisibleNumericUpDown nudTotalFrames;
         private System.Windows.Forms.Button TestButton1;
         private InvisibleNumericUpDown nudMasterParamIncrement;
+        private System.Windows.Forms.Label labelMasterExponent;
     }
 }
