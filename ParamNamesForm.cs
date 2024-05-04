@@ -74,7 +74,7 @@ namespace GmicDrosteAnimate
             // Add a checkbox column
             DataGridViewCheckBoxColumn chkBoxColumn = new DataGridViewCheckBoxColumn();
             chkBoxColumn.HeaderText = "";
-            chkBoxColumn.Width = 30;
+            chkBoxColumn.Width = 50;
             chkBoxColumn.Name = "Select";
             chkBoxColumn.TrueValue = true;
             chkBoxColumn.FalseValue = false;
@@ -84,7 +84,7 @@ namespace GmicDrosteAnimate
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Start", Name = "Start", Width = 50, DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight } });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "End", Name = "End", Width = 50, DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight } });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Parameter Name", Name = "ParameterName", Width = 130, ReadOnly = true });
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Difference", Name = "Difference", Width = 75, ReadOnly = true });
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Difference", Name = "Difference", Width = 108, ReadOnly = true });
 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
