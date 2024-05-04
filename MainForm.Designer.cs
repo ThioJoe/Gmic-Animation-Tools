@@ -304,6 +304,8 @@
             // chkCreateGif
             // 
             this.chkCreateGif.AutoSize = true;
+            this.chkCreateGif.Checked = true;
+            this.chkCreateGif.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkCreateGif.Location = new System.Drawing.Point(15, 343);
             this.chkCreateGif.Name = "chkCreateGif";
             this.chkCreateGif.Size = new System.Drawing.Size(77, 17);

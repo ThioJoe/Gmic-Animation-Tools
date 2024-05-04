@@ -194,6 +194,8 @@
             // checkBoxRecommendedRules
             // 
             this.checkBoxRecommendedRules.AutoSize = true;
+            this.checkBoxRecommendedRules.Checked = true;
+            this.checkBoxRecommendedRules.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxRecommendedRules.Location = new System.Drawing.Point(245, 701);
             this.checkBoxRecommendedRules.Name = "checkBoxRecommendedRules";
             this.checkBoxRecommendedRules.Size = new System.Drawing.Size(199, 17);

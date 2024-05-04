@@ -24,7 +24,7 @@ public static class AppParameters
             new ParameterInfo(2,"Periodicity", 1, -6, 6, -6, 6, "Continuous"),
             new ParameterInfo(3,"Strands", 1, -6, 6, -100, 100, "Step"),
             new ParameterInfo(4,"Zoom", 1, 1, 100, -1000, 1000, "Continuous"),
-            new ParameterInfo(5,"Rotate", 0, -360, 360, -360, 360, "Continuous"),
+            new ParameterInfo(5,"Rotate", 0, -360, 360, -720, 720, "Continuous"),
             new ParameterInfo(6,"X-Shift", 0, -100, 100, -200, 200, "Continuous"),
             new ParameterInfo(7,"Y-Shift", 0, -100, 100, -200, 200, "Continuous"),
             new ParameterInfo(8,"Center X-Shift", 0, -100, 100, -200, 200, "Continuous"),

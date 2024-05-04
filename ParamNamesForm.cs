@@ -260,15 +260,17 @@ namespace GmicDrosteAnimate
                         start = RandomNumberBetween(min, max);
                         end = RandomNumberBetween(min, max);
                     }
+                    // Generate either 0 or 1 for binary parameters
                     else if (paramInfo.Type == "Binary")
                     {
-                        start = rnd.Next(2) == 0 ? min : max;
-                        end = rnd.Next(2) == 0 ? min : max;
+                        start = rnd.Next(2);
+                        end = rnd.Next(2);
                     }
                     else if (paramInfo.Type == "Step")
                     {
-                        start = rnd.Next(2) == 0 ? min : max;
-                        end = rnd.Next(2) == 0 ? min : max;
+                        // Generate random values for start and end within the range of min and max, but as whole numbers
+                        start = rnd.Next((int)min, (int)max+1); // Add 1 because double to int truncates
+                        end = rnd.Next((int)min, (int)max+1);
                     }
                     else
                     {
@@ -277,6 +279,11 @@ namespace GmicDrosteAnimate
                     }
 
                     // Check if recommended rules are applied via checkbox, if so proceed to special cases checks
+                    // 1. The "periodicity" value to be allowed to use decimals instead of just whole numbers, and i want to keep it within a range of 0.1 - 2
+                    // 2. The sum of the X-Shift and Center-X - Shift, as well as Y - Shift and Center-Y - Shift, each should not sum to greater than 60 or less than - 60
+                    // 3. The number of levels should never be less than 5, and the starting level should never be greater than the number of levels or less than 3
+                    // 4. The inner radius should never be larger than the outer radius
+                    // 5. Don't zoom more than a certain amount
                     if (checkBoxRecommendedRules.Checked)
                     {
 
@@ -290,15 +297,9 @@ namespace GmicDrosteAnimate
                         // Special case for starting level - check that it is not less than 3
                         if (paramInfo.Name == "Starting Level")
                         {
-                            // If less than 3, add random number up to the max value, but subtract 1 for some leeway
-                            if (start < 3)
-                            {
-                                start = RandomNumberBetween(start, max - 1);
-                            }
-                            if (end < 3)
-                            {
-                                end = RandomNumberBetween(end, max - 1);
-                            }
+                            // Generate new random numbers greater than 3
+                            start = RandomNumberBetween(3, max - 1);
+                            end = RandomNumberBetween(3, max - 1);
                         }
 
                         // Special case for total number of levels - Should not be less than 5, and not drop below the starting level at any time
@@ -324,8 +325,51 @@ namespace GmicDrosteAnimate
                                 end = RandomNumberBetween(maxVal, max);
                             }
                         }
-                    }
 
+                        // Special case for zoom - Don't zoom too much
+                        if (paramInfo.Name == "Zoom")
+                        {
+                            double recommendedZoomMax = 10;
+                            double recommendedZoomMin = -10;
+                            // Generate new random numbers within the range of min and max
+                            start = RandomNumberBetween(recommendedZoomMin, recommendedZoomMax);
+                            end = RandomNumberBetween(recommendedZoomMin, recommendedZoomMax);
+                        }
+
+                        // Special case for rotation - Start and end should not be too far from 0 or 360. Including multiples of 360
+                        if (paramInfo.Name == "Rotate")
+                        {
+                            double maxDiff = 30;
+
+                            // Function to correct the angle to be within maxDiff of a valid multiple of 360
+                            double CorrectAngle(double angle)
+                            {
+                                // Calculate the full rotations already done
+                                int fullRotations = (int)(angle / 360);
+                                // Generate a random adjustment within the range [-maxDiff, maxDiff]
+                                double adjustment = rnd.NextDouble() * (maxDiff * 2) - maxDiff;
+                                // Calculate the new angle
+                                return fullRotations * 360 + adjustment;
+                            }
+
+                            // Function to check if the angle is within the range of any multiple of 360
+                            bool IsWithinRange(double angle)
+                            {
+                                double remainder = angle % 360;
+                                if (remainder < 0) remainder += 360; // Normalize remainder to be positive
+                                return remainder <= maxDiff || remainder >= 360 - maxDiff;
+                            }
+
+                            if (!IsWithinRange(start))
+                            {
+                                start = CorrectAngle(start);
+                            }
+                            if (!IsWithinRange(end))
+                            {
+                                end = CorrectAngle(end);
+                            }
+                        }
+                    }
                     // Set the generated values to the appropriate cells in the DataGridView, formatting them to 2 decimal places
                     row.Cells["Start"].Value = start.ToString("F2");
                     row.Cells["End"].Value = end.ToString("F2");
@@ -405,7 +449,7 @@ namespace GmicDrosteAnimate
         private (double[], double[]) SpecialCaseInnerOuterRadius(double[] newStartParamValues, double[] newEndParamValues)
         {
             // Set max shift value to ensure the animation remains visible
-            double maxShift = 60;
+            double maxShift = 20;
 
             // Handle special case for X-Shift, Y-Shift, Center-X-Shift, Center-Y-Shift - Need to do this after all other parameters have been set because rules depend on each other
             // Get index and values of the various parameters
