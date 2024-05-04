@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrosteEffectApp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,6 +27,7 @@ namespace GmicDrosteAnimate
         // Parameters that are either on or off
         private static int[] binaryParamIndexes = { 13, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 
+        private MainForm mainForm;
         private double[] startParamValuesFromMainWindow;
         private double[] endParamValuesFromMainWindow;
         private int masterParamIndexFromMainWindow;
@@ -34,13 +36,15 @@ namespace GmicDrosteAnimate
         //Global checkbox for whether to sync with other window
         public bool syncWithOtherWindow = true;
 
-        public ParamNamesForm(double[] incomingStartParamValues, double[] incomingEndParamValues, int incomingMasterParamIndex)
+        public ParamNamesForm(MainForm mainform,double[] incomingStartParamValues, double[] incomingEndParamValues, int incomingMasterParamIndex)
         {
             startParamValuesFromMainWindow = incomingStartParamValues;
             endParamValuesFromMainWindow = incomingEndParamValues;
             masterParamIndexFromMainWindow = incomingMasterParamIndex;
 
             InitializeComponent();
+
+            this.mainForm = mainform;
 
             //Update sync option from checkbox
             syncWithOtherWindow = checkBoxSyncFromOtherWindow.Checked;
@@ -271,6 +275,21 @@ namespace GmicDrosteAnimate
         private void checkBoxDisableStepRandom_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSendParmsToMain_Click(object sender, EventArgs e)
+        {
+            // Send the strings in txtCurrentStartParamString and txtCurrentEndParamString to main form's txtStartParams and txtEndParams
+            // Get the strings from the textboxes
+            string startParamsToSend = txtCurrentStartParamString.Text;
+            string endParamsToSend = txtCurrentEndParamString.Text;
+
+            // Use the reference to update the text boxes in MainForm
+            if (mainForm != null)
+            {
+                mainForm.StartParamsTextBoxChange = startParamsToSend;
+                mainForm.EndParamsTextTextBoxChange = endParamsToSend;
+            }
         }
     }
 

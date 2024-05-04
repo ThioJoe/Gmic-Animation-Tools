@@ -41,6 +41,7 @@
             this.checkBoxSyncFromOtherWindow = new System.Windows.Forms.CheckBox();
             this.checkBoxDisableStepRandom = new System.Windows.Forms.CheckBox();
             this.checkBoxExtendedRange = new System.Windows.Forms.CheckBox();
+            this.btnSendParmsToMain = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -55,9 +56,9 @@
             // 
             // btnRandom
             // 
-            this.btnRandom.Location = new System.Drawing.Point(111, 718);
+            this.btnRandom.Location = new System.Drawing.Point(30, 725);
             this.btnRandom.Name = "btnRandom";
-            this.btnRandom.Size = new System.Drawing.Size(118, 30);
+            this.btnRandom.Size = new System.Drawing.Size(118, 23);
             this.btnRandom.TabIndex = 1;
             this.btnRandom.Text = "Randomize Selected";
             this.btnRandom.UseVisualStyleBackColor = true;
@@ -99,7 +100,7 @@
             // 
             // btnCheckAll
             // 
-            this.btnCheckAll.Location = new System.Drawing.Point(30, 695);
+            this.btnCheckAll.Location = new System.Drawing.Point(153, 701);
             this.btnCheckAll.Name = "btnCheckAll";
             this.btnCheckAll.Size = new System.Drawing.Size(75, 23);
             this.btnCheckAll.TabIndex = 6;
@@ -109,7 +110,7 @@
             // 
             // btnUncheckAll
             // 
-            this.btnUncheckAll.Location = new System.Drawing.Point(30, 725);
+            this.btnUncheckAll.Location = new System.Drawing.Point(153, 725);
             this.btnUncheckAll.Name = "btnUncheckAll";
             this.btnUncheckAll.Size = new System.Drawing.Size(75, 23);
             this.btnUncheckAll.TabIndex = 7;
@@ -132,7 +133,7 @@
             this.checkBoxDisableBinaryRandom.AutoSize = true;
             this.checkBoxDisableBinaryRandom.Checked = true;
             this.checkBoxDisableBinaryRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 740);
+            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 748);
             this.checkBoxDisableBinaryRandom.Name = "checkBoxDisableBinaryRandom";
             this.checkBoxDisableBinaryRandom.Size = new System.Drawing.Size(195, 17);
             this.checkBoxDisableBinaryRandom.TabIndex = 9;
@@ -157,7 +158,7 @@
             this.checkBoxDisableStepRandom.AutoSize = true;
             this.checkBoxDisableStepRandom.Checked = true;
             this.checkBoxDisableStepRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableStepRandom.Location = new System.Drawing.Point(245, 718);
+            this.checkBoxDisableStepRandom.Location = new System.Drawing.Point(245, 725);
             this.checkBoxDisableStepRandom.Name = "checkBoxDisableStepRandom";
             this.checkBoxDisableStepRandom.Size = new System.Drawing.Size(206, 17);
             this.checkBoxDisableStepRandom.TabIndex = 11;
@@ -168,18 +169,29 @@
             // checkBoxExtendedRange
             // 
             this.checkBoxExtendedRange.AutoSize = true;
-            this.checkBoxExtendedRange.Location = new System.Drawing.Point(245, 763);
+            this.checkBoxExtendedRange.Location = new System.Drawing.Point(245, 705);
             this.checkBoxExtendedRange.Name = "checkBoxExtendedRange";
             this.checkBoxExtendedRange.Size = new System.Drawing.Size(176, 17);
             this.checkBoxExtendedRange.TabIndex = 12;
             this.checkBoxExtendedRange.Text = "Use Extended Random Ranges";
             this.checkBoxExtendedRange.UseVisualStyleBackColor = true;
             // 
+            // btnSendParmsToMain
+            // 
+            this.btnSendParmsToMain.Location = new System.Drawing.Point(30, 701);
+            this.btnSendParmsToMain.Name = "btnSendParmsToMain";
+            this.btnSendParmsToMain.Size = new System.Drawing.Size(117, 23);
+            this.btnSendParmsToMain.TabIndex = 13;
+            this.btnSendParmsToMain.Text = "Use Above Values";
+            this.btnSendParmsToMain.UseVisualStyleBackColor = true;
+            this.btnSendParmsToMain.Click += new System.EventHandler(this.btnSendParmsToMain_Click);
+            // 
             // ParamNamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(452, 792);
+            this.Controls.Add(this.btnSendParmsToMain);
             this.Controls.Add(this.checkBoxExtendedRange);
             this.Controls.Add(this.checkBoxDisableStepRandom);
             this.Controls.Add(this.checkBoxSyncFromOtherWindow);
@@ -215,5 +227,6 @@
         private System.Windows.Forms.CheckBox checkBoxSyncFromOtherWindow;
         private System.Windows.Forms.CheckBox checkBoxDisableStepRandom;
         private System.Windows.Forms.CheckBox checkBoxExtendedRange;
+        private System.Windows.Forms.Button btnSendParmsToMain;
     }
 }
