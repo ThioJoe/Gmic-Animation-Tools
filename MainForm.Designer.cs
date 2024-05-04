@@ -65,6 +65,7 @@
             this.TextLabelNearStartButton = new System.Windows.Forms.Label();
             this.TestButton1 = new System.Windows.Forms.Button();
             this.labelMasterExponent = new System.Windows.Forms.Label();
+            this.labelMasterParamName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -421,7 +422,7 @@
             // 
             // btnShowParamNames
             // 
-            this.btnShowParamNames.Location = new System.Drawing.Point(262, 143);
+            this.btnShowParamNames.Location = new System.Drawing.Point(264, 96);
             this.btnShowParamNames.Name = "btnShowParamNames";
             this.btnShowParamNames.Size = new System.Drawing.Size(132, 22);
             this.btnShowParamNames.TabIndex = 27;
@@ -470,11 +471,21 @@
             this.labelMasterExponent.Text = "InfoLabel";
             this.labelMasterExponent.Visible = false;
             // 
+            // labelMasterParamName
+            // 
+            this.labelMasterParamName.AutoSize = true;
+            this.labelMasterParamName.Location = new System.Drawing.Point(223, 152);
+            this.labelMasterParamName.Name = "labelMasterParamName";
+            this.labelMasterParamName.Size = new System.Drawing.Size(54, 13);
+            this.labelMasterParamName.TabIndex = 33;
+            this.labelMasterParamName.Text = "Currently: ";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.labelMasterParamName);
             this.Controls.Add(this.labelMasterExponent);
             this.Controls.Add(this.TestButton1);
             this.Controls.Add(this.TextLabelNearStartButton);
@@ -568,5 +579,6 @@
         private System.Windows.Forms.Button TestButton1;
         private InvisibleNumericUpDown nudMasterParamIncrement;
         private System.Windows.Forms.Label labelMasterExponent;
+        private System.Windows.Forms.Label labelMasterParamName;
     }
 }
