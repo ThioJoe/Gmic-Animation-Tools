@@ -214,48 +214,92 @@ namespace GmicDrosteAnimate
 
         private void btnRandom_Click(object sender, EventArgs e)
         {
+            // Create a new instance of the Random class to generate random numbers
             Random rnd = new Random();
+
+            // Arrays to store the new start and end values for each parameter
             double[] newStartParamValues = new double[paramNames.Length];
             double[] newEndParamValues = new double[paramNames.Length];
 
+            // Iterate through each row in the DataGridView
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                int rowIndex = row.Index;  // Correctly reference the index of the current row
+                // Retrieve the index of the current row
+                int rowIndex = row.Index;
+
+                // Check if the row is selected for randomization
                 bool isChecked = Convert.ToBoolean(row.Cells["Select"].Value);
                 if (isChecked)
                 {
+                    // Retrieve the parameter information for the current row
                     ParameterInfo paramInfo = AppParameters.Parameters[rowIndex];
 
-                    int min = (int)Math.Ceiling(checkBoxExtendedRange.Checked ? paramInfo.ExtendedMin : paramInfo.Min);
-                    int max = (int)Math.Floor(checkBoxExtendedRange.Checked ? paramInfo.ExtendedMax : paramInfo.Max);
+                    // Determine the minimum and maximum values for the random number generation
+                    // If the 'Extended Range' checkbox is checked, use the extended min and max; otherwise, use the regular min and max
+                    int min, max;
+                    if (checkBoxExtendedRange.Checked)
+                    {
+                        min = (int)Math.Ceiling(paramInfo.ExtendedMin);
+                        max = (int)Math.Floor(paramInfo.ExtendedMax);
+                    }
+                    else
+                    {
+                        min = (int)Math.Ceiling(paramInfo.Min);
+                        max = (int)Math.Floor(paramInfo.Max);
+                    }
 
+
+                    // Generate random start and end values within the specified range
                     int start = rnd.Next(min, max + 1);
                     int end = rnd.Next(min, max + 1);
 
+                    // Set the generated values to the appropriate cells in the DataGridView, formatting them to 2 decimal places
                     row.Cells["Start"].Value = start.ToString("F2");
                     row.Cells["End"].Value = end.ToString("F2");
+
+                    // Calculate the difference between the end and start values
                     double diff = end - start;
+                    // Set the difference in the respective DataGridView cell
                     row.Cells["Difference"].Value = diff.ToString("F2");
 
+                    // Store the new start and end values in the arrays
                     newStartParamValues[rowIndex] = start;
                     newEndParamValues[rowIndex] = end;
                 }
                 else
                 {
-                    // Preserve existing values if not randomized
-                    newStartParamValues[rowIndex] = row.Cells["Start"].Value != null ? double.Parse(row.Cells["Start"].Value.ToString()) : 0;
-                    newEndParamValues[rowIndex] = row.Cells["End"].Value != null ? double.Parse(row.Cells["End"].Value.ToString()) : 0;
+                    // If the row is not checked for randomization, preserve the existing values
+                    // If the cell contains a value, parse it as a double; otherwise, default to 0
+                    if (row.Cells["Start"].Value != null)
+                    {
+                        newStartParamValues[rowIndex] = double.Parse(row.Cells["Start"].Value.ToString());
+                    }
+                    else
+                    {
+                        newStartParamValues[rowIndex] = 0;
+                    }
+
+                    if (row.Cells["End"].Value != null)
+                    {
+                        newEndParamValues[rowIndex] = double.Parse(row.Cells["End"].Value.ToString());
+                    }
+                    else
+                    {
+                        newEndParamValues[rowIndex] = 0;
+                    }
+
                 }
             }
 
-            // Update the text boxes to reflect the new start and end parameter strings
+            // Update the text boxes to reflect the newly generated start and end parameter strings
             SetCurrentStartParamString(newStartParamValues);
             SetCurrentEndParamString(newEndParamValues);
 
-            // Uncheck checkbox for syncing and disable syncing
+            // Uncheck the checkbox for syncing with the main window and disable synchronization
             checkBoxSyncFromOtherWindow.Checked = false;
             syncWithOtherWindow = false;
         }
+
 
 
         private void btnCheckAll_Click(object sender, EventArgs e)
@@ -321,7 +365,7 @@ namespace GmicDrosteAnimate
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxReasonableChanges_CheckedChanged(object sender, EventArgs e)
         {
 
         }
