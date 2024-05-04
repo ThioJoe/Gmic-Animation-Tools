@@ -202,7 +202,7 @@
             // 
             // nudMasterParamIndex
             // 
-            this.nudMasterParamIndex.Location = new System.Drawing.Point(145, 150);
+            this.nudMasterParamIndex.Location = new System.Drawing.Point(135, 150);
             this.nudMasterParamIndex.Maximum = new decimal(new int[] {
             31,
             0,
@@ -346,7 +346,7 @@
             // InfoIconMasterParamIndex
             // 
             this.InfoIconMasterParamIndex.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconMasterParamIndex.Image")));
-            this.InfoIconMasterParamIndex.Location = new System.Drawing.Point(200, 150);
+            this.InfoIconMasterParamIndex.Location = new System.Drawing.Point(188, 150);
             this.InfoIconMasterParamIndex.Name = "InfoIconMasterParamIndex";
             this.InfoIconMasterParamIndex.Size = new System.Drawing.Size(16, 16);
             this.InfoIconMasterParamIndex.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -474,7 +474,7 @@
             // labelMasterParamName
             // 
             this.labelMasterParamName.AutoSize = true;
-            this.labelMasterParamName.Location = new System.Drawing.Point(218, 152);
+            this.labelMasterParamName.Location = new System.Drawing.Point(206, 152);
             this.labelMasterParamName.Name = "labelMasterParamName";
             this.labelMasterParamName.Size = new System.Drawing.Size(150, 13);
             this.labelMasterParamName.TabIndex = 33;

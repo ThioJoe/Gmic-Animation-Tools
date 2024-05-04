@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -43,6 +44,7 @@ namespace GmicDrosteAnimate
             masterParamIndexFromMainWindow = incomingMasterParamIndex;
 
             InitializeComponent();
+            InitializeDataGridView();
 
             this.mainForm = mainform;
 
@@ -51,17 +53,139 @@ namespace GmicDrosteAnimate
 
             if (syncWithOtherWindow)
             {
-                UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
+                //UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
+                UpdateDataGridView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
             }
 
             // Register the ItemChecked event handler
-            listView1.ItemChecked += new ItemCheckedEventHandler(listView1_ItemChecked);
+            //listView1.ItemChecked += new ItemCheckedEventHandler(listView1_ItemChecked);
             
             // Set the values for the current start and end param strings
             SetCurrentEndParamString(endParamValuesFromMainWindow);
             SetCurrentStartParamString(startParamValuesFromMainWindow);
             
         }
+
+        private void InitializeDataGridView()
+        {
+            dataGridView1.Columns.Clear();
+            dataGridView1.AutoGenerateColumns = false;
+
+            // Add a checkbox column
+            DataGridViewCheckBoxColumn chkBoxColumn = new DataGridViewCheckBoxColumn();
+            chkBoxColumn.HeaderText = "";
+            chkBoxColumn.Width = 30;
+            chkBoxColumn.Name = "Select";
+            chkBoxColumn.TrueValue = true;
+            chkBoxColumn.FalseValue = false;
+            dataGridView1.Columns.Add(chkBoxColumn);
+
+            // Add other columns as previously defined
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Start", Name = "Start", Width = 50, DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight } });
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "End", Name = "End", Width = 50, DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight } });
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Parameter Name", Name = "ParameterName", Width = 130, ReadOnly = true });
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Difference", Name = "Difference", Width = 75, ReadOnly = true });
+
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.EditMode = DataGridViewEditMode.EditOnEnter;
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && (e.ColumnIndex == dataGridView1.Columns["Start"].Index || e.ColumnIndex == dataGridView1.Columns["End"].Index))
+            {
+                // Ensure the value changes are only processed for valid rows and specific columns
+                if (dataGridView1.Rows[e.RowIndex].Cells["Start"].Value != null && dataGridView1.Rows[e.RowIndex].Cells["End"].Value != null)
+                {
+                    double start = Convert.ToDouble(dataGridView1.Rows[e.RowIndex].Cells["Start"].Value);
+                    double end = Convert.ToDouble(dataGridView1.Rows[e.RowIndex].Cells["End"].Value);
+
+                    // Update the Difference cell
+                    dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = (end - start).ToString();
+
+                    // Update the parameter strings in the text boxes
+                    UpdateParameterStringsWithNewTableData();
+                }
+            }
+        }
+
+        private void UpdateParameterStringsWithNewTableData()
+        {
+            double[] startParamValues = new double[dataGridView1.Rows.Count];
+            double[] endParamValues = new double[dataGridView1.Rows.Count];
+
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (dataGridView1.Rows[i].Cells["Start"].Value != null)
+                    startParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["Start"].Value);
+                if (dataGridView1.Rows[i].Cells["End"].Value != null)
+                    endParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["End"].Value);
+            }
+
+            // Set the text boxes to the new comma-separated strings of the start and end parameters
+            SetCurrentStartParamString(startParamValues);
+            SetCurrentEndParamString(endParamValues);
+        }
+
+        private void UpdateDataGridView(double[] startParamValues, double[] endParamValues, int masterParamIndex)
+        {
+            dataGridView1.Rows.Clear();
+
+            for (int i = 0; i < paramNames.Length; i++)
+            {
+                int idx = dataGridView1.Rows.Add();
+                var row = dataGridView1.Rows[idx];
+
+                // Set 'Start' value
+                if (startParamValues != null && i < startParamValues.Length)
+                {
+                    row.Cells["Start"].Value = startParamValues[i].ToString();
+                }
+                else
+                {
+                    row.Cells["Start"].Value = ""; // or you can use DBNull.Value or another placeholder
+                }
+
+                // Set 'End' value
+                if (endParamValues != null && i < endParamValues.Length)
+                {
+                    row.Cells["End"].Value = endParamValues[i].ToString();
+                }
+                else
+                {
+                    row.Cells["End"].Value = ""; // or you can use DBNull.Value or another placeholder
+                }
+
+                // Set 'Parameter Name'
+                row.Cells["ParameterName"].Value = paramNames[i];
+
+                if (i == masterParamIndex)
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightGreen; // Highlight the master parameter
+                }
+
+                // Calculate and display difference
+                if (row.Cells["Start"].Value != DBNull.Value && row.Cells["End"].Value != DBNull.Value &&
+                    !string.IsNullOrEmpty(row.Cells["Start"].Value.ToString()) && !string.IsNullOrEmpty(row.Cells["End"].Value.ToString()))
+                {
+                    double start = double.Parse(row.Cells["Start"].Value.ToString());
+                    double end = double.Parse(row.Cells["End"].Value.ToString());
+                    double diff = end - start;
+                    row.Cells["Difference"].Value = diff.ToString();
+                }
+                else
+                {
+                    row.Cells["Difference"].Value = ""; // Ensure clear or appropriate placeholder value
+                }
+            }
+            // Set the values for the current start and end param strings
+            SetCurrentEndParamString(endParamValues);
+            SetCurrentStartParamString(startParamValues);
+        }
+
+
+
 
         public void UpdateParamValues(double[] startParamValues, double[] endParamValues, int masterParamIndex)
         {   
@@ -75,89 +199,90 @@ namespace GmicDrosteAnimate
 
             if (syncWithOtherWindow)
             {   
-                UpdateListView(startParamValues, endParamValues, masterParamIndex);
+                //UpdateListView(startParamValues, endParamValues, masterParamIndex);
+                UpdateDataGridView(startParamValues, endParamValues, masterParamIndex);
             }
         }
 
-        private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
-        {
-            // Retrieve the item that was checked or unchecked
-            ListViewItem item = e.Item;
+        //private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
+        //{
+        //    // Retrieve the item that was checked or unchecked
+        //    ListViewItem item = e.Item;
 
-            //// Example logic that might be performed
-            //if (item.Checked)
-            //{
-            //    // Code to execute when the item is checked
-            //    // For example, enabling a button to apply changes
-            //    Console.WriteLine("Item checked: " + item.SubItems[3].Text); // Assuming the name is in the 4th subitem
-            //    Console.WriteLine("Entire Item:" + item.Text + " " + item.SubItems[1].Text + " " + item.SubItems[2].Text + " " + item.SubItems[3].Text + " " + item.SubItems[4].Text);
-            //}
-            //else
-            //{
-            //    // Code to execute when the item is unchecked
-            //    Console.WriteLine("Item unchecked: " + item.SubItems[3].Text); // Same assumption as above
-            //}
-        }
+        //    //// Example logic that might be performed
+        //    //if (item.Checked)
+        //    //{
+        //    //    // Code to execute when the item is checked
+        //    //    // For example, enabling a button to apply changes
+        //    //    Console.WriteLine("Item checked: " + item.SubItems[3].Text); // Assuming the name is in the 4th subitem
+        //    //    Console.WriteLine("Entire Item:" + item.Text + " " + item.SubItems[1].Text + " " + item.SubItems[2].Text + " " + item.SubItems[3].Text + " " + item.SubItems[4].Text);
+        //    //}
+        //    //else
+        //    //{
+        //    //    // Code to execute when the item is unchecked
+        //    //    Console.WriteLine("Item unchecked: " + item.SubItems[3].Text); // Same assumption as above
+        //    //}
+        //}
 
         // Function to update the ListView with the parameter values
-        private void UpdateListView(double[] startParamValues, double[] endParamValues, int masterParamIndex)
-        {
-            // Clear existing items
-            listView1.Items.Clear();
-            listView1.Columns.Clear();
+        //private void UpdateListView(double[] startParamValues, double[] endParamValues, int masterParamIndex)
+        //{
+        //    // Clear existing items
+        //    listView1.Items.Clear();
+        //    listView1.Columns.Clear();
 
-            // Initialize the ListView properties
-            listView1.GridLines = true;
-            listView1.View = View.Details; // Ensure the view is set to Details
-            listView1.FullRowSelect = true; // Makes it easier to select items
-            listView1.CheckBoxes = true; // Enable checkboxes next to each item
+        //    // Initialize the ListView properties
+        //    listView1.GridLines = true;
+        //    listView1.View = View.Details; // Ensure the view is set to Details
+        //    listView1.FullRowSelect = true; // Makes it easier to select items
+        //    listView1.CheckBoxes = true; // Enable checkboxes next to each item
 
-            // Add a dummy first column
-            listView1.Columns.Add("", 20); // Minimal width
+        //    // Add a dummy first column
+        //    listView1.Columns.Add("", 20); // Minimal width
 
-            // Add visible columns - 2nd argument is the width of the column
-            listView1.Columns.Add("Start", 50).TextAlign = HorizontalAlignment.Right;
-            listView1.Columns.Add("End", 50).TextAlign = HorizontalAlignment.Right;
-            listView1.Columns.Add("Parameter Name", 130).TextAlign = HorizontalAlignment.Left;
-            listView1.Columns.Add("Difference", 75).TextAlign = HorizontalAlignment.Left;
+        //    // Add visible columns - 2nd argument is the width of the column
+        //    listView1.Columns.Add("Start", 50).TextAlign = HorizontalAlignment.Right;
+        //    listView1.Columns.Add("End", 50).TextAlign = HorizontalAlignment.Right;
+        //    listView1.Columns.Add("Parameter Name", 130).TextAlign = HorizontalAlignment.Left;
+        //    listView1.Columns.Add("Difference", 75).TextAlign = HorizontalAlignment.Left;
 
-            for (int i = 0; i < paramNames.Length; i++)
-            {
-                // Initialize ListViewItem with an empty value for the dummy column
-                ListViewItem item = new ListViewItem("");
+        //    for (int i = 0; i < paramNames.Length; i++)
+        //    {
+        //        // Initialize ListViewItem with an empty value for the dummy column
+        //        ListViewItem item = new ListViewItem("");
 
-                // Add actual data as subitems
-                string startValue = startParamValues != null && i < startParamValues.Length ? startParamValues[i].ToString() : "";
-                item.SubItems.Add(startValue);
+        //        // Add actual data as subitems
+        //        string startValue = startParamValues != null && i < startParamValues.Length ? startParamValues[i].ToString() : "";
+        //        item.SubItems.Add(startValue);
 
-                string endValue = endParamValues != null && i < endParamValues.Length ? endParamValues[i].ToString() : "";
-                item.SubItems.Add(endValue);
+        //        string endValue = endParamValues != null && i < endParamValues.Length ? endParamValues[i].ToString() : "";
+        //        item.SubItems.Add(endValue);
 
-                // Add the parameter name as another subitem
-                item.SubItems.Add(paramNames[i]);
+        //        // Add the parameter name as another subitem
+        //        item.SubItems.Add(paramNames[i]);
 
-                // If the parameter is the master parameter, highlight it
-                if (i == masterParamIndex)
-                {
-                    item.BackColor = Color.LightGreen;
-                }
+        //        // If the parameter is the master parameter, highlight it
+        //        if (i == masterParamIndex)
+        //        {
+        //            item.BackColor = Color.LightGreen;
+        //        }
 
-                // If both start and end values are available, calculate difference
-                if (!string.IsNullOrEmpty(startValue) && !string.IsNullOrEmpty(endValue))
-                {
-                    double start = double.Parse(startValue);
-                    double end = double.Parse(endValue);
-                    double diff = end - start;
-                    item.SubItems.Add(diff.ToString());
-                }
+        //        // If both start and end values are available, calculate difference
+        //        if (!string.IsNullOrEmpty(startValue) && !string.IsNullOrEmpty(endValue))
+        //        {
+        //            double start = double.Parse(startValue);
+        //            double end = double.Parse(endValue);
+        //            double diff = end - start;
+        //            item.SubItems.Add(diff.ToString());
+        //        }
 
-                listView1.Items.Add(item);
-            }
+        //        listView1.Items.Add(item);
+        //    }
 
-            // Set the values for the current start and end param strings
-            SetCurrentEndParamString(endParamValues);
-            SetCurrentStartParamString(startParamValues);
-        }
+        //    // Set the values for the current start and end param strings
+        //    SetCurrentEndParamString(endParamValues);
+        //    SetCurrentStartParamString(startParamValues);
+        //}
 
         // Function to set current start param string from array
         public void SetCurrentStartParamString(double[] currentParamString)
@@ -173,58 +298,68 @@ namespace GmicDrosteAnimate
         private void btnRandom_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
-            foreach (ListViewItem item in listView1.Items)
+            double[] newStartParamValues = new double[paramNames.Length];
+            double[] newEndParamValues = new double[paramNames.Length];
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                if (item.Checked)
+                int rowIndex = row.Index;  // Correctly reference the index of the current row
+                bool isChecked = Convert.ToBoolean(row.Cells["Select"].Value);
+                if (isChecked)
                 {
-                    int index = item.Index;
-                    ParameterInfo paramInfo = AppParameters.Parameters[index];
+                    ParameterInfo paramInfo = AppParameters.Parameters[rowIndex];
 
-                    int min, max;
+                    int min = (int)Math.Ceiling(checkBoxExtendedRange.Checked ? paramInfo.ExtendedMin : paramInfo.Min);
+                    int max = (int)Math.Floor(checkBoxExtendedRange.Checked ? paramInfo.ExtendedMax : paramInfo.Max);
 
-                    // Determine the range based on the checkBoxExtendedRange
-                    if (checkBoxExtendedRange.Checked)
-                    {
-                        min = (int)Math.Ceiling(paramInfo.ExtendedMin);
-                        max = (int)Math.Floor(paramInfo.ExtendedMax);
-                    }
-                    else
-                    {
-                        min = (int)Math.Ceiling(paramInfo.Min);
-                        max = (int)Math.Floor(paramInfo.Max);
-                    }
-
-                    // Generate random integer values within the specified range
                     int start = rnd.Next(min, max + 1);
                     int end = rnd.Next(min, max + 1);
 
-                    // Update the ListView item subitems with the random values
-                    item.SubItems[1].Text = start.ToString("F2");  // Random 'Start' value, formatted to 2 decimal places
-                    item.SubItems[2].Text = end.ToString("F2");    // Random 'End' value, formatted to 2 decimal places
-
-                    // Calculate and update the difference column
+                    row.Cells["Start"].Value = start.ToString("F2");
+                    row.Cells["End"].Value = end.ToString("F2");
                     double diff = end - start;
-                    item.SubItems[4].Text = diff.ToString("F2");
+                    row.Cells["Difference"].Value = diff.ToString("F2");
+
+                    newStartParamValues[rowIndex] = start;
+                    newEndParamValues[rowIndex] = end;
+                }
+                else
+                {
+                    // Preserve existing values if not randomized
+                    newStartParamValues[rowIndex] = row.Cells["Start"].Value != null ? double.Parse(row.Cells["Start"].Value.ToString()) : 0;
+                    newEndParamValues[rowIndex] = row.Cells["End"].Value != null ? double.Parse(row.Cells["End"].Value.ToString()) : 0;
                 }
             }
-            // Get new arrays from the ListView to put into new start and end param arrays
-            double[] newStartParamValues = new double[paramNames.Length];
-            double[] newEndParamValues = new double[paramNames.Length];
-            for (int i = 0; i < paramNames.Length; i++)
-            {
-                newStartParamValues[i] = double.Parse(listView1.Items[i].SubItems[1].Text);
-                newEndParamValues[i] = double.Parse(listView1.Items[i].SubItems[2].Text);
-            }
 
-            // Set the values for the current start and end param strings
-            SetCurrentEndParamString(newEndParamValues);
+            // Update the text boxes to reflect the new start and end parameter strings
             SetCurrentStartParamString(newStartParamValues);
+            SetCurrentEndParamString(newEndParamValues);
 
             // Uncheck checkbox for syncing and disable syncing
             checkBoxSyncFromOtherWindow.Checked = false;
             syncWithOtherWindow = false;
-
         }
+
+
+        //private void btnCheckAll_Click(object sender, EventArgs e)
+        //{
+        //    // Determine which types should be included based on checkbox states
+        //    List<string> includedTypes = new List<string>();
+        //    if (!checkBoxDisableBinaryRandom.Checked) includedTypes.Add("Binary");
+        //    if (!checkBoxDisableStepRandom.Checked) includedTypes.Add("Step");
+        //    // Add more checks as necessary for other types - Never add 'choice' type because it doesn't make sense to randomize
+        //    includedTypes.Add("Continuous");
+
+        //    // Iterate through each ListViewItem in the ListView
+        //    foreach (ListViewItem item in listView1.Items)
+        //    {
+        //        // Get the type of the current parameter
+        //        string paramType = AppParameters.Parameters[item.Index].Type;
+
+        //        // Check the item if its type is in the list of included types
+        //        item.Checked = includedTypes.Contains(paramType);
+        //    }
+        //}
 
         private void btnCheckAll_Click(object sender, EventArgs e)
         {
@@ -232,34 +367,39 @@ namespace GmicDrosteAnimate
             List<string> includedTypes = new List<string>();
             if (!checkBoxDisableBinaryRandom.Checked) includedTypes.Add("Binary");
             if (!checkBoxDisableStepRandom.Checked) includedTypes.Add("Step");
-            // Add more checks as necessary for other types - Never add 'choice' type because it doesn't make sense to randomize
             includedTypes.Add("Continuous");
 
-            // Iterate through each ListViewItem in the ListView
-            foreach (ListViewItem item in listView1.Items)
+            // Iterate through each row in the DataGridView
+            foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                // Get the type of the current parameter
-                string paramType = AppParameters.Parameters[item.Index].Type;
-
-                // Check the item if its type is in the list of included types
-                item.Checked = includedTypes.Contains(paramType);
+                string paramType = AppParameters.Parameters[row.Index].Type;
+                row.Cells["Select"].Value = includedTypes.Contains(paramType);
             }
         }
 
+        //private void btnUncheckAll_Click(object sender, EventArgs e)
+        //{
+        //    //Uncheck all items in the ListView
+        //    foreach (ListViewItem item in listView1.Items)
+        //    {
+        //        item.Checked = false;
+        //    }
+        //}
 
         private void btnUncheckAll_Click(object sender, EventArgs e)
         {
-            //Uncheck all items in the ListView
-            foreach (ListViewItem item in listView1.Items)
+            foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                item.Checked = false;
+                row.Cells["Select"].Value = false;
             }
         }
+
 
         private void btnResetAll_Click(object sender, EventArgs e)
         {
             // Reset all items in the ListView to the original values from other form
-            UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
+            //UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
+            UpdateDataGridView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
             // Enabling syncing
             syncWithOtherWindow = true;
             checkBoxSyncFromOtherWindow.Checked = true;
