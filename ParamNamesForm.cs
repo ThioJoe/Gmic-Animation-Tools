@@ -184,9 +184,6 @@ namespace GmicDrosteAnimate
             SetCurrentStartParamString(startParamValues);
         }
 
-
-
-
         public void UpdateParamValues(double[] startParamValues, double[] endParamValues, int masterParamIndex)
         {   
             //Update sync option from checkbox
@@ -203,86 +200,6 @@ namespace GmicDrosteAnimate
                 UpdateDataGridView(startParamValues, endParamValues, masterParamIndex);
             }
         }
-
-        //private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
-        //{
-        //    // Retrieve the item that was checked or unchecked
-        //    ListViewItem item = e.Item;
-
-        //    //// Example logic that might be performed
-        //    //if (item.Checked)
-        //    //{
-        //    //    // Code to execute when the item is checked
-        //    //    // For example, enabling a button to apply changes
-        //    //    Console.WriteLine("Item checked: " + item.SubItems[3].Text); // Assuming the name is in the 4th subitem
-        //    //    Console.WriteLine("Entire Item:" + item.Text + " " + item.SubItems[1].Text + " " + item.SubItems[2].Text + " " + item.SubItems[3].Text + " " + item.SubItems[4].Text);
-        //    //}
-        //    //else
-        //    //{
-        //    //    // Code to execute when the item is unchecked
-        //    //    Console.WriteLine("Item unchecked: " + item.SubItems[3].Text); // Same assumption as above
-        //    //}
-        //}
-
-        // Function to update the ListView with the parameter values
-        //private void UpdateListView(double[] startParamValues, double[] endParamValues, int masterParamIndex)
-        //{
-        //    // Clear existing items
-        //    listView1.Items.Clear();
-        //    listView1.Columns.Clear();
-
-        //    // Initialize the ListView properties
-        //    listView1.GridLines = true;
-        //    listView1.View = View.Details; // Ensure the view is set to Details
-        //    listView1.FullRowSelect = true; // Makes it easier to select items
-        //    listView1.CheckBoxes = true; // Enable checkboxes next to each item
-
-        //    // Add a dummy first column
-        //    listView1.Columns.Add("", 20); // Minimal width
-
-        //    // Add visible columns - 2nd argument is the width of the column
-        //    listView1.Columns.Add("Start", 50).TextAlign = HorizontalAlignment.Right;
-        //    listView1.Columns.Add("End", 50).TextAlign = HorizontalAlignment.Right;
-        //    listView1.Columns.Add("Parameter Name", 130).TextAlign = HorizontalAlignment.Left;
-        //    listView1.Columns.Add("Difference", 75).TextAlign = HorizontalAlignment.Left;
-
-        //    for (int i = 0; i < paramNames.Length; i++)
-        //    {
-        //        // Initialize ListViewItem with an empty value for the dummy column
-        //        ListViewItem item = new ListViewItem("");
-
-        //        // Add actual data as subitems
-        //        string startValue = startParamValues != null && i < startParamValues.Length ? startParamValues[i].ToString() : "";
-        //        item.SubItems.Add(startValue);
-
-        //        string endValue = endParamValues != null && i < endParamValues.Length ? endParamValues[i].ToString() : "";
-        //        item.SubItems.Add(endValue);
-
-        //        // Add the parameter name as another subitem
-        //        item.SubItems.Add(paramNames[i]);
-
-        //        // If the parameter is the master parameter, highlight it
-        //        if (i == masterParamIndex)
-        //        {
-        //            item.BackColor = Color.LightGreen;
-        //        }
-
-        //        // If both start and end values are available, calculate difference
-        //        if (!string.IsNullOrEmpty(startValue) && !string.IsNullOrEmpty(endValue))
-        //        {
-        //            double start = double.Parse(startValue);
-        //            double end = double.Parse(endValue);
-        //            double diff = end - start;
-        //            item.SubItems.Add(diff.ToString());
-        //        }
-
-        //        listView1.Items.Add(item);
-        //    }
-
-        //    // Set the values for the current start and end param strings
-        //    SetCurrentEndParamString(endParamValues);
-        //    SetCurrentStartParamString(startParamValues);
-        //}
 
         // Function to set current start param string from array
         public void SetCurrentStartParamString(double[] currentParamString)
@@ -341,26 +258,6 @@ namespace GmicDrosteAnimate
         }
 
 
-        //private void btnCheckAll_Click(object sender, EventArgs e)
-        //{
-        //    // Determine which types should be included based on checkbox states
-        //    List<string> includedTypes = new List<string>();
-        //    if (!checkBoxDisableBinaryRandom.Checked) includedTypes.Add("Binary");
-        //    if (!checkBoxDisableStepRandom.Checked) includedTypes.Add("Step");
-        //    // Add more checks as necessary for other types - Never add 'choice' type because it doesn't make sense to randomize
-        //    includedTypes.Add("Continuous");
-
-        //    // Iterate through each ListViewItem in the ListView
-        //    foreach (ListViewItem item in listView1.Items)
-        //    {
-        //        // Get the type of the current parameter
-        //        string paramType = AppParameters.Parameters[item.Index].Type;
-
-        //        // Check the item if its type is in the list of included types
-        //        item.Checked = includedTypes.Contains(paramType);
-        //    }
-        //}
-
         private void btnCheckAll_Click(object sender, EventArgs e)
         {
             // Determine which types should be included based on checkbox states
@@ -377,14 +274,6 @@ namespace GmicDrosteAnimate
             }
         }
 
-        //private void btnUncheckAll_Click(object sender, EventArgs e)
-        //{
-        //    //Uncheck all items in the ListView
-        //    foreach (ListViewItem item in listView1.Items)
-        //    {
-        //        item.Checked = false;
-        //    }
-        //}
 
         private void btnUncheckAll_Click(object sender, EventArgs e)
         {
@@ -430,6 +319,11 @@ namespace GmicDrosteAnimate
                 mainForm.StartParamsTextBoxChange = startParamsToSend;
                 mainForm.EndParamsTextTextBoxChange = endParamsToSend;
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

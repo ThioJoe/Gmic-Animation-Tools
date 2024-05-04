@@ -42,6 +42,7 @@
             this.checkBoxExtendedRange = new System.Windows.Forms.CheckBox();
             this.btnSendParmsToMain = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,7 +125,7 @@
             this.checkBoxDisableBinaryRandom.AutoSize = true;
             this.checkBoxDisableBinaryRandom.Checked = true;
             this.checkBoxDisableBinaryRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 748);
+            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 763);
             this.checkBoxDisableBinaryRandom.Name = "checkBoxDisableBinaryRandom";
             this.checkBoxDisableBinaryRandom.Size = new System.Drawing.Size(195, 17);
             this.checkBoxDisableBinaryRandom.TabIndex = 9;
@@ -149,7 +150,7 @@
             this.checkBoxDisableStepRandom.AutoSize = true;
             this.checkBoxDisableStepRandom.Checked = true;
             this.checkBoxDisableStepRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableStepRandom.Location = new System.Drawing.Point(245, 725);
+            this.checkBoxDisableStepRandom.Location = new System.Drawing.Point(245, 740);
             this.checkBoxDisableStepRandom.Name = "checkBoxDisableStepRandom";
             this.checkBoxDisableStepRandom.Size = new System.Drawing.Size(206, 17);
             this.checkBoxDisableStepRandom.TabIndex = 11;
@@ -160,7 +161,7 @@
             // checkBoxExtendedRange
             // 
             this.checkBoxExtendedRange.AutoSize = true;
-            this.checkBoxExtendedRange.Location = new System.Drawing.Point(245, 705);
+            this.checkBoxExtendedRange.Location = new System.Drawing.Point(245, 720);
             this.checkBoxExtendedRange.Name = "checkBoxExtendedRange";
             this.checkBoxExtendedRange.Size = new System.Drawing.Size(176, 17);
             this.checkBoxExtendedRange.TabIndex = 12;
@@ -190,11 +191,23 @@
             this.dataGridView1.TabIndex = 14;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(245, 701);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(145, 17);
+            this.checkBox1.TabIndex = 15;
+            this.checkBox1.Text = "Use Reasonable Ranges";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // ParamNamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(452, 792);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnSendParmsToMain);
             this.Controls.Add(this.checkBoxExtendedRange);
@@ -232,5 +245,6 @@
         private System.Windows.Forms.CheckBox checkBoxExtendedRange;
         private System.Windows.Forms.Button btnSendParmsToMain;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
