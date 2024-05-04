@@ -104,7 +104,16 @@ namespace GmicDrosteAnimate
                     double end = Convert.ToDouble(dataGridView1.Rows[e.RowIndex].Cells["End"].Value);
 
                     // Update the Difference cell
-                    dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = (end - start).ToString();
+                    double difference = end - start;
+                    // If the difference is a whole number, display without decimals
+                    if (difference % 1 == 0)
+                    {
+                        dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = difference.ToString("F0");
+                    }
+                    else
+                    {
+                        dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = difference.ToString("F2");
+                    }
 
                     // Update the parameter strings in the text boxes
                     UpdateParameterStringsWithNewTableData();
@@ -142,7 +151,15 @@ namespace GmicDrosteAnimate
                 // Set 'Start' value
                 if (startParamValues != null && i < startParamValues.Length)
                 {
-                    row.Cells["Start"].Value = startParamValues[i].ToString();
+                    // If the number is a whole number, display without decimals
+                    if (startParamValues[i] % 1 == 0)
+                    {
+                        row.Cells["Start"].Value = startParamValues[i].ToString("F0");
+                    }
+                    else
+                    {
+                        row.Cells["Start"].Value = startParamValues[i].ToString();
+                    }
                 }
                 else
                 {
@@ -152,7 +169,15 @@ namespace GmicDrosteAnimate
                 // Set 'End' value
                 if (endParamValues != null && i < endParamValues.Length)
                 {
-                    row.Cells["End"].Value = endParamValues[i].ToString();
+                    // If the number is a whole number, display without decimals
+                    if (endParamValues[i] % 1 == 0)
+                    {
+                        row.Cells["End"].Value = endParamValues[i].ToString("F0");
+                    }
+                    else
+                    {
+                        row.Cells["End"].Value = endParamValues[i].ToString();
+                    }
                 }
                 else
                 {
@@ -376,13 +401,20 @@ namespace GmicDrosteAnimate
                     end = Math.Round(end, paramInfo.Decimals);
 
                     // Set the generated values to the appropriate cells in the DataGridView, formatting them to 2 decimal places
-                    row.Cells["Start"].Value = start.ToString("F2");
-                    row.Cells["End"].Value = end.ToString("F2");
+                    row.Cells["Start"].Value = start.ToString();
+                    row.Cells["End"].Value = end.ToString();
 
                     // Calculate the difference between the end and start values
                     double diff = end - start;
-                    // Set the difference in the respective DataGridView cell
+                    // Set the difference in the respective DataGridView cell. Number of decimals depends on result
+                    if (diff % 1 == 0)
+                    {
+                        row.Cells["Difference"].Value = diff.ToString("F0");
+                    }
+                    else
+                    { 
                     row.Cells["Difference"].Value = diff.ToString("F2");
+                    }
 
                     // Store the new start and end values in the arrays
                     newStartParamValues[rowIndex] = start;
@@ -531,14 +563,14 @@ namespace GmicDrosteAnimate
             newEndParamValues[centerYShiftIndex] = newCenterYShiftEnd;
 
             // Set the new values in the DataGridView
-            dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString("F2");
-            dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString("F2");
-            dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString("F2");
-            dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString("F2");
-            dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString("F2");
-            dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString("F2");
-            dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString("F2");
-            dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString("F2");
+            dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString();
+            dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString();
+            dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString();
+            dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString();
+            dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString();
+            dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString();
+            dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString();
+            dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString();
 
             return (newStartParamValues, newEndParamValues);
         }
