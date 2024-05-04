@@ -422,9 +422,9 @@
             // 
             // btnShowParamNames
             // 
-            this.btnShowParamNames.Location = new System.Drawing.Point(264, 96);
+            this.btnShowParamNames.Location = new System.Drawing.Point(273, 358);
             this.btnShowParamNames.Name = "btnShowParamNames";
-            this.btnShowParamNames.Size = new System.Drawing.Size(132, 22);
+            this.btnShowParamNames.Size = new System.Drawing.Size(130, 22);
             this.btnShowParamNames.TabIndex = 27;
             this.btnShowParamNames.Text = "Show Parameter Names";
             this.btnShowParamNames.UseVisualStyleBackColor = true;
