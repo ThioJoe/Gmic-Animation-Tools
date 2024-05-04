@@ -370,6 +370,11 @@ namespace GmicDrosteAnimate
                             }
                         }
                     }
+
+                    // Reduce the number of decimal places to the specified amount
+                    start = Math.Round(start, paramInfo.Decimals);
+                    end = Math.Round(end, paramInfo.Decimals);
+
                     // Set the generated values to the appropriate cells in the DataGridView, formatting them to 2 decimal places
                     row.Cells["Start"].Value = start.ToString("F2");
                     row.Cells["End"].Value = end.ToString("F2");
@@ -503,6 +508,17 @@ namespace GmicDrosteAnimate
                 } while (newYShiftStart + newCenterYShiftStart > maxShift || newYShiftStart + newCenterYShiftStart < -maxShift || newYShiftEnd + newCenterYShiftEnd > maxShift || newYShiftEnd + newCenterYShiftEnd < -maxShift);
 
             }
+
+            // Reduce the number of decimal places to the specified amount from param info
+            newXShiftStart = Math.Round(newXShiftStart, AppParameters.Parameters[xShiftIndex].Decimals);
+            newYShiftStart = Math.Round(newYShiftStart, AppParameters.Parameters[yShiftIndex].Decimals);
+            newCenterXShiftStart = Math.Round(newCenterXShiftStart, AppParameters.Parameters[centerXShiftIndex].Decimals);
+            newCenterYShiftStart = Math.Round(newCenterYShiftStart, AppParameters.Parameters[centerYShiftIndex].Decimals);
+            newXShiftEnd = Math.Round(newXShiftEnd, AppParameters.Parameters[xShiftIndex].Decimals);
+            newYShiftEnd = Math.Round(newYShiftEnd, AppParameters.Parameters[yShiftIndex].Decimals);
+            newCenterXShiftEnd = Math.Round(newCenterXShiftEnd, AppParameters.Parameters[centerXShiftIndex].Decimals);
+            newCenterYShiftEnd = Math.Round(newCenterYShiftEnd, AppParameters.Parameters[centerYShiftIndex].Decimals);
+
 
             // Apply the new values to the arrays
             newStartParamValues[xShiftIndex] = newXShiftStart;

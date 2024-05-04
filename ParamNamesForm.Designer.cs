@@ -48,6 +48,7 @@
             // 
             // btnRandom
             // 
+            this.btnRandom.ForeColor = System.Drawing.Color.Red;
             this.btnRandom.Location = new System.Drawing.Point(30, 725);
             this.btnRandom.Name = "btnRandom";
             this.btnRandom.Size = new System.Drawing.Size(118, 23);
@@ -170,12 +171,14 @@
             // 
             // btnSendParmsToMain
             // 
+            this.btnSendParmsToMain.BackColor = System.Drawing.Color.LightGreen;
+            this.btnSendParmsToMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btnSendParmsToMain.Location = new System.Drawing.Point(30, 701);
             this.btnSendParmsToMain.Name = "btnSendParmsToMain";
             this.btnSendParmsToMain.Size = new System.Drawing.Size(117, 23);
             this.btnSendParmsToMain.TabIndex = 13;
             this.btnSendParmsToMain.Text = "Use Above Values";
-            this.btnSendParmsToMain.UseVisualStyleBackColor = true;
+            this.btnSendParmsToMain.UseVisualStyleBackColor = false;
             this.btnSendParmsToMain.Click += new System.EventHandler(this.btnSendParmsToMain_Click);
             // 
             // dataGridView1
