@@ -280,31 +280,11 @@ namespace GmicDrosteAnimate
                     if (checkBoxRecommendedRules.Checked)
                     {
 
-                        // Handle special case for inner/outer radius - But only check for outer radius and adjust based on inner radius
-                        if (paramInfo.Name == "Outer Radius")
-                        {
-                            // Get inner radius start/end values
-                            double innerRadiusStart = newStartParamValues[0];
-                            double innerRadiusEnd = newEndParamValues[0];
-
-                            // If inner radius start is greater than outer radius start, adjust outer radius start to be greater than inner radius start
-                            if (innerRadiusStart > start)
-                            {
-                                start = RandomNumberBetween(innerRadiusStart, max);
-                            }
-
-                            // If inner radius end is greater than outer radius end, adjust outer radius end to be greater than inner radius end
-                            if (innerRadiusEnd > end)
-                            {
-                                end = RandomNumberBetween(innerRadiusEnd, max);
-                            }
-                        }
-
                         // Handle special cases and reasonable ranges, if applicable
                         // Check if parameter is periodicity 
                         if (paramInfo.Name == "Periodicity")
                         {
-                            SpecialCasePeriodicity(start, end);
+                            (start, end) = SpecialCasePeriodicity();
                         }
 
                         // Special case for starting level - check that it is not less than 3
@@ -408,10 +388,13 @@ namespace GmicDrosteAnimate
         }
 
         //Periodicity special case
-        private (double, double) SpecialCasePeriodicity(double start, double end)
+        private (double, double) SpecialCasePeriodicity()
         {
             double periodicityMin = 0.1;
             double periodicityMax = 2;
+            double start;
+            double end;
+
             //Want the range between 0.1 and 2. If it's not, make new random values until they are
             start = RandomNumberBetween(periodicityMin, periodicityMax);
             end = RandomNumberBetween(periodicityMin, periodicityMax);
@@ -421,6 +404,8 @@ namespace GmicDrosteAnimate
         // InnerOuterRadius special case
         private (double[], double[]) SpecialCaseInnerOuterRadius(double[] newStartParamValues, double[] newEndParamValues)
         {
+            // Set max shift value to ensure the animation remains visible
+            double maxShift = 60;
 
             // Handle special case for X-Shift, Y-Shift, Center-X-Shift, Center-Y-Shift - Need to do this after all other parameters have been set because rules depend on each other
             // Get index and values of the various parameters
@@ -438,40 +423,40 @@ namespace GmicDrosteAnimate
             double pendingCenterYShiftEnd = newEndParamValues[centerYShiftIndex];
 
             // Just generate new random numbers for all within the ranges instead of checking first
-            double newXShiftStart = RandomNumberBetween(-60, 60);
-            double newYShiftStart = RandomNumberBetween(-60, 60);
-            double newCenterXShiftStart = RandomNumberBetween(-60, 60);
-            double newCenterYShiftStart = RandomNumberBetween(-60, 60);
-            double newXShiftEnd = RandomNumberBetween(-60, 60);
-            double newYShiftEnd = RandomNumberBetween(-60, 60);
-            double newCenterXShiftEnd = RandomNumberBetween(-60, 60);
-            double newCenterYShiftEnd = RandomNumberBetween(-60, 60);
+            double newXShiftStart = RandomNumberBetween(-maxShift, maxShift);
+            double newYShiftStart = RandomNumberBetween(-maxShift, maxShift);
+            double newCenterXShiftStart = RandomNumberBetween(-maxShift, maxShift);
+            double newCenterYShiftStart = RandomNumberBetween(-maxShift, maxShift);
+            double newXShiftEnd = RandomNumberBetween(-maxShift, maxShift);
+            double newYShiftEnd = RandomNumberBetween(-maxShift, maxShift);
+            double newCenterXShiftEnd = RandomNumberBetween(-maxShift, maxShift);
+            double newCenterYShiftEnd = RandomNumberBetween(-maxShift, maxShift);
 
             // Sum of X-Shift and Center-X-Shift should not be >60 or < -60, otherwise generate new random values - Test both start and end values
-            if (pendingXShiftStart + pendingCenterXShiftStart > 60 || pendingXShiftStart + pendingCenterXShiftStart < -60 || pendingXShiftEnd + pendingCenterXShiftEnd > 60 || pendingXShiftEnd + pendingCenterXShiftEnd < -60)
+            if (pendingXShiftStart + pendingCenterXShiftStart > maxShift || pendingXShiftStart + pendingCenterXShiftStart < -maxShift || pendingXShiftEnd + pendingCenterXShiftEnd > maxShift || pendingXShiftEnd + pendingCenterXShiftEnd < -maxShift)
             {
                 // While loop until the sum of X-Shift and Center-X-Shift is within the range
                 do
                 {
-                    newXShiftStart = RandomNumberBetween(-60, 60);
-                    newCenterXShiftStart = RandomNumberBetween(-60, 60);
-                    newXShiftEnd = RandomNumberBetween(-60, 60);
-                    newCenterXShiftEnd = RandomNumberBetween(-60, 60);
-                } while (newXShiftStart + newCenterXShiftStart > 60 || newXShiftStart + newCenterXShiftStart < -60 || newXShiftEnd + newCenterXShiftEnd > 60 || newXShiftEnd + newCenterXShiftEnd < -60);
+                    newXShiftStart = RandomNumberBetween(-maxShift, maxShift);
+                    newCenterXShiftStart = RandomNumberBetween(-maxShift, maxShift);
+                    newXShiftEnd = RandomNumberBetween(-maxShift, maxShift);
+                    newCenterXShiftEnd = RandomNumberBetween(-maxShift, maxShift);
+                } while (newXShiftStart + newCenterXShiftStart > maxShift || newXShiftStart + newCenterXShiftStart < -maxShift || newXShiftEnd + newCenterXShiftEnd > maxShift || newXShiftEnd + newCenterXShiftEnd < -maxShift);
 
             }
 
             // Sum of Y-Shift and Center-Y-Shift should not be >60 or < -60, otherwise generate new random values - Test both start and end values
-            if (pendingYShiftStart + pendingCenterYShiftStart > 60 || pendingYShiftStart + pendingCenterYShiftStart < -60 || pendingYShiftEnd + pendingCenterYShiftEnd > 60 || pendingYShiftEnd + pendingCenterYShiftEnd < -60)
+            if (pendingYShiftStart + pendingCenterYShiftStart > maxShift || pendingYShiftStart + pendingCenterYShiftStart < -maxShift || pendingYShiftEnd + pendingCenterYShiftEnd > maxShift || pendingYShiftEnd + pendingCenterYShiftEnd < -maxShift)
             {
                 // While loop until the sum of Y-Shift and Center-Y-Shift is within the range
                 do
                 {
-                    newYShiftStart = RandomNumberBetween(-60, 60);
-                    newCenterYShiftStart = RandomNumberBetween(-60, 60);
-                    newYShiftEnd = RandomNumberBetween(-60, 60);
-                    newCenterYShiftEnd = RandomNumberBetween(-60, 60);
-                } while (newYShiftStart + newCenterYShiftStart > 60 || newYShiftStart + newCenterYShiftStart < -60 || newYShiftEnd + newCenterYShiftEnd > 60 || newYShiftEnd + newCenterYShiftEnd < -60);
+                    newYShiftStart = RandomNumberBetween(-maxShift, maxShift);
+                    newCenterYShiftStart = RandomNumberBetween(-maxShift, maxShift);
+                    newYShiftEnd = RandomNumberBetween(-maxShift, maxShift);
+                    newCenterYShiftEnd = RandomNumberBetween(-maxShift, maxShift);
+                } while (newYShiftStart + newCenterYShiftStart > maxShift || newYShiftStart + newCenterYShiftStart < -maxShift || newYShiftEnd + newCenterYShiftEnd > maxShift || newYShiftEnd + newCenterYShiftEnd < -maxShift);
 
             }
 
