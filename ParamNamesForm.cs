@@ -483,8 +483,12 @@ namespace GmicDrosteAnimate
         }
 
         // InnerOuterRadius special case
-        private (double[], double[]) SpecialCaseInnerOuterRadius(double[] newStartParamValues, double[] newEndParamValues)
+        private (double[], double[]) SpecialCaseInnerOuterRadius(double[] originalStartParamValues, double[] originalEndParamValues)
         {
+            // Store original values of inner and outer radius to use later if a particular option has not been checked to be randomized
+            double[] newStartParamValues = originalStartParamValues;
+            double[] newEndParamValues = originalEndParamValues;
+
             // Set max shift value to ensure the animation remains visible
             double maxShift = 20;
 
@@ -552,25 +556,40 @@ namespace GmicDrosteAnimate
             newCenterYShiftEnd = Math.Round(newCenterYShiftEnd, AppParameters.Parameters[centerYShiftIndex].Decimals);
 
 
-            // Apply the new values to the arrays
-            newStartParamValues[xShiftIndex] = newXShiftStart;
-            newStartParamValues[yShiftIndex] = newYShiftStart;
-            newStartParamValues[centerXShiftIndex] = newCenterXShiftStart;
-            newStartParamValues[centerYShiftIndex] = newCenterYShiftStart;
-            newEndParamValues[xShiftIndex] = newXShiftEnd;
-            newEndParamValues[yShiftIndex] = newYShiftEnd;
-            newEndParamValues[centerXShiftIndex] = newCenterXShiftEnd;
-            newEndParamValues[centerYShiftIndex] = newCenterYShiftEnd;
+            // Apply the new values to the arrays, but only if the row is checked for randomization
+            // Check if checkbox at each index is checked and not null
+            if (dataGridView1.Rows[xShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[xShiftIndex].Cells["CheckBox"].Value))
+            {
+                newStartParamValues[xShiftIndex] = newXShiftStart;
+                newEndParamValues[xShiftIndex] = newXShiftEnd;
+                dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString();
+                dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString();
+            }
 
-            // Set the new values in the DataGridView
-            dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString();
-            dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString();
-            dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString();
-            dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString();
-            dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString();
-            dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString();
-            dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString();
-            dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString();
+            if (dataGridView1.Rows[yShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[yShiftIndex].Cells["CheckBox"].Value))
+            {
+                newStartParamValues[yShiftIndex] = newYShiftStart;
+                newEndParamValues[yShiftIndex] = newYShiftEnd;
+                dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString();
+                dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString();
+            }
+
+
+            if (dataGridView1.Rows[centerXShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[centerXShiftIndex].Cells["CheckBox"].Value))
+            {
+                newStartParamValues[centerXShiftIndex] = newCenterXShiftStart;
+                newEndParamValues[centerXShiftIndex] = newCenterXShiftEnd;
+                dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString();
+                dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString();
+            }
+
+            if (dataGridView1.Rows[centerYShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[centerYShiftIndex].Cells["CheckBox"].Value))
+            {
+                newStartParamValues[centerYShiftIndex] = newCenterYShiftStart;
+                newEndParamValues[centerYShiftIndex] = newCenterYShiftEnd;
+                dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString();
+                dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString();
+            }          
 
             return (newStartParamValues, newEndParamValues);
         }
@@ -584,7 +603,7 @@ namespace GmicDrosteAnimate
             if (!checkBoxDisableStepRandom.Checked) includedTypes.Add("Step");
             includedTypes.Add("Continuous");
 
-            // Iterate through each row in the DataGridView
+            // Iterate through each row in the DataGridView, determine whether to check row box if parameter type is included in the list of types to randomize
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 string paramType = AppParameters.Parameters[row.Index].Type;
