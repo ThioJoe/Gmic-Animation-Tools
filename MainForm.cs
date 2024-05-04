@@ -65,14 +65,17 @@ namespace DrosteEffectApp
             nudTotalFrames.Enabled = false;
             nudMasterParamIncrement.Enabled = false;
 
+            // Show parameter name initially
+            WriteLatestParamNameStringLabel();
+
             #if !DEBUG
             // Apply placeholders
             PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)startParams);
             PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)endParams);
-            #endif
+#endif
 
 
-            #if DEBUG
+#if DEBUG
             // Set default value text in parameter value textboxes
             txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
             txtStartParams.Text = startParams;
@@ -923,6 +926,9 @@ namespace DrosteEffectApp
                 paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
             }
 
+            // Update label to show current name corresponding to the index
+            WriteLatestParamNameStringLabel();
+
             double[] startValueArray = ParseParamsToArray(txtStartParams.Text, silent: true);
             double[] endValueArray = ParseParamsToArray(txtEndParams.Text, silent: true);
 
@@ -943,19 +949,24 @@ namespace DrosteEffectApp
                     return;
                 }
             }
-            //Disable the ValueChanged event of nudMasterParamIncrement and set value to 0
-            //nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
-            //nudTotalFrames.ValueChanged -= nudTotalFrames_ValueChanged;
-
-            //nudTotalFrames.Value = 0;
-            //nudMasterParamIncrement.Value = 0;
 
             DisableFrameAndMasterParamBoxes();
-            //nudMasterParamIncrement.ForeColor = SystemColors.WindowText; // To make the text visible
 
-            //Re-enable the ValueChanged event of nudMasterParamIncrement
-            //nudTotalFrames.ValueChanged += nudTotalFrames_ValueChanged;
-            //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+        }
+
+        private void WriteLatestParamNameStringLabel()
+        {
+            // Update label to show current name corresponding to the index
+            string labelTextStr = "= ";
+            if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= 31)
+            {
+                labelTextStr += AppParameters.Parameters[(int)nudMasterParamIndex.Value - 1].Name;
+            }
+            else
+            {
+                labelTextStr += "[Invalid Index]";
+            }
+            labelMasterParamName.Text = labelTextStr;
         }
 
         public class InvisibleNumericUpDown : NumericUpDown
