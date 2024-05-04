@@ -66,6 +66,7 @@
             this.TestButton1 = new System.Windows.Forms.Button();
             this.labelMasterExponent = new System.Windows.Forms.Label();
             this.labelMasterParamName = new System.Windows.Forms.Label();
+            this.checkBoxUseSameOutputDir = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -306,7 +307,7 @@
             this.chkCreateGif.AutoSize = true;
             this.chkCreateGif.Checked = true;
             this.chkCreateGif.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCreateGif.Location = new System.Drawing.Point(15, 343);
+            this.chkCreateGif.Location = new System.Drawing.Point(15, 358);
             this.chkCreateGif.Name = "chkCreateGif";
             this.chkCreateGif.Size = new System.Drawing.Size(77, 17);
             this.chkCreateGif.TabIndex = 16;
@@ -414,7 +415,7 @@
             // InfoIconCreateGif
             // 
             this.InfoIconCreateGif.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconCreateGif.Image")));
-            this.InfoIconCreateGif.Location = new System.Drawing.Point(98, 343);
+            this.InfoIconCreateGif.Location = new System.Drawing.Point(98, 358);
             this.InfoIconCreateGif.Name = "InfoIconCreateGif";
             this.InfoIconCreateGif.Size = new System.Drawing.Size(16, 16);
             this.InfoIconCreateGif.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -482,11 +483,23 @@
             this.labelMasterParamName.TabIndex = 33;
             this.labelMasterParamName.Text = "Master Parameter Name Label";
             // 
+            // checkBoxUseSameOutputDir
+            // 
+            this.checkBoxUseSameOutputDir.AutoSize = true;
+            this.checkBoxUseSameOutputDir.Location = new System.Drawing.Point(15, 335);
+            this.checkBoxUseSameOutputDir.Name = "checkBoxUseSameOutputDir";
+            this.checkBoxUseSameOutputDir.Size = new System.Drawing.Size(155, 17);
+            this.checkBoxUseSameOutputDir.TabIndex = 34;
+            this.checkBoxUseSameOutputDir.Text = "Use Same Output Directory";
+            this.checkBoxUseSameOutputDir.UseVisualStyleBackColor = true;
+            this.checkBoxUseSameOutputDir.CheckedChanged += new System.EventHandler(this.checkBoxUseSameOutputDir_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.checkBoxUseSameOutputDir);
             this.Controls.Add(this.labelMasterParamName);
             this.Controls.Add(this.labelMasterExponent);
             this.Controls.Add(this.TestButton1);
@@ -582,5 +595,6 @@
         private InvisibleNumericUpDown nudMasterParamIncrement;
         private System.Windows.Forms.Label labelMasterExponent;
         private System.Windows.Forms.Label labelMasterParamName;
+        private System.Windows.Forms.CheckBox checkBoxUseSameOutputDir;
     }
 }

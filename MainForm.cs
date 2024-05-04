@@ -11,6 +11,7 @@ using System.IO;
 using System.Diagnostics;
 using GmicDrosteAnimate;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Globalization;
 
 namespace DrosteEffectApp
 {
@@ -42,10 +43,16 @@ namespace DrosteEffectApp
         // These are arbitrarily chosen values based on experience.
         private double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
+        private decimal previousMasterIncrementNUDValue = 0;
+
         public MainForm()
         {
             InitializeComponent();
             InitializeDefaults();
+
+            // Store data about master increment NUD to properly increment up down arrows
+            previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
+            //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
         }
 
         private void InitializeDefaults()
@@ -68,14 +75,14 @@ namespace DrosteEffectApp
             // Show parameter name initially
             WriteLatestParamNameStringLabel();
 
-            #if !DEBUG
+#if !DEBUG
             // Apply placeholders
             PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)startParams);
             PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)endParams);
-            #endif
+#endif
 
 
-            #if DEBUG
+#if DEBUG
             // Set default value text in parameter value textboxes
             txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
             txtStartParams.Text = startParams;
@@ -83,7 +90,7 @@ namespace DrosteEffectApp
             inputFilePath = txtInputFilePath.Text;
             //Enable test button for debugging only
             TestButton1.Visible = true;
-            #endif
+#endif
 
             // Set default values for the new controls
             //chkExponentialIncrements.Checked = false;
@@ -145,7 +152,7 @@ namespace DrosteEffectApp
             // Retrieve and store user inputs from the form controls.
             startParams = txtStartParams.Text;
             endParams = txtEndParams.Text;
-            int masterParamIndexAtTimeOfClick = (int)nudMasterParamIndex.Value-1;
+            int masterParamIndexAtTimeOfClick = (int)nudMasterParamIndex.Value - 1;
             double masterParamIncrementAtTimeOfClick = (double)nudMasterParamIncrement.Value;
 
             // Validate the increment for the master parameter.
@@ -189,7 +196,7 @@ namespace DrosteEffectApp
                 }
                 return;
             }
-            
+
 
             // Determine the exponent mode and set up the exponents array based on user selections.
             string exponentMode = null;
@@ -231,7 +238,7 @@ namespace DrosteEffectApp
                 {
                     // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there
                     exponentArray = exponentArray.Replace("souphead_droste10", "").Trim();
-                    
+
                     string[] exponentArrayValues = exponentArray.Split(',');
                     if (exponentArrayValues.Length == 31)
                     {
@@ -257,14 +264,22 @@ namespace DrosteEffectApp
             // Calculate interpolated parameter values for each frame using the selected interpolation method.
             List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndexAtTimeOfClick, masterParamIncrementAtTimeOfClick, exponents, exponentMode);
 
+            // Decide frame starting number
+            int frameNumberStart = 1;
+            // If checkbox to use same directory is checked, see how many files are already in there to get next available number
+            if (checkBoxUseSameOutputDir.Checked)
+            {
+                // Get file with largest number at the end
+                frameNumberStart = CountExistingFiles(outputDir) + 1;
+            }
             // Create the log file with metadata and interpolated parameters
-            CreateLogFile(outputDir, interpolatedParams, exponentMode, defaultExponents, masterExponent);
+            CreateLogFile(outputDir, interpolatedParams, exponentMode, defaultExponents, masterExponent, frameNumberStart);
 
             btnStart.Visible = false;
             btnCancel.Visible = true;
 
             // Process each frame using the specified parameters and gmic.exe.
-            await Task.Run(() => ProcessFrames(outputDir, interpolatedParams));
+            await Task.Run(() => ProcessFrames(outputDir, interpolatedParams, frameNumberStart));
 
             // Optionally create a GIF from the generated frames using ffmpeg.
             if (createGif)
@@ -327,14 +342,49 @@ namespace DrosteEffectApp
 
         private string CreateOutputDirectory(string inputFilePath)
         {
-            string outputDir = GetLatestDirectory(inputFilePath, true);
-
-            Directory.CreateDirectory(outputDir);
+            string outputDir = "Output";
+            // If checkbox to use same directory is checked, get the latest directory and use that
+            if (checkBoxUseSameOutputDir.Checked)
+            {
+                outputDir = GetLatestDirectory(inputFilePath, false);
+            }
+            else { 
+                outputDir = GetLatestDirectory(inputFilePath, true);
+                Directory.CreateDirectory(outputDir);
+            }
+            
             return outputDir;
         }
 
+        private string DecideLogFilePath(string directoryName)
+        {
+            string logFilePath = Path.Combine(directoryName, $"{directoryName}_log.txt");
+            int logFileNumber = 2;
+            // Check if log file already exists, count up until available number
+            while (File.Exists(logFilePath))
+            {
+                logFilePath = Path.Combine(directoryName, $"{directoryName}_log_{logFileNumber}.txt");
+                logFileNumber++;
+            }
+                        
+            return logFilePath;
+        }
+
+        private int CountExistingFiles(string outputDir)
+        {
+            // Use filename without extension as base for counting files
+            int count = 0;
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
+            string[] files = Directory.GetFiles(outputDir, $"{fileNameWithoutExtension}_*.png");
+            foreach (string file in files)
+            {
+                count++;
+            }
+            return count;
+        }
+
         // Get the latest directory that exists already, or none if none exist. Uses the input file name as a base, returns the latest directory with the same name.
-        private string GetLatestDirectory(string inputFilePath, bool getNextAvailable=false)
+        private string GetLatestDirectory(string inputFilePath, bool getNextAvailable = false)
         {
             // Extract the file name without extension from the input file path
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
@@ -345,7 +395,7 @@ namespace DrosteEffectApp
             string latestExisting = null;
 
             // This will count the existing directories with similar names
-            int folderCount = 1;            
+            int folderCount = 1;
 
             // Loop through directory names to find the last existing one or find the next available if specified
             while (Directory.Exists(availableDir))
@@ -360,7 +410,7 @@ namespace DrosteEffectApp
             {
                 return availableDir;
             }
-            else 
+            else
             {
                 return latestExisting;
             }
@@ -453,20 +503,22 @@ namespace DrosteEffectApp
             return interpolatedValues;
         }
 
-        private async Task ProcessFrames(string outputDir, List<string> interpolatedParams)
+        private async Task ProcessFrames(string outputDir, List<string> interpolatedParams, int frameNumberStart)
         {
             int parallelJobs = 10;
             int maxAttempts = 7;
             int attempt = 1;
 
             int totalFrames = interpolatedParams.Count;
-            int digitCount = (int)Math.Floor(Math.Log10(totalFrames)) + 1;
+            int digitCount = (int)Math.Floor(Math.Log10(totalFrames + frameNumberStart));
 
             List<string> expectedFiles = new List<string>();
+            int j = frameNumberStart;
             for (int i = 0; i < totalFrames; i++)
             {
-                string outputFile = Path.Combine(outputDir, $"{Path.GetFileNameWithoutExtension(inputFilePath)}_{(i + 1).ToString($"D{digitCount}")}.png");
+                string outputFile = Path.Combine(outputDir, $"{Path.GetFileNameWithoutExtension(inputFilePath)}_{(j).ToString($"D{digitCount}")}.png");
                 expectedFiles.Add(outputFile);
+                j++;
             }
 
             while (attempt <= maxAttempts)
@@ -528,7 +580,7 @@ namespace DrosteEffectApp
                     TextLabelNearStartButton.Visible = true;
                     TextLabelNearStartButton.ForeColor = Color.Green;
                     TextLabelNearStartButton.Text = $"Done!\n{totalFrames} frames created in {outputDir}.";
-                    
+
                 }));
             }
 
@@ -554,7 +606,23 @@ namespace DrosteEffectApp
             int totalFrames = Directory.GetFiles(outputDir, "*.png").Length;
             int digitCount = (int)Math.Floor(Math.Log10(totalFrames)) + 1;
 
-            string ffmpegCommand = $"ffmpeg -framerate 25 -i \"{outputDir}\\{fileNameWithoutExtension}_%0{digitCount}d.png\" \"{outputDir}\\combined.gif\"";
+            // If checkbox to use same directory is checked, check to see if there are any files with less padded zeroes than expected
+            // If so rename them to match the expected number of digits
+            if (checkBoxUseSameOutputDir.Checked)
+            {
+                UpdateZeroPadding(outputDir, fileNameWithoutExtension);
+            }
+
+            // Decide on name for file to not overwrite gif file
+            int i = 2;
+            string gifFileName = $"{fileNameWithoutExtension}_combined.gif";
+            while (File.Exists(Path.Combine(outputDir, gifFileName)))
+            {
+                gifFileName = $"{fileNameWithoutExtension}_combined_{i}.gif";
+                i++;
+            }
+
+            string ffmpegCommand = $"ffmpeg -framerate 25 -i \"{outputDir}\\{fileNameWithoutExtension}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
@@ -570,9 +638,46 @@ namespace DrosteEffectApp
             }
         }
 
-        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, double masterExponent)
+        private void UpdateZeroPadding(string outputDir, string fileBaseName)
         {
-            string logFilePath = Path.Combine(outputDir, $"{outputDir}_log.txt");
+            // Get all files that match the basic pattern (e.g., all PNG files starting with the filename prefix)
+            string searchPattern = $"{fileBaseName}_*.png";
+            string[] files = Directory.GetFiles(outputDir, searchPattern);
+            int digitCount = (int)Math.Floor(Math.Log10(files.Length)) + 1;
+
+            foreach (string file in files)
+            {
+                // Extract the numeric part of the filename
+                string baseName = Path.GetFileNameWithoutExtension(file);
+                int underscoreIndex = baseName.LastIndexOf('_');
+                if (underscoreIndex != -1 && underscoreIndex < baseName.Length - 1)
+                {
+                    string numberPart = baseName.Substring(underscoreIndex + 1);
+                    if (int.TryParse(numberPart, out int numericValue))
+                    {
+                        // Format the number part with the correct number of leading zeros
+                        string newNumberPart = numericValue.ToString($"D{digitCount}");
+                        string newFileName = $"{fileBaseName}_{newNumberPart}.png";
+                        string newFilePath = Path.Combine(outputDir, newFileName);
+
+                        // Check if the new file path already exists to avoid overwriting
+                        if (!File.Exists(newFilePath))
+                        {
+                            File.Move(file, newFilePath);
+                        }
+                        else if (newFilePath != file) // Check if it's not the same file
+                        {
+                            Console.WriteLine($"Cannot rename '{file}' to '{newFilePath}' because the target file already exists.");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, double masterExponent, int frameStartNumber)
+        {
+            //string logFilePath = Path.Combine(outputDir, $"{outputDir}_log.txt");
+            string logFilePath = DecideLogFilePath(outputDir);
 
             string exponentModeString;
             string masterExponentString;
@@ -606,7 +711,7 @@ namespace DrosteEffectApp
                 {
                     exponentModeString = "Master Parameter Only (From Default Array)";
                 }
-            // If exponent mode is not set (exponentialIncrements is false), set all values to N/A. They won't be used anyway.
+                // If exponent mode is not set (exponentialIncrements is false), set all values to N/A. They won't be used anyway.
             } else {
                 masterExponentString = "N/A";
                 exponentArrayString = "N/A";
@@ -633,9 +738,11 @@ namespace DrosteEffectApp
                 writer.WriteLine();
                 writer.WriteLine("Interpolated Parameters:");
 
+                int j = frameStartNumber;
                 for (int i = 0; i < interpolatedParams.Count; i++)
                 {
-                    writer.WriteLine($"Frame {i + 1}: {interpolatedParams[i]}");
+                    writer.WriteLine($"Frame {j}: {interpolatedParams[i]}");
+                    j++;
                 }
             }
         }
@@ -707,7 +814,7 @@ namespace DrosteEffectApp
                 endParamArray = ParseParamsToArray(endParamString, true);
             }
 
-            ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value-1);
+            ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);
             paramNamesForm.Show();
         }
 
@@ -718,6 +825,60 @@ namespace DrosteEffectApp
 
         private void nudMasterParamIncrement_ValueChanged(object sender, EventArgs e)
         {
+            //// Determined desired increment value based on previous value
+            //int previousOrderOfMagnitude = (int)Math.Floor(Math.Log10((double)previousMasterIncrementNUDValue));
+            //decimal previousIncrement = (decimal)Math.Pow(10, previousOrderOfMagnitude);
+            //int newOrderOfMagnitude = (int)Math.Floor(Math.Log10((double)nudMasterParamIncrement.Value));
+
+            //// Use previous value to determine whether to override the increment value. Will do so when going between orders of magnitude
+            //if (previousMasterIncrementNUDValue != nudMasterParamIncrement.Value) // This ensures it doesn't change if value didn't change like it hit a limit
+            //{
+            //    // Ensure the change was not due to the user typing in the box, by checking if change was by the increment
+            //    if (Math.Abs(previousMasterIncrementNUDValue - nudMasterParamIncrement.Value) != nudMasterParamIncrement.Increment)
+            //    {
+            //        // Do nothing
+            //    }
+            //    else
+            //    {
+            //        int incrementMinDecimalPlaces = 5;
+            //        int incrementMaxDecimalPlaces = 5;
+
+            //        // If the actual value went up
+            //        if (previousMasterIncrementNUDValue < nudMasterParamIncrement.Value)
+            //        {
+            //            // Change the increment of the box and override value change
+            //            decimal newIncrement = (decimal)Math.Pow(10, newOrderOfMagnitude);
+            //            nudMasterParamIncrement.Increment = newIncrement;
+            //            // Set decimal places to match the number of decimal places in the increment, but set min and maximum
+            //            nudMasterParamIncrement.DecimalPlaces = CalculateDecimalPlaces(number: newIncrement, minPlaces: incrementMinDecimalPlaces, maxPlaces: incrementMaxDecimalPlaces);
+            //            // Disable then re-enable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
+            //            // Only use new order of magnitude if already on it
+            //            if (newOrderOfMagnitude == previousOrderOfMagnitude)
+            //            {
+            //                nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
+            //                nudMasterParamIncrement.Value = previousMasterIncrementNUDValue + newIncrement;
+            //                nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+            //            }
+            //        }
+            //        // If the actual value went down
+            //        else
+            //        {
+            //            // Change the increment and override the value to only change by the new increment in same way as above
+            //            decimal newIncrement = (decimal)Math.Pow(10, newOrderOfMagnitude);
+            //            nudMasterParamIncrement.Increment = newIncrement;
+            //            nudMasterParamIncrement.DecimalPlaces = CalculateDecimalPlaces(number: newIncrement, minPlaces: incrementMinDecimalPlaces, maxPlaces: incrementMaxDecimalPlaces);
+            //            // Use new order of magnitude if using old one would to zero or below
+            //            if (previousMasterIncrementNUDValue - previousIncrement <= 0)
+            //            {
+            //                nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
+            //                nudMasterParamIncrement.Value = previousMasterIncrementNUDValue - newIncrement;
+            //                nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+            //            }
+            //        }
+            //    }
+            //}
+            // -----------------------------
+
             //Ensure increment doesn't go higher than the difference between start and end values
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
@@ -735,7 +896,27 @@ namespace DrosteEffectApp
                 }
             }
 
+            // Record the new value for the next time this event is triggered
+            //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
+
+
             UpdateTotalFrames();
+        }
+
+        private int CalculateDecimalPlaces(decimal number, int minPlaces, int maxPlaces)
+        {
+            // Convert number to string once to avoid multiple conversions
+            string numberStr = number.ToString(CultureInfo.InvariantCulture);
+            int decimalPointIndex = numberStr.IndexOf('.');
+
+            // If no decimal point, decimals are 0
+            if (decimalPointIndex == -1) return minPlaces;
+
+            // Calculate the number of decimal places
+            int decimalPlaces = numberStr.Length - decimalPointIndex - 1;
+
+            // Clamp the result between minPlaces and maxPlaces
+            return Math.Min(Math.Max(minPlaces, decimalPlaces), maxPlaces);
         }
 
         private int CalcTotalFrames(double masterStartValue, double masterEndValue, double masterIncrement)
@@ -1055,6 +1236,11 @@ namespace DrosteEffectApp
             {
                 labelMasterExponent.Visible = false;
             }
+
+        }
+
+        private void checkBoxUseSameOutputDir_CheckedChanged(object sender, EventArgs e)
+        {
 
         }
     }

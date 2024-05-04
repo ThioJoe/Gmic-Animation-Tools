@@ -58,10 +58,7 @@ namespace GmicDrosteAnimate
                 //UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
                 UpdateDataGridView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
             }
-
-            // Register the ItemChecked event handler
-            //listView1.ItemChecked += new ItemCheckedEventHandler(listView1_ItemChecked);
-            
+           
             // Set the values for the current start and end param strings
             SetCurrentEndParamString(endParamValuesFromMainWindow);
             SetCurrentStartParamString(startParamValuesFromMainWindow);
