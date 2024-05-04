@@ -42,7 +42,7 @@
             this.checkBoxExtendedRange = new System.Windows.Forms.CheckBox();
             this.btnSendParmsToMain = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.checkBoxReasonableRanges = new System.Windows.Forms.CheckBox();
+            this.checkBoxRecommendedRules = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -191,23 +191,23 @@
             this.dataGridView1.TabIndex = 14;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             // 
-            // checkBoxReasonableRanges
+            // checkBoxRecommendedRules
             // 
-            this.checkBoxReasonableRanges.AutoSize = true;
-            this.checkBoxReasonableRanges.Location = new System.Drawing.Point(245, 701);
-            this.checkBoxReasonableRanges.Name = "checkBoxReasonableRanges";
-            this.checkBoxReasonableRanges.Size = new System.Drawing.Size(145, 17);
-            this.checkBoxReasonableRanges.TabIndex = 15;
-            this.checkBoxReasonableRanges.Text = "Use Reasonable Ranges";
-            this.checkBoxReasonableRanges.UseVisualStyleBackColor = true;
-            this.checkBoxReasonableRanges.CheckedChanged += new System.EventHandler(this.checkBoxReasonableChanges_CheckedChanged);
+            this.checkBoxRecommendedRules.AutoSize = true;
+            this.checkBoxRecommendedRules.Location = new System.Drawing.Point(245, 701);
+            this.checkBoxRecommendedRules.Name = "checkBoxRecommendedRules";
+            this.checkBoxRecommendedRules.Size = new System.Drawing.Size(199, 17);
+            this.checkBoxRecommendedRules.TabIndex = 15;
+            this.checkBoxRecommendedRules.Text = "Use Recommended Rules && Ranges";
+            this.checkBoxRecommendedRules.UseVisualStyleBackColor = true;
+            this.checkBoxRecommendedRules.CheckedChanged += new System.EventHandler(this.checkBoxReasonableChanges_CheckedChanged);
             // 
             // ParamNamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(452, 792);
-            this.Controls.Add(this.checkBoxReasonableRanges);
+            this.Controls.Add(this.checkBoxRecommendedRules);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnSendParmsToMain);
             this.Controls.Add(this.checkBoxExtendedRange);
@@ -245,6 +245,6 @@
         private System.Windows.Forms.CheckBox checkBoxExtendedRange;
         private System.Windows.Forms.Button btnSendParmsToMain;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.CheckBox checkBoxReasonableRanges;
+        private System.Windows.Forms.CheckBox checkBoxRecommendedRules;
     }
 }

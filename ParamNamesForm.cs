@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -32,6 +33,7 @@ namespace GmicDrosteAnimate
         private double[] startParamValuesFromMainWindow;
         private double[] endParamValuesFromMainWindow;
         private int masterParamIndexFromMainWindow;
+        private static readonly Random random = new Random();
 
 
         //Global checkbox for whether to sync with other window
@@ -75,7 +77,7 @@ namespace GmicDrosteAnimate
             DataGridViewCheckBoxColumn chkBoxColumn = new DataGridViewCheckBoxColumn();
             chkBoxColumn.HeaderText = "";
             chkBoxColumn.Width = 50;
-            chkBoxColumn.Name = "Select";
+            chkBoxColumn.Name = "CheckBox";
             chkBoxColumn.TrueValue = true;
             chkBoxColumn.FalseValue = false;
             dataGridView1.Columns.Add(chkBoxColumn);
@@ -228,7 +230,7 @@ namespace GmicDrosteAnimate
                 int rowIndex = row.Index;
 
                 // Check if the row is selected for randomization
-                bool isChecked = Convert.ToBoolean(row.Cells["Select"].Value);
+                bool isChecked = Convert.ToBoolean(row.Cells["CheckBox"].Value);
                 if (isChecked)
                 {
                     // Retrieve the parameter information for the current row
@@ -236,22 +238,113 @@ namespace GmicDrosteAnimate
 
                     // Determine the minimum and maximum values for the random number generation
                     // If the 'Extended Range' checkbox is checked, use the extended min and max; otherwise, use the regular min and max
-                    int min, max;
+                    double min, max;
                     if (checkBoxExtendedRange.Checked)
                     {
-                        min = (int)Math.Ceiling(paramInfo.ExtendedMin);
-                        max = (int)Math.Floor(paramInfo.ExtendedMax);
+                        min = (double)Math.Ceiling(paramInfo.ExtendedMin);
+                        max = (double)Math.Floor(paramInfo.ExtendedMax);
                     }
                     else
                     {
-                        min = (int)Math.Ceiling(paramInfo.Min);
-                        max = (int)Math.Floor(paramInfo.Max);
+                        min = (double)Math.Ceiling(paramInfo.Min);
+                        max = (double)Math.Floor(paramInfo.Max);
                     }
 
-
                     // Generate random start and end values within the specified range
-                    int start = rnd.Next(min, max + 1);
-                    int end = rnd.Next(min, max + 1);
+                    double start;
+                    double end;
+
+                    // Generate random values depending on variable type
+                    if (paramInfo.Type == "Continuous")
+                    {
+                        start = RandomNumberBetween(min, max);
+                        end = RandomNumberBetween(min, max);
+                    }
+                    else if (paramInfo.Type == "Binary")
+                    {
+                        start = rnd.Next(2) == 0 ? min : max;
+                        end = rnd.Next(2) == 0 ? min : max;
+                    }
+                    else if (paramInfo.Type == "Step")
+                    {
+                        start = rnd.Next(2) == 0 ? min : max;
+                        end = rnd.Next(2) == 0 ? min : max;
+                    }
+                    else
+                    {
+                        start = 0;
+                        end = 0;
+                    }
+
+                    // Check if recommended rules are applied via checkbox, if so proceed to special cases checks
+                    if (checkBoxRecommendedRules.Checked)
+                    {
+
+                        // Handle special case for inner/outer radius - But only check for outer radius and adjust based on inner radius
+                        if (paramInfo.Name == "Outer Radius")
+                        {
+                            // Get inner radius start/end values
+                            double innerRadiusStart = newStartParamValues[0];
+                            double innerRadiusEnd = newEndParamValues[0];
+
+                            // If inner radius start is greater than outer radius start, adjust outer radius start to be greater than inner radius start
+                            if (innerRadiusStart > start)
+                            {
+                                start = RandomNumberBetween(innerRadiusStart, max);
+                            }
+
+                            // If inner radius end is greater than outer radius end, adjust outer radius end to be greater than inner radius end
+                            if (innerRadiusEnd > end)
+                            {
+                                end = RandomNumberBetween(innerRadiusEnd, max);
+                            }
+                        }
+
+                        // Handle special cases and reasonable ranges, if applicable
+                        // Check if parameter is periodicity 
+                        if (paramInfo.Name == "Periodicity")
+                        {
+                            SpecialCasePeriodicity(start, end);
+                        }
+
+                        // Special case for starting level - check that it is not less than 3
+                        if (paramInfo.Name == "Starting Level")
+                        {
+                            // If less than 3, add random number up to the max value, but subtract 1 for some leeway
+                            if (start < 3)
+                            {
+                                start = RandomNumberBetween(start, max - 1);
+                            }
+                            if (end < 3)
+                            {
+                                end = RandomNumberBetween(end, max - 1);
+                            }
+                        }
+
+                        // Special case for total number of levels - Should not be less than 5, and not drop below the starting level at any time
+                        // Need to check if either the start/end of the number of levels is less than either the start/end of the starting level
+                        if (paramInfo.Name == "Number of Levels")
+                        {
+                            // Get start/end values of the starting level
+                            double pendingStartingLevelStart = newStartParamValues[10];
+                            double pendingStartingLevelEnd = newEndParamValues[10];
+
+                            // Total Levels Start - If less than 5, or less than pendingStartingLevelStart, or less than pendingStartingLevelEnd, generate new random number in proper range
+                            if (start < 5 || start < pendingStartingLevelStart || start < pendingStartingLevelEnd)
+                            {
+                                // Take the greater of pendingStartingLevelStart and pendingStartingLevelEnd and use that as the minimum value
+                                double minVal = Math.Max(Math.Max(pendingStartingLevelStart, pendingStartingLevelEnd), 5);
+                                start = RandomNumberBetween(minVal, max);
+                            }
+                            // Total Levels End - If less than 5, or less than pendingStartingLevelStart, or less than pendingStartingLevelEnd, generate new random number in proper range
+                            if (end < 5 || end < pendingStartingLevelStart || end < pendingStartingLevelEnd)
+                            {
+                                // Take the greater of pendingStartingLevelStart and pendingStartingLevelEnd and use that as the minimum value
+                                double maxVal = Math.Max(Math.Max(pendingStartingLevelStart, pendingStartingLevelEnd), 5);
+                                end = RandomNumberBetween(maxVal, max);
+                            }
+                        }
+                    }
 
                     // Set the generated values to the appropriate cells in the DataGridView, formatting them to 2 decimal places
                     row.Cells["Start"].Value = start.ToString("F2");
@@ -291,6 +384,13 @@ namespace GmicDrosteAnimate
                 }
             }
 
+            // Check again if recommended rules are applied via checkbox, if so apply inner outer radius rules
+            // Special case for inner/outer radius - Need to do this after all other parameters have been set because rules depend on each other
+            if (checkBoxRecommendedRules.Checked)
+            {
+                SpecialCaseInnerOuterRadius(newStartParamValues, newEndParamValues);
+            }
+
             // Update the text boxes to reflect the newly generated start and end parameter strings
             SetCurrentStartParamString(newStartParamValues);
             SetCurrentEndParamString(newEndParamValues);
@@ -299,7 +399,104 @@ namespace GmicDrosteAnimate
             checkBoxSyncFromOtherWindow.Checked = false;
             syncWithOtherWindow = false;
         }
+        // Function to generate random decimal values within a specified range
+        private static double RandomNumberBetween(double minValue, double maxValue)
+        {
+            var next = random.NextDouble();
 
+            return minValue + (next * (maxValue - minValue));
+        }
+
+        //Periodicity special case
+        private (double, double) SpecialCasePeriodicity(double start, double end)
+        {
+            double periodicityMin = 0.1;
+            double periodicityMax = 2;
+            //Want the range between 0.1 and 2. If it's not, make new random values until they are
+            start = RandomNumberBetween(periodicityMin, periodicityMax);
+            end = RandomNumberBetween(periodicityMin, periodicityMax);
+            return (start, end);
+        }
+
+        // InnerOuterRadius special case
+        private (double[], double[]) SpecialCaseInnerOuterRadius(double[] newStartParamValues, double[] newEndParamValues)
+        {
+
+            // Handle special case for X-Shift, Y-Shift, Center-X-Shift, Center-Y-Shift - Need to do this after all other parameters have been set because rules depend on each other
+            // Get index and values of the various parameters
+            int xShiftIndex = Array.IndexOf(paramNames, "X-Shift");
+            int yShiftIndex = Array.IndexOf(paramNames, "Y-Shift");
+            int centerXShiftIndex = Array.IndexOf(paramNames, "Center X-Shift");
+            int centerYShiftIndex = Array.IndexOf(paramNames, "Center Y-Shift");
+            double pendingXShiftStart = newStartParamValues[xShiftIndex];
+            double pendingXShiftEnd = newEndParamValues[xShiftIndex];
+            double pendingYShiftStart = newStartParamValues[yShiftIndex];
+            double pendingYShiftEnd = newEndParamValues[yShiftIndex];
+            double pendingCenterXShiftStart = newStartParamValues[centerXShiftIndex];
+            double pendingCenterXShiftEnd = newEndParamValues[centerXShiftIndex];
+            double pendingCenterYShiftStart = newStartParamValues[centerYShiftIndex];
+            double pendingCenterYShiftEnd = newEndParamValues[centerYShiftIndex];
+
+            // Just generate new random numbers for all within the ranges instead of checking first
+            double newXShiftStart = RandomNumberBetween(-60, 60);
+            double newYShiftStart = RandomNumberBetween(-60, 60);
+            double newCenterXShiftStart = RandomNumberBetween(-60, 60);
+            double newCenterYShiftStart = RandomNumberBetween(-60, 60);
+            double newXShiftEnd = RandomNumberBetween(-60, 60);
+            double newYShiftEnd = RandomNumberBetween(-60, 60);
+            double newCenterXShiftEnd = RandomNumberBetween(-60, 60);
+            double newCenterYShiftEnd = RandomNumberBetween(-60, 60);
+
+            // Sum of X-Shift and Center-X-Shift should not be >60 or < -60, otherwise generate new random values - Test both start and end values
+            if (pendingXShiftStart + pendingCenterXShiftStart > 60 || pendingXShiftStart + pendingCenterXShiftStart < -60 || pendingXShiftEnd + pendingCenterXShiftEnd > 60 || pendingXShiftEnd + pendingCenterXShiftEnd < -60)
+            {
+                // While loop until the sum of X-Shift and Center-X-Shift is within the range
+                do
+                {
+                    newXShiftStart = RandomNumberBetween(-60, 60);
+                    newCenterXShiftStart = RandomNumberBetween(-60, 60);
+                    newXShiftEnd = RandomNumberBetween(-60, 60);
+                    newCenterXShiftEnd = RandomNumberBetween(-60, 60);
+                } while (newXShiftStart + newCenterXShiftStart > 60 || newXShiftStart + newCenterXShiftStart < -60 || newXShiftEnd + newCenterXShiftEnd > 60 || newXShiftEnd + newCenterXShiftEnd < -60);
+
+            }
+
+            // Sum of Y-Shift and Center-Y-Shift should not be >60 or < -60, otherwise generate new random values - Test both start and end values
+            if (pendingYShiftStart + pendingCenterYShiftStart > 60 || pendingYShiftStart + pendingCenterYShiftStart < -60 || pendingYShiftEnd + pendingCenterYShiftEnd > 60 || pendingYShiftEnd + pendingCenterYShiftEnd < -60)
+            {
+                // While loop until the sum of Y-Shift and Center-Y-Shift is within the range
+                do
+                {
+                    newYShiftStart = RandomNumberBetween(-60, 60);
+                    newCenterYShiftStart = RandomNumberBetween(-60, 60);
+                    newYShiftEnd = RandomNumberBetween(-60, 60);
+                    newCenterYShiftEnd = RandomNumberBetween(-60, 60);
+                } while (newYShiftStart + newCenterYShiftStart > 60 || newYShiftStart + newCenterYShiftStart < -60 || newYShiftEnd + newCenterYShiftEnd > 60 || newYShiftEnd + newCenterYShiftEnd < -60);
+
+            }
+
+            // Apply the new values to the arrays
+            newStartParamValues[xShiftIndex] = newXShiftStart;
+            newStartParamValues[yShiftIndex] = newYShiftStart;
+            newStartParamValues[centerXShiftIndex] = newCenterXShiftStart;
+            newStartParamValues[centerYShiftIndex] = newCenterYShiftStart;
+            newEndParamValues[xShiftIndex] = newXShiftEnd;
+            newEndParamValues[yShiftIndex] = newYShiftEnd;
+            newEndParamValues[centerXShiftIndex] = newCenterXShiftEnd;
+            newEndParamValues[centerYShiftIndex] = newCenterYShiftEnd;
+
+            // Set the new values in the DataGridView
+            dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString("F2");
+            dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString("F2");
+            dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString("F2");
+            dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString("F2");
+            dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString("F2");
+            dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString("F2");
+            dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString("F2");
+            dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString("F2");
+
+            return (newStartParamValues, newEndParamValues);
+        }
 
 
         private void btnCheckAll_Click(object sender, EventArgs e)
@@ -314,7 +511,7 @@ namespace GmicDrosteAnimate
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 string paramType = AppParameters.Parameters[row.Index].Type;
-                row.Cells["Select"].Value = includedTypes.Contains(paramType);
+                row.Cells["CheckBox"].Value = includedTypes.Contains(paramType);
             }
         }
 
@@ -323,7 +520,7 @@ namespace GmicDrosteAnimate
         {
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                row.Cells["Select"].Value = false;
+                row.Cells["CheckBox"].Value = false;
             }
         }
 
