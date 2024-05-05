@@ -372,6 +372,27 @@ namespace GmicDrosteAnimate
                             end = RandomNumberBetween(recommendedZoomMin, recommendedZoomMax);
                         }
 
+                        // Special case for inner/outer radius - Inner radius should not be larger than outer radius
+                        // Just check on outer radius and generate new random number if inner radius is larger
+                        if (paramInfo.Name == "Outer Radius")
+                        {
+                            // Get the index of the inner radius parameter
+                            int innerRadiusIndex = Array.IndexOf(paramNames, "Inner Radius");
+                            // Get the current start and end values of the inner radius
+                            double tempInnerRadiusStart = newStartParamValues[innerRadiusIndex];
+                            double tempInnerRadiusEnd = newEndParamValues[innerRadiusIndex];
+
+                            // If the inner radius is larger than the outer radius, generate new random numbers
+                            if (tempInnerRadiusStart > start)
+                            {
+                                start = RandomNumberBetween(tempInnerRadiusStart, max);
+                            }
+                            if (tempInnerRadiusEnd > end)
+                            {
+                                end = RandomNumberBetween(tempInnerRadiusEnd, max);
+                            }
+                        }
+
                         // Special case for rotation - Start and end should not be too far from 0 or 360. Including multiples of 360
                         if (paramInfo.Name == "Rotate")
                         {
