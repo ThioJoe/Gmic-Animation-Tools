@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.nudTotalFrames = new DrosteEffectApp.MainForm.InvisibleNumericUpDown();
-            this.nudMasterParamIncrement = new DrosteEffectApp.MainForm.InvisibleNumericUpDown();
+            this.nudTotalFrames = new DrosteEffectApp.MainForm.InvisibleNumericUpDown(); //Custom
+            this.nudMasterParamIncrement = new DrosteEffectApp.MainForm.InvisibleNumericUpDown(); //Custom
             this.lblInputFile = new System.Windows.Forms.Label();
             this.txtInputFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectInputFile = new System.Windows.Forms.Button();
@@ -67,6 +67,7 @@
             this.labelMasterExponent = new System.Windows.Forms.Label();
             this.labelMasterParamName = new System.Windows.Forms.Label();
             this.checkBoxUseSameOutputDir = new System.Windows.Forms.CheckBox();
+            this.btnSwapStartEndStrings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -494,11 +495,22 @@
             this.checkBoxUseSameOutputDir.UseVisualStyleBackColor = true;
             this.checkBoxUseSameOutputDir.CheckedChanged += new System.EventHandler(this.checkBoxUseSameOutputDir_CheckedChanged);
             // 
+            // btnSwapStartEndStrings
+            // 
+            this.btnSwapStartEndStrings.Location = new System.Drawing.Point(321, 97);
+            this.btnSwapStartEndStrings.Name = "btnSwapStartEndStrings";
+            this.btnSwapStartEndStrings.Size = new System.Drawing.Size(75, 23);
+            this.btnSwapStartEndStrings.TabIndex = 35;
+            this.btnSwapStartEndStrings.Text = "Swap";
+            this.btnSwapStartEndStrings.UseVisualStyleBackColor = true;
+            this.btnSwapStartEndStrings.Click += new System.EventHandler(this.btnSwapStartEndStrings_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.btnSwapStartEndStrings);
             this.Controls.Add(this.checkBoxUseSameOutputDir);
             this.Controls.Add(this.labelMasterParamName);
             this.Controls.Add(this.labelMasterExponent);
@@ -596,5 +608,6 @@
         private System.Windows.Forms.Label labelMasterExponent;
         private System.Windows.Forms.Label labelMasterParamName;
         private System.Windows.Forms.CheckBox checkBoxUseSameOutputDir;
+        private System.Windows.Forms.Button btnSwapStartEndStrings;
     }
 }

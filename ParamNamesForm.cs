@@ -48,6 +48,11 @@ namespace GmicDrosteAnimate
             InitializeComponent();
             InitializeDataGridView();
 
+            // Initialize my custom checkbox for option to randomize start and/or end
+            CustomToggleCheckBox customCheckBox = new CustomToggleCheckBox();
+            customCheckBox.Location = new Point(50, 50); // Position it as needed
+            this.Controls.Add(customCheckBox);
+
             this.mainForm = mainform;
 
             //Update sync option from checkbox
@@ -245,11 +250,20 @@ namespace GmicDrosteAnimate
             double[] newStartParamValues = new double[paramNames.Length];
             double[] newEndParamValues = new double[paramNames.Length];
 
+            // Store the original start and end parameter strings in arrays
+            double[] originalStartParamValues = txtCurrentStartParamString.Text.Split(',').Select(double.Parse).ToArray();
+            double[] originalEndParamValues = txtCurrentEndParamString.Text.Split(',').Select(double.Parse).ToArray();
+
             // Iterate through each row in the DataGridView
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 // Retrieve the index of the current row
                 int rowIndex = row.Index;
+
+                // Get original start and end values for the row
+                double rowOriginalStart = originalStartParamValues[rowIndex];
+                double rowOriginalEnd = originalEndParamValues[rowIndex];
+                
 
                 // Check if the row is selected for randomization
                 bool isChecked = Convert.ToBoolean(row.Cells["CheckBox"].Value);
@@ -393,14 +407,29 @@ namespace GmicDrosteAnimate
                         }
                     }
 
+                    if (!toggleRandomStart.Checked)
+                    {
+                        start = rowOriginalStart;
+                    }
+                    if (!toggleRandomEnd.Checked)
+                    {
+                        end = rowOriginalEnd;
+                    }
+
                     // Reduce the number of decimal places to the specified amount
                     start = Math.Round(start, paramInfo.Decimals);
                     end = Math.Round(end, paramInfo.Decimals);
 
                     // Set the generated values to the appropriate cells in the DataGridView, formatting them to 2 decimal places
-                    row.Cells["Start"].Value = start.ToString();
-                    row.Cells["End"].Value = end.ToString();
-
+                    //if (toggleRandomStart.Checked) 
+                    //{
+                        row.Cells["Start"].Value = start.ToString();
+                    //}
+                    //if (toggleRandomEnd.Checked)
+                    //{
+                        row.Cells["End"].Value = end.ToString();
+                    //}
+                    
                     // Calculate the difference between the end and start values
                     double diff = end - start;
                     // Set the difference in the respective DataGridView cell. Number of decimals depends on result
@@ -446,13 +475,13 @@ namespace GmicDrosteAnimate
             // Special case for inner/outer radius - Need to do this after all other parameters have been set because rules depend on each other
             if (checkBoxRecommendedRules.Checked)
             {
-                SpecialCaseInnerOuterRadius(newStartParamValues, newEndParamValues);
+                (newStartParamValues, newEndParamValues) = SpecialCaseInnerOuterRadius(newStartParamValues, newEndParamValues);
             }
 
             // Update the text boxes to reflect the newly generated start and end parameter strings
             SetCurrentStartParamString(newStartParamValues);
             SetCurrentEndParamString(newEndParamValues);
-
+            
             // Uncheck the checkbox for syncing with the main window and disable synchronization
             checkBoxSyncFromOtherWindow.Checked = false;
             syncWithOtherWindow = false;
@@ -552,6 +581,25 @@ namespace GmicDrosteAnimate
             newCenterXShiftEnd = Math.Round(newCenterXShiftEnd, AppParameters.Parameters[centerXShiftIndex].Decimals);
             newCenterYShiftEnd = Math.Round(newCenterYShiftEnd, AppParameters.Parameters[centerYShiftIndex].Decimals);
 
+            // If string start/end box is not checked, keep the original values
+            if (!toggleRandomStart.Checked)
+            {
+                newStartParamValues = originalStartParamValues;
+
+                newXShiftStart = newStartParamValues[xShiftIndex];
+                newYShiftStart = newStartParamValues[yShiftIndex];
+                newCenterXShiftStart = newStartParamValues[centerXShiftIndex];
+                newCenterYShiftStart = newStartParamValues[centerYShiftIndex];
+            }
+            if (!toggleRandomEnd.Checked)
+            {
+                newEndParamValues = originalEndParamValues;
+
+                newXShiftEnd = newEndParamValues[xShiftIndex];
+                newYShiftEnd = newEndParamValues[yShiftIndex];
+                newCenterXShiftEnd = newEndParamValues[centerXShiftIndex];
+                newCenterYShiftEnd = newEndParamValues[centerYShiftIndex];
+            }
 
             // Apply the new values to the arrays, but only if the row is checked for randomization
             // Check if checkbox at each index is checked and not null
@@ -559,16 +607,16 @@ namespace GmicDrosteAnimate
             {
                 newStartParamValues[xShiftIndex] = newXShiftStart;
                 newEndParamValues[xShiftIndex] = newXShiftEnd;
-                dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString();
-                dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString();
+                //dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString();
+                //dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString();
             }
 
             if (dataGridView1.Rows[yShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[yShiftIndex].Cells["CheckBox"].Value))
             {
                 newStartParamValues[yShiftIndex] = newYShiftStart;
                 newEndParamValues[yShiftIndex] = newYShiftEnd;
-                dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString();
-                dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString();
+                //dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString();
+                //dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString();
             }
 
 
@@ -576,16 +624,16 @@ namespace GmicDrosteAnimate
             {
                 newStartParamValues[centerXShiftIndex] = newCenterXShiftStart;
                 newEndParamValues[centerXShiftIndex] = newCenterXShiftEnd;
-                dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString();
-                dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString();
+                //dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString();
+                //dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString();
             }
 
             if (dataGridView1.Rows[centerYShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[centerYShiftIndex].Cells["CheckBox"].Value))
             {
                 newStartParamValues[centerYShiftIndex] = newCenterYShiftStart;
                 newEndParamValues[centerYShiftIndex] = newCenterYShiftEnd;
-                dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString();
-                dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString();
+                //dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString();
+                //dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString();
             }          
 
             return (newStartParamValues, newEndParamValues);
@@ -657,6 +705,58 @@ namespace GmicDrosteAnimate
 
         private void checkBoxReasonableChanges_CheckedChanged(object sender, EventArgs e)
         {
+
+        }
+
+        public class CustomToggleCheckBox : CheckBox
+        {
+            public CustomToggleCheckBox()
+            {
+                this.Appearance = Appearance.Button;
+                this.Text = "";
+                this.UseVisualStyleBackColor = false;  // Allows custom background color
+                this.BackColor = Color.White;  // A neutral color to start with
+                this.Size = new Size(20, 20);
+            }
+
+            protected override void OnPaint(PaintEventArgs pevent)
+            {
+                base.OnPaint(pevent); // Call base method
+                Graphics g = pevent.Graphics;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                // Draw the background
+                Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
+                Brush backgroundBrush = new SolidBrush(this.BackColor);
+                g.FillRectangle(backgroundBrush, rect);
+
+                // Set font and alignment
+                using (Font font = new Font("Arial", 10, FontStyle.Regular))
+                {
+                    StringFormat sf = new StringFormat()
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center
+                    };
+
+                    // Choose color based on checked state
+                    Color textColor = this.Checked ? Color.Red : Color.Gray;
+
+                    // Draw the 'R'
+                    g.DrawString("R", font, new SolidBrush(textColor), this.ClientRectangle, sf);
+                }
+
+                // Draw border to simulate depth
+                ControlPaint.DrawBorder(g, this.ClientRectangle,
+                    this.Checked ? Color.DarkGray : Color.LightGray, 2, ButtonBorderStyle.Outset,
+                    this.Checked ? Color.DarkGray : Color.LightGray, 2, ButtonBorderStyle.Outset,
+                    this.Checked ? Color.DarkGray : Color.LightGray, 2, ButtonBorderStyle.Outset,
+                    this.Checked ? Color.DarkGray : Color.LightGray, 2, ButtonBorderStyle.Outset);
+
+                // Draw a sunken or raised inner border based on the checked state
+                Rectangle innerRect = new Rectangle(1, 1, this.Width - 2, this.Height - 2);
+                g.DrawRectangle(new Pen(this.Checked ? Color.Black : Color.White), innerRect);
+            }
 
         }
     }

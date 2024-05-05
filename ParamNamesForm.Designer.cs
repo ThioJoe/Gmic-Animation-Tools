@@ -43,6 +43,9 @@
             this.btnSendParmsToMain = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.checkBoxRecommendedRules = new System.Windows.Forms.CheckBox();
+            this.toggleRandomEnd = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
+            this.toggleRandomStart = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -126,7 +129,7 @@
             this.checkBoxDisableBinaryRandom.AutoSize = true;
             this.checkBoxDisableBinaryRandom.Checked = true;
             this.checkBoxDisableBinaryRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 763);
+            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 760);
             this.checkBoxDisableBinaryRandom.Name = "checkBoxDisableBinaryRandom";
             this.checkBoxDisableBinaryRandom.Size = new System.Drawing.Size(195, 17);
             this.checkBoxDisableBinaryRandom.TabIndex = 9;
@@ -199,13 +202,37 @@
             this.checkBoxRecommendedRules.AutoSize = true;
             this.checkBoxRecommendedRules.Checked = true;
             this.checkBoxRecommendedRules.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxRecommendedRules.Location = new System.Drawing.Point(245, 701);
+            this.checkBoxRecommendedRules.Location = new System.Drawing.Point(245, 700);
             this.checkBoxRecommendedRules.Name = "checkBoxRecommendedRules";
             this.checkBoxRecommendedRules.Size = new System.Drawing.Size(199, 17);
             this.checkBoxRecommendedRules.TabIndex = 15;
             this.checkBoxRecommendedRules.Text = "Use Recommended Rules && Ranges";
             this.checkBoxRecommendedRules.UseVisualStyleBackColor = true;
             this.checkBoxRecommendedRules.CheckedChanged += new System.EventHandler(this.checkBoxReasonableChanges_CheckedChanged);
+            // 
+            // toggleRandomEnd
+            // 
+            this.toggleRandomEnd.Appearance = System.Windows.Forms.Appearance.Button;
+            this.toggleRandomEnd.BackColor = System.Drawing.Color.White;
+            this.toggleRandomEnd.Checked = true;
+            this.toggleRandomEnd.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toggleRandomEnd.Location = new System.Drawing.Point(3, 669);
+            this.toggleRandomEnd.Name = "toggleRandomEnd";
+            this.toggleRandomEnd.Size = new System.Drawing.Size(20, 20);
+            this.toggleRandomEnd.TabIndex = 17;
+            this.toggleRandomEnd.UseVisualStyleBackColor = true;
+            // 
+            // toggleRandomStart
+            // 
+            this.toggleRandomStart.Appearance = System.Windows.Forms.Appearance.Button;
+            this.toggleRandomStart.BackColor = System.Drawing.Color.White;
+            this.toggleRandomStart.Checked = true;
+            this.toggleRandomStart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toggleRandomStart.Location = new System.Drawing.Point(3, 626);
+            this.toggleRandomStart.Name = "toggleRandomStart";
+            this.toggleRandomStart.Size = new System.Drawing.Size(20, 20);
+            this.toggleRandomStart.TabIndex = 16;
+            this.toggleRandomStart.UseVisualStyleBackColor = true;
             // 
             // ParamNamesForm
             // 
@@ -227,6 +254,8 @@
             this.Controls.Add(this.labelCurrentStartParamString);
             this.Controls.Add(this.txtCurrentStartParamString);
             this.Controls.Add(this.btnRandom);
+            this.Controls.Add(this.toggleRandomStart);
+            this.Controls.Add(this.toggleRandomEnd);
             this.Name = "ParamNamesForm";
             this.Text = "ParamNamesForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -251,5 +280,8 @@
         private System.Windows.Forms.Button btnSendParmsToMain;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.CheckBox checkBoxRecommendedRules;
+        private CustomToggleCheckBox toggleRandomStart;
+        private CustomToggleCheckBox toggleRandomEnd;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

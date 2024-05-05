@@ -1243,5 +1243,15 @@ namespace DrosteEffectApp
         {
 
         }
+
+        private void btnSwapStartEndStrings_Click(object sender, EventArgs e)
+        {
+            // Swap the start and end parameter strings
+            string tempCopyOfStart = txtStartParams.Text;
+            string tempCopyOfEnd = txtEndParams.Text;
+            txtEndParams.Text = tempCopyOfStart;
+            txtStartParams.Text = tempCopyOfEnd;
+
+        }
     }
 }
