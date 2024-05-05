@@ -43,6 +43,10 @@ namespace DrosteEffectApp
         // These are arbitrarily chosen values based on experience.
         private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
+        // Default values for the start and end parameters to be displayed as placeholders in the textboxes and if user opens parameters info window without entering any values
+        private string defaultStartParams = "34,100,1,1,1,0,0,-11,-32,-46,4,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
+        private string defaultEndParams = "100,100,1,1,1,0,0,0,0,0,4,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
+
         //private decimal previousMasterIncrementNUDValue = 0;
 
         public MainForm()
@@ -59,8 +63,8 @@ namespace DrosteEffectApp
         {
             // Set initial values for form fields and internal variables to ensure a consistent starting state.
             inputFilePath = string.Empty;
-            startParams = "34,100,1,1,1,0,0,-11,-32,-46,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
-            endParams = "100,100,1,1,1,0,0,0,0,0,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
+            startParams = defaultStartParams;
+            endParams = defaultEndParams;
             //masterParamIndex = 1;
             masterParamIncrement = 1;
             exponentialIncrements = false;
@@ -76,7 +80,7 @@ namespace DrosteEffectApp
             WriteLatestParamNameStringLabel();
 
 #if !DEBUG
-            // Apply placeholders
+            // Apply placeholders if not in debug mode
             PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)startParams);
             PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)endParams);
 #endif
@@ -85,8 +89,8 @@ namespace DrosteEffectApp
 #if DEBUG
             // Set default value text in parameter value textboxes
             txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
-            txtStartParams.Text = startParams;
-            txtEndParams.Text = endParams;
+            //txtStartParams.Text = startParams;
+            //txtEndParams.Text = endParams;
             inputFilePath = txtInputFilePath.Text;
             //Enable test button for debugging only
             TestButton1.Visible = true;
@@ -807,13 +811,22 @@ namespace DrosteEffectApp
             double[] startParamArray = null;
             double[] endParamArray = null;
 
+            // Get the start and end parameter values from text box if there, otherwise use the default values
             if (!string.IsNullOrEmpty(startParamString))
             {
-                startParamArray = ParseParamsToArray(startParamString, true);
+                startParamArray = ParseParamsToArray(startParamString, silent: true);
+            }
+            else
+            {
+                startParamArray = ParseParamsToArray(defaultStartParams, silent: true);
             }
             if (!string.IsNullOrEmpty(endParamString))
             {
-                endParamArray = ParseParamsToArray(endParamString, true);
+                endParamArray = ParseParamsToArray(endParamString, silent: true);
+            }
+            else
+            {
+                endParamArray = ParseParamsToArray(defaultEndParams, silent: true);
             }
 
             ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);

@@ -327,7 +327,7 @@ namespace GmicDrosteAnimate
                         // Check if parameter is periodicity 
                         if (paramInfo.Name == "Periodicity")
                         {
-                            (start, end) = SpecialCasePeriodicity();
+                            (start, end) = SpecialCasePeriodicityMode1();
                         }
 
                         // Special case for starting level - check that it is not less than 3
@@ -516,8 +516,22 @@ namespace GmicDrosteAnimate
             return minValue + (next * (maxValue - minValue));
         }
 
-        //Periodicity special case
-        private (double, double) SpecialCasePeriodicity()
+        //Periodicity Mode 1 -- Periodicity stays between 0.751 and 1.250, therefore changing between starting levels is fine
+        private (double, double) SpecialCasePeriodicityMode1()
+        {
+            double periodicityMin = 0.751;
+            double periodicityMax = 1.250;
+            double start;
+            double end;
+
+            //Want the range between 0.1 and 2. If it's not, make new random values until they are
+            start = RandomNumberBetween(periodicityMin, periodicityMax);
+            end = RandomNumberBetween(periodicityMin, periodicityMax);
+            return (start, end);
+        }
+
+        // Periodicity Mode 2 -- 
+        private (double, double) SpecialCasePeriodicityMode2()
         {
             double periodicityMin = 0.751;
             double periodicityMax = 1.250;
