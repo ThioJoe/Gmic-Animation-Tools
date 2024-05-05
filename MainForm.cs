@@ -510,7 +510,9 @@ namespace DrosteEffectApp
             int attempt = 1;
 
             int totalFrames = interpolatedParams.Count;
-            int digitCount = (int)Math.Floor(Math.Log10(totalFrames + frameNumberStart));
+            int highestFrameNumber = frameNumberStart + totalFrames - 1;
+            int digitCount = (int)Math.Floor(Math.Log10(highestFrameNumber)) + 1;
+            //int digitCount = (int)Math.Floor(Math.Log10(totalFrames + frameNumberStart));
 
             List<string> expectedFiles = new List<string>();
             int j = frameNumberStart;
