@@ -485,6 +485,7 @@ namespace GmicDrosteAnimate
             // Uncheck the checkbox for syncing with the main window and disable synchronization
             checkBoxSyncFromOtherWindow.Checked = false;
             syncWithOtherWindow = false;
+
         }
         // Function to generate random decimal values within a specified range
         private static double RandomNumberBetween(double minValue, double maxValue)
@@ -524,6 +525,8 @@ namespace GmicDrosteAnimate
             int yShiftIndex = Array.IndexOf(paramNames, "Y-Shift");
             int centerXShiftIndex = Array.IndexOf(paramNames, "Center X-Shift");
             int centerYShiftIndex = Array.IndexOf(paramNames, "Center Y-Shift");
+
+            // Put array into individual variables to use
             double pendingXShiftStart = newStartParamValues[xShiftIndex];
             double pendingXShiftEnd = newEndParamValues[xShiftIndex];
             double pendingYShiftStart = newStartParamValues[yShiftIndex];
@@ -607,16 +610,16 @@ namespace GmicDrosteAnimate
             {
                 newStartParamValues[xShiftIndex] = newXShiftStart;
                 newEndParamValues[xShiftIndex] = newXShiftEnd;
-                //dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString();
-                //dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString();
+                dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString();
+                dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString();
             }
 
             if (dataGridView1.Rows[yShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[yShiftIndex].Cells["CheckBox"].Value))
             {
                 newStartParamValues[yShiftIndex] = newYShiftStart;
                 newEndParamValues[yShiftIndex] = newYShiftEnd;
-                //dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString();
-                //dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString();
+                dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString();
+                dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString();
             }
 
 
@@ -624,16 +627,16 @@ namespace GmicDrosteAnimate
             {
                 newStartParamValues[centerXShiftIndex] = newCenterXShiftStart;
                 newEndParamValues[centerXShiftIndex] = newCenterXShiftEnd;
-                //dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString();
-                //dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString();
+                dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString();
+                dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString();
             }
 
             if (dataGridView1.Rows[centerYShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[centerYShiftIndex].Cells["CheckBox"].Value))
             {
                 newStartParamValues[centerYShiftIndex] = newCenterYShiftStart;
                 newEndParamValues[centerYShiftIndex] = newCenterYShiftEnd;
-                //dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString();
-                //dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString();
+                dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString();
+                dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString();
             }          
 
             return (newStartParamValues, newEndParamValues);
