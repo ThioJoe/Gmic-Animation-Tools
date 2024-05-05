@@ -498,8 +498,8 @@ namespace GmicDrosteAnimate
         //Periodicity special case
         private (double, double) SpecialCasePeriodicity()
         {
-            double periodicityMin = 0.1;
-            double periodicityMax = 2;
+            double periodicityMin = 0.751;
+            double periodicityMax = 1.250;
             double start;
             double end;
 
