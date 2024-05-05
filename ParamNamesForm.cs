@@ -471,11 +471,11 @@ namespace GmicDrosteAnimate
                 }
             }
 
-            // Check again if recommended rules are applied via checkbox, if so apply inner outer radius rules
-            // Special case for inner/outer radius - Need to do this after all other parameters have been set because rules depend on each other
+            // Check again if recommended rules are applied via checkbox, if so apply special cases for shifting X Y parameters
+            // Need to do this after all other parameters have been set because rules depend on each other
             if (checkBoxRecommendedRules.Checked)
             {
-                (newStartParamValues, newEndParamValues) = SpecialCaseInnerOuterRadius(newStartParamValues, newEndParamValues);
+                (newStartParamValues, newEndParamValues) = SpecialCaseMaxShift(newStartParamValues, newEndParamValues);
             }
 
             // Update the text boxes to reflect the newly generated start and end parameter strings
@@ -510,9 +510,9 @@ namespace GmicDrosteAnimate
         }
 
         // InnerOuterRadius special case
-        private (double[], double[]) SpecialCaseInnerOuterRadius(double[] originalStartParamValues, double[] originalEndParamValues)
+        private (double[], double[]) SpecialCaseMaxShift(double[] originalStartParamValues, double[] originalEndParamValues)
         {
-            // Store original values of inner and outer radius to use later if a particular option has not been checked to be randomized
+            // Store original values to use later if a particular option has not been checked to be randomized
             double[] newStartParamValues = originalStartParamValues;
             double[] newEndParamValues = originalEndParamValues;
 

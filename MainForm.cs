@@ -41,9 +41,9 @@ namespace DrosteEffectApp
 
         // Setting a default array of exponents for use with exponential interpolation if no custom array is provided.
         // These are arbitrarily chosen values based on experience.
-        private double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+        private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-        private decimal previousMasterIncrementNUDValue = 0;
+        //private decimal previousMasterIncrementNUDValue = 0;
 
         public MainForm()
         {
@@ -51,7 +51,7 @@ namespace DrosteEffectApp
             InitializeDefaults();
 
             // Store data about master increment NUD to properly increment up down arrows
-            previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
+            //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
             //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
         }
 
