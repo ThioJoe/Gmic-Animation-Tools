@@ -25,7 +25,7 @@ namespace DrosteEffectApp
         // endParams stores the final parameters for the Droste effect to create a transition effect.
         private string endParams;
         // masterParamIndex indicates the index of the parameter that drives the transformation.
-        private int masterParamIndex;
+        //private int masterParamIndex;
         // masterParamIncrement defines the increment by which the master parameter changes.
         private double masterParamIncrement;
         // exponentialIncrements indicates whether exponential interpolation is used.
@@ -61,7 +61,7 @@ namespace DrosteEffectApp
             inputFilePath = string.Empty;
             startParams = "34,100,1,1,1,0,0,-11,-32,-46,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
             endParams = "100,100,1,1,1,0,0,0,0,0,3,10,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
-            masterParamIndex = 1;
+            //masterParamIndex = 1;
             masterParamIncrement = 1;
             exponentialIncrements = false;
             masterExponent = 0;
@@ -273,7 +273,7 @@ namespace DrosteEffectApp
                 frameNumberStart = CountExistingFiles(outputDir) + 1;
             }
             // Create the log file with metadata and interpolated parameters
-            CreateLogFile(outputDir, interpolatedParams, exponentMode, defaultExponents, masterExponent, frameNumberStart);
+            CreateLogFile(outputDir: outputDir, interpolatedParams: interpolatedParams, exponentMode: exponentMode, defaultExponents: defaultExponents, masterExponent: masterExponent, frameStartNumber: frameNumberStart, masterParamIndex: masterParamIndexAtTimeOfClick, masterParamIncrement: masterParamIncrementAtTimeOfClick);
 
             btnStart.Visible = false;
             btnCancel.Visible = true;
@@ -674,7 +674,7 @@ namespace DrosteEffectApp
             }
         }
 
-        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, double masterExponent, int frameStartNumber)
+        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, double masterExponent, int frameStartNumber, int masterParamIndex, double masterParamIncrement)
         {
             //string logFilePath = Path.Combine(outputDir, $"{outputDir}_log.txt");
             string logFilePath = DecideLogFilePath(outputDir);
@@ -724,7 +724,7 @@ namespace DrosteEffectApp
                 writer.WriteLine("Run Metadata:");
                 writer.WriteLine($"Start Parameters: {startParams}");
                 writer.WriteLine($"End Parameters: {endParams}");
-                writer.WriteLine($"Master Parameter Index: {masterParamIndex}");
+                writer.WriteLine($"Master Parameter Index: {masterParamIndex+1}");
                 writer.WriteLine($"Master Parameter Increment: {masterParamIncrement}");
                 writer.WriteLine($"Exponential Increments: {exponentialIncrements}");
 
@@ -930,8 +930,12 @@ namespace DrosteEffectApp
         {       
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
-                string[] startParamsArray = txtStartParams.Text.Split(',');
-                string[] endParamsArray = txtEndParams.Text.Split(',');
+                string rawStartString = txtStartParams.Text;
+                string rawEndString = txtEndParams.Text;
+                rawStartString = rawStartString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+                rawEndString = rawEndString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+                string[] startParamsArray = rawStartString.Split(',');
+                string[] endParamsArray = rawEndString.Split(',');
 
                 if (startParamsArray.Length == 31 && endParamsArray.Length == 31)
                 {
@@ -1005,8 +1009,19 @@ namespace DrosteEffectApp
             // Check if both parameter strings exist
             if (!string.IsNullOrEmpty(txtEndParams.Text) && !string.IsNullOrEmpty(txtStartParams.Text))
             {
-                double[] startParamArray = ParseParamsToArray(txtStartParams.Text, silent: true);
-                double[] endParamArray = ParseParamsToArray(txtEndParams.Text, silent: true);
+                // Remove souphead_droste10 and spaces from the strings
+                string rawsStartstring = txtStartParams.Text;
+                string rawEndString = txtEndParams.Text;
+                rawsStartstring = rawsStartstring.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+                rawEndString = rawEndString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+
+                // Disable textChanged update and replace the text with the cleaned up version
+                txtStartParams.TextChanged -= txtStartParams_TextChanged;
+                txtStartParams.Text = rawsStartstring;
+                txtStartParams.TextChanged += txtStartParams_TextChanged;
+
+                double[] startParamArray = ParseParamsToArray(rawsStartstring, silent: true);
+                double[] endParamArray = ParseParamsToArray(rawEndString, silent: true);
                 // Silently check if both parameter strings are valid
                 if (startParamArray != null && endParamArray != null)
                 {
@@ -1039,8 +1054,19 @@ namespace DrosteEffectApp
             // Silently check if both parameter strings exist
             if (!string.IsNullOrEmpty(txtEndParams.Text) && !string.IsNullOrEmpty(txtStartParams.Text))
             {
-                double[] startParamArray = ParseParamsToArray(txtStartParams.Text, silent: true);
-                double[] endParamArray = ParseParamsToArray(txtEndParams.Text, silent: true);
+                // Remove souphead_droste10 and spaces from the strings
+                string rawsStartstring = txtStartParams.Text;
+                string rawEndString = txtEndParams.Text;
+                rawsStartstring = rawsStartstring.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+                rawEndString = rawEndString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+
+                // Disable textChanged update and replace the text with the cleaned up version
+                txtEndParams.TextChanged -= txtStartParams_TextChanged;
+                txtEndParams.Text = rawEndString;
+                txtEndParams.TextChanged += txtStartParams_TextChanged;
+
+                double[] startParamArray = ParseParamsToArray(rawsStartstring, silent: true);
+                double[] endParamArray = ParseParamsToArray(rawEndString, silent: true);
 
                 // Check if both parameter strings are valid
                 if (startParamArray != null && endParamArray != null)
