@@ -93,14 +93,14 @@ namespace DrosteEffectApp
             // Show parameter name initially
             WriteLatestParamNameStringLabel();
 
-#if !DEBUG
+            #if !DEBUG
             // Apply placeholders if not in debug mode
             PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)startParams);
             PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)endParams);
-#endif
+            #endif
 
 
-#if DEBUG
+            #if DEBUG
             // Set default value text in parameter value textboxes
             txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
             //txtStartParams.Text = startParams;
@@ -108,7 +108,7 @@ namespace DrosteEffectApp
             inputFilePath = txtInputFilePath.Text;
             //Enable test button for debugging only
             TestButton1.Visible = true;
-#endif
+            #endif
 
             // Set default values for the new controls
             //chkExponentialIncrements.Checked = false;
