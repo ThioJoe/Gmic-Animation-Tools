@@ -665,5 +665,40 @@ namespace AnimationTools
         {
             labelCrossfadeStatus.Visible= false;
         }
+
+        private void buttonCreationHelp_Click(object sender, EventArgs e)
+        {
+            // Pop up a message box
+            MessageBox.Show("Requirements:\n\n" +
+                            "• ffmpeg.exe is needed to combine the images into an animated gif.\n\n" +
+                            "Instructions:\n\n" +
+                            "1. Select a folder containing png frames outputted by the main droste effect app.\n" +
+                            "2. Any optional steps (see below).\n" +
+                            "3. To create an animated Gif using the files in the folder, choose a desired frame rate and click \"Create GIF From Folder\".\n\n" +
+                            "Optional: If you want to add the frames from another animation folder onto those in the currently selected folder, click \"Import Folder\"" +
+                                " and select the folder with the new frames to add. It will automatically rename the files as necessary and make the file names all one sequence.\n\n" +
+                            "Optional: If you are having issues when generating a gif because you deleted some frames in the middle, or " +
+                            "because the filename numbers have inconsistent sequence formats (01 vs 001 for example), then click \"Fix File Sequence\" to rename them in a continuous sequence.\n\n" +
+                            "The GIF will be created in the same folder as the PNG frames - They will be automatically named to not overwrite each other.", 
+                            "GIF Creation Help",
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Information);
+        }
+
+        private void buttonEditHelp_Click(object sender, EventArgs e)
+        {
+            // Pop up a message box
+            MessageBox.Show("Requirements:\n\n" +
+                            "• ffmpeg.exe is needed to apply the crossfade effect.\n" +
+                            "• ffprobe.exe (which comes with ffmpeg) is needed to get the stats about the gif necessary for calcualting the crossfade.\n\n" +
+                            "Crossfade Loop Effect Instructions:\n\n" +
+                            "1. Select an animated Gif file - The box will display some information about it.\n" +
+                            "2. Select the duration of the crossfade. You'll want to experiment with this to see what looks best for each animation.\n" +
+                            "3. To apply a cross-fade effect at the loop point of the Gif, click \"Add Loop Crossfade\".\n\n" +
+                            "The new gif will be created alongside the current one - They will be automatically named to not overwrite each other.", 
+                            "GIF Edit Help",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+        }
     }
 }

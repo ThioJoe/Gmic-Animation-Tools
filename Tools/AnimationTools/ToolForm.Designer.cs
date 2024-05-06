@@ -41,6 +41,8 @@
             this.labelCrossfadeStatus = new System.Windows.Forms.Label();
             this.LeftBorder = new System.Windows.Forms.Label();
             this.RightBorder = new System.Windows.Forms.Label();
+            this.buttonCreationHelp = new System.Windows.Forms.Button();
+            this.buttonEditHelp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudFrameRateSelect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFadeDurationSeconds)).BeginInit();
             this.SuspendLayout();
@@ -337,11 +339,33 @@
             this.RightBorder.Size = new System.Drawing.Size(297, 384);
             this.RightBorder.TabIndex = 26;
             // 
+            // buttonCreationHelp
+            // 
+            this.buttonCreationHelp.Location = new System.Drawing.Point(544, 357);
+            this.buttonCreationHelp.Name = "buttonCreationHelp";
+            this.buttonCreationHelp.Size = new System.Drawing.Size(75, 23);
+            this.buttonCreationHelp.TabIndex = 27;
+            this.buttonCreationHelp.Text = "Help";
+            this.buttonCreationHelp.UseVisualStyleBackColor = true;
+            this.buttonCreationHelp.Click += new System.EventHandler(this.buttonCreationHelp_Click);
+            // 
+            // buttonEditHelp
+            // 
+            this.buttonEditHelp.Location = new System.Drawing.Point(226, 357);
+            this.buttonEditHelp.Name = "buttonEditHelp";
+            this.buttonEditHelp.Size = new System.Drawing.Size(75, 23);
+            this.buttonEditHelp.TabIndex = 28;
+            this.buttonEditHelp.Text = "Help";
+            this.buttonEditHelp.UseVisualStyleBackColor = true;
+            this.buttonEditHelp.Click += new System.EventHandler(this.buttonEditHelp_Click);
+            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(642, 402);
+            this.Controls.Add(this.buttonEditHelp);
+            this.Controls.Add(this.buttonCreationHelp);
             this.Controls.Add(this.labelCrossfadeStatus);
             this.Controls.Add(this.labelFadeDuration);
             this.Controls.Add(this.nudFadeDurationSeconds);
@@ -405,6 +429,8 @@
         private System.Windows.Forms.Label labelCrossfadeStatus;
         private System.Windows.Forms.Label LeftBorder;
         private System.Windows.Forms.Label RightBorder;
+        private System.Windows.Forms.Button buttonCreationHelp;
+        private System.Windows.Forms.Button buttonEditHelp;
     }
 }
 
