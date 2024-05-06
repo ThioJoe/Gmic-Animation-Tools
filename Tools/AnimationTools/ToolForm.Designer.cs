@@ -28,6 +28,8 @@
             this.labelImportAnotherFolder = new System.Windows.Forms.Label();
             this.labelGifEditTitle = new System.Windows.Forms.Label();
             this.labelGifCreationTitle = new System.Windows.Forms.Label();
+            this.labelFixFileSequence = new System.Windows.Forms.Label();
+            this.buttonFixFileSequence = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -164,11 +166,32 @@
             this.labelGifCreationTitle.TabIndex = 13;
             this.labelGifCreationTitle.Text = "GIF Creation Tools";
             // 
+            // labelFixFileSequence
+            // 
+            this.labelFixFileSequence.AutoSize = true;
+            this.labelFixFileSequence.Location = new System.Drawing.Point(348, 257);
+            this.labelFixFileSequence.Name = "labelFixFileSequence";
+            this.labelFixFileSequence.Size = new System.Drawing.Size(134, 13);
+            this.labelFixFileSequence.TabIndex = 14;
+            this.labelFixFileSequence.Text = "Fix File Number Sequence:";
+            // 
+            // buttonFixFileSequence
+            // 
+            this.buttonFixFileSequence.Location = new System.Drawing.Point(490, 252);
+            this.buttonFixFileSequence.Name = "buttonFixFileSequence";
+            this.buttonFixFileSequence.Size = new System.Drawing.Size(96, 23);
+            this.buttonFixFileSequence.TabIndex = 15;
+            this.buttonFixFileSequence.Text = "Fix";
+            this.buttonFixFileSequence.UseVisualStyleBackColor = true;
+            this.buttonFixFileSequence.Click += new System.EventHandler(this.buttonFixFileSequence_Click);
+            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(608, 420);
+            this.Controls.Add(this.buttonFixFileSequence);
+            this.Controls.Add(this.labelFixFileSequence);
             this.Controls.Add(this.labelGifCreationTitle);
             this.Controls.Add(this.labelGifEditTitle);
             this.Controls.Add(this.labelImportAnotherFolder);
@@ -204,6 +227,8 @@
         private System.Windows.Forms.Label labelImportAnotherFolder;
         private System.Windows.Forms.Label labelGifEditTitle;
         private System.Windows.Forms.Label labelGifCreationTitle;
+        private System.Windows.Forms.Label labelFixFileSequence;
+        private System.Windows.Forms.Button buttonFixFileSequence;
     }
 }
 

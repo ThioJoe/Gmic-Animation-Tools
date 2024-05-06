@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.Remoting.Messaging;
+using static FileManager;
 
 namespace AnimationTools
 {
@@ -314,6 +315,65 @@ namespace AnimationTools
             fileManager.ImportAndMergeFolders(existingFolderPath: outputDirToMergeInto, importFolderPath: folderToImportPath);
             UpdateFolderDetails();
 
+        }
+
+        private void buttonFixFileSequence_Click(object sender, EventArgs e)
+        {
+            // Use FileManager's Update Zero Padding method to fix the file sequence if necessary in current folder
+            string folderPath = txtFramesFolderPath.Text;
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                // Show message box if no output directory is selected
+                MessageBox.Show("First you must select a folder above that contains the image frame files to process.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            FileManager fileManager = new FileManager();
+            string baseFileName = fileManager.GetBaseFileNameWithinFolder(folderPath);
+
+            SequenceFixResult sequenceFixResult = fileManager.FixDiscontinuousSequence(folderPath, baseFileName);
+            PaddingUpdateResult paddingUpdateResult = fileManager.UpdateZeroPadding(folderPath, baseFileName);
+
+            // Prepare message content based on the results
+            string message = "Operation Summary:\n";
+
+            // Append results from sequence fixing
+            if (sequenceFixResult.ChangesMade)
+            {
+                message += $"Files resequenced: {sequenceFixResult.FilesRenamed}.\n";
+            }
+            else
+            {
+                message += "No resequencing needed.\n";
+            }
+
+            // Append results from padding update
+            if (paddingUpdateResult.ChangesMade)
+            {
+                message += $"Files re-padded: {paddingUpdateResult.FilesRenamed}.\n";
+                message += $"New format used: {paddingUpdateResult.NewFormat}.\n";
+            }
+            else
+            {
+                message += "No re-padding needed.\n";
+            }
+
+            // Append errors if any
+            if (sequenceFixResult.Errors.Any() || paddingUpdateResult.Errors.Any())
+            {
+                message += "Errors encountered:\n";
+                foreach (var error in sequenceFixResult.Errors)
+                {
+                    message += $"{error}\n";
+                }
+                foreach (var error in paddingUpdateResult.Errors)
+                {
+                    message += $"{error}\n";
+                }
+            }
+
+            // Display the results in a single message box
+            MessageBox.Show(message, "Operation Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

@@ -29,12 +29,25 @@ public class FileManager
         return orderedFilesDict;
     }
 
+    // Hold info about the padding update result from UpdateZeroPadding method
+    public class PaddingUpdateResult
+    {
+        public bool ChangesMade { get; set; }
+        public int FilesRenamed { get; set; }
+        public string NewFormat { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
+    }
+
     // Method to update the zero padding of filenames to ensure consistency
-    private void UpdateZeroPadding(string folderPath, string fileBaseNameToUse)
+    public PaddingUpdateResult UpdateZeroPadding(string folderPath, string fileBaseNameToUse)
     {
         string searchPattern = $"{fileBaseNameToUse}_*.png";
         string[] files = Directory.GetFiles(folderPath, searchPattern);
+        if (files.Length == 0) return new PaddingUpdateResult { NewFormat = "No files found." };
+
         int digitCount = (int)Math.Floor(Math.Log10(files.Length)) + 1;
+        string newFormat = $"D{digitCount}";
+        PaddingUpdateResult result = new PaddingUpdateResult { NewFormat = newFormat };
 
         foreach (string file in files)
         {
@@ -45,7 +58,7 @@ public class FileManager
                 string numberPart = baseName.Substring(underscoreIndex + 1);
                 if (int.TryParse(numberPart, out int numericValue))
                 {
-                    string newNumberPart = numericValue.ToString($"D{digitCount}");
+                    string newNumberPart = numericValue.ToString(newFormat);
                     string newFileName = $"{fileBaseNameToUse}_{newNumberPart}.png";
                     string newFilePath = Path.Combine(folderPath, newFileName);
 
@@ -54,15 +67,19 @@ public class FileManager
                         if (newFilePath != file)
                         {
                             File.Move(file, newFilePath);
+                            result.FilesRenamed++;
+                            result.ChangesMade = true;
                         }
                     }
-                    else
+                    else if (newFilePath != file)
                     {
-                        Console.WriteLine($"Cannot rename '{file}' to '{newFilePath}' because the target file already exists.");
+                        result.Errors.Add($"Cannot rename '{file}' to '{newFilePath}' because the target file already exists.");
                     }
                 }
             }
         }
+
+        return result;
     }
 
     // Method to import and merge folders, then normalize file numbering and padding
@@ -130,4 +147,73 @@ public class FileManager
                 File.Move(entry.Value, newFilePath);
         }
     }
+    public class SequenceFixResult
+    {
+        public int FilesRenamed { get; set; }
+        public bool ChangesMade { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
+    }
+
+    public string GetBaseFileNameWithinFolder(string folderPath, string searchPattern = null)
+    {
+        if (searchPattern == null) searchPattern = "*.png";
+
+        string[] files = Directory.GetFiles(folderPath, searchPattern);
+        if (files.Length == 0) return null;
+        string fileName = Path.GetFileName(files[0]);
+        int underscoreIndex = fileName.LastIndexOf('_');
+        if (underscoreIndex != -1)
+        {
+            return fileName.Substring(0, underscoreIndex);
+        }
+        return null;
+    }
+
+    public SequenceFixResult FixDiscontinuousSequence(string folderPath, string fileBaseNameToUse = null, int startIndex = 1)
+    {
+        if (fileBaseNameToUse == null)
+        {
+            fileBaseNameToUse = GetBaseFileNameWithinFolder(folderPath: folderPath);
+            if (fileBaseNameToUse == null)
+            {
+                return new SequenceFixResult { Errors = { "No files found in the folder." } };
+            }
+        }
+
+        string searchPattern = $"{fileBaseNameToUse}_*.png";
+        string[] files = Directory.GetFiles(folderPath, searchPattern);
+        var orderedFiles = GetOrderedFiles(files);
+        SequenceFixResult result = new SequenceFixResult();
+
+        int currentIndex = startIndex;
+
+        foreach (var entry in orderedFiles)
+        {
+            string currentFileName = Path.GetFileNameWithoutExtension(entry.Value);
+            int underscoreIndex = currentFileName.LastIndexOf('_');
+            string currentNumberPart = currentFileName.Substring(underscoreIndex + 1);
+            int currentPaddingLength = currentNumberPart.Length;  // Determine the original padding length
+
+            string expectedFileName = $"{fileBaseNameToUse}_{currentIndex.ToString($"D{currentPaddingLength}")}.png";
+            string expectedFilePath = Path.Combine(folderPath, expectedFileName);
+
+            if (expectedFilePath != entry.Value) // Only rename if necessary
+            {
+                try
+                {
+                    File.Move(entry.Value, expectedFilePath);
+                    result.FilesRenamed++;
+                    result.ChangesMade = true;
+                }
+                catch (IOException ex)
+                {
+                    result.Errors.Add($"Failed to rename '{entry.Value}' to '{expectedFilePath}': {ex.Message}");
+                }
+            }
+            currentIndex++;
+        }
+
+        return result;
+    }
+
 }
