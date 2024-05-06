@@ -63,8 +63,8 @@ namespace AnimationTools
             int frameCount = 0;
             int totalDurationMs = 0;
             double framesPerSecond = 0;
+            List<int> frameDurations = new List<int>();
 
-            // Skipping some details, just extracting duration as an example
             while (index < fileBytes.Length)
             {
                 byte blockMarker = fileBytes[index];
@@ -79,6 +79,7 @@ namespace AnimationTools
                     int delay = BitConverter.ToUInt16(fileBytes, index + 4);
                     int frameDelayMs = delay * 10;  // Convert to milliseconds
                     totalDurationMs += frameDelayMs;
+                    frameDurations.Add(frameDelayMs);
                     index += 8; // Skip over the GCE block
                 }
                 else if (blockMarker == 0x2C) // Start of an image block
@@ -102,13 +103,54 @@ namespace AnimationTools
             // Calculate frames per second
             if (totalDurationMs > 0 && frameCount > 0)
             {
-                framesPerSecond = frameCount / (totalDurationMs/1000);
+                framesPerSecond = (double)frameCount / (totalDurationMs / 1000.0);
             }
 
             output.AppendLine("------------------------------------------------");
             output.AppendLine($"Number of Frames: {frameCount}");
             output.AppendLine($"Total Animation Duration: {totalDurationMs} ms");
             output.AppendLine($"Average Frames Per Second: {framesPerSecond:0.000}"); // Truncate to 3 decimal places
+
+            // Group by frame duration
+            if (frameDurations.Count > 0)
+            {
+                int currentDuration = frameDurations[0];
+                int startFrame = 1;
+                int endFrame = 1;
+
+                for (int i = 1; i < frameDurations.Count; i++)
+                {
+                    if (frameDurations[i] == currentDuration)
+                    {
+                        endFrame++;
+                    }
+                    else
+                    {
+                        if (startFrame == endFrame)
+                        {
+                            output.AppendLine($"Frame {startFrame} Duration: {currentDuration} ms");
+                        }
+                        else
+                        {
+                            output.AppendLine($"Frames {startFrame}-{endFrame} Duration: {currentDuration} ms");
+                        }
+                        startFrame = i + 1;
+                        endFrame = i + 1;
+                        currentDuration = frameDurations[i];
+                    }
+                }
+
+                // Handle the last sequence
+                if (startFrame == endFrame)
+                {
+                    output.AppendLine($"Frame {startFrame} Duration: {currentDuration} ms");
+                }
+                else
+                {
+                    output.AppendLine($"Frames {startFrame}-{endFrame} Duration: {currentDuration} ms");
+                }
+            }
+
             output.AppendLine("---------------------------------------------------------------------\n");
 
             return output.ToString();
