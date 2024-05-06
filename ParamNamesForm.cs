@@ -351,6 +351,22 @@ namespace GmicDrosteAnimate
                             (start, end) = SpecialCasePeriodicityMode1(useLargerPeriodicityRange: useLargerPeriodicityRange);
                         }
 
+                        // Special cases for X-Shift and Y-Shift
+                        if (paramInfo.Name == "X-Shift" || paramInfo.Name == "Y-Shift")
+                        {
+                            double maxRecomendedStandardShift = 5;
+                            start = RandomNumberBetween(-maxRecomendedStandardShift, maxRecomendedStandardShift);
+                            end = RandomNumberBetween(-maxRecomendedStandardShift, maxRecomendedStandardShift);
+                        }
+
+                        // Special cases for Center X-Shift and Center Y-Shift
+                        if (paramInfo.Name == "Center X-Shift" || paramInfo.Name == "Center Y-Shift")
+                        {
+                            double maxRecomendedCenterShift = 15;
+                            start = RandomNumberBetween(-maxRecomendedCenterShift, maxRecomendedCenterShift);
+                            end = RandomNumberBetween(-maxRecomendedCenterShift, maxRecomendedCenterShift);
+                        }
+
                         // Special case for starting level - check that it is not less than 3
                         if (paramInfo.Name == "Starting Level")
                         {
@@ -513,13 +529,6 @@ namespace GmicDrosteAnimate
                 }
             }
 
-            // Check again if recommended rules are applied via checkbox, if so apply special cases for shifting X Y parameters
-            // Need to do this after all other parameters have been set because rules depend on each other
-            if (checkBoxRecommendedRules.Checked)
-            {
-                (newStartParamValues, newEndParamValues) = SpecialCaseMaxShift(newStartParamValues, newEndParamValues);
-            }
-
             // Update the text boxes to reflect the newly generated start and end parameter strings
             SetCurrentStartParamString(newStartParamValues);
             SetCurrentEndParamString(newEndParamValues);
@@ -572,142 +581,6 @@ namespace GmicDrosteAnimate
             return (start, end);
         }
 
-        // InnerOuterRadius special case
-        private (double[], double[]) SpecialCaseMaxShift(double[] originalStartParamValues, double[] originalEndParamValues)
-        {
-            // Store original values to use later if a particular option has not been checked to be randomized
-            double[] newStartParamValues = originalStartParamValues;
-            double[] newEndParamValues = originalEndParamValues;
-
-            // Set max shift value to ensure the animation remains visible
-            double maxShiftTotal = 20;
-            double maxStandardShift = 5;
-            double maxCenterShift = 15;
-
-            // Handle special case for X-Shift, Y-Shift, Center-X-Shift, Center-Y-Shift - Need to do this after all other parameters have been set because rules depend on each other
-            // Get index and values of the various parameters
-            int xShiftIndex = Array.IndexOf(paramNames, "X-Shift");
-            int yShiftIndex = Array.IndexOf(paramNames, "Y-Shift");
-            int centerXShiftIndex = Array.IndexOf(paramNames, "Center X-Shift");
-            int centerYShiftIndex = Array.IndexOf(paramNames, "Center Y-Shift");
-
-            // Put array into individual variables to use
-            double pendingXShiftStart = newStartParamValues[xShiftIndex];
-            double pendingXShiftEnd = newEndParamValues[xShiftIndex];
-            double pendingYShiftStart = newStartParamValues[yShiftIndex];
-            double pendingYShiftEnd = newEndParamValues[yShiftIndex];
-            double pendingCenterXShiftStart = newStartParamValues[centerXShiftIndex];
-            double pendingCenterXShiftEnd = newEndParamValues[centerXShiftIndex];
-            double pendingCenterYShiftStart = newStartParamValues[centerYShiftIndex];
-            double pendingCenterYShiftEnd = newEndParamValues[centerYShiftIndex];
-
-            // Just generate new random numbers for all within the ranges instead of checking first
-            double newXShiftStart = RandomNumberBetween(-maxStandardShift, maxStandardShift);
-            double newYShiftStart = RandomNumberBetween(-maxStandardShift, maxStandardShift);
-            double newCenterXShiftStart = RandomNumberBetween(-maxCenterShift, maxCenterShift);
-            double newCenterYShiftStart = RandomNumberBetween(-maxCenterShift, maxCenterShift);
-            double newXShiftEnd = RandomNumberBetween(-maxStandardShift, maxStandardShift);
-            double newYShiftEnd = RandomNumberBetween(-maxStandardShift, maxStandardShift);
-            double newCenterXShiftEnd = RandomNumberBetween(-maxCenterShift, maxCenterShift);
-            double newCenterYShiftEnd = RandomNumberBetween(-maxCenterShift, maxCenterShift);
-
-            // Sum of X-Shift and Center-X-Shift should not be more than maxShift, otherwise generate new random values - Test both start and end values
-            if (pendingXShiftStart + pendingCenterXShiftStart > maxShiftTotal || pendingXShiftStart + pendingCenterXShiftStart < -maxShiftTotal || pendingXShiftEnd + pendingCenterXShiftEnd > maxShiftTotal || pendingXShiftEnd + pendingCenterXShiftEnd < -maxShiftTotal)
-            {
-                // While loop until the sum of X-Shift and Center-X-Shift is within the range
-                do
-                {
-                    newXShiftStart = RandomNumberBetween(-maxStandardShift, maxStandardShift);
-                    newCenterXShiftStart = RandomNumberBetween(-maxCenterShift, maxCenterShift);
-                    newXShiftEnd = RandomNumberBetween(-maxStandardShift, maxStandardShift);
-                    newCenterXShiftEnd = RandomNumberBetween(-maxCenterShift, maxCenterShift);
-                } while (newXShiftStart + newCenterXShiftStart > maxShiftTotal || newXShiftStart + newCenterXShiftStart < -maxShiftTotal || newXShiftEnd + newCenterXShiftEnd > maxShiftTotal || newXShiftEnd + newCenterXShiftEnd < -maxShiftTotal);
-
-            }
-
-            // Sum of Y-Shift and Center-Y-Shift should not be maxShift, otherwise generate new random values - Test both start and end values
-            if (pendingYShiftStart + pendingCenterYShiftStart > maxShiftTotal || pendingYShiftStart + pendingCenterYShiftStart < -maxShiftTotal || pendingYShiftEnd + pendingCenterYShiftEnd > maxShiftTotal || pendingYShiftEnd + pendingCenterYShiftEnd < -maxShiftTotal)
-            {
-                // While loop until the sum of Y-Shift and Center-Y-Shift is within the range
-                do
-                {
-                    newYShiftStart = RandomNumberBetween(-maxStandardShift, maxStandardShift);
-                    newCenterYShiftStart = RandomNumberBetween(-maxCenterShift, maxCenterShift);
-                    newYShiftEnd = RandomNumberBetween(-maxStandardShift, maxStandardShift);
-                    newCenterYShiftEnd = RandomNumberBetween(-maxCenterShift, maxCenterShift);
-                } while (newYShiftStart + newCenterYShiftStart > maxShiftTotal || newYShiftStart + newCenterYShiftStart < -maxShiftTotal || newYShiftEnd + newCenterYShiftEnd > maxShiftTotal || newYShiftEnd + newCenterYShiftEnd < -maxShiftTotal);
-
-            }
-
-            // Reduce the number of decimal places to the specified amount from param info
-            newXShiftStart = Math.Round(newXShiftStart, AppParameters.Parameters[xShiftIndex].Decimals);
-            newYShiftStart = Math.Round(newYShiftStart, AppParameters.Parameters[yShiftIndex].Decimals);
-            newCenterXShiftStart = Math.Round(newCenterXShiftStart, AppParameters.Parameters[centerXShiftIndex].Decimals);
-            newCenterYShiftStart = Math.Round(newCenterYShiftStart, AppParameters.Parameters[centerYShiftIndex].Decimals);
-            newXShiftEnd = Math.Round(newXShiftEnd, AppParameters.Parameters[xShiftIndex].Decimals);
-            newYShiftEnd = Math.Round(newYShiftEnd, AppParameters.Parameters[yShiftIndex].Decimals);
-            newCenterXShiftEnd = Math.Round(newCenterXShiftEnd, AppParameters.Parameters[centerXShiftIndex].Decimals);
-            newCenterYShiftEnd = Math.Round(newCenterYShiftEnd, AppParameters.Parameters[centerYShiftIndex].Decimals);
-
-            // If string start/end box is not checked, keep the original values
-            if (!toggleRandomStart.Checked)
-            {
-                newStartParamValues = originalStartParamValues;
-
-                newXShiftStart = newStartParamValues[xShiftIndex];
-                newYShiftStart = newStartParamValues[yShiftIndex];
-                newCenterXShiftStart = newStartParamValues[centerXShiftIndex];
-                newCenterYShiftStart = newStartParamValues[centerYShiftIndex];
-            }
-            if (!toggleRandomEnd.Checked)
-            {
-                newEndParamValues = originalEndParamValues;
-
-                newXShiftEnd = newEndParamValues[xShiftIndex];
-                newYShiftEnd = newEndParamValues[yShiftIndex];
-                newCenterXShiftEnd = newEndParamValues[centerXShiftIndex];
-                newCenterYShiftEnd = newEndParamValues[centerYShiftIndex];
-            }
-
-            // Apply the new values to the arrays, but only if the row is checked for randomization
-            // Check if checkbox at each index is checked and not null
-            if (dataGridView1.Rows[xShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[xShiftIndex].Cells["CheckBox"].Value))
-            {
-                newStartParamValues[xShiftIndex] = newXShiftStart;
-                newEndParamValues[xShiftIndex] = newXShiftEnd;
-                dataGridView1.Rows[xShiftIndex].Cells["Start"].Value = newXShiftStart.ToString();
-                dataGridView1.Rows[xShiftIndex].Cells["End"].Value = newXShiftEnd.ToString();
-            }
-
-            if (dataGridView1.Rows[yShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[yShiftIndex].Cells["CheckBox"].Value))
-            {
-                newStartParamValues[yShiftIndex] = newYShiftStart;
-                newEndParamValues[yShiftIndex] = newYShiftEnd;
-                dataGridView1.Rows[yShiftIndex].Cells["Start"].Value = newYShiftStart.ToString();
-                dataGridView1.Rows[yShiftIndex].Cells["End"].Value = newYShiftEnd.ToString();
-            }
-
-
-            if (dataGridView1.Rows[centerXShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[centerXShiftIndex].Cells["CheckBox"].Value))
-            {
-                newStartParamValues[centerXShiftIndex] = newCenterXShiftStart;
-                newEndParamValues[centerXShiftIndex] = newCenterXShiftEnd;
-                dataGridView1.Rows[centerXShiftIndex].Cells["Start"].Value = newCenterXShiftStart.ToString();
-                dataGridView1.Rows[centerXShiftIndex].Cells["End"].Value = newCenterXShiftEnd.ToString();
-            }
-
-            if (dataGridView1.Rows[centerYShiftIndex].Cells["CheckBox"].Value != null && Convert.ToBoolean(dataGridView1.Rows[centerYShiftIndex].Cells["CheckBox"].Value))
-            {
-                newStartParamValues[centerYShiftIndex] = newCenterYShiftStart;
-                newEndParamValues[centerYShiftIndex] = newCenterYShiftEnd;
-                dataGridView1.Rows[centerYShiftIndex].Cells["Start"].Value = newCenterYShiftStart.ToString();
-                dataGridView1.Rows[centerYShiftIndex].Cells["End"].Value = newCenterYShiftEnd.ToString();
-            }          
-
-            return (newStartParamValues, newEndParamValues);
-        }
-
-
         private void btnCheckAll_Click(object sender, EventArgs e)
         {
             // Determine which types should be included based on checkbox states
@@ -752,10 +625,7 @@ namespace GmicDrosteAnimate
         }
 
 
-        private void checkBoxDisableStepRandom_CheckedChanged(object sender, EventArgs e)
-        {
 
-        }
 
         private void btnSendParmsToMain_Click(object sender, EventArgs e)
         {
@@ -772,9 +642,18 @@ namespace GmicDrosteAnimate
             }
         }
 
-        private void checkBoxReasonableChanges_CheckedChanged(object sender, EventArgs e)
+        private void checkRecommendedRules_CheckedChanged(object sender, EventArgs e)
         {
+            if (checkBoxRecommendedRules.Checked)
+            {
+                // If recommended rules are checked, disable checkbox for extended range
+                checkBoxExtendedRange.Checked = false;
 
+                // Enable checkboxes to not check various parameters
+                checkBoxDisableBinaryRandom.Checked = true;
+                checkBoxDisableStepRandom.Checked = true;
+                checkBoxDisableMultiPole.Checked = true;
+            }
         }
 
         public class CustomToggleCheckBox : CheckBox
@@ -831,7 +710,38 @@ namespace GmicDrosteAnimate
 
         private void checkBoxDisableMultiPole_CheckedChanged(object sender, EventArgs e)
         {
+            // If this unchecked, disable recommended rules
+            if (!checkBoxDisableMultiPole.Checked)
+            {
+                checkBoxRecommendedRules.Checked = false;
+            }
+        }
 
+        private void checkBoxDisableBinaryRandom_CheckedChanged(object sender, EventArgs e)
+        {
+            // If this unchecked, disable recommended rules
+            if (!checkBoxDisableBinaryRandom.Checked)
+            {
+                checkBoxRecommendedRules.Checked = false;
+            }
+        }
+
+
+        private void checkBoxDisableStepRandom_CheckedChanged(object sender, EventArgs e)
+        {
+            // If this unchecked, disable recommended rules
+            if (!checkBoxDisableStepRandom.Checked)
+            {
+                checkBoxRecommendedRules.Checked = false;
+            }
+        }
+        private void checkBoxExtendedRange_CheckedChanged(object sender, EventArgs e)
+        {
+            // If this checked, disable recommended rules
+            if (checkBoxExtendedRange.Checked)
+            {
+                checkBoxRecommendedRules.Checked = false;
+            }
         }
     }
 

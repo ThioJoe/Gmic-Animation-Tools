@@ -136,6 +136,7 @@
             this.checkBoxDisableBinaryRandom.TabIndex = 9;
             this.checkBoxDisableBinaryRandom.Text = "Don\'t Randomize Binary Parameters";
             this.checkBoxDisableBinaryRandom.UseVisualStyleBackColor = true;
+            this.checkBoxDisableBinaryRandom.CheckedChanged += new System.EventHandler(this.checkBoxDisableBinaryRandom_CheckedChanged);
             // 
             // checkBoxSyncFromOtherWindow
             // 
@@ -172,6 +173,7 @@
             this.checkBoxExtendedRange.TabIndex = 12;
             this.checkBoxExtendedRange.Text = "Use Extended Random Ranges";
             this.checkBoxExtendedRange.UseVisualStyleBackColor = true;
+            this.checkBoxExtendedRange.CheckedChanged += new System.EventHandler(this.checkBoxExtendedRange_CheckedChanged);
             // 
             // btnSendParmsToMain
             // 
@@ -209,7 +211,7 @@
             this.checkBoxRecommendedRules.TabIndex = 15;
             this.checkBoxRecommendedRules.Text = "Use Recommended Rules && Ranges";
             this.checkBoxRecommendedRules.UseVisualStyleBackColor = true;
-            this.checkBoxRecommendedRules.CheckedChanged += new System.EventHandler(this.checkBoxReasonableChanges_CheckedChanged);
+            this.checkBoxRecommendedRules.CheckedChanged += new System.EventHandler(this.checkRecommendedRules_CheckedChanged);
             // 
             // toggleRandomEnd
             // 
