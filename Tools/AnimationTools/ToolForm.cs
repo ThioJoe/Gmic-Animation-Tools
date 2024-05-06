@@ -256,6 +256,51 @@ namespace AnimationTools
             }
             return folderOpenDialogue.ResultPath;
         }
-        
+
+        private void txtFramesFolderDetails_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtFramesFolderPath_TextChanged(object sender, EventArgs e)
+        {
+            int totalFilesCount = 0;
+            int pngFilesCount = 0;
+            int gifFilesCount = 0;
+
+            // Check if the folder path is valid, if so get list of files
+            if (Directory.Exists(txtFramesFolderPath.Text))
+            {
+                string[] allFiles = Directory.GetFiles(txtFramesFolderPath.Text);
+                totalFilesCount = allFiles.Length;
+            }
+            else
+            {
+                txtFramesFolderDetails.Text = "Invalid folder path";
+                return;
+            }
+
+            // Get list of all the png files in the folder
+            string[] pngFiles = Directory.GetFiles(txtFramesFolderPath.Text, "*.png");
+            string[] gifFiles = Directory.GetFiles(txtFramesFolderPath.Text, "*.gif");
+
+            pngFilesCount = pngFiles.Length;
+            gifFilesCount = gifFiles.Length;
+
+            // Display found file info:
+            txtFramesFolderDetails.Text = $"Files Found:\r\n    PNG Frames: {pngFilesCount}\r\n    GIFs: {gifFilesCount}";
+
+        }
+
+        private void buttonImportAnotherFolder_Click(object sender, EventArgs e)
+        {
+            string folderToImportPath = FolderSelector(tryLastSelection: true);
+            string outputDirToMergeInto = txtFramesFolderPath.Text;
+
+            FileManager fileManager = new FileManager();
+            fileManager.ImportAndMergeFolders(existingFolderPath: outputDirToMergeInto, importFolderPath: folderToImportPath);
+
+        }
+
     }
 }
