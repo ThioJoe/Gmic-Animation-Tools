@@ -32,7 +32,7 @@ namespace AnimationTools
 
                     // Read and analyze GIF file
                     var gifAnalysis = AnalyzeGif(filePath);
-                    txtOutput.Text = gifAnalysis;
+                    txtAnalysisOutput.Text = gifAnalysis;
                 }
             }
         }
@@ -61,7 +61,8 @@ namespace AnimationTools
 
             int index = 6;  // Starting after the GIF header
             int frameCount = 0;
-            int totalDuration = 0;
+            int totalDurationMs = 0;
+            double framesPerSecond = 0;
 
             // Skipping some details, just extracting duration as an example
             while (index < fileBytes.Length)
@@ -76,8 +77,8 @@ namespace AnimationTools
                 {
                     frameCount++;
                     int delay = BitConverter.ToUInt16(fileBytes, index + 4);
-                    int frameDelay = delay * 10;  // Convert to milliseconds
-                    totalDuration += frameDelay;
+                    int frameDelayMs = delay * 10;  // Convert to milliseconds
+                    totalDurationMs += frameDelayMs;
                     index += 8; // Skip over the GCE block
                 }
                 else if (blockMarker == 0x2C) // Start of an image block
@@ -98,12 +99,24 @@ namespace AnimationTools
                 }
             }
 
+            // Calculate frames per second
+            if (totalDurationMs > 0 && frameCount > 0)
+            {
+                framesPerSecond = frameCount / (totalDurationMs/1000);
+            }
+
             output.AppendLine("------------------------------------------------");
             output.AppendLine($"Number of Frames: {frameCount}");
-            output.AppendLine($"Total Animation Duration: {totalDuration} ms");
+            output.AppendLine($"Total Animation Duration: {totalDurationMs} ms");
+            output.AppendLine($"Average Frames Per Second: {framesPerSecond:0.000}"); // Truncate to 3 decimal places
             output.AppendLine("---------------------------------------------------------------------\n");
 
             return output.ToString();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
