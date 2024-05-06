@@ -39,13 +39,15 @@
             this.nudFadeDurationSeconds = new System.Windows.Forms.NumericUpDown();
             this.labelFadeDuration = new System.Windows.Forms.Label();
             this.labelCrossfadeStatus = new System.Windows.Forms.Label();
+            this.LeftBorder = new System.Windows.Forms.Label();
+            this.RightBorder = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudFrameRateSelect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFadeDurationSeconds)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOpenFile
             // 
-            this.buttonOpenFile.Location = new System.Drawing.Point(210, 73);
+            this.buttonOpenFile.Location = new System.Drawing.Point(226, 73);
             this.buttonOpenFile.Name = "buttonOpenFile";
             this.buttonOpenFile.Size = new System.Drawing.Size(75, 29);
             this.buttonOpenFile.TabIndex = 0;
@@ -57,7 +59,7 @@
             // 
             this.txtAnalysisOutput.AcceptsReturn = true;
             this.txtAnalysisOutput.AcceptsTab = true;
-            this.txtAnalysisOutput.Location = new System.Drawing.Point(12, 132);
+            this.txtAnalysisOutput.Location = new System.Drawing.Point(28, 132);
             this.txtAnalysisOutput.Multiline = true;
             this.txtAnalysisOutput.Name = "txtAnalysisOutput";
             this.txtAnalysisOutput.ReadOnly = true;
@@ -67,7 +69,7 @@
             // 
             // txtGifFilePath
             // 
-            this.txtGifFilePath.Location = new System.Drawing.Point(12, 78);
+            this.txtGifFilePath.Location = new System.Drawing.Point(28, 78);
             this.txtGifFilePath.Name = "txtGifFilePath";
             this.txtGifFilePath.Size = new System.Drawing.Size(192, 20);
             this.txtGifFilePath.TabIndex = 2;
@@ -76,7 +78,7 @@
             // labelGifFilePath
             // 
             this.labelGifFilePath.AutoSize = true;
-            this.labelGifFilePath.Location = new System.Drawing.Point(12, 62);
+            this.labelGifFilePath.Location = new System.Drawing.Point(28, 62);
             this.labelGifFilePath.Name = "labelGifFilePath";
             this.labelGifFilePath.Size = new System.Drawing.Size(71, 13);
             this.labelGifFilePath.TabIndex = 3;
@@ -85,7 +87,7 @@
             // labelAnalysisOutput
             // 
             this.labelAnalysisOutput.AutoSize = true;
-            this.labelAnalysisOutput.Location = new System.Drawing.Point(12, 116);
+            this.labelAnalysisOutput.Location = new System.Drawing.Point(28, 116);
             this.labelAnalysisOutput.Name = "labelAnalysisOutput";
             this.labelAnalysisOutput.Size = new System.Drawing.Size(68, 13);
             this.labelAnalysisOutput.TabIndex = 4;
@@ -93,7 +95,7 @@
             // 
             // buttonImportAnotherFolder
             // 
-            this.buttonImportAnotherFolder.Location = new System.Drawing.Point(490, 218);
+            this.buttonImportAnotherFolder.Location = new System.Drawing.Point(523, 218);
             this.buttonImportAnotherFolder.Name = "buttonImportAnotherFolder";
             this.buttonImportAnotherFolder.Size = new System.Drawing.Size(96, 23);
             this.buttonImportAnotherFolder.TabIndex = 5;
@@ -104,7 +106,7 @@
             // labelFramesFolderPath
             // 
             this.labelFramesFolderPath.AutoSize = true;
-            this.labelFramesFolderPath.Location = new System.Drawing.Point(313, 62);
+            this.labelFramesFolderPath.Location = new System.Drawing.Point(346, 62);
             this.labelFramesFolderPath.Name = "labelFramesFolderPath";
             this.labelFramesFolderPath.Size = new System.Drawing.Size(133, 13);
             this.labelFramesFolderPath.TabIndex = 8;
@@ -112,7 +114,7 @@
             // 
             // txtFramesFolderPath
             // 
-            this.txtFramesFolderPath.Location = new System.Drawing.Point(313, 78);
+            this.txtFramesFolderPath.Location = new System.Drawing.Point(346, 78);
             this.txtFramesFolderPath.Name = "txtFramesFolderPath";
             this.txtFramesFolderPath.Size = new System.Drawing.Size(192, 20);
             this.txtFramesFolderPath.TabIndex = 7;
@@ -120,7 +122,7 @@
             // 
             // buttonOpenFolder
             // 
-            this.buttonOpenFolder.Location = new System.Drawing.Point(511, 73);
+            this.buttonOpenFolder.Location = new System.Drawing.Point(544, 73);
             this.buttonOpenFolder.Name = "buttonOpenFolder";
             this.buttonOpenFolder.Size = new System.Drawing.Size(75, 29);
             this.buttonOpenFolder.TabIndex = 6;
@@ -131,7 +133,7 @@
             // labelFramesFolderDetails
             // 
             this.labelFramesFolderDetails.AutoSize = true;
-            this.labelFramesFolderDetails.Location = new System.Drawing.Point(313, 116);
+            this.labelFramesFolderDetails.Location = new System.Drawing.Point(346, 116);
             this.labelFramesFolderDetails.Name = "labelFramesFolderDetails";
             this.labelFramesFolderDetails.Size = new System.Drawing.Size(42, 13);
             this.labelFramesFolderDetails.TabIndex = 10;
@@ -141,7 +143,7 @@
             // 
             this.txtFramesFolderDetails.AcceptsReturn = true;
             this.txtFramesFolderDetails.AcceptsTab = true;
-            this.txtFramesFolderDetails.Location = new System.Drawing.Point(313, 132);
+            this.txtFramesFolderDetails.Location = new System.Drawing.Point(346, 132);
             this.txtFramesFolderDetails.Multiline = true;
             this.txtFramesFolderDetails.Name = "txtFramesFolderDetails";
             this.txtFramesFolderDetails.ReadOnly = true;
@@ -153,7 +155,7 @@
             // labelImportAnotherFolder
             // 
             this.labelImportAnotherFolder.AutoSize = true;
-            this.labelImportAnotherFolder.Location = new System.Drawing.Point(313, 223);
+            this.labelImportAnotherFolder.Location = new System.Drawing.Point(346, 223);
             this.labelImportAnotherFolder.Name = "labelImportAnotherFolder";
             this.labelImportAnotherFolder.Size = new System.Drawing.Size(178, 13);
             this.labelImportAnotherFolder.TabIndex = 11;
@@ -163,7 +165,7 @@
             // 
             this.labelGifEditTitle.AutoSize = true;
             this.labelGifEditTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.labelGifEditTitle.Location = new System.Drawing.Point(70, 19);
+            this.labelGifEditTitle.Location = new System.Drawing.Point(86, 19);
             this.labelGifEditTitle.Name = "labelGifEditTitle";
             this.labelGifEditTitle.Size = new System.Drawing.Size(129, 24);
             this.labelGifEditTitle.TabIndex = 12;
@@ -173,7 +175,7 @@
             // 
             this.labelGifCreationTitle.AutoSize = true;
             this.labelGifCreationTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.labelGifCreationTitle.Location = new System.Drawing.Point(370, 19);
+            this.labelGifCreationTitle.Location = new System.Drawing.Point(403, 19);
             this.labelGifCreationTitle.Name = "labelGifCreationTitle";
             this.labelGifCreationTitle.Size = new System.Drawing.Size(167, 24);
             this.labelGifCreationTitle.TabIndex = 13;
@@ -182,7 +184,7 @@
             // labelFixFileSequence
             // 
             this.labelFixFileSequence.AutoSize = true;
-            this.labelFixFileSequence.Location = new System.Drawing.Point(331, 257);
+            this.labelFixFileSequence.Location = new System.Drawing.Point(364, 257);
             this.labelFixFileSequence.Name = "labelFixFileSequence";
             this.labelFixFileSequence.Size = new System.Drawing.Size(153, 13);
             this.labelFixFileSequence.TabIndex = 14;
@@ -190,7 +192,7 @@
             // 
             // buttonFixFileSequence
             // 
-            this.buttonFixFileSequence.Location = new System.Drawing.Point(490, 252);
+            this.buttonFixFileSequence.Location = new System.Drawing.Point(523, 252);
             this.buttonFixFileSequence.Name = "buttonFixFileSequence";
             this.buttonFixFileSequence.Size = new System.Drawing.Size(96, 23);
             this.buttonFixFileSequence.TabIndex = 15;
@@ -200,7 +202,7 @@
             // 
             // buttonCreateGifFromFolder
             // 
-            this.buttonCreateGifFromFolder.Location = new System.Drawing.Point(313, 320);
+            this.buttonCreateGifFromFolder.Location = new System.Drawing.Point(346, 320);
             this.buttonCreateGifFromFolder.Name = "buttonCreateGifFromFolder";
             this.buttonCreateGifFromFolder.Size = new System.Drawing.Size(141, 23);
             this.buttonCreateGifFromFolder.TabIndex = 16;
@@ -211,7 +213,7 @@
             // labelGifCreateStatus
             // 
             this.labelGifCreateStatus.AutoSize = true;
-            this.labelGifCreateStatus.Location = new System.Drawing.Point(313, 346);
+            this.labelGifCreateStatus.Location = new System.Drawing.Point(346, 346);
             this.labelGifCreateStatus.Name = "labelGifCreateStatus";
             this.labelGifCreateStatus.Size = new System.Drawing.Size(37, 13);
             this.labelGifCreateStatus.TabIndex = 17;
@@ -220,7 +222,7 @@
             // 
             // nudFrameRateSelect
             // 
-            this.nudFrameRateSelect.Location = new System.Drawing.Point(420, 295);
+            this.nudFrameRateSelect.Location = new System.Drawing.Point(453, 295);
             this.nudFrameRateSelect.Maximum = new decimal(new int[] {
             120,
             0,
@@ -244,7 +246,7 @@
             // labelFrameRateSelect
             // 
             this.labelFrameRateSelect.AutoSize = true;
-            this.labelFrameRateSelect.Location = new System.Drawing.Point(313, 299);
+            this.labelFrameRateSelect.Location = new System.Drawing.Point(346, 299);
             this.labelFrameRateSelect.Name = "labelFrameRateSelect";
             this.labelFrameRateSelect.Size = new System.Drawing.Size(103, 13);
             this.labelFrameRateSelect.TabIndex = 19;
@@ -253,7 +255,7 @@
             // labelCalcGifDuration
             // 
             this.labelCalcGifDuration.AutoSize = true;
-            this.labelCalcGifDuration.Location = new System.Drawing.Point(481, 299);
+            this.labelCalcGifDuration.Location = new System.Drawing.Point(514, 299);
             this.labelCalcGifDuration.Name = "labelCalcGifDuration";
             this.labelCalcGifDuration.Size = new System.Drawing.Size(100, 13);
             this.labelCalcGifDuration.TabIndex = 20;
@@ -261,7 +263,7 @@
             // 
             // buttonAddCrossfade
             // 
-            this.buttonAddCrossfade.Location = new System.Drawing.Point(12, 252);
+            this.buttonAddCrossfade.Location = new System.Drawing.Point(28, 252);
             this.buttonAddCrossfade.Name = "buttonAddCrossfade";
             this.buttonAddCrossfade.Size = new System.Drawing.Size(128, 23);
             this.buttonAddCrossfade.TabIndex = 21;
@@ -277,7 +279,7 @@
             0,
             0,
             65536});
-            this.nudFadeDurationSeconds.Location = new System.Drawing.Point(146, 223);
+            this.nudFadeDurationSeconds.Location = new System.Drawing.Point(162, 223);
             this.nudFadeDurationSeconds.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -301,7 +303,7 @@
             // labelFadeDuration
             // 
             this.labelFadeDuration.AutoSize = true;
-            this.labelFadeDuration.Location = new System.Drawing.Point(12, 226);
+            this.labelFadeDuration.Location = new System.Drawing.Point(28, 226);
             this.labelFadeDuration.Name = "labelFadeDuration";
             this.labelFadeDuration.Size = new System.Drawing.Size(128, 13);
             this.labelFadeDuration.TabIndex = 23;
@@ -310,18 +312,36 @@
             // labelCrossfadeStatus
             // 
             this.labelCrossfadeStatus.AutoSize = true;
-            this.labelCrossfadeStatus.Location = new System.Drawing.Point(13, 282);
+            this.labelCrossfadeStatus.Location = new System.Drawing.Point(29, 282);
             this.labelCrossfadeStatus.Name = "labelCrossfadeStatus";
             this.labelCrossfadeStatus.Size = new System.Drawing.Size(37, 13);
             this.labelCrossfadeStatus.TabIndex = 24;
             this.labelCrossfadeStatus.Text = "Status";
             this.labelCrossfadeStatus.Visible = false;
             // 
+            // LeftBorder
+            // 
+            this.LeftBorder.BackColor = System.Drawing.Color.Transparent;
+            this.LeftBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LeftBorder.Location = new System.Drawing.Point(12, 9);
+            this.LeftBorder.Name = "LeftBorder";
+            this.LeftBorder.Size = new System.Drawing.Size(302, 384);
+            this.LeftBorder.TabIndex = 25;
+            // 
+            // RightBorder
+            // 
+            this.RightBorder.BackColor = System.Drawing.Color.Transparent;
+            this.RightBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.RightBorder.Location = new System.Drawing.Point(335, 9);
+            this.RightBorder.Name = "RightBorder";
+            this.RightBorder.Size = new System.Drawing.Size(297, 384);
+            this.RightBorder.TabIndex = 26;
+            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 420);
+            this.ClientSize = new System.Drawing.Size(642, 402);
             this.Controls.Add(this.labelCrossfadeStatus);
             this.Controls.Add(this.labelFadeDuration);
             this.Controls.Add(this.nudFadeDurationSeconds);
@@ -347,6 +367,8 @@
             this.Controls.Add(this.txtGifFilePath);
             this.Controls.Add(this.txtAnalysisOutput);
             this.Controls.Add(this.buttonOpenFile);
+            this.Controls.Add(this.LeftBorder);
+            this.Controls.Add(this.RightBorder);
             this.Name = "ToolForm";
             this.Text = "GIF Analyzer";
             ((System.ComponentModel.ISupportInitialize)(this.nudFrameRateSelect)).EndInit();
@@ -381,6 +403,8 @@
         private System.Windows.Forms.NumericUpDown nudFadeDurationSeconds;
         private System.Windows.Forms.Label labelFadeDuration;
         private System.Windows.Forms.Label labelCrossfadeStatus;
+        private System.Windows.Forms.Label LeftBorder;
+        private System.Windows.Forms.Label RightBorder;
     }
 }
 
