@@ -18,6 +18,10 @@ namespace AnimationTools
             InitializeComponent();
         }
 
+        // Static variable to store the last selected folder path
+        private static string lastSelectedFolderPath = "";
+
+        // Open file dialog to select GIF file
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -33,6 +37,25 @@ namespace AnimationTools
                     // Read and analyze GIF file
                     var gifAnalysis = AnalyzeGif(filePath);
                     txtAnalysisOutput.Text = gifAnalysis;
+                }
+            }
+        }
+
+        // Open folder dialogue to select folder with frames in it
+        private void btnOpenFolder_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                folderBrowserDialog.Description = "Select the folder containing the frames";
+                folderBrowserDialog.ShowNewFolderButton = false;
+
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Get the path of specified folder
+                    var folderPath = folderBrowserDialog.SelectedPath;
+
+                    // Read and analyze frames in folder
+                    txtFramesFolderPath.Text = folderPath;
                 }
             }
         }
@@ -159,6 +182,72 @@ namespace AnimationTools
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        // Checks for file in system path or current directory
+        private bool CheckIfFileInSystemPathOrDirectory(string fileNameToCheck, bool silent)
+        {
+            string pathCheckResult = Environment.GetEnvironmentVariable("PATH")
+                .Split(';')
+                .Where(s => File.Exists(Path.Combine(s, fileNameToCheck)))
+                .FirstOrDefault();
+            bool currentDirectoryCheck = File.Exists(fileNameToCheck);
+            bool fullResult = currentDirectoryCheck || pathCheckResult != null;
+
+            if (!fullResult && !silent)
+            {
+                MessageBox.Show(fileNameToCheck + " not found. Please make sure it is in the same directory as the application (or System PATH).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return fullResult;
+        }
+
+        private void checkBoxUseSameOutputDir_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonOpenFolder_Click(object sender, EventArgs e)
+        {
+            var folderOpenDialogue = new FolderPicker();
+
+            // Check if the lastSelectedFolderPath is not empty and valid
+            if (!string.IsNullOrEmpty(lastSelectedFolderPath))
+            {
+                try
+                {
+                    DirectoryInfo directoryInfo = new DirectoryInfo(lastSelectedFolderPath);
+                    DirectoryInfo parentDir = directoryInfo.Parent;
+
+                    // If parent directory exists, set it as the initial input path
+                    if (parentDir != null)
+                    {
+                        folderOpenDialogue.InputPath = parentDir.FullName;
+                    }
+                    else
+                    {
+                        // If no parent, use the current last selected path
+                        folderOpenDialogue.InputPath = lastSelectedFolderPath;
+                    }
+                }
+                catch (Exception)
+                {
+                    // In case of an exception (e.g., path does not exist), fallback to current directory
+                    folderOpenDialogue.InputPath = Directory.GetCurrentDirectory();
+                }
+            }
+            else
+            {
+                // Default to current directory if no folder has been selected before
+                folderOpenDialogue.InputPath = Directory.GetCurrentDirectory();
+            }
+
+            if (folderOpenDialogue.ShowDialog(this.Handle, throwOnError: false) == true)
+            {
+                // Store the selected folder path to use next time
+                lastSelectedFolderPath = folderOpenDialogue.ResultPath;
+                txtFramesFolderPath.Text = folderOpenDialogue.ResultPath;
+            }
         }
     }
 }
