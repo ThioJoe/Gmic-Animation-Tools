@@ -46,6 +46,7 @@
             this.toggleRandomEnd = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
             this.toggleRandomStart = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.checkBoxDisableMultiPole = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,7 +130,7 @@
             this.checkBoxDisableBinaryRandom.AutoSize = true;
             this.checkBoxDisableBinaryRandom.Checked = true;
             this.checkBoxDisableBinaryRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 760);
+            this.checkBoxDisableBinaryRandom.Location = new System.Drawing.Point(245, 754);
             this.checkBoxDisableBinaryRandom.Name = "checkBoxDisableBinaryRandom";
             this.checkBoxDisableBinaryRandom.Size = new System.Drawing.Size(195, 17);
             this.checkBoxDisableBinaryRandom.TabIndex = 9;
@@ -141,7 +142,7 @@
             this.checkBoxSyncFromOtherWindow.AutoSize = true;
             this.checkBoxSyncFromOtherWindow.Checked = true;
             this.checkBoxSyncFromOtherWindow.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxSyncFromOtherWindow.Location = new System.Drawing.Point(12, 763);
+            this.checkBoxSyncFromOtherWindow.Location = new System.Drawing.Point(12, 772);
             this.checkBoxSyncFromOtherWindow.Name = "checkBoxSyncFromOtherWindow";
             this.checkBoxSyncFromOtherWindow.Size = new System.Drawing.Size(192, 17);
             this.checkBoxSyncFromOtherWindow.TabIndex = 10;
@@ -154,7 +155,7 @@
             this.checkBoxDisableStepRandom.AutoSize = true;
             this.checkBoxDisableStepRandom.Checked = true;
             this.checkBoxDisableStepRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableStepRandom.Location = new System.Drawing.Point(245, 740);
+            this.checkBoxDisableStepRandom.Location = new System.Drawing.Point(245, 736);
             this.checkBoxDisableStepRandom.Name = "checkBoxDisableStepRandom";
             this.checkBoxDisableStepRandom.Size = new System.Drawing.Size(206, 17);
             this.checkBoxDisableStepRandom.TabIndex = 11;
@@ -165,7 +166,7 @@
             // checkBoxExtendedRange
             // 
             this.checkBoxExtendedRange.AutoSize = true;
-            this.checkBoxExtendedRange.Location = new System.Drawing.Point(245, 720);
+            this.checkBoxExtendedRange.Location = new System.Drawing.Point(245, 718);
             this.checkBoxExtendedRange.Name = "checkBoxExtendedRange";
             this.checkBoxExtendedRange.Size = new System.Drawing.Size(176, 17);
             this.checkBoxExtendedRange.TabIndex = 12;
@@ -234,11 +235,25 @@
             this.toggleRandomStart.TabIndex = 16;
             this.toggleRandomStart.UseVisualStyleBackColor = true;
             // 
+            // checkBoxDisableMultiPole
+            // 
+            this.checkBoxDisableMultiPole.AutoSize = true;
+            this.checkBoxDisableMultiPole.Checked = true;
+            this.checkBoxDisableMultiPole.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxDisableMultiPole.Location = new System.Drawing.Point(245, 772);
+            this.checkBoxDisableMultiPole.Name = "checkBoxDisableMultiPole";
+            this.checkBoxDisableMultiPole.Size = new System.Drawing.Size(212, 17);
+            this.checkBoxDisableMultiPole.TabIndex = 18;
+            this.checkBoxDisableMultiPole.Text = "Don\'t Randomize Multi-Pole Parameters";
+            this.checkBoxDisableMultiPole.UseVisualStyleBackColor = true;
+            this.checkBoxDisableMultiPole.CheckedChanged += new System.EventHandler(this.checkBoxDisableMultiPole_CheckedChanged);
+            // 
             // ParamNamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(452, 792);
+            this.ClientSize = new System.Drawing.Size(457, 796);
+            this.Controls.Add(this.checkBoxDisableMultiPole);
             this.Controls.Add(this.checkBoxRecommendedRules);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnSendParmsToMain);
@@ -283,5 +298,6 @@
         private CustomToggleCheckBox toggleRandomStart;
         private CustomToggleCheckBox toggleRandomEnd;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.CheckBox checkBoxDisableMultiPole;
     }
 }

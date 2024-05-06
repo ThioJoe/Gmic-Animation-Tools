@@ -260,12 +260,13 @@ namespace GmicDrosteAnimate
                 // Retrieve the index of the current row
                 int rowIndex = row.Index;
 
-                // Get original start and end values for the row
+                // Get original start and end values for the row - These start empty and get set at the end of each iteration of the big loop for each parameter
                 double rowOriginalStart = originalStartParamValues[rowIndex];
                 double rowOriginalEnd = originalEndParamValues[rowIndex];
                 
 
                 // Check if the row is selected for randomization
+                // ----------------------------------  Big loop to set each parameter start/end values per row if checked ----------------------------------
                 bool isChecked = Convert.ToBoolean(row.Cells["CheckBox"].Value);
                 if (isChecked)
                 {
@@ -327,7 +328,27 @@ namespace GmicDrosteAnimate
                         // Check if parameter is periodicity 
                         if (paramInfo.Name == "Periodicity")
                         {
-                            (start, end) = SpecialCasePeriodicityMode1();
+                            // --- First get some info to determine additional options for periodicity ---
+                            // Get the original start and end values of the starting level
+                            double tempStartingLevelStart = newStartParamValues[10];
+                            double tempStartingLevelEnd = newEndParamValues[10];
+                            // Check if starting level is even and doesn't change - This allows a larger range of periodicity values
+                            bool startingLevelEvenaAndDoesntChange;
+                            if (tempStartingLevelStart % 2 == 0 && tempStartingLevelEnd % 2 == 0)
+                            {
+                                startingLevelEvenaAndDoesntChange = true;
+                            }
+                            else
+                            {
+                                startingLevelEvenaAndDoesntChange = false;
+                            }
+                            // Check if starting level is set to be randomized
+                            bool isStartingLevelRandom = Convert.ToBoolean(dataGridView1.Rows[10].Cells["CheckBox"].Value);
+
+                            // Decide to use larger periodicity range
+                            bool useLargerPeriodicityRange = startingLevelEvenaAndDoesntChange && !isStartingLevelRandom;
+
+                            (start, end) = SpecialCasePeriodicityMode1(useLargerPeriodicityRange: useLargerPeriodicityRange);
                         }
 
                         // Special case for starting level - check that it is not less than 3
@@ -342,7 +363,7 @@ namespace GmicDrosteAnimate
                         // Need to check if either the start/end of the number of levels is less than either the start/end of the starting level
                         if (paramInfo.Name == "Number of Levels")
                         {
-                            // Get start/end values of the starting level
+                            // Get start/end values of the starting level (from a previous loop)
                             double pendingStartingLevelStart = newStartParamValues[10];
                             double pendingStartingLevelEnd = newEndParamValues[10];
 
@@ -378,7 +399,7 @@ namespace GmicDrosteAnimate
                         {
                             // Get the index of the inner radius parameter
                             int innerRadiusIndex = Array.IndexOf(paramNames, "Inner Radius");
-                            // Get the current start and end values of the inner radius
+                            // Get the current start and end values of the inner radius (from a previous parameter loop)
                             double tempInnerRadiusStart = newStartParamValues[innerRadiusIndex];
                             double tempInnerRadiusEnd = newEndParamValues[innerRadiusIndex];
 
@@ -517,10 +538,17 @@ namespace GmicDrosteAnimate
         }
 
         //Periodicity Mode 1 -- Periodicity stays between 0.751 and 1.250, therefore changing between starting levels is fine
-        private (double, double) SpecialCasePeriodicityMode1()
+        private (double, double) SpecialCasePeriodicityMode1(bool useLargerPeriodicityRange = false)
         {
             double periodicityMin = 0.751;
             double periodicityMax = 1.250;
+
+            if (useLargerPeriodicityRange)
+            {
+                periodicityMin = 0.1;
+                periodicityMax = 2;
+            }
+
             double start;
             double end;
 
@@ -552,7 +580,9 @@ namespace GmicDrosteAnimate
             double[] newEndParamValues = originalEndParamValues;
 
             // Set max shift value to ensure the animation remains visible
-            double maxShift = 20;
+            double maxShiftTotal = 20;
+            double maxStandardShift = 5;
+            double maxCenterShift = 15;
 
             // Handle special case for X-Shift, Y-Shift, Center-X-Shift, Center-Y-Shift - Need to do this after all other parameters have been set because rules depend on each other
             // Get index and values of the various parameters
@@ -572,40 +602,40 @@ namespace GmicDrosteAnimate
             double pendingCenterYShiftEnd = newEndParamValues[centerYShiftIndex];
 
             // Just generate new random numbers for all within the ranges instead of checking first
-            double newXShiftStart = RandomNumberBetween(-maxShift, maxShift);
-            double newYShiftStart = RandomNumberBetween(-maxShift, maxShift);
-            double newCenterXShiftStart = RandomNumberBetween(-maxShift, maxShift);
-            double newCenterYShiftStart = RandomNumberBetween(-maxShift, maxShift);
-            double newXShiftEnd = RandomNumberBetween(-maxShift, maxShift);
-            double newYShiftEnd = RandomNumberBetween(-maxShift, maxShift);
-            double newCenterXShiftEnd = RandomNumberBetween(-maxShift, maxShift);
-            double newCenterYShiftEnd = RandomNumberBetween(-maxShift, maxShift);
+            double newXShiftStart = RandomNumberBetween(-maxStandardShift, maxStandardShift);
+            double newYShiftStart = RandomNumberBetween(-maxStandardShift, maxStandardShift);
+            double newCenterXShiftStart = RandomNumberBetween(-maxCenterShift, maxCenterShift);
+            double newCenterYShiftStart = RandomNumberBetween(-maxCenterShift, maxCenterShift);
+            double newXShiftEnd = RandomNumberBetween(-maxStandardShift, maxStandardShift);
+            double newYShiftEnd = RandomNumberBetween(-maxStandardShift, maxStandardShift);
+            double newCenterXShiftEnd = RandomNumberBetween(-maxCenterShift, maxCenterShift);
+            double newCenterYShiftEnd = RandomNumberBetween(-maxCenterShift, maxCenterShift);
 
-            // Sum of X-Shift and Center-X-Shift should not be >60 or < -60, otherwise generate new random values - Test both start and end values
-            if (pendingXShiftStart + pendingCenterXShiftStart > maxShift || pendingXShiftStart + pendingCenterXShiftStart < -maxShift || pendingXShiftEnd + pendingCenterXShiftEnd > maxShift || pendingXShiftEnd + pendingCenterXShiftEnd < -maxShift)
+            // Sum of X-Shift and Center-X-Shift should not be more than maxShift, otherwise generate new random values - Test both start and end values
+            if (pendingXShiftStart + pendingCenterXShiftStart > maxShiftTotal || pendingXShiftStart + pendingCenterXShiftStart < -maxShiftTotal || pendingXShiftEnd + pendingCenterXShiftEnd > maxShiftTotal || pendingXShiftEnd + pendingCenterXShiftEnd < -maxShiftTotal)
             {
                 // While loop until the sum of X-Shift and Center-X-Shift is within the range
                 do
                 {
-                    newXShiftStart = RandomNumberBetween(-maxShift, maxShift);
-                    newCenterXShiftStart = RandomNumberBetween(-maxShift, maxShift);
-                    newXShiftEnd = RandomNumberBetween(-maxShift, maxShift);
-                    newCenterXShiftEnd = RandomNumberBetween(-maxShift, maxShift);
-                } while (newXShiftStart + newCenterXShiftStart > maxShift || newXShiftStart + newCenterXShiftStart < -maxShift || newXShiftEnd + newCenterXShiftEnd > maxShift || newXShiftEnd + newCenterXShiftEnd < -maxShift);
+                    newXShiftStart = RandomNumberBetween(-maxStandardShift, maxStandardShift);
+                    newCenterXShiftStart = RandomNumberBetween(-maxCenterShift, maxCenterShift);
+                    newXShiftEnd = RandomNumberBetween(-maxStandardShift, maxStandardShift);
+                    newCenterXShiftEnd = RandomNumberBetween(-maxCenterShift, maxCenterShift);
+                } while (newXShiftStart + newCenterXShiftStart > maxShiftTotal || newXShiftStart + newCenterXShiftStart < -maxShiftTotal || newXShiftEnd + newCenterXShiftEnd > maxShiftTotal || newXShiftEnd + newCenterXShiftEnd < -maxShiftTotal);
 
             }
 
-            // Sum of Y-Shift and Center-Y-Shift should not be >60 or < -60, otherwise generate new random values - Test both start and end values
-            if (pendingYShiftStart + pendingCenterYShiftStart > maxShift || pendingYShiftStart + pendingCenterYShiftStart < -maxShift || pendingYShiftEnd + pendingCenterYShiftEnd > maxShift || pendingYShiftEnd + pendingCenterYShiftEnd < -maxShift)
+            // Sum of Y-Shift and Center-Y-Shift should not be maxShift, otherwise generate new random values - Test both start and end values
+            if (pendingYShiftStart + pendingCenterYShiftStart > maxShiftTotal || pendingYShiftStart + pendingCenterYShiftStart < -maxShiftTotal || pendingYShiftEnd + pendingCenterYShiftEnd > maxShiftTotal || pendingYShiftEnd + pendingCenterYShiftEnd < -maxShiftTotal)
             {
                 // While loop until the sum of Y-Shift and Center-Y-Shift is within the range
                 do
                 {
-                    newYShiftStart = RandomNumberBetween(-maxShift, maxShift);
-                    newCenterYShiftStart = RandomNumberBetween(-maxShift, maxShift);
-                    newYShiftEnd = RandomNumberBetween(-maxShift, maxShift);
-                    newCenterYShiftEnd = RandomNumberBetween(-maxShift, maxShift);
-                } while (newYShiftStart + newCenterYShiftStart > maxShift || newYShiftStart + newCenterYShiftStart < -maxShift || newYShiftEnd + newCenterYShiftEnd > maxShift || newYShiftEnd + newCenterYShiftEnd < -maxShift);
+                    newYShiftStart = RandomNumberBetween(-maxStandardShift, maxStandardShift);
+                    newCenterYShiftStart = RandomNumberBetween(-maxCenterShift, maxCenterShift);
+                    newYShiftEnd = RandomNumberBetween(-maxStandardShift, maxStandardShift);
+                    newCenterYShiftEnd = RandomNumberBetween(-maxCenterShift, maxCenterShift);
+                } while (newYShiftStart + newCenterYShiftStart > maxShiftTotal || newYShiftStart + newCenterYShiftStart < -maxShiftTotal || newYShiftEnd + newCenterYShiftEnd > maxShiftTotal || newYShiftEnd + newCenterYShiftEnd < -maxShiftTotal);
 
             }
 
@@ -684,6 +714,7 @@ namespace GmicDrosteAnimate
             List<string> includedTypes = new List<string>();
             if (!checkBoxDisableBinaryRandom.Checked) includedTypes.Add("Binary");
             if (!checkBoxDisableStepRandom.Checked) includedTypes.Add("Step");
+            if (!checkBoxDisableMultiPole.Checked) includedTypes.Add("MultiPole");
             includedTypes.Add("Continuous");
 
             // Iterate through each row in the DataGridView, determine whether to check row box if parameter type is included in the list of types to randomize
@@ -795,6 +826,11 @@ namespace GmicDrosteAnimate
                 Rectangle innerRect = new Rectangle(1, 1, this.Width - 2, this.Height - 2);
                 g.DrawRectangle(new Pen(this.Checked ? Color.Black : Color.White), innerRect);
             }
+
+        }
+
+        private void checkBoxDisableMultiPole_CheckedChanged(object sender, EventArgs e)
+        {
 
         }
     }
