@@ -60,6 +60,14 @@ namespace DrosteEffectApp
             InitializeComponent();
             InitializeDefaults();
 
+            // Check if ffmpeg is in the same folder as the application, if not disable the GIF creation checkbox and display message
+            if (!CheckForFFmpeg(silent: true))
+            {
+                chkCreateGif.Enabled = false;
+                labelFFmpegNotFound.Visible = true;
+                chkCreateGif.Checked = false;
+            }
+
             // Store data about master increment NUD to properly increment up down arrows
             //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
             //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
@@ -606,12 +614,8 @@ namespace DrosteEffectApp
 
         private void CreateGif(string outputDir)
         {
-            // Check if ffmpeg.exe exists							 
-            if (!File.Exists("ffmpeg.exe"))
-            {
-                MessageBox.Show("ffmpeg.exe not found. Please make sure it is in the same directory as the application.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            // Check if ffmpeg.exe exists, will display message if not						 
+            CheckForFFmpeg(silent: false);
 
             // Execute ffmpeg.exe to create GIF								   
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
@@ -1284,6 +1288,27 @@ namespace DrosteEffectApp
                 labelMasterExponent.Visible = false;
             }
 
+        }
+
+        // Check if ffmpeg is found
+        private bool CheckForFFmpeg(bool silent)
+        {
+            string fileNameToCheck = "ffmpeg.exe";
+            string pathCheckResult = Environment.GetEnvironmentVariable("PATH")
+                .Split(';')
+                .Where(s => File.Exists(Path.Combine(s, fileNameToCheck)))
+                .FirstOrDefault();
+
+            // Check if in current directory or in system path
+            if (!File.Exists(fileNameToCheck) && pathCheckResult == null)
+            {
+                if (!silent)
+                {
+                    MessageBox.Show("ffmpeg.exe not found. Please make sure it is in the same directory as the application (or System PATH).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return false;
+            }
+            return true;
         }
 
         private void checkBoxUseSameOutputDir_CheckedChanged(object sender, EventArgs e)

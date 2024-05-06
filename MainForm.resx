@@ -302,4 +302,25 @@ The %d is like a wildcard for numbers.
 
 </value>
   </data>
+  <data name="infoIconUseSameDirectory.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="infoIconUseSameDirectory.ToolTip" xml:space="preserve">
+    <value>If checked, the next time you click 'Start', new image frames
+will be put in the latest existing folder instead of a new one.
+
+This is useful if you want to combine multiple stages of
+animations into one. 
+
+It will number the new files accordingly based on the existing
+files, and the 'Create Gif' option will create a gif combining
+both the new and existing frames.</value>
+  </data>
 </root>

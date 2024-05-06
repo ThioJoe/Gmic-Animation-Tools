@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.nudTotalFrames = new DrosteEffectApp.MainForm.InvisibleNumericUpDown(); //Custom
-            this.nudMasterParamIncrement = new DrosteEffectApp.MainForm.InvisibleNumericUpDown(); //Custom
+            this.nudTotalFrames = new DrosteEffectApp.MainForm.InvisibleNumericUpDown();
+            this.nudMasterParamIncrement = new DrosteEffectApp.MainForm.InvisibleNumericUpDown();
             this.lblInputFile = new System.Windows.Forms.Label();
             this.txtInputFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectInputFile = new System.Windows.Forms.Button();
@@ -68,6 +68,8 @@
             this.labelMasterParamName = new System.Windows.Forms.Label();
             this.checkBoxUseSameOutputDir = new System.Windows.Forms.CheckBox();
             this.btnSwapStartEndStrings = new System.Windows.Forms.Button();
+            this.labelFFmpegNotFound = new System.Windows.Forms.Label();
+            this.infoIconUseSameDirectory = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -78,6 +80,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconDefaultExponents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.infoIconUseSameDirectory)).BeginInit();
             this.SuspendLayout();
             // 
             // nudTotalFrames
@@ -394,7 +397,7 @@
             // InfoIconDefaultExponents
             // 
             this.InfoIconDefaultExponents.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconDefaultExponents.Image")));
-            this.InfoIconDefaultExponents.Location = new System.Drawing.Point(131, 301);
+            this.InfoIconDefaultExponents.Location = new System.Drawing.Point(125, 301);
             this.InfoIconDefaultExponents.Name = "InfoIconDefaultExponents";
             this.InfoIconDefaultExponents.Size = new System.Drawing.Size(16, 16);
             this.InfoIconDefaultExponents.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -416,7 +419,7 @@
             // InfoIconCreateGif
             // 
             this.InfoIconCreateGif.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconCreateGif.Image")));
-            this.InfoIconCreateGif.Location = new System.Drawing.Point(98, 358);
+            this.InfoIconCreateGif.Location = new System.Drawing.Point(90, 358);
             this.InfoIconCreateGif.Name = "InfoIconCreateGif";
             this.InfoIconCreateGif.Size = new System.Drawing.Size(16, 16);
             this.InfoIconCreateGif.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -505,11 +508,35 @@
             this.btnSwapStartEndStrings.UseVisualStyleBackColor = true;
             this.btnSwapStartEndStrings.Click += new System.EventHandler(this.btnSwapStartEndStrings_Click);
             // 
+            // labelFFmpegNotFound
+            // 
+            this.labelFFmpegNotFound.AutoSize = true;
+            this.labelFFmpegNotFound.ForeColor = System.Drawing.Color.Red;
+            this.labelFFmpegNotFound.Location = new System.Drawing.Point(110, 359);
+            this.labelFFmpegNotFound.Name = "labelFFmpegNotFound";
+            this.labelFFmpegNotFound.Size = new System.Drawing.Size(155, 13);
+            this.labelFFmpegNotFound.TabIndex = 36;
+            this.labelFFmpegNotFound.Text = "(Unavailable: ffmpeg not found)";
+            this.labelFFmpegNotFound.Visible = false;
+            // 
+            // infoIconUseSameDirectory
+            // 
+            this.infoIconUseSameDirectory.Image = ((System.Drawing.Image)(resources.GetObject("infoIconUseSameDirectory.Image")));
+            this.infoIconUseSameDirectory.Location = new System.Drawing.Point(166, 335);
+            this.infoIconUseSameDirectory.Name = "infoIconUseSameDirectory";
+            this.infoIconUseSameDirectory.Size = new System.Drawing.Size(16, 16);
+            this.infoIconUseSameDirectory.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.infoIconUseSameDirectory.TabIndex = 37;
+            this.infoIconUseSameDirectory.TabStop = false;
+            this.toolTip1.SetToolTip(this.infoIconUseSameDirectory, resources.GetString("infoIconUseSameDirectory.ToolTip"));
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.infoIconUseSameDirectory);
+            this.Controls.Add(this.labelFFmpegNotFound);
             this.Controls.Add(this.btnSwapStartEndStrings);
             this.Controls.Add(this.checkBoxUseSameOutputDir);
             this.Controls.Add(this.labelMasterParamName);
@@ -562,6 +589,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconDefaultExponents)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.infoIconUseSameDirectory)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -609,5 +637,7 @@
         private System.Windows.Forms.Label labelMasterParamName;
         private System.Windows.Forms.CheckBox checkBoxUseSameOutputDir;
         private System.Windows.Forms.Button btnSwapStartEndStrings;
+        private System.Windows.Forms.Label labelFFmpegNotFound;
+        private System.Windows.Forms.PictureBox infoIconUseSameDirectory;
     }
 }
