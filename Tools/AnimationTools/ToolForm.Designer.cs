@@ -30,8 +30,12 @@
             this.labelGifCreationTitle = new System.Windows.Forms.Label();
             this.labelFixFileSequence = new System.Windows.Forms.Label();
             this.buttonFixFileSequence = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonCreateGifFromFolder = new System.Windows.Forms.Button();
             this.labelGifCreateStatus = new System.Windows.Forms.Label();
+            this.nudFrameRateSelect = new System.Windows.Forms.NumericUpDown();
+            this.labelFrameRateSelect = new System.Windows.Forms.Label();
+            this.labelCalcGifDuration = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFrameRateSelect)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -187,33 +191,77 @@
             this.buttonFixFileSequence.UseVisualStyleBackColor = true;
             this.buttonFixFileSequence.Click += new System.EventHandler(this.buttonFixFileSequence_Click);
             // 
-            // button1
+            // buttonCreateGifFromFolder
             // 
-            this.button1.Location = new System.Drawing.Point(316, 294);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(141, 23);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Create GIF From Folder";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonCreateGifFromFolder.Location = new System.Drawing.Point(313, 320);
+            this.buttonCreateGifFromFolder.Name = "buttonCreateGifFromFolder";
+            this.buttonCreateGifFromFolder.Size = new System.Drawing.Size(141, 23);
+            this.buttonCreateGifFromFolder.TabIndex = 16;
+            this.buttonCreateGifFromFolder.Text = "Create GIF From Folder";
+            this.buttonCreateGifFromFolder.UseVisualStyleBackColor = true;
+            this.buttonCreateGifFromFolder.Click += new System.EventHandler(this.buttonCreateGifFromFolder_Click);
             // 
             // labelGifCreateStatus
             // 
             this.labelGifCreateStatus.AutoSize = true;
-            this.labelGifCreateStatus.Location = new System.Drawing.Point(320, 320);
+            this.labelGifCreateStatus.Location = new System.Drawing.Point(313, 346);
             this.labelGifCreateStatus.Name = "labelGifCreateStatus";
             this.labelGifCreateStatus.Size = new System.Drawing.Size(37, 13);
             this.labelGifCreateStatus.TabIndex = 17;
             this.labelGifCreateStatus.Text = "Status";
             this.labelGifCreateStatus.Visible = false;
             // 
+            // nudFrameRateSelect
+            // 
+            this.nudFrameRateSelect.Location = new System.Drawing.Point(420, 295);
+            this.nudFrameRateSelect.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.nudFrameRateSelect.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudFrameRateSelect.Name = "nudFrameRateSelect";
+            this.nudFrameRateSelect.Size = new System.Drawing.Size(55, 20);
+            this.nudFrameRateSelect.TabIndex = 18;
+            this.nudFrameRateSelect.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.nudFrameRateSelect.ValueChanged += new System.EventHandler(this.nudFrameRateSelect_ValueChanged);
+            // 
+            // labelFrameRateSelect
+            // 
+            this.labelFrameRateSelect.AutoSize = true;
+            this.labelFrameRateSelect.Location = new System.Drawing.Point(313, 299);
+            this.labelFrameRateSelect.Name = "labelFrameRateSelect";
+            this.labelFrameRateSelect.Size = new System.Drawing.Size(103, 13);
+            this.labelFrameRateSelect.TabIndex = 19;
+            this.labelFrameRateSelect.Text = "Frames Per Second:";
+            // 
+            // labelCalcGifDuration
+            // 
+            this.labelCalcGifDuration.AutoSize = true;
+            this.labelCalcGifDuration.Location = new System.Drawing.Point(481, 299);
+            this.labelCalcGifDuration.Name = "labelCalcGifDuration";
+            this.labelCalcGifDuration.Size = new System.Drawing.Size(100, 13);
+            this.labelCalcGifDuration.TabIndex = 20;
+            this.labelCalcGifDuration.Text = "Total Duration: N/A";
+            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(608, 420);
+            this.Controls.Add(this.labelCalcGifDuration);
+            this.Controls.Add(this.labelFrameRateSelect);
+            this.Controls.Add(this.nudFrameRateSelect);
             this.Controls.Add(this.labelGifCreateStatus);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonCreateGifFromFolder);
             this.Controls.Add(this.buttonFixFileSequence);
             this.Controls.Add(this.labelFixFileSequence);
             this.Controls.Add(this.labelGifCreationTitle);
@@ -232,6 +280,7 @@
             this.Controls.Add(this.buttonOpenFile);
             this.Name = "ToolForm";
             this.Text = "GIF Analyzer";
+            ((System.ComponentModel.ISupportInitialize)(this.nudFrameRateSelect)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -253,8 +302,11 @@
         private System.Windows.Forms.Label labelGifCreationTitle;
         private System.Windows.Forms.Label labelFixFileSequence;
         private System.Windows.Forms.Button buttonFixFileSequence;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonCreateGifFromFolder;
         private System.Windows.Forms.Label labelGifCreateStatus;
+        private System.Windows.Forms.NumericUpDown nudFrameRateSelect;
+        private System.Windows.Forms.Label labelFrameRateSelect;
+        private System.Windows.Forms.Label labelCalcGifDuration;
     }
 }
 

@@ -23,6 +23,7 @@ namespace AnimationTools
 
         // Static variable to store the last selected folder path
         private static string lastSelectedFolderPath = "";
+        private static int currentFramesInFolder = 0;
 
         // Open file dialog to select GIF file
         private void btnOpenFile_Click(object sender, EventArgs e)
@@ -297,6 +298,9 @@ namespace AnimationTools
             int gifFilesCount = gifFiles.Length;
 
             txtFramesFolderDetails.Text = $"--- Files Found in \"{folderBaseName}\": ---\r\n    PNG Frames: {pngFilesCount}\r\n    GIFs: {gifFilesCount}";
+
+            currentFramesInFolder = pngFilesCount;
+            UpdateTotalDurationLabel();
         }
 
         private void buttonImportAnotherFolder_Click(object sender, EventArgs e)
@@ -379,7 +383,7 @@ namespace AnimationTools
             // Display the results in a single message box
             MessageBox.Show(message, "Operation Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        private string CreateGif(string outputDir)
+        private string CreateGif(string outputDir, int frameRate = 25)
         {
             // Check if ffmpeg.exe exists, will display message if not						 
             CheckIfFileInSystemPathOrDirectory(fileNameToCheck: "ffmpeg.exe", silent: false);
@@ -401,7 +405,7 @@ namespace AnimationTools
                 i++;
             }
 
-            string ffmpegCommand = $"ffmpeg -framerate 25 -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
+            string ffmpegCommand = $"ffmpeg -framerate {frameRate} -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
@@ -429,7 +433,7 @@ namespace AnimationTools
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonCreateGifFromFolder_Click(object sender, EventArgs e)
         {
             // Check if valid folder
             if (!Directory.Exists(txtFramesFolderPath.Text))
@@ -438,7 +442,7 @@ namespace AnimationTools
                 return;
             }
 
-            string createdFile = CreateGif(txtFramesFolderPath.Text);
+            string createdFile = CreateGif(txtFramesFolderPath.Text, (int)nudFrameRateSelect.Value);
 
             if (createdFile != null)
             {
@@ -453,7 +457,24 @@ namespace AnimationTools
                 labelGifCreateStatus.ForeColor = Color.Red;
                 labelGifCreateStatus.Text = $"Error Occurred Trying to Create: {createdFile}";
             }
+        }
 
+        private void UpdateTotalDurationLabel()
+        {
+            if (currentFramesInFolder > 0)
+            {
+                double totalDuration = (double)(currentFramesInFolder / (double)nudFrameRateSelect.Value);
+                labelCalcGifDuration.Text = $"Total Duration: {totalDuration:F2} s";
+            }
+            else
+            {
+                labelCalcGifDuration.Text = "Total Duration: N/A";
+            }
+        }   
+
+        private void nudFrameRateSelect_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateTotalDurationLabel();
         }
     }
 }
