@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Remoting.Messaging;
 
 namespace AnimationTools
 {
@@ -209,10 +210,15 @@ namespace AnimationTools
 
         private void buttonOpenFolder_Click(object sender, EventArgs e)
         {
+            txtFramesFolderPath.Text = FolderSelector(tryLastSelection: true);
+        }
+
+        private string FolderSelector(bool tryLastSelection = true)
+        {
             var folderOpenDialogue = new FolderPicker();
 
             // Check if the lastSelectedFolderPath is not empty and valid
-            if (!string.IsNullOrEmpty(lastSelectedFolderPath))
+            if (!string.IsNullOrEmpty(lastSelectedFolderPath) && tryLastSelection)
             {
                 try
                 {
@@ -242,12 +248,14 @@ namespace AnimationTools
                 folderOpenDialogue.InputPath = Directory.GetCurrentDirectory();
             }
 
+            // Show the actual dialogue based on input path derived from stuff above
             if (folderOpenDialogue.ShowDialog(this.Handle, throwOnError: false) == true)
             {
                 // Store the selected folder path to use next time
                 lastSelectedFolderPath = folderOpenDialogue.ResultPath;
-                txtFramesFolderPath.Text = folderOpenDialogue.ResultPath;
             }
+            return folderOpenDialogue.ResultPath;
         }
+        
     }
 }
