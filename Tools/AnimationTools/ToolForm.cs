@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.Remoting.Messaging;
 using static FileManager;
+using System.Diagnostics;
 
 namespace AnimationTools
 {
@@ -265,6 +266,9 @@ namespace AnimationTools
 
         private void txtFramesFolderPath_TextChanged(object sender, EventArgs e)
         {
+            // Hide the GIF creation status label if it was visible
+            labelGifCreateStatus.Visible = false;
+
             // Check if the folder path is valid, if so get list of files
             if (!Directory.Exists(txtFramesFolderPath.Text))
             {
@@ -374,6 +378,82 @@ namespace AnimationTools
 
             // Display the results in a single message box
             MessageBox.Show(message, "Operation Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private string CreateGif(string outputDir)
+        {
+            // Check if ffmpeg.exe exists, will display message if not						 
+            CheckIfFileInSystemPathOrDirectory(fileNameToCheck: "ffmpeg.exe", silent: false);
+
+            FileManager fileManager = new FileManager();
+            string baseFileName = fileManager.GetBaseFileNameWithinFolder(outputDir, "*.png");
+
+            // Execute ffmpeg.exe to create GIF								   
+            //string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
+            int totalFrames = Directory.GetFiles(outputDir, "*.png").Length;
+            int digitCount = (int)Math.Floor(Math.Log10(totalFrames)) + 1;
+
+            // Decide on name for file to not overwrite gif file
+            int i = 2;
+            string gifFileName = $"{baseFileName}_combined.gif";
+            while (File.Exists(Path.Combine(outputDir, gifFileName)))
+            {
+                gifFileName = $"{baseFileName}_combined_{i}.gif";
+                i++;
+            }
+
+            string ffmpegCommand = $"ffmpeg -framerate 25 -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = $"/c {ffmpegCommand}";
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+
+            using (Process process = new Process())
+            {
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+            }
+
+            bool gifCreated = File.Exists(Path.Combine(outputDir, gifFileName));
+
+            if (gifCreated)
+            {
+                return gifFileName;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Check if valid folder
+            if (!Directory.Exists(txtFramesFolderPath.Text))
+            {
+                MessageBox.Show("You must select a folder with the frames to combine above first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string createdFile = CreateGif(txtFramesFolderPath.Text);
+
+            if (createdFile != null)
+            {
+                // Display green message if GIF created
+                labelGifCreateStatus.Visible = true;
+                labelGifCreateStatus.ForeColor = Color.Green;
+                labelGifCreateStatus.Text = $"GIF Created: {createdFile}";
+            }
+            else
+            {
+                labelGifCreateStatus.Visible = true;
+                labelGifCreateStatus.ForeColor = Color.Red;
+                labelGifCreateStatus.Text = $"Error Occurred Trying to Create: {createdFile}";
+            }
+
         }
     }
 }

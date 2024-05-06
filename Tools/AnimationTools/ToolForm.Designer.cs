@@ -30,6 +30,8 @@
             this.labelGifCreationTitle = new System.Windows.Forms.Label();
             this.labelFixFileSequence = new System.Windows.Forms.Label();
             this.buttonFixFileSequence = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.labelGifCreateStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -169,11 +171,11 @@
             // labelFixFileSequence
             // 
             this.labelFixFileSequence.AutoSize = true;
-            this.labelFixFileSequence.Location = new System.Drawing.Point(348, 257);
+            this.labelFixFileSequence.Location = new System.Drawing.Point(331, 257);
             this.labelFixFileSequence.Name = "labelFixFileSequence";
-            this.labelFixFileSequence.Size = new System.Drawing.Size(134, 13);
+            this.labelFixFileSequence.Size = new System.Drawing.Size(153, 13);
             this.labelFixFileSequence.TabIndex = 14;
-            this.labelFixFileSequence.Text = "Fix File Number Sequence:";
+            this.labelFixFileSequence.Text = "Fix File Sequencing && Padding:";
             // 
             // buttonFixFileSequence
             // 
@@ -185,11 +187,33 @@
             this.buttonFixFileSequence.UseVisualStyleBackColor = true;
             this.buttonFixFileSequence.Click += new System.EventHandler(this.buttonFixFileSequence_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(316, 294);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(141, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Create GIF From Folder";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // labelGifCreateStatus
+            // 
+            this.labelGifCreateStatus.AutoSize = true;
+            this.labelGifCreateStatus.Location = new System.Drawing.Point(320, 320);
+            this.labelGifCreateStatus.Name = "labelGifCreateStatus";
+            this.labelGifCreateStatus.Size = new System.Drawing.Size(37, 13);
+            this.labelGifCreateStatus.TabIndex = 17;
+            this.labelGifCreateStatus.Text = "Status";
+            this.labelGifCreateStatus.Visible = false;
+            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(608, 420);
+            this.Controls.Add(this.labelGifCreateStatus);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonFixFileSequence);
             this.Controls.Add(this.labelFixFileSequence);
             this.Controls.Add(this.labelGifCreationTitle);
@@ -229,6 +253,8 @@
         private System.Windows.Forms.Label labelGifCreationTitle;
         private System.Windows.Forms.Label labelFixFileSequence;
         private System.Windows.Forms.Button buttonFixFileSequence;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label labelGifCreateStatus;
     }
 }
 
