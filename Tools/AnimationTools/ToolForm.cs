@@ -264,7 +264,13 @@ namespace AnimationTools
 
         private void txtFramesFolderPath_TextChanged(object sender, EventArgs e)
         {
-            string folderPath = txtFramesFolderPath.Text;
+            // Check if the folder path is valid, if so get list of files
+            if (!Directory.Exists(txtFramesFolderPath.Text))
+            {
+                txtFramesFolderDetails.Text = "Invalid folder path";
+                return;
+            }
+
             UpdateFolderDetails();
 
         }
@@ -273,12 +279,6 @@ namespace AnimationTools
         private void UpdateFolderDetails()
         {
             string folderPath = txtFramesFolderPath.Text;
-            // Check if the folder path is valid, if so get list of files
-            if (!Directory.Exists(txtFramesFolderPath.Text))
-            {
-                txtFramesFolderDetails.Text = "Invalid folder path";
-                return;
-            }
 
             string[] allFiles = Directory.GetFiles(folderPath);
             int totalFilesCount = allFiles.Length;
