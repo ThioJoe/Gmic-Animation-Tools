@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 public class FileManager
 {
@@ -67,6 +68,10 @@ public class FileManager
     // Method to import and merge folders, then normalize file numbering and padding
     public void ImportAndMergeFolders(string existingFolderPath, string importFolderPath)
     {
+        // Before changes
+        string[] existingFilesBefore = Directory.GetFiles(existingFolderPath, "*.png");
+        int existingFileCountBefore = existingFilesBefore.Length;
+
         AnalyzeAndPrepareExistingFolder(existingFolderPath);
 
         string[] existingFiles = Directory.GetFiles(existingFolderPath, "*.png");
@@ -79,6 +84,7 @@ public class FileManager
         string[] importFiles = Directory.GetFiles(importFolderPath, "*.png");
         var importFilesOrdered = GetOrderedFiles(importFiles);
         int fileIndex = maxExistingIndex + 1;
+        int importedFileCount = 0;
 
         foreach (var entry in importFilesOrdered)
         {
@@ -86,9 +92,21 @@ public class FileManager
             string newFilePath = Path.Combine(existingFolderPath, newFileName);
             File.Copy(entry.Value, newFilePath, overwrite: false);
             fileIndex++;
+            importedFileCount++;
         }
 
         UpdateZeroPadding(existingFolderPath, baseName);
+
+        // After changes
+        string[] existingFilesAfter = Directory.GetFiles(existingFolderPath, "*.png");
+        int totalFilesAfter = existingFilesAfter.Length;
+
+        // Display results in a message box
+        MessageBox.Show("Operation Successful\n" +
+                        $"Files Imported: {importedFileCount}\n" +
+                        $"Total Files Before: {existingFileCountBefore}\n" +
+                        $"Total Files After: {totalFilesAfter}",
+                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     // Method to analyze and prepare the existing folder for merging

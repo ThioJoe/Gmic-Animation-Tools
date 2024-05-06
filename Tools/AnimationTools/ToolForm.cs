@@ -287,15 +287,29 @@ namespace AnimationTools
             pngFilesCount = pngFiles.Length;
             gifFilesCount = gifFiles.Length;
 
+            // Get folder base name
+            string folderBaseName = Path.GetFileName(txtFramesFolderPath.Text);
+
             // Display found file info:
-            txtFramesFolderDetails.Text = $"Files Found:\r\n    PNG Frames: {pngFilesCount}\r\n    GIFs: {gifFilesCount}";
+            txtFramesFolderDetails.Text = $"--- Files Found in \"{folderBaseName}\": ---\r\n    PNG Frames: {pngFilesCount}\r\n    GIFs: {gifFilesCount}";
 
         }
 
         private void buttonImportAnotherFolder_Click(object sender, EventArgs e)
         {
-            string folderToImportPath = FolderSelector(tryLastSelection: true);
             string outputDirToMergeInto = txtFramesFolderPath.Text;
+            if (string.IsNullOrEmpty(outputDirToMergeInto))
+            {
+                // Show message box if no output directory is selected
+                MessageBox.Show("Please select a folder above first. That is where any imported frames will be added when you use this button.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string folderToImportPath = FolderSelector(tryLastSelection: true);            
+            if (string.IsNullOrEmpty(folderToImportPath))
+            {
+                return;
+            }
 
             FileManager fileManager = new FileManager();
             fileManager.ImportAndMergeFolders(existingFolderPath: outputDirToMergeInto, importFolderPath: folderToImportPath);
