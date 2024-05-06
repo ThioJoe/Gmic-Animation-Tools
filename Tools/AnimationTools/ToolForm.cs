@@ -42,24 +42,39 @@ namespace AnimationTools
                     //var gifAnalysis = AnalyzeGif(filePath);
                     //txtAnalysisOutput.Text = gifAnalysis;
 
-                    // Check if ffprobe exists, if not display text in the text box
-                    if (!CheckIfFileInSystemPathOrDirectory(fileNameToCheck: "ffprobe.exe", silent: true))
-                    {
-                        txtAnalysisOutput.Text = "ffprobe.exe (part of ffmpeg) is required to get gif info.\r\n\r\nMake sure it is in the same directory as the application (or System PATH).";
-                    }
-                    else
-                    {
-                        // Get frame count using ffprobe
-                        txtAnalysisOutput.Text = "Analyzing GIF file...";
-                        int frameCount = FFProbeGetGifFrameCount(filePath);
-                        double durationSeconds = FFProbeGetGifDurationInSeconds(filePath);
-                        string fileName = Path.GetFileName(filePath);
-                        txtAnalysisOutput.Text = $"File Name: {fileName}\r\n\r\nFrame Count: {frameCount}\r\nDuration: {durationSeconds:F3} seconds";
-                    }
+                    txtGifFilePath.Text = filePath;
+                    UpdateGifAnalysisTextbox(filePath);
+
+                }
+                // Else blank the textbox
+                else
+                {
+                    txtAnalysisOutput.Text = "";
                 }
             }
+            labelCrossfadeStatus.Visible = false;
         }
 
+        private void UpdateGifAnalysisTextbox(string filePath)
+        {
+            if (!CheckIfFileInSystemPathOrDirectory(fileNameToCheck: "ffprobe.exe", silent: true))
+            {
+                txtAnalysisOutput.Text = "ffprobe.exe (part of ffmpeg) is required to get gif info.\r\n\r\nMake sure it is in the same directory as the application (or System PATH).";
+            }
+            else
+            {
+                // Get frame count using ffprobe
+                txtAnalysisOutput.Text = "Analyzing GIF file...";
+                int frameCount = FFProbeGetGifFrameCount(filePath);
+                double durationSeconds = FFProbeGetGifDurationInSeconds(filePath);
+                string fileName = Path.GetFileName(filePath);
+                txtAnalysisOutput.Text = $"File Name: {fileName}\r\n\r\nFrame Count: {frameCount}\r\nDuration: {durationSeconds:F3} seconds";
+
+                // Set new max duration for cross fade numeric up down
+                nudFadeDurationSeconds.Maximum = (decimal)durationSeconds;
+            }
+            labelCrossfadeStatus.Visible = false;
+        }
 
         // Open folder dialogue to select folder with frames in it
         private void btnOpenFolder_Click(object sender, EventArgs e)
@@ -152,6 +167,57 @@ namespace AnimationTools
                 }
             }
         }
+
+        private void ApplyCrossfadeEffect(string inputFilePath, double fadeDurationSeconds)
+        {   
+            double fadeDurationHalf = fadeDurationSeconds / 2;
+            double totalGifDuration = FFProbeGetGifDurationInSeconds(inputFilePath);
+            double totalMinusTwoDuration = totalGifDuration - (2 * fadeDurationHalf); // Used to calculate the overlay start time
+
+            // Decide on file name, add _fade but must not overwrite
+            int count = 2;
+            string outputFilePath = inputFilePath.Replace(".gif", "_fade.gif");
+            while (File.Exists(outputFilePath))
+            {
+                outputFilePath = inputFilePath.Replace(".gif", $"_fade_{count}.gif");
+                count++;
+            }
+
+            string ffmpegCommand = "ffmpeg";
+            string args = $"-i \"{inputFilePath}\" -filter_complex \"[0]split[body][pre]; [pre]trim=duration={fadeDurationHalf},format=yuva420p,fade=d={fadeDurationHalf}:alpha=1,setpts=PTS+({totalMinusTwoDuration}/TB)[jt]; [body]trim={fadeDurationHalf},setpts=PTS-STARTPTS[main]; [main][jt]overlay\" -loop 0 \"{outputFilePath}\"";
+
+            ProcessStartInfo procStartInfo = new ProcessStartInfo(ffmpegCommand, args)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process proc = new Process { StartInfo = procStartInfo })
+            {
+                proc.Start();
+                proc.WaitForExit();
+            }
+
+            // Check if the output file was created
+            if (File.Exists(outputFilePath))
+            {
+                // Get just the file name
+                outputFilePath = Path.GetFileName(outputFilePath);
+                // Update the label
+                labelCrossfadeStatus.Visible = true;
+                labelCrossfadeStatus.ForeColor = Color.Green;
+                labelCrossfadeStatus.Text = $"Crossfade applied. Output: {outputFilePath}";
+            }
+            else
+            {
+                //MessageBox.Show("Error applying crossfade effect.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                labelCrossfadeStatus.Visible = true;
+                labelCrossfadeStatus.ForeColor = Color.Red;
+                labelCrossfadeStatus.Text = "Error applying crossfade effect.";
+            }
+        }
+
 
 
         public static string AnalyzeGif(string filePath)
@@ -273,9 +339,18 @@ namespace AnimationTools
             return output.ToString();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void txtGifFilePath_TextChanged(object sender, EventArgs e)
         {
-
+            // Check validity of filepath
+            if (!File.Exists(txtGifFilePath.Text))
+            {
+                txtAnalysisOutput.Text = "File not found.";
+                return;
+            }
+            else
+            {
+                UpdateGifAnalysisTextbox(txtGifFilePath.Text);
+            }
         }
 
         // Checks for file in system path or current directory
@@ -565,6 +640,30 @@ namespace AnimationTools
         private void nudFrameRateSelect_ValueChanged(object sender, EventArgs e)
         {
             UpdateTotalDurationLabel();
+        }
+
+        private void buttonAddCrossfade_Click(object sender, EventArgs e)
+        {
+            // Check if ffmpeg .exe exists, will display message if not
+            bool ffmpegAvailable = CheckIfFileInSystemPathOrDirectory(fileNameToCheck: "ffmpeg.exe", silent: false);
+            if (!ffmpegAvailable)
+            {
+                return;
+            }
+            // Ensure the input file path is valid
+            if (!File.Exists(txtGifFilePath.Text))
+            {
+                MessageBox.Show("You must select a valid GIF file first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            ApplyCrossfadeEffect(inputFilePath: txtGifFilePath.Text, fadeDurationSeconds: (double)nudFadeDurationSeconds.Value);
+
+        }
+
+        private void nudFadeDurationSeconds_ValueChanged(object sender, EventArgs e)
+        {
+            labelCrossfadeStatus.Visible= false;
         }
     }
 }

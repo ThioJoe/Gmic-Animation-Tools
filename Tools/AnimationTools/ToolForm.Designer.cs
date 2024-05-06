@@ -35,7 +35,12 @@
             this.nudFrameRateSelect = new System.Windows.Forms.NumericUpDown();
             this.labelFrameRateSelect = new System.Windows.Forms.Label();
             this.labelCalcGifDuration = new System.Windows.Forms.Label();
+            this.buttonAddCrossfade = new System.Windows.Forms.Button();
+            this.nudFadeDurationSeconds = new System.Windows.Forms.NumericUpDown();
+            this.labelFadeDuration = new System.Windows.Forms.Label();
+            this.labelCrossfadeStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudFrameRateSelect)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFadeDurationSeconds)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -66,7 +71,7 @@
             this.txtGifFilePath.Name = "txtGifFilePath";
             this.txtGifFilePath.Size = new System.Drawing.Size(192, 20);
             this.txtGifFilePath.TabIndex = 2;
-            this.txtGifFilePath.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.txtGifFilePath.TextChanged += new System.EventHandler(this.txtGifFilePath_TextChanged);
             // 
             // labelGifFilePath
             // 
@@ -158,7 +163,7 @@
             // 
             this.labelGifEditTitle.AutoSize = true;
             this.labelGifEditTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.labelGifEditTitle.Location = new System.Drawing.Point(54, 9);
+            this.labelGifEditTitle.Location = new System.Drawing.Point(70, 19);
             this.labelGifEditTitle.Name = "labelGifEditTitle";
             this.labelGifEditTitle.Size = new System.Drawing.Size(129, 24);
             this.labelGifEditTitle.TabIndex = 12;
@@ -168,7 +173,7 @@
             // 
             this.labelGifCreationTitle.AutoSize = true;
             this.labelGifCreationTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.labelGifCreationTitle.Location = new System.Drawing.Point(364, 9);
+            this.labelGifCreationTitle.Location = new System.Drawing.Point(370, 19);
             this.labelGifCreationTitle.Name = "labelGifCreationTitle";
             this.labelGifCreationTitle.Size = new System.Drawing.Size(167, 24);
             this.labelGifCreationTitle.TabIndex = 13;
@@ -254,11 +259,73 @@
             this.labelCalcGifDuration.TabIndex = 20;
             this.labelCalcGifDuration.Text = "Total Duration: N/A";
             // 
+            // buttonAddCrossfade
+            // 
+            this.buttonAddCrossfade.Location = new System.Drawing.Point(12, 252);
+            this.buttonAddCrossfade.Name = "buttonAddCrossfade";
+            this.buttonAddCrossfade.Size = new System.Drawing.Size(128, 23);
+            this.buttonAddCrossfade.TabIndex = 21;
+            this.buttonAddCrossfade.Text = "Add Loop Crossfade";
+            this.buttonAddCrossfade.UseVisualStyleBackColor = true;
+            this.buttonAddCrossfade.Click += new System.EventHandler(this.buttonAddCrossfade_Click);
+            // 
+            // nudFadeDurationSeconds
+            // 
+            this.nudFadeDurationSeconds.DecimalPlaces = 2;
+            this.nudFadeDurationSeconds.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nudFadeDurationSeconds.Location = new System.Drawing.Point(146, 223);
+            this.nudFadeDurationSeconds.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudFadeDurationSeconds.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
+            this.nudFadeDurationSeconds.Name = "nudFadeDurationSeconds";
+            this.nudFadeDurationSeconds.Size = new System.Drawing.Size(53, 20);
+            this.nudFadeDurationSeconds.TabIndex = 22;
+            this.nudFadeDurationSeconds.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudFadeDurationSeconds.ValueChanged += new System.EventHandler(this.nudFadeDurationSeconds_ValueChanged);
+            // 
+            // labelFadeDuration
+            // 
+            this.labelFadeDuration.AutoSize = true;
+            this.labelFadeDuration.Location = new System.Drawing.Point(12, 226);
+            this.labelFadeDuration.Name = "labelFadeDuration";
+            this.labelFadeDuration.Size = new System.Drawing.Size(128, 13);
+            this.labelFadeDuration.TabIndex = 23;
+            this.labelFadeDuration.Text = "Fade Duration (Seconds):";
+            // 
+            // labelCrossfadeStatus
+            // 
+            this.labelCrossfadeStatus.AutoSize = true;
+            this.labelCrossfadeStatus.Location = new System.Drawing.Point(13, 282);
+            this.labelCrossfadeStatus.Name = "labelCrossfadeStatus";
+            this.labelCrossfadeStatus.Size = new System.Drawing.Size(37, 13);
+            this.labelCrossfadeStatus.TabIndex = 24;
+            this.labelCrossfadeStatus.Text = "Status";
+            this.labelCrossfadeStatus.Visible = false;
+            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(608, 420);
+            this.Controls.Add(this.labelCrossfadeStatus);
+            this.Controls.Add(this.labelFadeDuration);
+            this.Controls.Add(this.nudFadeDurationSeconds);
+            this.Controls.Add(this.buttonAddCrossfade);
             this.Controls.Add(this.labelCalcGifDuration);
             this.Controls.Add(this.labelFrameRateSelect);
             this.Controls.Add(this.nudFrameRateSelect);
@@ -283,6 +350,7 @@
             this.Name = "ToolForm";
             this.Text = "GIF Analyzer";
             ((System.ComponentModel.ISupportInitialize)(this.nudFrameRateSelect)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFadeDurationSeconds)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -309,6 +377,10 @@
         private System.Windows.Forms.NumericUpDown nudFrameRateSelect;
         private System.Windows.Forms.Label labelFrameRateSelect;
         private System.Windows.Forms.Label labelCalcGifDuration;
+        private System.Windows.Forms.Button buttonAddCrossfade;
+        private System.Windows.Forms.NumericUpDown nudFadeDurationSeconds;
+        private System.Windows.Forms.Label labelFadeDuration;
+        private System.Windows.Forms.Label labelCrossfadeStatus;
     }
 }
 
