@@ -44,8 +44,14 @@ namespace DrosteEffectApp
         private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
         // Default values for the start and end parameters to be displayed as placeholders in the textboxes and if user opens parameters info window without entering any values
-        private string defaultStartParams = "34,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
-        private string defaultEndParams = "100,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
+        //private string defaultStartParams = "34,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
+        //private string defaultEndParams = "100,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
+
+        // Get default values from AppParameters ParameterInfo class defaultStart value
+        private string defaultStartParams = AppParameters.GetParameterValuesAsString("DefaultStart");
+        private string defaultEndParams = AppParameters.GetParameterValuesAsString("DefaultEnd");
+        
+
 
         //private decimal previousMasterIncrementNUDValue = 0;
 
