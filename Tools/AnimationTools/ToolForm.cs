@@ -38,12 +38,28 @@ namespace AnimationTools
                     // Get the path of specified file
                     var filePath = openFileDialog.FileName;
 
-                    // Read and analyze GIF file
-                    var gifAnalysis = AnalyzeGif(filePath);
-                    txtAnalysisOutput.Text = gifAnalysis;
+                    //// Read and analyze GIF file
+                    //var gifAnalysis = AnalyzeGif(filePath);
+                    //txtAnalysisOutput.Text = gifAnalysis;
+
+                    // Check if ffprobe exists, if not display text in the text box
+                    if (!CheckIfFileInSystemPathOrDirectory(fileNameToCheck: "ffprobe.exe", silent: true))
+                    {
+                        txtAnalysisOutput.Text = "ffprobe.exe (part of ffmpeg) is required to get gif info.\r\n\r\nMake sure it is in the same directory as the application (or System PATH).";
+                    }
+                    else
+                    {
+                        // Get frame count using ffprobe
+                        txtAnalysisOutput.Text = "Analyzing GIF file...";
+                        int frameCount = FFProbeGetGifFrameCount(filePath);
+                        double durationSeconds = FFProbeGetGifDurationInSeconds(filePath);
+                        string fileName = Path.GetFileName(filePath);
+                        txtAnalysisOutput.Text = $"File Name: {fileName}\r\n\r\nFrame Count: {frameCount}\r\nDuration: {durationSeconds:F3} seconds";
+                    }
                 }
             }
         }
+
 
         // Open folder dialogue to select folder with frames in it
         private void btnOpenFolder_Click(object sender, EventArgs e)
@@ -63,6 +79,80 @@ namespace AnimationTools
                 }
             }
         }
+        // Analyze GIF with ffprobe - count number of frames with:
+        // ffprobe -v error -select_streams v:0 -count_frames -show_entries stream=nb_read_frames -print_format default=nokey=1:noprint_wrappers=1 input.gif
+        public static int FFProbeGetGifFrameCount(string filePath)
+        {
+            // Construct the command to execute
+            string command = "ffprobe";
+            string args = $"-v error -select_streams v:0 -count_frames -show_entries stream=nb_read_frames -print_format default=nokey=1:noprint_wrappers=1 \"{filePath}\"";
+
+            // Set up the process with the ProcessStartInfo class
+            ProcessStartInfo procStartInfo = new ProcessStartInfo(command, args)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            // Start the process with the info specified and capture the output
+            using (Process proc = new Process())
+            {
+                proc.StartInfo = procStartInfo;
+                proc.Start();
+
+                // Read the output stream first and then wait.
+                string result = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+
+                // Parse the result as integer. Assuming ffprobe returns a valid integer as string.
+                if (int.TryParse(result.Trim(), out int frameCount))
+                {
+                    return frameCount;
+                }
+                else
+                {
+                    throw new Exception("Failed to parse the frame count from ffprobe output.");
+                }
+            }
+        }
+
+        public static double FFProbeGetGifDurationInSeconds(string filePath)
+        {
+            // Construct the command to execute
+            string command = "ffprobe";
+            string args = $"-v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 \"{filePath}\"";
+
+            // Set up the process with the ProcessStartInfo class
+            ProcessStartInfo procStartInfo = new ProcessStartInfo(command, args)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            // Start the process with the info specified and capture the output
+            using (Process proc = new Process())
+            {
+                proc.StartInfo = procStartInfo;
+                proc.Start();
+
+                // Read the output stream first and then wait.
+                string result = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+
+                // Parse the result as double
+                if (double.TryParse(result.Trim(), out double durationInSeconds))
+                {
+                    return durationInSeconds;
+                }
+                else
+                {
+                    throw new Exception("Failed to parse the duration from ffprobe output.");
+                }
+            }
+        }
+
 
         public static string AnalyzeGif(string filePath)
         {

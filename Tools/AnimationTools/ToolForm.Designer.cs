@@ -50,12 +50,14 @@
             // 
             // txtAnalysisOutput
             // 
+            this.txtAnalysisOutput.AcceptsReturn = true;
+            this.txtAnalysisOutput.AcceptsTab = true;
             this.txtAnalysisOutput.Location = new System.Drawing.Point(12, 132);
             this.txtAnalysisOutput.Multiline = true;
             this.txtAnalysisOutput.Name = "txtAnalysisOutput";
             this.txtAnalysisOutput.ReadOnly = true;
             this.txtAnalysisOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtAnalysisOutput.Size = new System.Drawing.Size(273, 118);
+            this.txtAnalysisOutput.Size = new System.Drawing.Size(273, 65);
             this.txtAnalysisOutput.TabIndex = 1;
             // 
             // txtGifFilePath
