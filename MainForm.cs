@@ -1294,10 +1294,7 @@ namespace DrosteEffectApp
         private bool CheckForFFmpeg(bool silent)
         {
             string fileNameToCheck = "ffmpeg.exe";
-            string pathCheckResult = Environment.GetEnvironmentVariable("PATH")
-                .Split(';')
-                .Where(s => File.Exists(Path.Combine(s, fileNameToCheck)))
-                .FirstOrDefault();
+            string pathCheckResult = CheckFileInSystemPath(fileNameToCheck: fileNameToCheck);
 
             // Check if in current directory or in system path
             if (!File.Exists(fileNameToCheck) && pathCheckResult == null)
@@ -1309,6 +1306,16 @@ namespace DrosteEffectApp
                 return false;
             }
             return true;
+        }
+
+        // Checks for file in system path
+        private string CheckFileInSystemPath(string fileNameToCheck)
+        {
+            string pathCheckResult = Environment.GetEnvironmentVariable("PATH")
+                .Split(';')
+                .Where(s => File.Exists(Path.Combine(s, fileNameToCheck)))
+                .FirstOrDefault();
+            return pathCheckResult;
         }
 
         private void checkBoxUseSameOutputDir_CheckedChanged(object sender, EventArgs e)

@@ -500,9 +500,9 @@
             // 
             // btnSwapStartEndStrings
             // 
-            this.btnSwapStartEndStrings.Location = new System.Drawing.Point(321, 97);
+            this.btnSwapStartEndStrings.Location = new System.Drawing.Point(339, 97);
             this.btnSwapStartEndStrings.Name = "btnSwapStartEndStrings";
-            this.btnSwapStartEndStrings.Size = new System.Drawing.Size(75, 23);
+            this.btnSwapStartEndStrings.Size = new System.Drawing.Size(57, 23);
             this.btnSwapStartEndStrings.TabIndex = 35;
             this.btnSwapStartEndStrings.Text = "Swap";
             this.btnSwapStartEndStrings.UseVisualStyleBackColor = true;
