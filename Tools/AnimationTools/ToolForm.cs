@@ -264,35 +264,34 @@ namespace AnimationTools
 
         private void txtFramesFolderPath_TextChanged(object sender, EventArgs e)
         {
-            int totalFilesCount = 0;
-            int pngFilesCount = 0;
-            int gifFilesCount = 0;
+            string folderPath = txtFramesFolderPath.Text;
+            UpdateFolderDetails();
 
+        }
+
+        // Get folder details and optionally update the text box
+        private void UpdateFolderDetails()
+        {
+            string folderPath = txtFramesFolderPath.Text;
             // Check if the folder path is valid, if so get list of files
-            if (Directory.Exists(txtFramesFolderPath.Text))
-            {
-                string[] allFiles = Directory.GetFiles(txtFramesFolderPath.Text);
-                totalFilesCount = allFiles.Length;
-            }
-            else
+            if (!Directory.Exists(txtFramesFolderPath.Text))
             {
                 txtFramesFolderDetails.Text = "Invalid folder path";
                 return;
             }
 
+            string[] allFiles = Directory.GetFiles(folderPath);
+            int totalFilesCount = allFiles.Length;
+
+            string folderBaseName = Path.GetFileName(folderPath);
             // Get list of all the png files in the folder
-            string[] pngFiles = Directory.GetFiles(txtFramesFolderPath.Text, "*.png");
-            string[] gifFiles = Directory.GetFiles(txtFramesFolderPath.Text, "*.gif");
+            string[] pngFiles = Directory.GetFiles(folderPath, "*.png");
+            string[] gifFiles = Directory.GetFiles(folderPath, "*.gif");
 
-            pngFilesCount = pngFiles.Length;
-            gifFilesCount = gifFiles.Length;
+            int pngFilesCount = pngFiles.Length;
+            int gifFilesCount = gifFiles.Length;
 
-            // Get folder base name
-            string folderBaseName = Path.GetFileName(txtFramesFolderPath.Text);
-
-            // Display found file info:
             txtFramesFolderDetails.Text = $"--- Files Found in \"{folderBaseName}\": ---\r\n    PNG Frames: {pngFilesCount}\r\n    GIFs: {gifFilesCount}";
-
         }
 
         private void buttonImportAnotherFolder_Click(object sender, EventArgs e)
@@ -313,8 +312,8 @@ namespace AnimationTools
 
             FileManager fileManager = new FileManager();
             fileManager.ImportAndMergeFolders(existingFolderPath: outputDirToMergeInto, importFolderPath: folderToImportPath);
+            UpdateFolderDetails();
 
         }
-
     }
 }
