@@ -30,7 +30,7 @@ public static class AppParameters
             new ParameterInfo(8,"Center X-Shift", 0, -100, 100, -200, 200, "Continuous", 0),
             new ParameterInfo(9,"Center Y-Shift", 0, -100, 100, -200, 200, "Continuous", 0),
             new ParameterInfo(10,"Starting Level", 1, 1, 20, 1, 50, "Step", 0),
-            new ParameterInfo(11,"Number of Levels", 10, 1, 20, 0, 50, "Step", 0),
+            new ParameterInfo(11,"Number of Levels", 10, 1, 30, 0, 50, "Step", 0),
             new ParameterInfo(12,"Level Frequency", 1, 1, 10, 1, 20, "Step", 1),
             new ParameterInfo(13,"Show Both Poles", 0, 0, 1, 0, 1, "Binary", 0),
             new ParameterInfo(14,"Pole Rotation", 90, -180, 180, -200, 200, "MultiPole", 0),

@@ -552,11 +552,22 @@ namespace GmicDrosteAnimate
             double periodicityMin = 0.751;
             double periodicityMax = 1.250;
 
+            // Use a larger range for periodicity if the starting level is even and doesn't change, therefore won't cause jumpy animation
             if (useLargerPeriodicityRange)
             {
-                periodicityMin = 0.1;
-                periodicityMax = 2;
+                // If the checkbox for extended range is checked, use an even larger range if possible
+                if (checkBoxExtendedRange.Checked)
+                {
+                    periodicityMin = 0.1;
+                    periodicityMax = 3.5;
+                }
+                else
+                {
+                    periodicityMin = 0.1;
+                    periodicityMax = 2;
+                }
             }
+            
 
             double start;
             double end;
@@ -642,19 +653,7 @@ namespace GmicDrosteAnimate
             }
         }
 
-        private void checkRecommendedRules_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxRecommendedRules.Checked)
-            {
-                // If recommended rules are checked, disable checkbox for extended range
-                checkBoxExtendedRange.Checked = false;
 
-                // Enable checkboxes to not check various parameters
-                checkBoxDisableBinaryRandom.Checked = true;
-                checkBoxDisableStepRandom.Checked = true;
-                checkBoxDisableMultiPole.Checked = true;
-            }
-        }
 
         public class CustomToggleCheckBox : CheckBox
         {
@@ -708,6 +707,20 @@ namespace GmicDrosteAnimate
 
         }
 
+        private void checkRecommendedRules_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxRecommendedRules.Checked)
+            {
+                //// If recommended rules are checked, disable checkbox for extended range
+                //checkBoxExtendedRange.Checked = false;
+
+                // Enable checkboxes to not check various parameters
+                checkBoxDisableBinaryRandom.Checked = true;
+                checkBoxDisableStepRandom.Checked = true;
+                checkBoxDisableMultiPole.Checked = true;
+            }
+        }
+
         private void checkBoxDisableMultiPole_CheckedChanged(object sender, EventArgs e)
         {
             // If this unchecked, disable recommended rules
@@ -737,11 +750,11 @@ namespace GmicDrosteAnimate
         }
         private void checkBoxExtendedRange_CheckedChanged(object sender, EventArgs e)
         {
-            // If this checked, disable recommended rules
-            if (checkBoxExtendedRange.Checked)
-            {
-                checkBoxRecommendedRules.Checked = false;
-            }
+            //// If this checked, disable recommended rules
+            //if (checkBoxExtendedRange.Checked)
+            //{
+            //    checkBoxRecommendedRules.Checked = false;
+            //}
         }
     }
 
