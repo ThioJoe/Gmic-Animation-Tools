@@ -102,7 +102,7 @@ namespace DrosteEffectApp
 
             #if DEBUG
             // Set default value text in parameter value textboxes
-            txtInputFilePath.Text = "C:\\Users\\Joe\\source\\repos\\GmicDrosteAnimate\\bin\\x64\\Debug\\think.png";
+            txtInputFilePath.Text = "think.png";
             //txtStartParams.Text = startParams;
             //txtEndParams.Text = endParams;
             inputFilePath = txtInputFilePath.Text;
