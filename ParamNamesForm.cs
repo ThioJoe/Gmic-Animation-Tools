@@ -41,6 +41,17 @@ namespace GmicDrosteAnimate
 
         public ParamNamesForm(MainForm mainform,double[] incomingStartParamValues, double[] incomingEndParamValues, int incomingMasterParamIndex)
         {
+
+            // If the values are null or empty then use defaults
+            if (incomingStartParamValues == null || incomingStartParamValues.Length == 0)
+            {
+                incomingStartParamValues = AppParameters.GetParameterValuesAsList("DefaultStart");
+            }
+            if (incomingEndParamValues == null || incomingEndParamValues.Length == 0)
+            {
+                incomingEndParamValues = AppParameters.GetParameterValuesAsList("DefaultEnd");
+            }
+
             startParamValuesFromMainWindow = incomingStartParamValues;
             endParamValuesFromMainWindow = incomingEndParamValues;
             masterParamIndexFromMainWindow = incomingMasterParamIndex;
@@ -97,10 +108,11 @@ namespace GmicDrosteAnimate
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            // Check whether to calculate difference
             if (e.RowIndex >= 0 && (e.ColumnIndex == dataGridView1.Columns["Start"].Index || e.ColumnIndex == dataGridView1.Columns["End"].Index))
             {
                 // Ensure the value changes are only processed for valid rows and specific columns
-                if (dataGridView1.Rows[e.RowIndex].Cells["Start"].Value != null && dataGridView1.Rows[e.RowIndex].Cells["End"].Value != null)
+                if (!String.IsNullOrEmpty((string)dataGridView1.Rows[e.RowIndex].Cells["Start"].Value) && !String.IsNullOrEmpty((string)dataGridView1.Rows[e.RowIndex].Cells["End"].Value))
                 {
                     double start = Convert.ToDouble(dataGridView1.Rows[e.RowIndex].Cells["Start"].Value);
                     double end = Convert.ToDouble(dataGridView1.Rows[e.RowIndex].Cells["End"].Value);
@@ -128,13 +140,33 @@ namespace GmicDrosteAnimate
             double[] startParamValues = new double[dataGridView1.Rows.Count];
             double[] endParamValues = new double[dataGridView1.Rows.Count];
 
-            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            // Ensure the grids have all the values
+            if (startParamValues.Length == 31 && endParamValues.Length == 31)
             {
-                if (dataGridView1.Rows[i].Cells["Start"].Value != null)
-                    startParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["Start"].Value);
-                if (dataGridView1.Rows[i].Cells["End"].Value != null)
-                    endParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["End"].Value);
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                {
+                    if (dataGridView1.Rows[i].Cells["Start"].Value != null)
+                    {
+                        startParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["Start"].Value);
+                    }
+                    // 
+                    else
+                    {
+                        // Put something here?
+                    }
+                    if (dataGridView1.Rows[i].Cells["End"].Value != null)
+                    {
+                        endParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["End"].Value);
+                    }
+                    else
+                    {
+                        // Put something here?
+                    }
+
+                }
             }
+
+            
 
             // Set the text boxes to the new comma-separated strings of the start and end parameters
             SetCurrentStartParamString(startParamValues);
@@ -144,6 +176,18 @@ namespace GmicDrosteAnimate
         private void UpdateDataGridView(double[] startParamValues, double[] endParamValues, int masterParamIndex)
         {
             dataGridView1.Rows.Clear();
+
+            // If start or end values are null or empty, set them to defaults from AppParameters startDefaults and endDefaults
+            if (startParamValues == null || startParamValues.Length == 0)
+            {
+                // Set the start values to the default values from AppParameters
+                startParamValues = AppParameters.GetParameterValuesAsList("DefaultStart");
+            }
+            if (endParamValues == null || endParamValues.Length == 0)
+            {
+                // Set the end values to the default values from AppParameters
+                endParamValues = AppParameters.GetParameterValuesAsList("DefaultEnd");
+            }
 
             for (int i = 0; i < paramNames.Length; i++)
             {
@@ -233,12 +277,55 @@ namespace GmicDrosteAnimate
         // Function to set current start param string from array
         public void SetCurrentStartParamString(double[] currentParamString)
         {
-            txtCurrentStartParamString.Text = string.Join(",", currentParamString);
+            if (!String.IsNullOrEmpty(txtCurrentStartParamString.Text))
+            {
+                txtCurrentStartParamString.Text = string.Join(",", currentParamString);
+            }
+            // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
+            else
+            {
+                if (dataGridView1.Rows.Count == 31)
+                {
+                    double[] startParamValuesFromGrid = ValuesFromDataTable(dataGridView1, "Start");
+                    txtCurrentStartParamString.Text = string.Join(",", startParamValuesFromGrid);
+                }
+            }
+            
         }
         // Function to set current end param string from array
         public void SetCurrentEndParamString(double[] currentParamString)
         {
-            txtCurrentEndParamString.Text = string.Join(",", currentParamString);
+            if (!String.IsNullOrEmpty(txtCurrentEndParamString.Text))
+            {
+                txtCurrentEndParamString.Text = string.Join(",", currentParamString);
+            }
+            // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
+            else
+            {
+                if (dataGridView1.Rows.Count == 31)
+                {
+                    double[] endParamValuesFromGrid = ValuesFromDataTable(dataGridView1, "End");
+                    txtCurrentEndParamString.Text = string.Join(",", endParamValuesFromGrid);
+                }
+            }
+        }
+
+        private double[] ValuesFromDataTable(DataGridView dataGridView, string columnName)
+        {
+            double[] values = new double[dataGridView.Rows.Count];
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (!String.IsNullOrEmpty(dataGridView.Rows[i].Cells[columnName].Value.ToString()))
+                {
+                    values[i] = Convert.ToDouble(dataGridView.Rows[i].Cells[columnName].Value);
+                }
+                // Early return null if any of the values are null
+                else
+                {
+                    return null;
+                }
+            }
+            return values;
         }
 
         private void btnRandom_Click(object sender, EventArgs e)

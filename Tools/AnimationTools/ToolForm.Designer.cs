@@ -394,7 +394,7 @@
             this.Controls.Add(this.LeftBorder);
             this.Controls.Add(this.RightBorder);
             this.Name = "ToolForm";
-            this.Text = "GIF Analyzer";
+            this.Text = "GIF Tools";
             ((System.ComponentModel.ISupportInitialize)(this.nudFrameRateSelect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFadeDurationSeconds)).EndInit();
             this.ResumeLayout(false);

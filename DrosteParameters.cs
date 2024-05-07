@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 public static class AppParameters
 {
@@ -43,22 +44,23 @@ public static class AppParameters
         }
     }
 
-    public static List<double> GetParameterValuesAsList(string propertyName)
+    // Put default values for each parameter into an array of doubels
+    public static double[] GetParameterValuesAsList(string propertyName)
     {
         switch (propertyName)
         {
             case "DefaultStart":
-                return Parameters.Select(p => p.DefaultStart).ToList();
+                return Parameters.Select(p => p.DefaultStart).ToArray();
             case "DefaultEnd":
-                return Parameters.Select(p => p.DefaultEnd).ToList();
+                return Parameters.Select(p => p.DefaultEnd).ToArray();
             case "Min":
-                return Parameters.Select(p => p.Min).ToList();
+                return Parameters.Select(p => p.Min).ToArray();
             case "Max":
-                return Parameters.Select(p => p.Max).ToList();
+                return Parameters.Select(p => p.Max).ToArray();
             case "ExtendedMin":
-                return Parameters.Select(p => p.ExtendedMin).ToList();
+                return Parameters.Select(p => p.ExtendedMin).ToArray();
             case "ExtendedMax":
-                return Parameters.Select(p => p.ExtendedMax).ToList();
+                return Parameters.Select(p => p.ExtendedMax).ToArray();
             default:
                 throw new ArgumentException("Property name not recognized", nameof(propertyName));
         }

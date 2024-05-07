@@ -60,6 +60,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.InfoIconLinearInterpolation = new System.Windows.Forms.PictureBox();
             this.InfoIconCreateGif = new System.Windows.Forms.PictureBox();
+            this.infoIconUseSameDirectory = new System.Windows.Forms.PictureBox();
             this.btnShowParamNames = new System.Windows.Forms.Button();
             this.labelTotalFrames = new System.Windows.Forms.Label();
             this.TextLabelNearStartButton = new System.Windows.Forms.Label();
@@ -69,7 +70,6 @@
             this.checkBoxUseSameOutputDir = new System.Windows.Forms.CheckBox();
             this.btnSwapStartEndStrings = new System.Windows.Forms.Button();
             this.labelFFmpegNotFound = new System.Windows.Forms.Label();
-            this.infoIconUseSameDirectory = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -427,13 +427,24 @@
             this.InfoIconCreateGif.TabStop = false;
             this.toolTip1.SetToolTip(this.InfoIconCreateGif, resources.GetString("InfoIconCreateGif.ToolTip"));
             // 
+            // infoIconUseSameDirectory
+            // 
+            this.infoIconUseSameDirectory.Image = ((System.Drawing.Image)(resources.GetObject("infoIconUseSameDirectory.Image")));
+            this.infoIconUseSameDirectory.Location = new System.Drawing.Point(166, 335);
+            this.infoIconUseSameDirectory.Name = "infoIconUseSameDirectory";
+            this.infoIconUseSameDirectory.Size = new System.Drawing.Size(16, 16);
+            this.infoIconUseSameDirectory.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.infoIconUseSameDirectory.TabIndex = 37;
+            this.infoIconUseSameDirectory.TabStop = false;
+            this.toolTip1.SetToolTip(this.infoIconUseSameDirectory, resources.GetString("infoIconUseSameDirectory.ToolTip"));
+            // 
             // btnShowParamNames
             // 
             this.btnShowParamNames.Location = new System.Drawing.Point(273, 358);
             this.btnShowParamNames.Name = "btnShowParamNames";
             this.btnShowParamNames.Size = new System.Drawing.Size(130, 22);
             this.btnShowParamNames.TabIndex = 27;
-            this.btnShowParamNames.Text = "Show Parameter Names";
+            this.btnShowParamNames.Text = "Advanced Control";
             this.btnShowParamNames.UseVisualStyleBackColor = true;
             this.btnShowParamNames.Click += new System.EventHandler(this.btnShowParamNames_Click);
             // 
@@ -518,17 +529,6 @@
             this.labelFFmpegNotFound.TabIndex = 36;
             this.labelFFmpegNotFound.Text = "(Unavailable: ffmpeg not found)";
             this.labelFFmpegNotFound.Visible = false;
-            // 
-            // infoIconUseSameDirectory
-            // 
-            this.infoIconUseSameDirectory.Image = ((System.Drawing.Image)(resources.GetObject("infoIconUseSameDirectory.Image")));
-            this.infoIconUseSameDirectory.Location = new System.Drawing.Point(166, 335);
-            this.infoIconUseSameDirectory.Name = "infoIconUseSameDirectory";
-            this.infoIconUseSameDirectory.Size = new System.Drawing.Size(16, 16);
-            this.infoIconUseSameDirectory.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.infoIconUseSameDirectory.TabIndex = 37;
-            this.infoIconUseSameDirectory.TabStop = false;
-            this.toolTip1.SetToolTip(this.infoIconUseSameDirectory, resources.GetString("infoIconUseSameDirectory.ToolTip"));
             // 
             // MainForm
             // 

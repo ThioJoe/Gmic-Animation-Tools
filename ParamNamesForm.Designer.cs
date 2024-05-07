@@ -274,7 +274,7 @@
             this.Controls.Add(this.toggleRandomStart);
             this.Controls.Add(this.toggleRandomEnd);
             this.Name = "ParamNamesForm";
-            this.Text = "ParamNamesForm";
+            this.Text = "Advanced Parameter Control";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
