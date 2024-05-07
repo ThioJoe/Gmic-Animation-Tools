@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using GmicDrosteAnimate;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Globalization;
 
 namespace DrosteEffectApp
@@ -93,11 +93,11 @@ namespace DrosteEffectApp
             // Show parameter name initially
             WriteLatestParamNameStringLabel();
 
-            #if !DEBUG
+            //#if !DEBUG
             // Apply placeholders if not in debug mode
             PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)startParams);
             PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)endParams);
-            #endif
+            //#endif
 
 
             #if DEBUG
@@ -123,17 +123,49 @@ namespace DrosteEffectApp
             }
         }
 
+        //Property getter setter needs to also be able to deal with the placeholder manager event handler, otherwise it will not work
         public string StartParamsTextBoxChange
         {
-            //get { return txtStartParams.Text; }
-            set { txtStartParams.Text = value; }
+            get
+            {
+                return txtStartParams.ForeColor == Color.Gray ? "" : txtStartParams.Text;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    txtStartParams.Text = (string)txtStartParams.Tag;
+                    txtStartParams.ForeColor = Color.Gray;
+                }
+                else
+                {
+                    txtStartParams.Text = value;
+                    txtStartParams.ForeColor = Color.Black;  // Ensure it's treated as actual data
+                }
+            }
         }
 
         public string EndParamsTextTextBoxChange
         {
-            //get { return txtEndParams.Text; }
-            set { txtEndParams.Text = value; }
+            get
+            {
+                return txtEndParams.ForeColor == Color.Gray ? "" : txtEndParams.Text;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    txtEndParams.Text = (string)txtEndParams.Tag;
+                    txtEndParams.ForeColor = Color.Gray;
+                }
+                else
+                {
+                    txtEndParams.Text = value;
+                    txtEndParams.ForeColor = Color.Black;  // Ensure it's treated as actual data
+                }
+            }
         }
+
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -1121,29 +1153,19 @@ namespace DrosteEffectApp
 
         public static class PlaceholderManager
         {
-            public static void SetPlaceholder(System.Windows.Forms.TextBox textBox, string placeholderText)
+            public static void SetPlaceholder(TextBox textBox, string placeholderText)
             {
-                textBox.Tag = placeholderText;  // Store the placeholder text in the Tag property for easy access
-                SetPlaceholderText(textBox);  // Set the initial placeholder
-
-                // Attach event handlers
+                textBox.Tag = placeholderText;  // Store the placeholder text in the Tag property
+                textBox.Text = placeholderText;
+                textBox.ForeColor = Color.Gray;
                 textBox.Enter += TextBox_Enter;
                 textBox.Leave += TextBox_Leave;
             }
 
-            private static void SetPlaceholderText(System.Windows.Forms.TextBox textBox)
-            {
-                if (textBox.Text == "")
-                {
-                    textBox.Text = textBox.Tag.ToString();
-                    textBox.ForeColor = Color.Gray;
-                }
-            }
-
             private static void TextBox_Enter(object sender, EventArgs e)
             {
-                System.Windows.Forms.TextBox textBox = sender as System.Windows.Forms.TextBox;
-                if (textBox.Text == textBox.Tag.ToString())
+                TextBox textBox = sender as TextBox;
+                if (textBox.Text == (string)textBox.Tag && textBox.ForeColor == Color.Gray)
                 {
                     textBox.Text = "";
                     textBox.ForeColor = Color.Black;
@@ -1152,13 +1174,17 @@ namespace DrosteEffectApp
 
             private static void TextBox_Leave(object sender, EventArgs e)
             {
-                System.Windows.Forms.TextBox textBox = sender as System.Windows.Forms.TextBox;
+                TextBox textBox = sender as TextBox;
                 if (string.IsNullOrWhiteSpace(textBox.Text))
                 {
-                    SetPlaceholderText(textBox);
+                    textBox.Text = (string)textBox.Tag;
+                    textBox.ForeColor = Color.Gray;
                 }
             }
         }
+
+
+
 
 
         private void nudMasterParamIndex_ValueChanged(object sender, EventArgs e)
