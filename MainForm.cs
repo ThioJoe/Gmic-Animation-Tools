@@ -323,7 +323,7 @@ namespace DrosteEffectApp
                 frameNumberStart = CountExistingFiles(outputDir) + 1;
             }
             // Create the log file with metadata and interpolated parameters
-            CreateLogFile(outputDir: outputDir, interpolatedParams: interpolatedParams, exponentMode: exponentMode, defaultExponents: defaultExponents, masterExponent: masterExponent, frameStartNumber: frameNumberStart, masterParamIndex: masterParamIndexAtTimeOfClick, masterParamIncrement: masterParamIncrementAtTimeOfClick);
+            CreateLogFile(outputDir: outputDir, interpolatedParams: interpolatedParams, exponentMode: exponentMode, defaultExponents: defaultExponents, masterExponent: masterExponent, frameStartNumber: frameNumberStart, masterParamIndex: masterParamIndexAtTimeOfClick, masterParamIncrement: masterParamIncrementAtTimeOfClick, totalFrames: totalFrames);
 
             btnStart.Visible = false;
             btnCancel.Visible = true;
@@ -722,10 +722,13 @@ namespace DrosteEffectApp
             }
         }
 
-        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, double masterExponent, int frameStartNumber, int masterParamIndex, double masterParamIncrement)
+        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, double masterExponent, int frameStartNumber, int masterParamIndex, double masterParamIncrement, int totalFrames)
         {
             //string logFilePath = Path.Combine(outputDir, $"{outputDir}_log.txt");
             string logFilePath = DecideLogFilePath(outputDir);
+
+            // Get base name from outputdir folder name
+            string baseName = Path.GetFileName(outputDir);
 
             string exponentModeString;
             string masterExponentString;
@@ -770,17 +773,20 @@ namespace DrosteEffectApp
             using (StreamWriter writer = new StreamWriter(logFilePath))
             {
                 writer.WriteLine("Run Metadata:");
-                writer.WriteLine($"Start Parameters: {startParams}");
-                writer.WriteLine($"End Parameters: {endParams}");
-                writer.WriteLine($"Master Parameter Index: {masterParamIndex+1}");
-                writer.WriteLine($"Master Parameter Increment: {masterParamIncrement}");
-                writer.WriteLine($"Exponential Increments: {exponentialIncrements}");
+                writer.WriteLine($"\n\tOutput Base Name: {baseName}");
+                writer.WriteLine($"\tFrames Generated: {totalFrames}");
+
+                writer.WriteLine($"\n\tStart Parameters: {startParams}");
+                writer.WriteLine($"\tEnd Parameters: {endParams}");
+                writer.WriteLine($"\tMaster Parameter Index: {masterParamIndex+1}");
+                writer.WriteLine($"\tMaster Parameter Increment: {masterParamIncrement}");
+                writer.WriteLine($"\tExponential Increments: {exponentialIncrements}");
 
                 if (exponentialIncrements)
                 {
-                    writer.WriteLine($"Exponent Mode: {exponentModeString}");
-                    writer.WriteLine($"Master Exponent: {masterExponentString}");
-                    writer.WriteLine($"Exponent Array: {exponentArrayString}");
+                    writer.WriteLine($"\n\tExponent Mode: {exponentModeString}");
+                    writer.WriteLine($"\tMaster Exponent: {masterExponentString}");
+                    writer.WriteLine($"\tExponent Array: {exponentArrayString}");
                 }
 
                 writer.WriteLine();
