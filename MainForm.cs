@@ -661,7 +661,7 @@ namespace DrosteEffectApp
             // Add more constants as needed
         };
 
-        public (double interpolatedValue, string errorString) EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue, bool normalize = true)
+        public (double interpolatedValue, string errorString) EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue, bool normalize = true, bool testing=false)
         {
             try
             {
@@ -671,7 +671,7 @@ namespace DrosteEffectApp
                 // Add or update the specific variable 't' for this evaluation
                 //t is the normalized time value, which equals the current frame number divided by the total number of frames.
                 variables["t"] = t;  // This will add 't' or update its value if 't' is somehow already in the dictionary
-
+                
                 // Parse the formula as a symbolic expression
                 var expression = SymbolicExpression.Parse(formula);
 
@@ -695,7 +695,7 @@ namespace DrosteEffectApp
         public (bool IsValid, string Reason) IsValidMathExpression(string input, double testStart=1, double testEnd=10, double testTime = 0.50)
         {
             // Check via MathNet.Symbolics if the input string is a valid mathematical expression
-            (double _, string errorString) = EvaluateFormulaWithSymbolics(formula: input, t: testTime, startValue: testStart, endValue: testEnd);
+            (double _, string errorString) = EvaluateFormulaWithSymbolics(formula: input, t: testTime, startValue: testStart, endValue: testEnd, testing: true);
             // If no exception is thrown in other function, the expression is valid
             if (errorString == null)
             {
