@@ -396,6 +396,13 @@ namespace DrosteEffectApp
                 // Open the output directory in Windows Explorer for user review.
                 //Process.Start("explorer.exe", outputDir);
             }
+            else
+            {
+                // Restore start button and hide cancel button
+                cancellationRequested = false;
+                btnStart.Visible = true;
+                btnCancel.Visible = false;
+            }
         }
 
         // Function to parse parameter values from a string and return them as an array of doubles.
@@ -647,7 +654,7 @@ namespace DrosteEffectApp
             // Parse the formula as a symbolic expression
             var expression = Expr.Parse(formula);
 
-            // Substitute 't' with its actual value
+            // Substitute 't' with its actual value. t is the normalized time value, which equals the current frame number divided by the total number of frames.
             var variables = new Dictionary<string, FloatingPoint> { { "t", t }, { "pi", Math.PI }, {"e", Math.E} }; // Include 'pi' if needed
 
             // Evaluate the expression symbolically with these substitutions
