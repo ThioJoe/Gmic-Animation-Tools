@@ -276,6 +276,16 @@ namespace DrosteEffectApp
                     exponentMode = "custom-master";
                     masterExponentStr = txtMasterExponent.Text;
                 }
+                else if (!string.IsNullOrEmpty(txtMasterExponent.Text) && !isValid)
+                {
+                    MessageBox.Show(
+                        "Invalid exponent or expression entered. Must be a decimal number or mathematicaly expression using only the variable 't' for time." +
+                        $"\n\nEntered Value: {txtMasterExponent.Text}\nReason: {reason}",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
                 else
                 {
                     // Convert defaultExponents to a string array
