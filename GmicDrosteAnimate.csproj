@@ -74,8 +74,39 @@
     <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FParsec, Version=2.0.0.0, Culture=neutral, PublicKeyToken=40ccfc0a09edbb5d, processorArchitecture=MSIL">
+      <HintPath>packages\FParsec.2.0.0-beta2\lib\netstandard2.0\FParsec.dll</HintPath>
+    </Reference>
+    <Reference Include="FParsecCS, Version=2.0.0.0, Culture=neutral, PublicKeyToken=40ccfc0a09edbb5d, processorArchitecture=MSIL">
+      <HintPath>packages\FParsec.2.0.0-beta2\lib\netstandard2.0\FParsecCS.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\FSharp.Core.8.0.300-beta.24178.1\lib\netstandard2.0\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MathNet.Numerics.6.0.0-beta1\lib\net48\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics.FSharp, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MathNet.Numerics.FSharp.6.0.0-beta1\lib\net48\MathNet.Numerics.FSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Symbolics, Version=0.25.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MathNet.Symbolics.0.25.0\lib\net48\MathNet.Symbolics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -117,6 +148,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

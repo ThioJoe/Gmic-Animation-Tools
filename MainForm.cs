@@ -13,6 +13,10 @@ using GmicDrosteAnimate;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Globalization;
 
+// Third party libraries for symbolic math and expression evaluation.
+using MathNet.Symbolics;
+using Expr = MathNet.Symbolics.SymbolicExpression;
+
 namespace DrosteEffectApp
 {
     public partial class MainForm : Form
@@ -250,35 +254,40 @@ namespace DrosteEffectApp
 
             // Determine the exponent mode and set up the exponents array based on user selections.
             string exponentMode = null;
-            double[] exponents = null;
-            double masterExponent = 0;
+            // Set exponents array to the default array to start
+            string[] exponents = Array.ConvertAll(defaultExponents, x => x.ToString());
+            string masterExponentStr = "?";
 
 
             if (rbNoExponents.Checked)
             {
                 exponentialIncrements = false;
             }
+            // If the master exponent radio button is checked, check if the user has entered a value or not. If not, use the value from the default array.
             else if (rbMasterExponent.Checked)
             {
                 exponentialIncrements = true;
-                if (double.TryParse(txtMasterExponent.Text, out masterExponent))
+                if (double.TryParse(txtMasterExponent.Text, out _) || IsValidMathExpression(txtMasterExponent.Text))
                 {
-                    exponents = (double[])defaultExponents.Clone();
-                    exponents[masterParamIndexAtTimeOfClick] = masterExponent;
+                    // Set the master exponent string in the exponents array
+                    exponents[masterParamIndexAtTimeOfClick] = txtMasterExponent.Text;
                     exponentMode = "custom-master";
+                    masterExponentStr = txtMasterExponent.Text;
                 }
                 else
                 {
-                    exponents = defaultExponents;
+                    // Convert defaultExponents to a string array
                     exponentMode = "default-array";
-                    masterExponent = defaultExponents[masterParamIndexAtTimeOfClick];
+                    // Set the master exponent string from the default exponents array
+                    masterExponentStr = exponents[masterParamIndexAtTimeOfClick];
                 }
             }
             else if (rbDefaultExponents.Checked)
             {
+                // Keep exponents default
                 exponentialIncrements = true;
-                exponents = defaultExponents;
                 exponentMode = "default-apply-all";
+                masterExponentStr = exponents[masterParamIndexAtTimeOfClick];
             }
             else if (rbCustomExponents.Checked)
             {
@@ -289,10 +298,9 @@ namespace DrosteEffectApp
                     // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there
                     exponentArray = exponentArray.Replace("souphead_droste10", "").Trim();
 
-                    string[] exponentArrayValues = exponentArray.Split(',');
-                    if (exponentArrayValues.Length == 31)
+                    exponents = exponentArray.Split(',');
+                    if (exponents.Length == 31)
                     {
-                        exponents = Array.ConvertAll(exponentArrayValues, double.Parse);
                         exponentMode = "custom-array";
                     }
                     else
@@ -312,6 +320,7 @@ namespace DrosteEffectApp
             string outputDir = CreateOutputDirectory(inputFilePath);
 
             // Calculate interpolated parameter values for each frame using the selected interpolation method.
+            // Note - Master parameter is not passed in because it should just be set in the array, then the function will pull the value from the array
             List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndexAtTimeOfClick, masterParamIncrementAtTimeOfClick, exponents, exponentMode);
 
             // Decide frame starting number
@@ -323,7 +332,7 @@ namespace DrosteEffectApp
                 frameNumberStart = CountExistingFiles(outputDir) + 1;
             }
             // Create the log file with metadata and interpolated parameters
-            CreateLogFile(outputDir: outputDir, interpolatedParams: interpolatedParams, exponentMode: exponentMode, defaultExponents: defaultExponents, masterExponent: masterExponent, frameStartNumber: frameNumberStart, masterParamIndex: masterParamIndexAtTimeOfClick, masterParamIncrement: masterParamIncrementAtTimeOfClick, totalFrames: totalFrames);
+            CreateLogFile(outputDir: outputDir, interpolatedParams: interpolatedParams, exponentMode: exponentMode, defaultExponents: defaultExponents, masterExponentString: masterExponentStr, frameStartNumber: frameNumberStart, masterParamIndex: masterParamIndexAtTimeOfClick, masterParamIncrement: masterParamIncrementAtTimeOfClick, totalFrames: totalFrames);
 
             btnStart.Visible = false;
             btnCancel.Visible = true;
@@ -468,7 +477,7 @@ namespace DrosteEffectApp
 
         // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.
         // Returns a list of strings representing the interpolated parameter values for each frame.
-        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double increment, double[] exponents, string exponentMode)
+        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double increment, string[] exponents, string exponentMode)
         {
             // List to store all interpolated values for each frame.
             List<string> interpolatedValues = new List<string>();
@@ -484,60 +493,77 @@ namespace DrosteEffectApp
                 {
                     // Initialize the current value with the start value of the parameter.
                     double currentValue = startValues[i];
-                    // Initialize the exponential factor to 1.
-                    double exponentialFactor = 1;
+                    // Calculate the normalized time value (t) for the current frame.
+                    double normalizedTime = (double)frame / (totalFrames - 1);
 
                     // Decide the interpolation method for the current individual parameter based on the mode set.
                     switch (exponentMode)
                     {
                         // If the user has specified a custom exponent for the master parameter and exponential increments are enabled.
                         case "custom-master":
-                            // If the current index is the master index, apply exponential interpolation.
                             if (i == masterIndex)
                             {
-                                exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
-                                currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
+                                if (exponents[i].Contains("t"))
+                                {
+                                    // Evaluate the formula using the normalized time value
+                                    currentValue = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i]);
+                                }
+                                else
+                                {
+                                    // Parse the input as a numeric value and use it as the exponent
+                                    double exponentValue = double.Parse(exponents[i]);
+                                    currentValue = startValues[i] + Math.Pow(normalizedTime, exponentValue) * (endValues[i] - startValues[i]);
+                                }
                             }
-                            // For non-master parameters, linear interpolation is used.
                             else
                             {
-                                currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
+                                // For non-master parameters, linear interpolation is used.
+                                currentValue = startValues[i] + (endValues[i] - startValues[i]) * normalizedTime;
                             }
                             break;
 
                         // If the user has specified a custom array of exponents for all parameters and exponential increments are enabled.
                         case "custom-array":
-                            // If the user has used the string 'default' for the exponentArray parameter and exponential increments are enabled.
-                            exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
-                            currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
+                            if (exponents[i].Contains("t"))
+                            {
+                                // Evaluate the formula using the normalized time value
+                                currentValue = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i]);
+                            }
+                            else
+                            {
+                                // Parse the input as a numeric value and use it as the exponent
+                                double exponentValue = double.Parse(exponents[i]);
+                                currentValue = startValues[i] + Math.Pow(normalizedTime, exponentValue) * (endValues[i] - startValues[i]);
+                            }
                             break;
 
                         case "default-apply-all":
                             // Apply exponential interpolation using the given exponents for all parameters.
-                            exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
+                            // Parse exponents[i] to double and use it as the exponent
+                            double exponentialFactor = Math.Pow(normalizedTime, double.Parse(exponents[i]));
                             currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
                             break;
 
                         // If exponential increments are enabled but no custom master exponent or full array is specified.
                         // Only the master parameter will be interpolated exponentially, while the rest will be linearly interpolated.
                         case "default-array":
-                            // Apply exponential interpolation using a default array, but only for the master parameter.
                             if (i == masterIndex)
                             {
-                                exponentialFactor = Math.Pow((double)frame / totalFrames, exponents[i]);
-                                currentValue = startValues[i] + exponentialFactor * (endValues[i] - startValues[i]);
+                                // Apply exponential interpolation using a default array, but only for the master parameter.
+                                double masterExponentialFactor = Math.Pow(normalizedTime, double.Parse(exponents[i]));
+                                currentValue = startValues[i] + masterExponentialFactor * (endValues[i] - startValues[i]);
                             }
-                            // For non-master parameters, linear interpolation is used.
                             else
                             {
-                                currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
+                                // For non-master parameters, linear interpolation is used.
+                                currentValue = startValues[i] + (endValues[i] - startValues[i]) * normalizedTime;
                             }
                             break;
 
                         // If exponential increments are not enabled, default to linear interpolation for all parameters.
                         default:
                             // Apply linear interpolation for parameters where no specific mode is set.
-                            currentValue = startValues[i] + (endValues[i] - startValues[i]) / (totalFrames - 1) * frame;
+                            currentValue = startValues[i] + (endValues[i] - startValues[i]) * normalizedTime;
                             break;
                     }
 
@@ -551,6 +577,57 @@ namespace DrosteEffectApp
 
             // Return the list of interpolated values for all frames.
             return interpolatedValues;
+        }
+
+        //private double EvaluateFormula(string formula, double t, double startValue, double endValue)
+        //{
+        //    // Evaluate the formula using the normalized time value (t)
+        //    // You can use a mathematical expression evaluator library or parse and evaluate the formula manually
+        //    // Replace 't' with the actual normalized time value
+        //    // Example using a simple manual evaluation:
+        //    formula = formula.Replace("t", t.ToString());
+        //    double weightingFactor = Convert.ToDouble(new DataTable().Compute(formula, null));
+
+        //    // Calculate the interpolated value using the weighting factor
+        //    double interpolatedValue = startValue + (endValue - startValue) * weightingFactor;
+
+        //    return interpolatedValue;
+        //}
+
+        public double EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue)
+        {
+            // Parse the formula as a symbolic expression
+            var expression = Expr.Parse(formula);
+
+            // Substitute 't' with its actual value
+            var variables = new Dictionary<string, FloatingPoint> { { "t", t }, { "pi", Math.PI }, {"e", Math.E} }; // Include 'pi' if needed
+
+            // Evaluate the expression symbolically with these substitutions
+            var substitutedExpression = expression.Evaluate(variables);
+
+            // Convert the result to a double
+            double weightingFactor = (double)substitutedExpression.RealValue;
+
+            // Calculate the interpolated value using the weighting factor
+            double interpolatedValue = startValue + (endValue - startValue) * weightingFactor;
+
+            return interpolatedValue;
+        }
+
+        public bool IsValidMathExpression(string input)
+        {
+            try
+            {
+                // Attempt to parse the expression
+                var expression = SymbolicExpression.Parse(input);
+                // If no exception is thrown, the expression is valid
+                return true;
+            }
+            catch (Exception)
+            {
+                // If an exception is thrown, the expression is not valid
+                return false;
+            }
         }
 
         private async Task ProcessFrames(string outputDir, List<string> interpolatedParams, int frameNumberStart)
@@ -722,7 +799,7 @@ namespace DrosteEffectApp
             }
         }
 
-        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, double masterExponent, int frameStartNumber, int masterParamIndex, double masterParamIncrement, int totalFrames)
+        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, string masterExponentString, int frameStartNumber, int masterParamIndex, double masterParamIncrement, int totalFrames)
         {
             //string logFilePath = Path.Combine(outputDir, $"{outputDir}_log.txt");
             string logFilePath = DecideLogFilePath(outputDir);
@@ -731,7 +808,6 @@ namespace DrosteEffectApp
             string baseName = Path.GetFileName(outputDir);
 
             string exponentModeString;
-            string masterExponentString;
             string exponentArrayString;
             // If exponent mode is 'default-apply-all' or 'default-array', set exponent array to string with values from defaultExponents array.
             // Because in those cases all parameters are interpolated exponentially via array
@@ -752,7 +828,6 @@ namespace DrosteEffectApp
             // Because in those cases only the master parameter is interpolated exponentially
             else if (exponentMode == "custom-master" || exponentMode == "default-array")
             {
-                masterExponentString = masterExponent.ToString();
                 exponentArrayString = "N/A";
                 if (exponentMode == "custom-master")
                 {
