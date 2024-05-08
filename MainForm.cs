@@ -37,7 +37,7 @@ namespace DrosteEffectApp
         // masterExponent specifies the exponent used if exponential interpolation is enabled.
         private double masterExponent;
         // exponentArray can contain a custom or default set of exponents for all parameters.
-        private string exponentArray;
+        private string exponentArrayString;
         // createGif determines whether a GIF should be created from the resulting images.
         private bool createGif;
         // Flag to indicate if a cancellation has been requested by the user. To stop image generation process
@@ -87,7 +87,7 @@ namespace DrosteEffectApp
             masterParamIncrement = 1;
             exponentialIncrements = false;
             masterExponent = 0;
-            exponentArray = string.Empty;
+            exponentArrayString = string.Empty;
             createGif = false;
 
             // Start with totalframes box and master increment box read only
@@ -267,7 +267,9 @@ namespace DrosteEffectApp
             else if (rbMasterExponent.Checked)
             {
                 exponentialIncrements = true;
-                if (double.TryParse(txtMasterExponent.Text, out _) || IsValidMathExpression(txtMasterExponent.Text))
+                var (isValid, reason) = IsValidMathExpression(txtMasterExponent.Text);
+
+                if (double.TryParse(txtMasterExponent.Text, out _) || isValid)
                 {
                     // Set the master exponent string in the exponents array
                     exponents[masterParamIndexAtTimeOfClick] = txtMasterExponent.Text;
@@ -292,15 +294,37 @@ namespace DrosteEffectApp
             else if (rbCustomExponents.Checked)
             {
                 exponentialIncrements = true;
-                string exponentArray = txtExponentArray.Text;
-                if (!string.IsNullOrEmpty(exponentArray))
+                string exponentArrayString = txtExponentArray.Text;
+                if (!string.IsNullOrEmpty(exponentArrayString))
                 {
                     // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there
-                    exponentArray = exponentArray.Replace("souphead_droste10", "").Trim();
+                    exponentArrayString = exponentArrayString.Replace("souphead_droste10", "").Trim();
 
-                    exponents = exponentArray.Split(',');
+                    exponents = exponentArrayString.Split(',');
                     if (exponents.Length == 31)
                     {
+                        List<List<string>> invalidValues = new List<List<string>>();
+                        // Check that all values are either valid numbers or valid math expressions. If not, alert the user to the position of the invalid value and the value itself.
+                        for (int i = 0; i < 31; i++)
+                        {
+                            // Track invalid values and alert user at end of all of them, if any
+                            var (isValid, reason) = IsValidMathExpression(exponents[i]);
+                            if (!double.TryParse(exponents[i], out _) && !isValid)
+                            {
+                                invalidValues.Add(new List<string> { (i + 1).ToString(), exponents[i], $"Reason: {reason}"});
+                            }
+                        }
+                        if (invalidValues.Count > 0)
+                        {
+                            string invalidValuesString = string.Join("\n\n", invalidValues.Select(x => $"Position {x[0]}:\nValue: {x[1]}\n{x[2]}"));
+                            MessageBox.Show(
+                                "Invalid exponents or expressions found in array...\n\n" + invalidValuesString,
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error
+                            );
+                            return;
+                        }
                         exponentMode = "custom-array";
                     }
                     else
@@ -332,7 +356,17 @@ namespace DrosteEffectApp
                 frameNumberStart = CountExistingFiles(outputDir) + 1;
             }
             // Create the log file with metadata and interpolated parameters
-            CreateLogFile(outputDir: outputDir, interpolatedParams: interpolatedParams, exponentMode: exponentMode, defaultExponents: defaultExponents, masterExponentString: masterExponentStr, frameStartNumber: frameNumberStart, masterParamIndex: masterParamIndexAtTimeOfClick, masterParamIncrement: masterParamIncrementAtTimeOfClick, totalFrames: totalFrames);
+            CreateLogFile(outputDir: outputDir, 
+                interpolatedParams: interpolatedParams, 
+                exponentMode: exponentMode, 
+                defaultExponents: defaultExponents, 
+                masterExponentString: masterExponentStr, 
+                frameStartNumber: frameNumberStart, 
+                masterParamIndex: masterParamIndexAtTimeOfClick, 
+                masterParamIncrement: masterParamIncrementAtTimeOfClick, 
+                totalFrames: totalFrames, 
+                exponentStringArray: exponents
+                );
 
             btnStart.Visible = false;
             btnCancel.Visible = true;
@@ -614,19 +648,26 @@ namespace DrosteEffectApp
             return interpolatedValue;
         }
 
-        public bool IsValidMathExpression(string input)
+        public (bool IsValid, string Reason) IsValidMathExpression(string input)
         {
+            // Ensure no other letters besides 't' are present in the expression
+            if (input.Any(c => char.IsLetter(c) && c != 't'))
+            {
+                return (false, "The expression contains letters other than 't'.");
+            }
+
+            // Check via MathNet.Symbolics if the input string is a valid mathematical expression
             try
             {
                 // Attempt to parse the expression
-                var expression = SymbolicExpression.Parse(input);
+                var expression = MathNet.Symbolics.SymbolicExpression.Parse(input);
                 // If no exception is thrown, the expression is valid
-                return true;
+                return (true, "Valid");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // If an exception is thrown, the expression is not valid
-                return false;
+                return (false, $"{ex.Message}");
             }
         }
 
@@ -799,7 +840,7 @@ namespace DrosteEffectApp
             }
         }
 
-        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, string masterExponentString, int frameStartNumber, int masterParamIndex, double masterParamIncrement, int totalFrames)
+        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, string masterExponentString, int frameStartNumber, int masterParamIndex, double masterParamIncrement, int totalFrames, string[]exponentStringArray)
         {
             //string logFilePath = Path.Combine(outputDir, $"{outputDir}_log.txt");
             string logFilePath = DecideLogFilePath(outputDir);
@@ -813,15 +854,16 @@ namespace DrosteEffectApp
             // Because in those cases all parameters are interpolated exponentially via array
             if (exponentMode == "default-apply-all" || exponentMode == "custom-array")
             {
-                exponentArrayString = string.Join(",", defaultExponents);
                 masterExponentString = "From Exponent Array";
                 if (exponentMode == "default-apply-all")
                 {
                     exponentModeString = "Default Array (Apply to All)";
+                    exponentArrayString = string.Join(",", defaultExponents);
                 }
                 else
                 {
                     exponentModeString = "Custom Array (Apply to All)";
+                    exponentArrayString = string.Join(",", exponentStringArray);
                 }
             }
             // If exponent mode is 'custom-master' or 'default-array', set master exponent to the value entered by the user.
