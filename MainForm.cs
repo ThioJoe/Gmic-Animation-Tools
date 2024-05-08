@@ -592,7 +592,7 @@ namespace DrosteEffectApp
                             // Execute gmic.exe to process frame
                             ProcessStartInfo startInfo = new ProcessStartInfo();
                             startInfo.FileName = "gmic.exe";
-                            startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"DrosteSingleThread.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
+                            startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"Droste.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
                             startInfo.UseShellExecute = false;
                             startInfo.CreateNoWindow = true;
 
