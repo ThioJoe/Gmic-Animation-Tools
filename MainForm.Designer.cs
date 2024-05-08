@@ -70,6 +70,7 @@
             this.checkBoxUseSameOutputDir = new System.Windows.Forms.CheckBox();
             this.btnSwapStartEndStrings = new System.Windows.Forms.Button();
             this.labelFFmpegNotFound = new System.Windows.Forms.Label();
+            this.checkBoxLogOnly = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -311,7 +312,7 @@
             this.chkCreateGif.AutoSize = true;
             this.chkCreateGif.Checked = true;
             this.chkCreateGif.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCreateGif.Location = new System.Drawing.Point(15, 358);
+            this.chkCreateGif.Location = new System.Drawing.Point(15, 375);
             this.chkCreateGif.Name = "chkCreateGif";
             this.chkCreateGif.Size = new System.Drawing.Size(77, 17);
             this.chkCreateGif.TabIndex = 16;
@@ -321,7 +322,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(16, 386);
+            this.btnStart.Location = new System.Drawing.Point(15, 399);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(100, 30);
             this.btnStart.TabIndex = 17;
@@ -341,7 +342,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(16, 386);
+            this.btnCancel.Location = new System.Drawing.Point(15, 399);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 30);
             this.btnCancel.TabIndex = 19;
@@ -419,7 +420,7 @@
             // InfoIconCreateGif
             // 
             this.InfoIconCreateGif.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconCreateGif.Image")));
-            this.InfoIconCreateGif.Location = new System.Drawing.Point(90, 358);
+            this.InfoIconCreateGif.Location = new System.Drawing.Point(90, 375);
             this.InfoIconCreateGif.Name = "InfoIconCreateGif";
             this.InfoIconCreateGif.Size = new System.Drawing.Size(16, 16);
             this.InfoIconCreateGif.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -461,7 +462,7 @@
             // TextLabelNearStartButton
             // 
             this.TextLabelNearStartButton.AutoSize = true;
-            this.TextLabelNearStartButton.Location = new System.Drawing.Point(122, 386);
+            this.TextLabelNearStartButton.Location = new System.Drawing.Point(121, 399);
             this.TextLabelNearStartButton.Name = "TextLabelNearStartButton";
             this.TextLabelNearStartButton.Size = new System.Drawing.Size(37, 13);
             this.TextLabelNearStartButton.TabIndex = 30;
@@ -523,18 +524,30 @@
             // 
             this.labelFFmpegNotFound.AutoSize = true;
             this.labelFFmpegNotFound.ForeColor = System.Drawing.Color.Red;
-            this.labelFFmpegNotFound.Location = new System.Drawing.Point(110, 359);
+            this.labelFFmpegNotFound.Location = new System.Drawing.Point(110, 374);
             this.labelFFmpegNotFound.Name = "labelFFmpegNotFound";
             this.labelFFmpegNotFound.Size = new System.Drawing.Size(155, 13);
             this.labelFFmpegNotFound.TabIndex = 36;
             this.labelFFmpegNotFound.Text = "(Unavailable: ffmpeg not found)";
             this.labelFFmpegNotFound.Visible = false;
             // 
+            // checkBoxLogOnly
+            // 
+            this.checkBoxLogOnly.AutoSize = true;
+            this.checkBoxLogOnly.Location = new System.Drawing.Point(15, 355);
+            this.checkBoxLogOnly.Name = "checkBoxLogOnly";
+            this.checkBoxLogOnly.Size = new System.Drawing.Size(173, 17);
+            this.checkBoxLogOnly.TabIndex = 38;
+            this.checkBoxLogOnly.Text = "Don\'t Create Images (Log Only)";
+            this.checkBoxLogOnly.UseVisualStyleBackColor = true;
+            this.checkBoxLogOnly.CheckedChanged += new System.EventHandler(this.checkBoxLogOnly_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.checkBoxLogOnly);
             this.Controls.Add(this.infoIconUseSameDirectory);
             this.Controls.Add(this.labelFFmpegNotFound);
             this.Controls.Add(this.btnSwapStartEndStrings);
@@ -639,5 +652,6 @@
         private System.Windows.Forms.Button btnSwapStartEndStrings;
         private System.Windows.Forms.Label labelFFmpegNotFound;
         private System.Windows.Forms.PictureBox infoIconUseSameDirectory;
+        private System.Windows.Forms.CheckBox checkBoxLogOnly;
     }
 }

@@ -381,17 +381,21 @@ namespace DrosteEffectApp
             btnStart.Visible = false;
             btnCancel.Visible = true;
 
-            // Process each frame using the specified parameters and gmic.exe.
-            await Task.Run(() => ProcessFrames(outputDir, interpolatedParams, frameNumberStart));
-
-            // Optionally create a GIF from the generated frames using ffmpeg.
-            if (createGif)
+            // See if checkbox to only log is enabled
+            if (!checkBoxLogOnly.Checked)
             {
-                CreateGif(outputDir);
-            }
+                // Process each frame using the specified parameters and gmic.exe.
+                await Task.Run(() => ProcessFrames(outputDir, interpolatedParams, frameNumberStart));
 
-            // Open the output directory in Windows Explorer for user review.
-            //Process.Start("explorer.exe", outputDir);
+                // Optionally create a GIF from the generated frames using ffmpeg.
+                if (createGif)
+                {
+                    CreateGif(outputDir);
+                }
+
+                // Open the output directory in Windows Explorer for user review.
+                //Process.Start("explorer.exe", outputDir);
+            }
         }
 
         // Function to parse parameter values from a string and return them as an array of doubles.
@@ -660,11 +664,11 @@ namespace DrosteEffectApp
 
         public (bool IsValid, string Reason) IsValidMathExpression(string input)
         {
-            // Ensure no other letters besides 't' are present in the expression
-            if (input.Any(c => char.IsLetter(c) && c != 't'))
-            {
-                return (false, "The expression contains letters other than 't'.");
-            }
+            //// Ensure no other letters besides 't' are present in the expression
+            //if (input.Any(c => char.IsLetter(c) && c != 't'))
+            //{
+            //    return (false, "The expression contains letters other than 't'.");
+            //}
 
             // Check via MathNet.Symbolics if the input string is a valid mathematical expression
             try
@@ -1490,6 +1494,21 @@ namespace DrosteEffectApp
             txtEndParams.Text = tempCopyOfStart;
             txtStartParams.Text = tempCopyOfEnd;
 
+        }
+
+        private void checkBoxLogOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxLogOnly.Checked)
+            {
+                checkBoxUseSameOutputDir.Checked = true;
+                chkCreateGif.Checked = false;
+                chkCreateGif.Enabled = false;
+            }
+            else
+            {
+                checkBoxUseSameOutputDir.Enabled = true;
+                chkCreateGif.Enabled = true;
+            }
         }
     }
 }
