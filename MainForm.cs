@@ -757,18 +757,26 @@ namespace DrosteEffectApp
             //double halfRange = (endValue - startValue) / 2 * scale;
             double halfRange = range / 2;
 
-            // Normalize and scale each value
-            double[] normalizedValues = values.Select(value =>
-            {
-                // If range is zero, all values are the same, so return the midpoint
-                if (range == 0)
-                    return midPoint;
-                // Normalize each value to be within 0 to 1
-                double normalized = (value - min) / range;
+            double[] normalizedValues = new double[values.Length];
 
-                // Scale and shift to be within the specified range, adjusting by the scale factor around the midpoint
-                return midPoint + (normalized - 0.5) * 2 * halfRange;
-            }).ToArray();
+            for (int i = 0; i < values.Length; i++)
+            {
+                double value = values[i];
+
+                // If the range is zero, all values are the same, so return the midpoint for all
+                if (range == 0)
+                {
+                    normalizedValues[i] = midPoint;
+                }
+                else
+                {
+                    // Normalize each value to be within 0 to 1
+                    double normalized = (value - min) / range;
+
+                    // Scale and shift to be within the specified range, adjusting by the scale factor around the midpoint
+                    normalizedValues[i] = midPoint + (normalized - 0.5) * 2 * halfRange;
+                }
+            }
 
             return normalizedValues;
         }
