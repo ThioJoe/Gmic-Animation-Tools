@@ -135,7 +135,7 @@ namespace GmicDrosteAnimate
                 }
             }
         }
-
+        
         private void UpdateParameterStringsWithNewTableData()
         {
             double[] startParamValues = new double[dataGridView1.Rows.Count];
@@ -166,9 +166,6 @@ namespace GmicDrosteAnimate
 
                 }
             }
-
-            
-
             // Set the text boxes to the new comma-separated strings of the start and end parameters
             SetCurrentStartParamString(startParamValues);
             SetCurrentEndParamString(endParamValues);

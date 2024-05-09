@@ -100,9 +100,28 @@ public static class AppParameters
         }
     }
 
-    public static string[] GetParameterNames()
+    public static string[] GetParameterNamesList()
     {
         return Parameters.Select(p => p.Name).ToArray();
+    }
+
+    public static string GetParameterType(int index)
+    {
+        return Parameters[index].Type;
+    }
+
+    public static List<int> GetNonExponentableParamIndexes()
+    {
+        // Return indexes of parameters that are not continuous, step, or multipole
+        List<int> nonExponentableIndexes = new List<int>();
+        for (int i = 0; i < Parameters.Count; i++)
+        {
+            if (Parameters[i].Type != "Continuous" && Parameters[i].Type != "Step" && Parameters[i].Type != "MultiPole")
+            {
+                nonExponentableIndexes.Add(i);
+            }
+        }
+        return nonExponentableIndexes;
     }
 
     private static void InitializeParameterRanges()

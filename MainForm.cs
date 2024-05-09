@@ -1706,7 +1706,7 @@ namespace DrosteEffectApp
             //ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);
             //paramNamesForm.Show();
             // Open the expressions form
-            ExpressionsForm expressionForm = new ExpressionsForm(mainform: this, incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1);
+            ExpressionsForm expressionForm = new ExpressionsForm(mainform: this, incomingExpressionParamString: txtExponentArray.Text, incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1);
             expressionForm.Show();
         }
     }
