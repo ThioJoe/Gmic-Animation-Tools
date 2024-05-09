@@ -408,7 +408,7 @@ namespace DrosteEffectApp
                 }
                 else
                 {
-                    MessageBox.Show("Please enter custom exponent values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Please enter a comma-separated of custom exponents or expressions.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
