@@ -326,6 +326,10 @@ namespace GmicDrosteAnimate
                 {
                     UpdateParameterStringsWithNewTableData();
                 }
+                if (checkBoxAutoUpdateGraph.Checked)
+                {
+                    btnChartValues_Click(this, null);
+                }
             }
             // Update highlighting again
             UpdateMasterExponentHighlighting(masterParamIndexFromMainWindow);
@@ -431,6 +435,24 @@ namespace GmicDrosteAnimate
 
         private void btnChartValues_Click(object sender, EventArgs e)
         {
+            //If the parameter to be graphed is binary, don't graph
+            if (AppParameters.GetNonExponentableParamIndexes().Contains(masterParamIndexFromMainWindow))
+            {
+                //Show empty graph
+                Series series = chartCurve.Series["ValueSeries"];
+                series.Points.Clear();
+                labelNoGraphToggleParam.Visible = true;
+                return;
+            }
+            else
+            {
+                labelNoGraphToggleParam.Visible = false;
+            }
+
+            if (mainForm == null)
+            {
+                return;
+            }
             // Get the expression to evaluate from the master parameter text box
             string expressionToEvaluate = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
 

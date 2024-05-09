@@ -21,8 +21,8 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -35,6 +35,7 @@
             this.checkBoxAutoUpdateGraph = new System.Windows.Forms.CheckBox();
             this.nudMasterParamIndexClone = new System.Windows.Forms.NumericUpDown();
             this.labelMasterIndexClone = new System.Windows.Forms.Label();
+            this.labelNoGraphToggleParam = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
@@ -82,16 +83,16 @@
             // 
             // chartCurve
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea3);
+            chartArea4.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea4);
             this.chartCurve.Location = new System.Drawing.Point(438, 12);
             this.chartCurve.Name = "chartCurve";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series3.MarkerSize = 7;
-            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series3.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series3);
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series4.MarkerSize = 7;
+            series4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series4.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series4);
             this.chartCurve.Size = new System.Drawing.Size(440, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -197,11 +198,24 @@
             this.labelMasterIndexClone.TabIndex = 14;
             this.labelMasterIndexClone.Text = "Parameter:";
             // 
+            // labelNoGraphToggleParam
+            // 
+            this.labelNoGraphToggleParam.AutoSize = true;
+            this.labelNoGraphToggleParam.BackColor = System.Drawing.SystemColors.Window;
+            this.labelNoGraphToggleParam.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.labelNoGraphToggleParam.Location = new System.Drawing.Point(507, 151);
+            this.labelNoGraphToggleParam.Name = "labelNoGraphToggleParam";
+            this.labelNoGraphToggleParam.Size = new System.Drawing.Size(296, 17);
+            this.labelNoGraphToggleParam.TabIndex = 15;
+            this.labelNoGraphToggleParam.Text = "Graph Not Applicable - Parameter is a Toggle";
+            this.labelNoGraphToggleParam.Visible = false;
+            // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 744);
+            this.Controls.Add(this.labelNoGraphToggleParam);
             this.Controls.Add(this.labelMasterIndexClone);
             this.Controls.Add(this.nudMasterParamIndexClone);
             this.Controls.Add(this.checkBoxAutoUpdateGraph);
@@ -240,5 +254,6 @@
         private System.Windows.Forms.CheckBox checkBoxAutoUpdateGraph;
         private System.Windows.Forms.NumericUpDown nudMasterParamIndexClone;
         private System.Windows.Forms.Label labelMasterIndexClone;
+        private System.Windows.Forms.Label labelNoGraphToggleParam;
     }
 }
