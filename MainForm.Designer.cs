@@ -71,7 +71,12 @@
             this.btnSwapStartEndStrings = new System.Windows.Forms.Button();
             this.labelFFmpegNotFound = new System.Windows.Forms.Label();
             this.checkBoxLogOnly = new System.Windows.Forms.CheckBox();
+            this.radioNormalizeStartEnd = new System.Windows.Forms.RadioButton();
+            this.radioNormalizeMaxRanges = new System.Windows.Forms.RadioButton();
+            this.radioNormalizeExtendedRanges = new System.Windows.Forms.RadioButton();
+            this.radioNoNormalize = new System.Windows.Forms.RadioButton();
             this.checkBoxNormalizeValues = new System.Windows.Forms.CheckBox();
+            this.groupBoxNormalizeRadios = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -83,6 +88,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoIconUseSameDirectory)).BeginInit();
+            this.groupBoxNormalizeRadios.SuspendLayout();
             this.SuspendLayout();
             // 
             // nudTotalFrames
@@ -334,7 +340,7 @@
             // 
             // btnViewOutputDirectory
             // 
-            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 386);
+            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 399);
             this.btnViewOutputDirectory.Name = "btnViewOutputDirectory";
             this.btnViewOutputDirectory.Size = new System.Drawing.Size(130, 30);
             this.btnViewOutputDirectory.TabIndex = 18;
@@ -443,7 +449,7 @@
             // 
             // btnShowParamNames
             // 
-            this.btnShowParamNames.Location = new System.Drawing.Point(273, 358);
+            this.btnShowParamNames.Location = new System.Drawing.Point(273, 375);
             this.btnShowParamNames.Name = "btnShowParamNames";
             this.btnShowParamNames.Size = new System.Drawing.Size(130, 22);
             this.btnShowParamNames.TabIndex = 27;
@@ -473,7 +479,7 @@
             // 
             // TestButton1
             // 
-            this.TestButton1.Location = new System.Drawing.Point(297, 327);
+            this.TestButton1.Location = new System.Drawing.Point(188, 416);
             this.TestButton1.Name = "TestButton1";
             this.TestButton1.Size = new System.Drawing.Size(75, 23);
             this.TestButton1.TabIndex = 31;
@@ -544,15 +550,72 @@
             this.checkBoxLogOnly.UseVisualStyleBackColor = true;
             this.checkBoxLogOnly.CheckedChanged += new System.EventHandler(this.checkBoxLogOnly_CheckedChanged);
             // 
+            // radioNormalizeStartEnd
+            // 
+            this.radioNormalizeStartEnd.AutoSize = true;
+            this.radioNormalizeStartEnd.Checked = true;
+            this.radioNormalizeStartEnd.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.radioNormalizeStartEnd.Location = new System.Drawing.Point(19, 20);
+            this.radioNormalizeStartEnd.Name = "radioNormalizeStartEnd";
+            this.radioNormalizeStartEnd.Size = new System.Drawing.Size(153, 17);
+            this.radioNormalizeStartEnd.TabIndex = 40;
+            this.radioNormalizeStartEnd.TabStop = true;
+            this.radioNormalizeStartEnd.Text = "Normalize Within Start/End";
+            this.radioNormalizeStartEnd.UseVisualStyleBackColor = true;
+            // 
+            // radioNormalizeMaxRanges
+            // 
+            this.radioNormalizeMaxRanges.AutoSize = true;
+            this.radioNormalizeMaxRanges.Location = new System.Drawing.Point(19, 35);
+            this.radioNormalizeMaxRanges.Name = "radioNormalizeMaxRanges";
+            this.radioNormalizeMaxRanges.Size = new System.Drawing.Size(167, 17);
+            this.radioNormalizeMaxRanges.TabIndex = 41;
+            this.radioNormalizeMaxRanges.Text = "Normalize Within Max Ranges";
+            this.radioNormalizeMaxRanges.UseVisualStyleBackColor = true;
+            // 
+            // radioNormalizeExtendedRanges
+            // 
+            this.radioNormalizeExtendedRanges.AutoSize = true;
+            this.radioNormalizeExtendedRanges.Location = new System.Drawing.Point(19, 50);
+            this.radioNormalizeExtendedRanges.Name = "radioNormalizeExtendedRanges";
+            this.radioNormalizeExtendedRanges.Size = new System.Drawing.Size(159, 17);
+            this.radioNormalizeExtendedRanges.TabIndex = 42;
+            this.radioNormalizeExtendedRanges.Text = "Normalize Extended Ranges";
+            this.radioNormalizeExtendedRanges.UseVisualStyleBackColor = true;
+            // 
+            // radioNoNormalize
+            // 
+            this.radioNoNormalize.AutoSize = true;
+            this.radioNoNormalize.Location = new System.Drawing.Point(19, 65);
+            this.radioNoNormalize.Name = "radioNoNormalize";
+            this.radioNoNormalize.Size = new System.Drawing.Size(99, 17);
+            this.radioNoNormalize.TabIndex = 43;
+            this.radioNoNormalize.Text = "Don\'t Normalize";
+            this.radioNoNormalize.UseVisualStyleBackColor = true;
+            // 
             // checkBoxNormalizeValues
             // 
             this.checkBoxNormalizeValues.AutoSize = true;
-            this.checkBoxNormalizeValues.Location = new System.Drawing.Point(249, 297);
+            this.checkBoxNormalizeValues.Location = new System.Drawing.Point(249, 219);
             this.checkBoxNormalizeValues.Name = "checkBoxNormalizeValues";
-            this.checkBoxNormalizeValues.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxNormalizeValues.Size = new System.Drawing.Size(154, 17);
             this.checkBoxNormalizeValues.TabIndex = 39;
-            this.checkBoxNormalizeValues.Text = "Normalize Values";
+            this.checkBoxNormalizeValues.Text = "Normalize Within Start/End";
             this.checkBoxNormalizeValues.UseVisualStyleBackColor = true;
+            // 
+            // groupBoxNormalizeRadios
+            // 
+            this.groupBoxNormalizeRadios.Controls.Add(this.radioNormalizeStartEnd);
+            this.groupBoxNormalizeRadios.Controls.Add(this.radioNoNormalize);
+            this.groupBoxNormalizeRadios.Controls.Add(this.radioNormalizeMaxRanges);
+            this.groupBoxNormalizeRadios.Controls.Add(this.radioNormalizeExtendedRanges);
+            this.groupBoxNormalizeRadios.Enabled = false;
+            this.groupBoxNormalizeRadios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxNormalizeRadios.Location = new System.Drawing.Point(209, 274);
+            this.groupBoxNormalizeRadios.Name = "groupBoxNormalizeRadios";
+            this.groupBoxNormalizeRadios.Size = new System.Drawing.Size(200, 95);
+            this.groupBoxNormalizeRadios.TabIndex = 44;
+            this.groupBoxNormalizeRadios.TabStop = false;
             // 
             // MainForm
             // 
@@ -600,6 +663,7 @@
             this.Controls.Add(this.txtInputFilePath);
             this.Controls.Add(this.lblInputFile);
             this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.groupBoxNormalizeRadios);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
@@ -616,6 +680,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoIconUseSameDirectory)).EndInit();
+            this.groupBoxNormalizeRadios.ResumeLayout(false);
+            this.groupBoxNormalizeRadios.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -666,6 +732,11 @@
         private System.Windows.Forms.Label labelFFmpegNotFound;
         private System.Windows.Forms.PictureBox infoIconUseSameDirectory;
         private System.Windows.Forms.CheckBox checkBoxLogOnly;
+        private System.Windows.Forms.RadioButton radioNormalizeStartEnd;
+        private System.Windows.Forms.RadioButton radioNormalizeMaxRanges;
+        private System.Windows.Forms.RadioButton radioNormalizeExtendedRanges;
+        private System.Windows.Forms.RadioButton radioNoNormalize;
         private System.Windows.Forms.CheckBox checkBoxNormalizeValues;
+        private System.Windows.Forms.GroupBox groupBoxNormalizeRadios;
     }
 }

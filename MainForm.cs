@@ -653,7 +653,7 @@ namespace DrosteEffectApp
                         allFrameValuesForSingleParam[j] = interpolatedValuesArray[j,i];
                     }
                     // Assuming a NormalizeAndScale method that takes a double array and does something to it
-                    allFrameValuesForSingleParam = NormalizeAndScaleValues(values: allFrameValuesForSingleParam, startValue: startValues[i], endValue: endValues[i]);
+                    allFrameValuesForSingleParam = NormalizeAndScaleValues(values: allFrameValuesForSingleParam, startValue: startValues[i], endValue: endValues[i], paramIndex: i);
                     //Console.WriteLine("Normalized values for parameter " + i + ": " + string.Join(",", allFrameValuesForSingleParam));
 
                     // Optionally, you might want to store the results back into interpolatedValuesArray
@@ -682,15 +682,45 @@ namespace DrosteEffectApp
             return interpolatedValuesStrings;
         }
 
-        public static double[] NormalizeAndScaleValues(double[] values, double startValue, double endValue)
+        public double[] NormalizeAndScaleValues(double[] values, double startValue, double endValue, int paramIndex)
         {
             double scale = 1;
 
-            if (values == null || values.Length == 0)
-                throw new ArgumentException("Values array must not be empty.");
+            double[] originalValues = values;
+            double min;
+            double max;
 
-            double min = values.Min();
-            double max = values.Max();
+            if (values == null || values.Length == 0)
+            {
+                throw new ArgumentException("Values array must not be empty.");
+            }
+
+            // If no normalize radio button is checked, return the original values
+            if (radioNoNormalize.Checked)
+            {
+                return originalValues;
+            }
+            else if (radioNormalizeStartEnd.Checked)
+            {
+                min = values.Min();
+                max = values.Max();
+            }
+            else if (radioNormalizeMaxRanges.Checked)
+            {
+                // Get max and min values from ParametersInfo class
+                min = AppParameters.GetParameterValuesAsList("Min")[paramIndex];
+                max = AppParameters.GetParameterValuesAsList("Max")[paramIndex];
+            }
+            else if (radioNormalizeExtendedRanges.Checked)
+            {
+                min = AppParameters.GetParameterValuesAsList("ExtendedMin")[paramIndex];
+                max = AppParameters.GetParameterValuesAsList("ExtendedMax")[paramIndex];
+            }
+            else
+            {
+                throw new ArgumentException("No radio button for normalization is checked.");
+            }
+            
 
             // Determine the range of the input values
             double range = max - min;
@@ -1056,6 +1086,15 @@ namespace DrosteEffectApp
         {
             txtMasterExponent.Enabled = rbMasterExponent.Checked;
             txtExponentArray.Enabled = false;
+            // If this and custom exponents are unchecked, disable the normalize radio buttons
+            if (!rbMasterExponent.Checked && !rbCustomExponents.Checked)
+            {
+                groupBoxNormalizeRadios.Enabled = false;
+            }
+            else
+            {
+                groupBoxNormalizeRadios.Enabled = true;
+            }
         }
 
         private void rbDefaultExponents_CheckedChanged(object sender, EventArgs e)
@@ -1068,6 +1107,16 @@ namespace DrosteEffectApp
         {
             txtMasterExponent.Enabled = false;
             txtExponentArray.Enabled = rbCustomExponents.Checked;
+
+            // If this and master exponent are unchecked, disable the normalize radio buttons
+            if (!rbMasterExponent.Checked && !rbCustomExponents.Checked)
+            {
+                groupBoxNormalizeRadios.Enabled = false;
+            }
+            else
+            {
+                groupBoxNormalizeRadios.Enabled = true;
+            }
         }
 
         private void chkCreateGif_CheckedChanged(object sender, EventArgs e)
