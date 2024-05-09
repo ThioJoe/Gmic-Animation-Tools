@@ -660,7 +660,7 @@ namespace DrosteEffectApp
                         allFrameValuesForSingleParam[j] = interpolatedValuesPerFrameArray[j,i];
                     }
                     // Assuming a NormalizeAndScale method that takes a double array and does something to it
-                    allFrameValuesForSingleParam = NormalizeAndScaleValues(values: allFrameValuesForSingleParam, startValue: originalStartValues[i], endValue: originalEndValues[i], paramIndex: i);
+                    allFrameValuesForSingleParam = NormalizeAndScaleValues(values: allFrameValuesForSingleParam, trueOriginalStartValue: originalStartValues[i], trueOriginalEndValue: originalEndValues[i], paramIndex: i);
 
                     // Optionally, you might want to store the results back into interpolatedValuesArray
                     for (int j = 0; j < totalFrames; j++)
@@ -706,7 +706,7 @@ namespace DrosteEffectApp
             return interpolatedValuesPerFrameStrings;
         }
 
-        public double[] NormalizeAndScaleValues(double[] values, double startValue, double endValue, int paramIndex)
+        public double[] NormalizeAndScaleValues(double[] values, double trueOriginalStartValue, double trueOriginalEndValue, int paramIndex)
         {
             double scale = 1;
 
@@ -726,8 +726,10 @@ namespace DrosteEffectApp
             }
             else if (radioNormalizeStartEnd.Checked)
             {
-                min = values.Min();
-                max = values.Max();
+                // Get the lower and upper bounds of the original values
+                double[] trueStartAndEnd = new double[] { trueOriginalStartValue, trueOriginalEndValue };
+                min = trueStartAndEnd.Min();
+                max = trueStartAndEnd.Max();
             }
             else if (radioNormalizeMaxRanges.Checked)
             {
@@ -749,7 +751,7 @@ namespace DrosteEffectApp
             double range = max - min;
 
             // Calculate the midpoint of the target range
-            double midPoint = (startValue + endValue) / 2;
+            double midPoint = (trueOriginalStartValue + trueOriginalEndValue) / 2;
 
             // Calculate half of the width of the target range
             //double halfRange = (endValue - startValue) / 2 * scale;
