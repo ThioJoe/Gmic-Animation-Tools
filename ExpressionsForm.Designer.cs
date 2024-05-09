@@ -32,7 +32,7 @@
             this.btnChartValues = new System.Windows.Forms.Button();
             this.checkBoxKeepFramesConstant = new System.Windows.Forms.CheckBox();
             this.nudGraphConstantFrameCount = new System.Windows.Forms.NumericUpDown();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBoxAutoUpdateGraph = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
@@ -81,12 +81,12 @@
             // 
             chartArea3.Name = "ChartArea1";
             this.chartCurve.ChartAreas.Add(chartArea3);
-            this.chartCurve.Location = new System.Drawing.Point(439, 12);
+            this.chartCurve.Location = new System.Drawing.Point(438, 12);
             this.chartCurve.Name = "chartCurve";
             series3.ChartArea = "ChartArea1";
             series3.Name = "ValueSeries";
             this.chartCurve.Series.Add(series3);
-            this.chartCurve.Size = new System.Drawing.Size(439, 300);
+            this.chartCurve.Size = new System.Drawing.Size(440, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
             // 
@@ -107,14 +107,14 @@
             this.btnChartValues.Name = "btnChartValues";
             this.btnChartValues.Size = new System.Drawing.Size(192, 37);
             this.btnChartValues.TabIndex = 9;
-            this.btnChartValues.Text = "Preview Selected Expression";
+            this.btnChartValues.Text = "Graph Preview of Parameter Values";
             this.btnChartValues.UseVisualStyleBackColor = true;
             this.btnChartValues.Click += new System.EventHandler(this.btnChartValues_Click);
             // 
             // checkBoxKeepFramesConstant
             // 
             this.checkBoxKeepFramesConstant.AutoSize = true;
-            this.checkBoxKeepFramesConstant.Location = new System.Drawing.Point(452, 387);
+            this.checkBoxKeepFramesConstant.Location = new System.Drawing.Point(452, 415);
             this.checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
             this.checkBoxKeepFramesConstant.Size = new System.Drawing.Size(153, 17);
             this.checkBoxKeepFramesConstant.TabIndex = 10;
@@ -126,7 +126,7 @@
             // 
             this.nudGraphConstantFrameCount.Enabled = false;
             this.nudGraphConstantFrameCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(611, 384);
+            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(611, 412);
             this.nudGraphConstantFrameCount.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -146,22 +146,24 @@
             0,
             0});
             // 
-            // checkBox1
+            // checkBoxAutoUpdateGraph
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(452, 410);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(80, 17);
-            this.checkBox1.TabIndex = 12;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBoxAutoUpdateGraph.AutoSize = true;
+            this.checkBoxAutoUpdateGraph.Checked = true;
+            this.checkBoxAutoUpdateGraph.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAutoUpdateGraph.Location = new System.Drawing.Point(452, 381);
+            this.checkBoxAutoUpdateGraph.Name = "checkBoxAutoUpdateGraph";
+            this.checkBoxAutoUpdateGraph.Size = new System.Drawing.Size(118, 17);
+            this.checkBoxAutoUpdateGraph.TabIndex = 12;
+            this.checkBoxAutoUpdateGraph.Text = "Auto Update Graph";
+            this.checkBoxAutoUpdateGraph.UseVisualStyleBackColor = true;
             // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(890, 744);
-            this.Controls.Add(this.checkBox1);
+            this.ClientSize = new System.Drawing.Size(896, 744);
+            this.Controls.Add(this.checkBoxAutoUpdateGraph);
             this.Controls.Add(this.nudGraphConstantFrameCount);
             this.Controls.Add(this.checkBoxKeepFramesConstant);
             this.Controls.Add(this.btnChartValues);
@@ -193,6 +195,6 @@
         private System.Windows.Forms.Button btnChartValues;
         private System.Windows.Forms.CheckBox checkBoxKeepFramesConstant;
         private System.Windows.Forms.NumericUpDown nudGraphConstantFrameCount;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBoxAutoUpdateGraph;
     }
 }

@@ -66,6 +66,13 @@ namespace GmicDrosteAnimate
 
             this.mainForm = mainform; // This is needed to send the updated expression string back to the main form
 
+            // Update graph
+            if (checkBoxAutoUpdateGraph.Checked)
+            {
+                btnChartValues_Click(this, null);
+            }
+
+
         }
 
         private void InitializeDataGridView()
@@ -192,6 +199,12 @@ namespace GmicDrosteAnimate
             // Set globals to latest
             masterParamIndexFromMainWindow = masterParamIndex;
             UpdateMasterExponentHighlighting(masterParamIndex);
+
+            // If checkbox to auto update graph is checked, update the graph
+            if (checkBoxAutoUpdateGraph.Checked)
+            {
+                btnChartValues_Click(this, null);
+            }
         }
 
         private void ClearDataGridViewStyles()
@@ -498,7 +511,11 @@ namespace GmicDrosteAnimate
             {
                 nudGraphConstantFrameCount.Enabled = false;
             }
-
+            // Refresh graph
+            if (checkBoxAutoUpdateGraph.Checked)
+            {
+                btnChartValues_Click(this, null);
+            }
         }
     } //End form class
 } // End namespace
