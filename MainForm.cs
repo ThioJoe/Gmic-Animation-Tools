@@ -218,6 +218,20 @@ namespace DrosteEffectApp
             }
         }
 
+        public decimal MasterParamIndexNUDChange
+        {
+            get
+            {
+                return (decimal)nudMasterParamIndex.Value;
+            }
+            set
+            {
+                nudMasterParamIndex.Value = value;
+                // Trigger event handler
+                nudMasterParamIndex_ValueChanged(null, null);
+            }
+        }
+
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

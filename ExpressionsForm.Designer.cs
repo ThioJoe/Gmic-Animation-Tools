@@ -33,9 +33,12 @@
             this.checkBoxKeepFramesConstant = new System.Windows.Forms.CheckBox();
             this.nudGraphConstantFrameCount = new System.Windows.Forms.NumericUpDown();
             this.checkBoxAutoUpdateGraph = new System.Windows.Forms.CheckBox();
+            this.nudMasterParamIndexClone = new System.Windows.Forms.NumericUpDown();
+            this.labelMasterIndexClone = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndexClone)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewExpressions
@@ -46,7 +49,7 @@
             this.dataGridViewExpressions.Name = "dataGridViewExpressions";
             this.dataGridViewExpressions.RowHeadersWidth = 62;
             this.dataGridViewExpressions.RowTemplate.Height = 18;
-            this.dataGridViewExpressions.Size = new System.Drawing.Size(413, 609);
+            this.dataGridViewExpressions.Size = new System.Drawing.Size(347, 609);
             this.dataGridViewExpressions.TabIndex = 0;
             this.dataGridViewExpressions.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExpressions_CellValueChanged);
             // 
@@ -84,6 +87,9 @@
             this.chartCurve.Location = new System.Drawing.Point(438, 12);
             this.chartCurve.Name = "chartCurve";
             series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.MarkerSize = 7;
+            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series3.Name = "ValueSeries";
             this.chartCurve.Series.Add(series3);
             this.chartCurve.Size = new System.Drawing.Size(440, 300);
@@ -158,11 +164,46 @@
             this.checkBoxAutoUpdateGraph.Text = "Auto Update Graph";
             this.checkBoxAutoUpdateGraph.UseVisualStyleBackColor = true;
             // 
+            // nudMasterParamIndexClone
+            // 
+            this.nudMasterParamIndexClone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.nudMasterParamIndexClone.Location = new System.Drawing.Point(371, 46);
+            this.nudMasterParamIndexClone.Maximum = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.nudMasterParamIndexClone.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudMasterParamIndexClone.Name = "nudMasterParamIndexClone";
+            this.nudMasterParamIndexClone.Size = new System.Drawing.Size(50, 26);
+            this.nudMasterParamIndexClone.TabIndex = 13;
+            this.nudMasterParamIndexClone.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudMasterParamIndexClone.ValueChanged += new System.EventHandler(this.nudMasterParamIndexClone_ValueChanged);
+            // 
+            // labelMasterIndexClone
+            // 
+            this.labelMasterIndexClone.AutoSize = true;
+            this.labelMasterIndexClone.Location = new System.Drawing.Point(368, 30);
+            this.labelMasterIndexClone.Name = "labelMasterIndexClone";
+            this.labelMasterIndexClone.Size = new System.Drawing.Size(58, 13);
+            this.labelMasterIndexClone.TabIndex = 14;
+            this.labelMasterIndexClone.Text = "Parameter:";
+            // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 744);
+            this.Controls.Add(this.labelMasterIndexClone);
+            this.Controls.Add(this.nudMasterParamIndexClone);
             this.Controls.Add(this.checkBoxAutoUpdateGraph);
             this.Controls.Add(this.nudGraphConstantFrameCount);
             this.Controls.Add(this.checkBoxKeepFramesConstant);
@@ -179,6 +220,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndexClone)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -196,5 +238,7 @@
         private System.Windows.Forms.CheckBox checkBoxKeepFramesConstant;
         private System.Windows.Forms.NumericUpDown nudGraphConstantFrameCount;
         private System.Windows.Forms.CheckBox checkBoxAutoUpdateGraph;
+        private System.Windows.Forms.NumericUpDown nudMasterParamIndexClone;
+        private System.Windows.Forms.Label labelMasterIndexClone;
     }
 }

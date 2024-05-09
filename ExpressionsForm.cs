@@ -33,6 +33,9 @@ namespace GmicDrosteAnimate
             InitializeComponent();
             InitializeDataGridView(); // Setup your DataGridView here
 
+            // Create mouse scroll handler to properly scroll increment on master increment numeric updown
+            nudMasterParamIndexClone.MouseWheel += new MouseEventHandler(this.ScrollHandlerFunction);
+
             string[] expressions = null;
             if (!String.IsNullOrEmpty(incomingExpressionParamString))
             {
@@ -73,6 +76,15 @@ namespace GmicDrosteAnimate
             }
 
 
+        }
+
+        // Override mouse scroll increment for numeric updown control of master increment so it doesn't change by 3
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            NumericUpDown control = (NumericUpDown)sender;
+            ((HandledMouseEventArgs)e).Handled = true;
+            decimal value = control.Value + ((e.Delta > 0) ? control.Increment : -control.Increment);
+            control.Value = Math.Max(control.Minimum, Math.Min(value, control.Maximum));
         }
 
         private void InitializeDataGridView()
@@ -516,6 +528,12 @@ namespace GmicDrosteAnimate
             {
                 btnChartValues_Click(this, null);
             }
+        }
+
+        private void nudMasterParamIndexClone_ValueChanged(object sender, EventArgs e)
+        {
+            // Send the new value to the numeric updown in the main form and trigger its event handler
+            mainForm.MasterParamIndexNUDChange = nudMasterParamIndexClone.Value;
         }
     } //End form class
 } // End namespace
