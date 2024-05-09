@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms.VisualStyles;
 
 namespace GmicDrosteAnimate
@@ -362,13 +363,123 @@ namespace GmicDrosteAnimate
             }
         }
 
-        //public void UpdateExpressionParamValues(string customExpressionString, string masterParamExpressionString, int masterParamIndex)
-        //{
-        //    // Split custom expressions into array of strings
-        //    string[] customExpressionArray = customExpressionString.Split(',');
 
-        //    UpdateExpressionsDataGridView(customExpressionArray, masterParamIndex);
-        //}
+        public static readonly Dictionary<string, double> MathConstants = new Dictionary<string, double>
+        {
+            //{"pi", Math.PI},
+            //{"e", Math.E}
+            // Add more constants as needed
+        };
+        private void btnTestChart_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //double t = 0.0;  
 
+                var variables = MathConstants.ToDictionary(kvp => kvp.Key, kvp => (FloatingPoint)kvp.Value);
+                  // This will add 't' or update its value if 't' is somehow already in the dictionary
+
+                string formula = "t";
+
+                // Parse the formula as a symbolic expression
+                var expression = SymbolicExpression.Parse(formula);
+
+                
+                Series series = chartCurve.Series["ValueSeries"];
+                series.Points.Clear();
+
+
+                for (double t = 0; t <= 10; t += 0.1)
+                {
+                    variables["t"] = t;
+                    // Evaluate the expression symbolically with these substitutions
+                    var substitutedExpression = expression.Evaluate(variables);
+                    double y = (double)substitutedExpression.RealValue;
+                    series.Points.AddXY(t, y);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error plotting the function: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnChartValues_Click(object sender, EventArgs e)
+        {
+            // Get the expression to evaluate from the master parameter text box
+            string expressionToEvaluate = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+
+            // Determine if it's an expression or just an exponent, and if it's an exponent, convert it to an expression
+            if (!expressionToEvaluate.Contains("t"))
+            {
+                // If it's a number then add t^
+                if (double.TryParse(expressionToEvaluate, out double exponent))
+                {
+                    expressionToEvaluate = $"t^{exponent}";
+                }
+            }
+
+            // Get the interpolated values
+            double[] valuesToGraph = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow);
+
+            // Plot
+            try
+            {
+                Series series = chartCurve.Series["ValueSeries"];
+                series.Points.Clear();
+
+                for (int i = 0; i < valuesToGraph.Length; i++)
+                {
+                    series.Points.AddXY(i, valuesToGraph[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error plotting the function: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Get interpolated data into graphable form
+        private double[] GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex)
+        {
+            List<string> interpolatedValuesPerFrameArray = new List<string>();
+            if (mainForm != null)
+            {
+                // Send an array with 1 for everything except the master parameter's expression
+                string[] expressionsArray = new string[31];
+                for (int i = 0; i < 31; i++)
+                {
+                    if (i == masterParamIndex)
+                    {
+                        expressionsArray[i] = expressionToEvaluate;
+                    }
+                    else
+                    {
+                        expressionsArray[i] = "1";
+                    }
+                }
+
+                interpolatedValuesPerFrameArray = mainForm.GetInterpolatedValues(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray);
+
+                double[] allFrameValuesForMasterParameter = new double[interpolatedValuesPerFrameArray.Count];
+                // Get the interpolated values for the master parameter
+                for (int i = 0; i < interpolatedValuesPerFrameArray.Count; i++)
+                {
+                    // First split the string into an array of strings, because each item in the array is all the values per frame
+                    string[] interpolatedValuesPerFrame = interpolatedValuesPerFrameArray[i].Split(',');
+
+                    // Get the value for the master parameter
+                    double interpolatedValue = double.Parse(interpolatedValuesPerFrame[masterParamIndex]);
+
+                    // Add the value to the list
+                    allFrameValuesForMasterParameter[i] = interpolatedValue;
+                }
+                return allFrameValuesForMasterParameter;
+                
+            }
+            return null;
+        }
+
+        
     } //End form class
 } // End namespace

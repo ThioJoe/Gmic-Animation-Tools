@@ -577,9 +577,34 @@ namespace DrosteEffectApp
             }
         }
 
+        // Create getter to use the InterpolateValues function in the MainForm class from the ExpressionsForm class
+        public List<string> GetInterpolatedValues(int masterParamIndex, string[] allExpressionsList)
+        {
+            // Use data from this form to interpolate values
+            double[] startValues = ParseParamsToArray(startParams);
+            double[] endValues = ParseParamsToArray(endParams);
+
+            // If the start and end values are null, just set them to 1 and 100 as general case
+            if (startValues == null || endValues == null)
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    startParams += "1,";
+                    endParams += "100,";
+                }
+                startParams += "1";
+                endParams += "100";
+            }
+
+            int totalFrames = CalcTotalFrames(startValues[masterParamIndex], endValues[masterParamIndex], masterParamIncrement);
+            string exponentMode = "custom-master";
+
+            return InterpolateValues(startValues, endValues, totalFrames, masterParamIndex, masterParamIncrement, allExpressionsList, exponentMode);
+        }
+
         // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.
         // Returns a list of strings representing the interpolated parameter values for each frame.
-        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double increment, string[] exponents, string exponentMode)
+        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode)
         {
             double[] originalStartValues = startValues;
             double[] originalEndValues = endValues;
