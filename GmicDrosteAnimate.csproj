@@ -119,6 +119,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DrosteParameters.cs" />
+    <Compile Include="ExpressionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExpressionsForm.Designer.cs">
+      <DependentUpon>ExpressionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1700,5 +1700,14 @@ namespace DrosteEffectApp
                 chkCreateGif.Enabled = true;
             }
         }
+
+        private void btnShowExpressionForm_Click(object sender, EventArgs e)
+        {
+            //ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);
+            //paramNamesForm.Show();
+            // Open the expressions form
+            ExpressionsForm expressionForm = new ExpressionsForm(mainform: this, incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1);
+            expressionForm.Show();
+        }
     }
 }

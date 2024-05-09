@@ -39,7 +39,7 @@ namespace GmicDrosteAnimate
         //Global checkbox for whether to sync with other window
         public bool syncWithOtherWindow = true;
 
-        public ParamNamesForm(MainForm mainform,double[] incomingStartParamValues, double[] incomingEndParamValues, int incomingMasterParamIndex)
+        public ParamNamesForm(MainForm mainform, double[] incomingStartParamValues, double[] incomingEndParamValues, int incomingMasterParamIndex)
         {
 
             // If the values are null or empty then use defaults
@@ -100,6 +100,7 @@ namespace GmicDrosteAnimate
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "End", Name = "End", Width = 50, DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight } });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Parameter Name", Name = "ParameterName", Width = 130, ReadOnly = true });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Difference", Name = "Difference", Width = 108, ReadOnly = true });
+            //dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Expressions", Name = "Expressions", Width = 108, ReadOnly = false });
 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;

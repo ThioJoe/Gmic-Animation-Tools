@@ -76,6 +76,7 @@
             this.radioNormalizeExtendedRanges = new System.Windows.Forms.RadioButton();
             this.radioNoNormalize = new System.Windows.Forms.RadioButton();
             this.groupBoxNormalizeRadios = new System.Windows.Forms.GroupBox();
+            this.btnShowExpressionForm = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -606,11 +607,22 @@
             this.groupBoxNormalizeRadios.TabIndex = 44;
             this.groupBoxNormalizeRadios.TabStop = false;
             // 
+            // btnShowExpressionForm
+            // 
+            this.btnShowExpressionForm.Location = new System.Drawing.Point(188, 390);
+            this.btnShowExpressionForm.Name = "btnShowExpressionForm";
+            this.btnShowExpressionForm.Size = new System.Drawing.Size(75, 23);
+            this.btnShowExpressionForm.TabIndex = 45;
+            this.btnShowExpressionForm.Text = "Expressions";
+            this.btnShowExpressionForm.UseVisualStyleBackColor = true;
+            this.btnShowExpressionForm.Click += new System.EventHandler(this.btnShowExpressionForm_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 441);
+            this.Controls.Add(this.btnShowExpressionForm);
             this.Controls.Add(this.checkBoxLogOnly);
             this.Controls.Add(this.infoIconUseSameDirectory);
             this.Controls.Add(this.labelFFmpegNotFound);
@@ -725,5 +737,6 @@
         private System.Windows.Forms.RadioButton radioNormalizeExtendedRanges;
         private System.Windows.Forms.RadioButton radioNoNormalize;
         private System.Windows.Forms.GroupBox groupBoxNormalizeRadios;
+        private System.Windows.Forms.Button btnShowExpressionForm;
     }
 }

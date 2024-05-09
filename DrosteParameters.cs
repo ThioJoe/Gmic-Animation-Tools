@@ -2,11 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Windows.Forms.VisualStyles;
+
+public class ParameterInfo
+{
+    public int ParamIndex { get; set; }
+    public string Name { get; set; }
+    public double DefaultStart { get; set; }
+    public double DefaultEnd { get; set; }
+    public double Min { get; set; }
+    public double Max { get; set; }
+    public double ExtendedMin { get; set; }
+    public double ExtendedMax { get; set; }
+    public string Type { get; set; } // "Binary", "Step", "Continuous"
+    public int Decimals { get; set; } // How many decimals to keep in the value after random generation
+    public double DefaultExponent { get; set; }
+
+    public ParameterInfo(int paramIndex, string name, double defaultStart, double defaultEnd, double min, double max, double extendedMin, double extendedMax, string type, int decimals, double defaultExponent)
+    {
+        ParamIndex = paramIndex;
+        Name = name;
+        DefaultStart = defaultStart;
+        DefaultEnd = defaultEnd;
+        Min = min;
+        Max = max;
+        ExtendedMin = extendedMin;
+        ExtendedMax = extendedMax;
+        Type = type;
+        Decimals = decimals;
+        DefaultExponent = defaultExponent;
+    }
+}
 
 public static class AppParameters
 {
     public static List<ParameterInfo> Parameters { get; private set; }
-
 
     static AppParameters()
     {
@@ -39,6 +69,8 @@ public static class AppParameters
                 return string.Join(",", Parameters.Select(p => p.Type));
             case "Decimals":
                 return string.Join(",", Parameters.Select(p => p.Decimals));
+            case "DefaultExponent":
+                return string.Join(",", Parameters.Select(p => p.DefaultExponent));
             default:
                 throw new ArgumentException("Property name not recognized", nameof(propertyName));
         }
@@ -61,9 +93,16 @@ public static class AppParameters
                 return Parameters.Select(p => p.ExtendedMin).ToArray();
             case "ExtendedMax":
                 return Parameters.Select(p => p.ExtendedMax).ToArray();
+            case "DefaultExponent":
+                return Parameters.Select(p => p.DefaultExponent).ToArray();
             default:
                 throw new ArgumentException("Property name not recognized", nameof(propertyName));
         }
+    }
+
+    public static string[] GetParameterNames()
+    {
+        return Parameters.Select(p => p.Name).ToArray();
     }
 
     private static void InitializeParameterRanges()
@@ -80,7 +119,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 200,
                 type: "Continuous",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 2.0
             ),
             new ParameterInfo(
                 paramIndex: 1,
@@ -92,7 +132,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 200,
                 type: "Continuous",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 3.0
             ),
             new ParameterInfo(
                 paramIndex: 2,
@@ -104,7 +145,8 @@ public static class AppParameters
                 extendedMin: -6,
                 extendedMax: 6,
                 type: "Continuous",
-                decimals: 2
+                decimals: 2,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 3,
@@ -116,7 +158,8 @@ public static class AppParameters
                 extendedMin: -100,
                 extendedMax: 100,
                 type: "Step",
-                decimals: 1
+                decimals: 1,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 4,
@@ -128,7 +171,8 @@ public static class AppParameters
                 extendedMin: -1000,
                 extendedMax: 1000,
                 type: "Continuous",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 5,
@@ -140,7 +184,8 @@ public static class AppParameters
                 extendedMin: -720,
                 extendedMax: 720,
                 type: "Continuous",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 6,
@@ -152,7 +197,8 @@ public static class AppParameters
                 extendedMin: -200,
                 extendedMax: 200,
                 type: "Continuous",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 7,
@@ -164,7 +210,8 @@ public static class AppParameters
                 extendedMin: -200,
                 extendedMax: 200,
                 type: "Continuous",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 8,
@@ -176,7 +223,8 @@ public static class AppParameters
                 extendedMin: -200,
                 extendedMax: 200,
                 type: "Continuous",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 9,
@@ -188,7 +236,8 @@ public static class AppParameters
                 extendedMin: -200,
                 extendedMax: 200,
                 type: "Continuous",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 10,
@@ -200,7 +249,8 @@ public static class AppParameters
                 extendedMin: 1,
                 extendedMax: 50,
                 type: "Step",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 11,
@@ -212,9 +262,10 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 50,
                 type: "Step",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
-                    new ParameterInfo(
+                new ParameterInfo(
                 paramIndex: 12,
                 name: "Level Frequency",
                 defaultStart: 1,
@@ -224,7 +275,8 @@ public static class AppParameters
                 extendedMin: 1,
                 extendedMax: 20,
                 type: "Step",
-                decimals: 1
+                decimals: 1,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 13,
@@ -236,7 +288,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 14,
@@ -248,7 +301,8 @@ public static class AppParameters
                 extendedMin: -200,
                 extendedMax: 200,
                 type: "MultiPole",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 15,
@@ -260,7 +314,8 @@ public static class AppParameters
                 extendedMin: -200,
                 extendedMax: 200,
                 type: "MultiPole",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 16,
@@ -272,7 +327,8 @@ public static class AppParameters
                 extendedMin: -200,
                 extendedMax: 200,
                 type: "MultiPole",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 17,
@@ -284,7 +340,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 18,
@@ -296,7 +353,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 19,
@@ -308,7 +366,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 20,
                 type: "MultiPole",
-                decimals: 1
+                decimals: 1,
+                defaultExponent: 1.0
             ),
             new ParameterInfo(
                 paramIndex: 20,
@@ -320,7 +379,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 21,
@@ -332,7 +392,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 22,
@@ -344,7 +405,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 23,
@@ -356,7 +418,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 24,
@@ -368,7 +431,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 25,
@@ -380,7 +444,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 26,
@@ -392,7 +457,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 27,
@@ -404,7 +470,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 28,
@@ -416,7 +483,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 1,
                 type: "Binary",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 29,
@@ -428,7 +496,8 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 0,
                 type: "Choice",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             ),
             new ParameterInfo(
                 paramIndex: 30,
@@ -440,35 +509,9 @@ public static class AppParameters
                 extendedMin: 0,
                 extendedMax: 0,
                 type: "Choice",
-                decimals: 0
+                decimals: 0,
+                defaultExponent: 0
             )
         };
-    }
-}
-public class ParameterInfo
-{
-    public int ParamIndex { get; set; }
-    public string Name { get; set; }
-    public double DefaultStart { get; set; }
-    public double DefaultEnd { get; set; }
-    public double Min { get; set; }
-    public double Max { get; set; }
-    public double ExtendedMin { get; set; }
-    public double ExtendedMax { get; set; }
-    public string Type { get; set; } // "Binary", "Step", "Continuous"
-    public int Decimals { get; set; } // How many decimals to keep in the value after random generation
-
-    public ParameterInfo(int paramIndex, string name, double defaultStart, double defaultEnd, double min, double max, double extendedMin, double extendedMax, string type, int decimals)
-    {
-        ParamIndex = paramIndex;
-        Name = name;
-        DefaultStart = defaultStart;
-        DefaultEnd = defaultEnd;
-        Min = min;
-        Max = max;
-        ExtendedMin = extendedMin;
-        ExtendedMax = extendedMax;
-        Type = type;
-        Decimals = decimals;
     }
 }
