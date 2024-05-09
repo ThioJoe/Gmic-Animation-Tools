@@ -711,8 +711,15 @@ namespace DrosteEffectApp
             double scale = 1;
 
             double[] originalValues = values;
-            double min;
-            double max;
+            double lowestValue;
+            double highestValue;
+            double startValue;
+            double endValue;
+            double targetMax;
+            double targetMin;
+
+            lowestValue = values.Min();
+            highestValue = values.Max();
 
             if (values == null || values.Length == 0)
             {
@@ -728,34 +735,39 @@ namespace DrosteEffectApp
             {
                 // Get the lower and upper bounds of the original values
                 double[] trueStartAndEnd = new double[] { trueOriginalStartValue, trueOriginalEndValue };
-                min = trueStartAndEnd.Min();
-                max = trueStartAndEnd.Max();
+                targetMax = trueStartAndEnd.Max();
+                targetMin = trueStartAndEnd.Min();
+                lowestValue = values.Min();
+                highestValue = values.Max();
             }
             else if (radioNormalizeMaxRanges.Checked)
             {
                 // Get max and min values from ParametersInfo class
-                min = AppParameters.GetParameterValuesAsList("Min")[paramIndex];
-                max = AppParameters.GetParameterValuesAsList("Max")[paramIndex];
+                targetMin = AppParameters.GetParameterValuesAsList("Min")[paramIndex];
+                targetMax = AppParameters.GetParameterValuesAsList("Max")[paramIndex];
             }
             else if (radioNormalizeExtendedRanges.Checked)
             {
-                min = AppParameters.GetParameterValuesAsList("ExtendedMin")[paramIndex];
-                max = AppParameters.GetParameterValuesAsList("ExtendedMax")[paramIndex];
+                targetMin = AppParameters.GetParameterValuesAsList("ExtendedMin")[paramIndex];
+                targetMax = AppParameters.GetParameterValuesAsList("ExtendedMax")[paramIndex];
             }
             else
             {
                 throw new ArgumentException("No radio button for normalization is checked.");
             }
 
+
+            startValue = trueOriginalStartValue;
+            endValue = trueOriginalEndValue;
+
             // Determine the range of the input values
-            double range = max - min;
+            double range = highestValue - lowestValue;
 
             // Calculate the midpoint of the target range
             double midPoint = (trueOriginalStartValue + trueOriginalEndValue) / 2;
 
-            // Calculate half of the width of the target range
-            //double halfRange = (endValue - startValue) / 2 * scale;
-            double halfRange = range / 2;
+            // Calculate half of the width of the TARGET range
+            double halfTargetRange = (targetMax - targetMin) / 2;
 
             double[] normalizedValues = new double[values.Length];
 
@@ -771,10 +783,11 @@ namespace DrosteEffectApp
                 else
                 {
                     // Normalize each value to be within 0 to 1
-                    double normalized = (value - min) / range;
+                    double normalized = (value - lowestValue) / range;
 
-                    // Scale and shift to be within the specified range, adjusting by the scale factor around the midpoint
-                    normalizedValues[i] = midPoint + (normalized - 0.5) * 2 * halfRange;
+                    // Directly scale and map to the target range
+                    //normalizedValues[i] = startValue + normalized * (endValue - startValue);
+                    normalizedValues[i] = midPoint + (normalized - 0.5) * 2 * halfTargetRange;
                 }
             }
 
