@@ -172,6 +172,50 @@ namespace DrosteEffectApp
             }
         }
 
+        public string CustomExpressionArrayTextBoxChange
+        {
+            get
+            {
+                //return txtExponentArray.ForeColor == Color.Gray ? "" : txtExponentArray.Text;
+                return txtExponentArray.Text;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    txtExponentArray.Text = (string)txtExponentArray.Tag;
+                    //txtExponentArray.ForeColor = Color.Gray;
+                }
+                else
+                {
+                    txtExponentArray.Text = value;
+                    //txtExponentArray.ForeColor = Color.Black;  // Ensure it's treated as actual data
+                }
+            }
+        }
+
+        public string CustomMasterExpressionTextBoxChange
+        {
+            get
+            {
+                //return txtMasterExponent.ForeColor == Color.Gray ? "" : txtMasterExponent.Text;
+                return txtMasterExponent.Text;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    txtMasterExponent.Text = (string)txtMasterExponent.Tag;
+                    //txtMasterExponent.ForeColor = Color.Gray;
+                }
+                else
+                {
+                    txtMasterExponent.Text = value;
+                    //txtMasterExponent.ForeColor = Color.Black;  // Ensure it's treated as actual data
+                }
+            }
+        }
+
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

@@ -61,7 +61,7 @@
             // 
             this.btnSendExpressionsStringToMainWindow.Location = new System.Drawing.Point(15, 684);
             this.btnSendExpressionsStringToMainWindow.Name = "btnSendExpressionsStringToMainWindow";
-            this.btnSendExpressionsStringToMainWindow.Size = new System.Drawing.Size(75, 23);
+            this.btnSendExpressionsStringToMainWindow.Size = new System.Drawing.Size(109, 23);
             this.btnSendExpressionsStringToMainWindow.TabIndex = 6;
             this.btnSendExpressionsStringToMainWindow.Text = "Use Above Values";
             this.btnSendExpressionsStringToMainWindow.UseVisualStyleBackColor = true;

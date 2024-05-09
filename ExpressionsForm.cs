@@ -63,7 +63,9 @@ namespace GmicDrosteAnimate
 
             //this.masterParamIndexFromMainWindow = masterParamIndexFromMainWindow;
 
-         }
+            this.mainForm = mainform; // This is needed to send the updated expression string back to the main form
+
+        }
 
         private void InitializeDataGridView()
         {
@@ -351,7 +353,13 @@ namespace GmicDrosteAnimate
 
         private void btnSendExpressionsStringToMainWindow_Click(object sender, EventArgs e)
         {
-
+            if (mainForm != null)
+            {
+                // Send the full string to the custom array text box
+                mainForm.CustomExpressionArrayTextBoxChange = txtCurrentExpressionParamString.Text;
+                // Send only the master parameter expression to the master parameter text box
+                mainForm.CustomMasterExpressionTextBoxChange = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+            }
         }
 
         //public void UpdateExpressionParamValues(string customExpressionString, string masterParamExpressionString, int masterParamIndex)
