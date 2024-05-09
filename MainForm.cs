@@ -537,10 +537,14 @@ namespace DrosteEffectApp
         // Returns a list of strings representing the interpolated parameter values for each frame.
         private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double increment, string[] exponents, string exponentMode)
         {
+            double[] originalStartValues = startValues;
+            double[] originalEndValues = endValues;
+            List<int> exponentsUsingExpressions = new List<int>();
+
             // List to store all interpolated values for each frame.
-            List<string> interpolatedValuesStrings = new List<string>();
+            //List<string> interpolatedValuesPerFrameStrings = new List<string>();
             // List of 31 arrays of doubles to hold the interpolated values for each parameter.
-            double[,] interpolatedValuesArray = new double[totalFrames, 31];
+            double[,] interpolatedValuesPerFrameArray = new double[totalFrames, 31];
 
             // Loop through each frame to calculate parameter values.
             for (int frame = 0; frame < totalFrames; frame++)
@@ -569,6 +573,8 @@ namespace DrosteEffectApp
                                 {
                                     // Evaluate the formula using the normalized time value
                                     (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i]);
+                                    // Add to indexes using expressions
+                                    exponentsUsingExpressions.Add(i);
                                 }
                                 else
                                 {
@@ -590,6 +596,7 @@ namespace DrosteEffectApp
                             {
                                 // Evaluate the formula using the normalized time value
                                 (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i]);
+                                exponentsUsingExpressions.Add(i);
                             }
                             else
                             {
@@ -633,53 +640,70 @@ namespace DrosteEffectApp
                     currentValues[i] = Math.Round(currentValue, 3);
 
                     // Place values in array
-                    interpolatedValuesArray[frame, i] = currentValues[i];
+                    interpolatedValuesPerFrameArray[frame, i] = currentValues[i];
                 }
 
                 // Add the concatenated string of current values for the frame to the interpolated values list.
-                interpolatedValuesStrings.Add(string.Join(",", currentValues));
+                //interpolatedValuesPerFrameStrings.Add(string.Join(",", currentValues));
             }
 
             // If the normalization radio buttons are enabled as a result of an exponent/expression mode being selected, normalize the interpolated values using radio setting
             if (groupBoxNormalizeRadios.Enabled)
             {
-                double[,] normalizedInterpolatedValuesArray = new double[totalFrames, 31];
+                double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, 31];
                 // Normalize and scale the interpolated values for each frame.
                 for (int i = 0; i < 31; i++)
                 {
                     double[] allFrameValuesForSingleParam = new double[totalFrames];
                     for (int j = 0; j < totalFrames; j++)
                     {
-                        allFrameValuesForSingleParam[j] = interpolatedValuesArray[j,i];
+                        allFrameValuesForSingleParam[j] = interpolatedValuesPerFrameArray[j,i];
                     }
                     // Assuming a NormalizeAndScale method that takes a double array and does something to it
-                    allFrameValuesForSingleParam = NormalizeAndScaleValues(values: allFrameValuesForSingleParam, startValue: startValues[i], endValue: endValues[i], paramIndex: i);
-                    //Console.WriteLine("Normalized values for parameter " + i + ": " + string.Join(",", allFrameValuesForSingleParam));
+                    allFrameValuesForSingleParam = NormalizeAndScaleValues(values: allFrameValuesForSingleParam, startValue: originalStartValues[i], endValue: originalEndValues[i], paramIndex: i);
 
                     // Optionally, you might want to store the results back into interpolatedValuesArray
                     for (int j = 0; j < totalFrames; j++)
                     {
-                        //Console.WriteLine($"Attempting to access array at [{j}, {i}]. Array dimensions are {totalFrames}x31.");
-                        normalizedInterpolatedValuesArray[j, i] = allFrameValuesForSingleParam[j];
+                        normalizedInterpolatedValuesPerFrameArray[j, i] = allFrameValuesForSingleParam[j];
+                    }
 
-                    }
+                    // Update entry in interpolatedValuesStrings
+                    //interpolatedValuesPerFrameStrings[i] = string.Join(",", allFrameValuesForSingleParam);
+
                 }
-                // Update interpolatedValuesStrings using the new values in interpolatedValuesArray
-                interpolatedValuesStrings = new List<string>();
-                for (int i = 0; i < totalFrames; i++)
+
+                // Update interpolatedValuesPerFrameArray with normalized values depending on selected exponent mode
+                for (int frame = 0; frame < totalFrames; frame++)
                 {
-                    double[] tempArray = new double[31];
-                    for (int j = 0; j < 31; j++)
+                    //double[] tempArray = new double[31];
+                    for (int index = 0; index < 31; index++)
                     {
-                        tempArray[j] = normalizedInterpolatedValuesArray[i, j];
+                        // Check if index is in list of indexes using expressions
+                        if (exponentsUsingExpressions.Contains(index))
+                        {
+                            interpolatedValuesPerFrameArray[frame, index] = normalizedInterpolatedValuesPerFrameArray[frame, index];
+                        }
                     }
-                    interpolatedValuesStrings.Add(string.Join(",", tempArray));
+
                 }
 
             }
 
+            // Create list of strings to hold the interpolated values for each frame to return outside of the function
+            List<string> interpolatedValuesPerFrameStrings = new List<string>();
+            for (int i = 0; i < totalFrames; i++)
+            {
+                double[] tempArray = new double[31];
+                for (int j = 0; j < 31; j++)
+                {
+                    tempArray[j] = interpolatedValuesPerFrameArray[i, j];
+                }
+                interpolatedValuesPerFrameStrings.Add(string.Join(",", tempArray));
+            }
+
             // Return the list of interpolated values for all frames.
-            return interpolatedValuesStrings;
+            return interpolatedValuesPerFrameStrings;
         }
 
         public double[] NormalizeAndScaleValues(double[] values, double startValue, double endValue, int paramIndex)
