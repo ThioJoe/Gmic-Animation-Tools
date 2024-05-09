@@ -640,8 +640,8 @@ namespace DrosteEffectApp
                 interpolatedValuesStrings.Add(string.Join(",", currentValues));
             }
 
-            // If the user has checkBoxNormalizeValues.Checked, normalize the values to be between 0 and 1
-            if (checkBoxNormalizeValues.Checked)
+            // If the normalization radio buttons are enabled as a result of an exponent/expression mode being selected, normalize the interpolated values using radio setting
+            if (groupBoxNormalizeRadios.Enabled)
             {
                 double[,] normalizedInterpolatedValuesArray = new double[totalFrames, 31];
                 // Normalize and scale the interpolated values for each frame.
@@ -720,7 +720,6 @@ namespace DrosteEffectApp
             {
                 throw new ArgumentException("No radio button for normalization is checked.");
             }
-            
 
             // Determine the range of the input values
             double range = max - min;
@@ -729,7 +728,8 @@ namespace DrosteEffectApp
             double midPoint = (startValue + endValue) / 2;
 
             // Calculate half of the width of the target range
-            double halfRange = (endValue - startValue) / 2 * scale;
+            //double halfRange = (endValue - startValue) / 2 * scale;
+            double halfRange = range / 2;
 
             // Normalize and scale each value
             double[] normalizedValues = values.Select(value =>

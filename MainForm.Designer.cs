@@ -75,7 +75,6 @@
             this.radioNormalizeMaxRanges = new System.Windows.Forms.RadioButton();
             this.radioNormalizeExtendedRanges = new System.Windows.Forms.RadioButton();
             this.radioNoNormalize = new System.Windows.Forms.RadioButton();
-            this.checkBoxNormalizeValues = new System.Windows.Forms.CheckBox();
             this.groupBoxNormalizeRadios = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
@@ -555,7 +554,7 @@
             this.radioNormalizeStartEnd.AutoSize = true;
             this.radioNormalizeStartEnd.Checked = true;
             this.radioNormalizeStartEnd.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.radioNormalizeStartEnd.Location = new System.Drawing.Point(19, 20);
+            this.radioNormalizeStartEnd.Location = new System.Drawing.Point(6, 10);
             this.radioNormalizeStartEnd.Name = "radioNormalizeStartEnd";
             this.radioNormalizeStartEnd.Size = new System.Drawing.Size(153, 17);
             this.radioNormalizeStartEnd.TabIndex = 40;
@@ -566,7 +565,7 @@
             // radioNormalizeMaxRanges
             // 
             this.radioNormalizeMaxRanges.AutoSize = true;
-            this.radioNormalizeMaxRanges.Location = new System.Drawing.Point(19, 35);
+            this.radioNormalizeMaxRanges.Location = new System.Drawing.Point(6, 25);
             this.radioNormalizeMaxRanges.Name = "radioNormalizeMaxRanges";
             this.radioNormalizeMaxRanges.Size = new System.Drawing.Size(167, 17);
             this.radioNormalizeMaxRanges.TabIndex = 41;
@@ -576,7 +575,7 @@
             // radioNormalizeExtendedRanges
             // 
             this.radioNormalizeExtendedRanges.AutoSize = true;
-            this.radioNormalizeExtendedRanges.Location = new System.Drawing.Point(19, 50);
+            this.radioNormalizeExtendedRanges.Location = new System.Drawing.Point(6, 40);
             this.radioNormalizeExtendedRanges.Name = "radioNormalizeExtendedRanges";
             this.radioNormalizeExtendedRanges.Size = new System.Drawing.Size(159, 17);
             this.radioNormalizeExtendedRanges.TabIndex = 42;
@@ -586,22 +585,12 @@
             // radioNoNormalize
             // 
             this.radioNoNormalize.AutoSize = true;
-            this.radioNoNormalize.Location = new System.Drawing.Point(19, 65);
+            this.radioNoNormalize.Location = new System.Drawing.Point(6, 55);
             this.radioNoNormalize.Name = "radioNoNormalize";
             this.radioNoNormalize.Size = new System.Drawing.Size(99, 17);
             this.radioNoNormalize.TabIndex = 43;
             this.radioNoNormalize.Text = "Don\'t Normalize";
             this.radioNoNormalize.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxNormalizeValues
-            // 
-            this.checkBoxNormalizeValues.AutoSize = true;
-            this.checkBoxNormalizeValues.Location = new System.Drawing.Point(249, 219);
-            this.checkBoxNormalizeValues.Name = "checkBoxNormalizeValues";
-            this.checkBoxNormalizeValues.Size = new System.Drawing.Size(154, 17);
-            this.checkBoxNormalizeValues.TabIndex = 39;
-            this.checkBoxNormalizeValues.Text = "Normalize Within Start/End";
-            this.checkBoxNormalizeValues.UseVisualStyleBackColor = true;
             // 
             // groupBoxNormalizeRadios
             // 
@@ -611,9 +600,9 @@
             this.groupBoxNormalizeRadios.Controls.Add(this.radioNormalizeExtendedRanges);
             this.groupBoxNormalizeRadios.Enabled = false;
             this.groupBoxNormalizeRadios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBoxNormalizeRadios.Location = new System.Drawing.Point(209, 274);
+            this.groupBoxNormalizeRadios.Location = new System.Drawing.Point(228, 292);
             this.groupBoxNormalizeRadios.Name = "groupBoxNormalizeRadios";
-            this.groupBoxNormalizeRadios.Size = new System.Drawing.Size(200, 95);
+            this.groupBoxNormalizeRadios.Size = new System.Drawing.Size(175, 79);
             this.groupBoxNormalizeRadios.TabIndex = 44;
             this.groupBoxNormalizeRadios.TabStop = false;
             // 
@@ -621,8 +610,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(415, 441);
-            this.Controls.Add(this.checkBoxNormalizeValues);
+            this.ClientSize = new System.Drawing.Size(410, 441);
             this.Controls.Add(this.checkBoxLogOnly);
             this.Controls.Add(this.infoIconUseSameDirectory);
             this.Controls.Add(this.labelFFmpegNotFound);
@@ -736,7 +724,6 @@
         private System.Windows.Forms.RadioButton radioNormalizeMaxRanges;
         private System.Windows.Forms.RadioButton radioNormalizeExtendedRanges;
         private System.Windows.Forms.RadioButton radioNoNormalize;
-        private System.Windows.Forms.CheckBox checkBoxNormalizeValues;
         private System.Windows.Forms.GroupBox groupBoxNormalizeRadios;
     }
 }
