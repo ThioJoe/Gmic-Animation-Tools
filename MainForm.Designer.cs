@@ -71,6 +71,7 @@
             this.btnSwapStartEndStrings = new System.Windows.Forms.Button();
             this.labelFFmpegNotFound = new System.Windows.Forms.Label();
             this.checkBoxLogOnly = new System.Windows.Forms.CheckBox();
+            this.checkBoxNormalizeValues = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -293,9 +294,10 @@
             // txtMasterExponent
             // 
             this.txtMasterExponent.Enabled = false;
+            this.txtMasterExponent.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.txtMasterExponent.Location = new System.Drawing.Point(135, 240);
             this.txtMasterExponent.Name = "txtMasterExponent";
-            this.txtMasterExponent.Size = new System.Drawing.Size(46, 20);
+            this.txtMasterExponent.Size = new System.Drawing.Size(108, 22);
             this.txtMasterExponent.TabIndex = 16;
             this.txtMasterExponent.TextChanged += new System.EventHandler(this.txtMasterExponent_TextChanged);
             // 
@@ -376,7 +378,7 @@
             // InfoIconMasterExponent
             // 
             this.InfoIconMasterExponent.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconMasterExponent.Image")));
-            this.InfoIconMasterExponent.Location = new System.Drawing.Point(187, 242);
+            this.InfoIconMasterExponent.Location = new System.Drawing.Point(249, 242);
             this.InfoIconMasterExponent.Name = "InfoIconMasterExponent";
             this.InfoIconMasterExponent.Size = new System.Drawing.Size(16, 16);
             this.InfoIconMasterExponent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -483,7 +485,7 @@
             // labelMasterExponent
             // 
             this.labelMasterExponent.AutoSize = true;
-            this.labelMasterExponent.Location = new System.Drawing.Point(206, 244);
+            this.labelMasterExponent.Location = new System.Drawing.Point(163, 224);
             this.labelMasterExponent.Name = "labelMasterExponent";
             this.labelMasterExponent.Size = new System.Drawing.Size(51, 13);
             this.labelMasterExponent.TabIndex = 32;
@@ -542,11 +544,22 @@
             this.checkBoxLogOnly.UseVisualStyleBackColor = true;
             this.checkBoxLogOnly.CheckedChanged += new System.EventHandler(this.checkBoxLogOnly_CheckedChanged);
             // 
+            // checkBoxNormalizeValues
+            // 
+            this.checkBoxNormalizeValues.AutoSize = true;
+            this.checkBoxNormalizeValues.Location = new System.Drawing.Point(249, 297);
+            this.checkBoxNormalizeValues.Name = "checkBoxNormalizeValues";
+            this.checkBoxNormalizeValues.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxNormalizeValues.TabIndex = 39;
+            this.checkBoxNormalizeValues.Text = "Normalize Values";
+            this.checkBoxNormalizeValues.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 441);
+            this.Controls.Add(this.checkBoxNormalizeValues);
             this.Controls.Add(this.checkBoxLogOnly);
             this.Controls.Add(this.infoIconUseSameDirectory);
             this.Controls.Add(this.labelFFmpegNotFound);
@@ -653,5 +666,6 @@
         private System.Windows.Forms.Label labelFFmpegNotFound;
         private System.Windows.Forms.PictureBox infoIconUseSameDirectory;
         private System.Windows.Forms.CheckBox checkBoxLogOnly;
+        private System.Windows.Forms.CheckBox checkBoxNormalizeValues;
     }
 }

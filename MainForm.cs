@@ -538,7 +538,9 @@ namespace DrosteEffectApp
         private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double increment, string[] exponents, string exponentMode)
         {
             // List to store all interpolated values for each frame.
-            List<string> interpolatedValues = new List<string>();
+            List<string> interpolatedValuesStrings = new List<string>();
+            // List of 31 arrays of doubles to hold the interpolated values for each parameter.
+            double[,] interpolatedValuesArray = new double[totalFrames, 31];
 
             // Loop through each frame to calculate parameter values.
             for (int frame = 0; frame < totalFrames; frame++)
@@ -629,30 +631,91 @@ namespace DrosteEffectApp
 
                     // Round the interpolated value to three decimal places and add it to the current values array.
                     currentValues[i] = Math.Round(currentValue, 3);
+
+                    // Place values in array
+                    interpolatedValuesArray[frame, i] = currentValues[i];
                 }
 
                 // Add the concatenated string of current values for the frame to the interpolated values list.
-                interpolatedValues.Add(string.Join(",", currentValues));
+                interpolatedValuesStrings.Add(string.Join(",", currentValues));
+            }
+
+            // If the user has checkBoxNormalizeValues.Checked, normalize the values to be between 0 and 1
+            if (checkBoxNormalizeValues.Checked)
+            {
+                double[,] normalizedInterpolatedValuesArray = new double[totalFrames, 31];
+                // Normalize and scale the interpolated values for each frame.
+                for (int i = 0; i < 31; i++)
+                {
+                    double[] allFrameValuesForSingleParam = new double[totalFrames];
+                    for (int j = 0; j < totalFrames; j++)
+                    {
+                        allFrameValuesForSingleParam[j] = interpolatedValuesArray[j,i];
+                    }
+                    // Assuming a NormalizeAndScale method that takes a double array and does something to it
+                    allFrameValuesForSingleParam = NormalizeAndScaleValues(values: allFrameValuesForSingleParam, startValue: startValues[i], endValue: endValues[i]);
+                    //Console.WriteLine("Normalized values for parameter " + i + ": " + string.Join(",", allFrameValuesForSingleParam));
+
+                    // Optionally, you might want to store the results back into interpolatedValuesArray
+                    for (int j = 0; j < totalFrames; j++)
+                    {
+                        //Console.WriteLine($"Attempting to access array at [{j}, {i}]. Array dimensions are {totalFrames}x31.");
+                        normalizedInterpolatedValuesArray[j, i] = allFrameValuesForSingleParam[j];
+
+                    }
+                }
+                // Update interpolatedValuesStrings using the new values in interpolatedValuesArray
+                interpolatedValuesStrings = new List<string>();
+                for (int i = 0; i < totalFrames; i++)
+                {
+                    double[] tempArray = new double[31];
+                    for (int j = 0; j < 31; j++)
+                    {
+                        tempArray[j] = normalizedInterpolatedValuesArray[i, j];
+                    }
+                    interpolatedValuesStrings.Add(string.Join(",", tempArray));
+                }
+
             }
 
             // Return the list of interpolated values for all frames.
-            return interpolatedValues;
+            return interpolatedValuesStrings;
         }
 
-        //private double EvaluateFormula(string formula, double t, double startValue, double endValue)
-        //{
-        //    // Evaluate the formula using the normalized time value (t)
-        //    // You can use a mathematical expression evaluator library or parse and evaluate the formula manually
-        //    // Replace 't' with the actual normalized time value
-        //    // Example using a simple manual evaluation:
-        //    formula = formula.Replace("t", t.ToString());
-        //    double weightingFactor = Convert.ToDouble(new DataTable().Compute(formula, null));
+        public static double[] NormalizeAndScaleValues(double[] values, double startValue, double endValue)
+        {
+            double scale = 1;
 
-        //    // Calculate the interpolated value using the weighting factor
-        //    double interpolatedValue = startValue + (endValue - startValue) * weightingFactor;
+            if (values == null || values.Length == 0)
+                throw new ArgumentException("Values array must not be empty.");
 
-        //    return interpolatedValue;
-        //}
+            double min = values.Min();
+            double max = values.Max();
+
+            // Determine the range of the input values
+            double range = max - min;
+
+            // Calculate the midpoint of the target range
+            double midPoint = (startValue + endValue) / 2;
+
+            // Calculate half of the width of the target range
+            double halfRange = (endValue - startValue) / 2 * scale;
+
+            // Normalize and scale each value
+            double[] normalizedValues = values.Select(value =>
+            {
+                // If range is zero, all values are the same, so return the midpoint
+                if (range == 0)
+                    return midPoint;
+                // Normalize each value to be within 0 to 1
+                double normalized = (value - min) / range;
+
+                // Scale and shift to be within the specified range, adjusting by the scale factor around the midpoint
+                return midPoint + (normalized - 0.5) * 2 * halfRange;
+            }).ToArray();
+
+            return normalizedValues;
+        }
 
         public static readonly Dictionary<string, double> MathConstants = new Dictionary<string, double>
         {
@@ -681,6 +744,13 @@ namespace DrosteEffectApp
                 // Convert the result to a double
                 double weightingFactor = (double)substitutedExpression.RealValue;
 
+                // If checkBoxNormalizeValues is checked, normalize the weighting factor relative to t
+                //if (checkBoxNormalizeValues.Checked)
+                //{
+                //    weightingFactor = false ? weightingFactor : Math.Min(1, Math.Max(0, weightingFactor));
+
+                //}
+
                 // Calculate the interpolated value using the weighting factor
                 double interpolatedValue = startValue + (endValue - startValue) * weightingFactor;
 
@@ -691,6 +761,8 @@ namespace DrosteEffectApp
                 return (0, (string)ex.Message);
             }
         }
+
+
 
         public (bool IsValid, string Reason) IsValidMathExpression(string input, double testStart=1, double testEnd=10, double testTime = 0.50)
         {
