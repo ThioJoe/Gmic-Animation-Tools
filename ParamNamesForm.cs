@@ -267,7 +267,6 @@ namespace GmicDrosteAnimate
 
             if (syncWithOtherWindow)
             {   
-                //UpdateListView(startParamValues, endParamValues, masterParamIndex);
                 UpdateDataGridView(startParamValues, endParamValues, masterParamIndex);
             }
         }

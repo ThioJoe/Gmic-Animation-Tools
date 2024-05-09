@@ -24,6 +24,7 @@
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
+            this.btnSendExpressionsStringToMainWindow = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,11 +57,22 @@
             this.txtCurrentExpressionParamString.Size = new System.Drawing.Size(399, 20);
             this.txtCurrentExpressionParamString.TabIndex = 4;
             // 
+            // btnSendExpressionsStringToMainWindow
+            // 
+            this.btnSendExpressionsStringToMainWindow.Location = new System.Drawing.Point(15, 684);
+            this.btnSendExpressionsStringToMainWindow.Name = "btnSendExpressionsStringToMainWindow";
+            this.btnSendExpressionsStringToMainWindow.Size = new System.Drawing.Size(75, 23);
+            this.btnSendExpressionsStringToMainWindow.TabIndex = 6;
+            this.btnSendExpressionsStringToMainWindow.Text = "Use Above Values";
+            this.btnSendExpressionsStringToMainWindow.UseVisualStyleBackColor = true;
+            this.btnSendExpressionsStringToMainWindow.Click += new System.EventHandler(this.btnSendExpressionsStringToMainWindow_Click);
+            // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(438, 744);
+            this.Controls.Add(this.btnSendExpressionsStringToMainWindow);
             this.Controls.Add(this.labelCurrentExpressionString);
             this.Controls.Add(this.txtCurrentExpressionParamString);
             this.Controls.Add(this.dataGridViewExpressions);
@@ -78,5 +90,6 @@
         private System.Windows.Forms.DataGridView dataGridViewExpressions;
         private System.Windows.Forms.Label labelCurrentExpressionString;
         private System.Windows.Forms.TextBox txtCurrentExpressionParamString;
+        private System.Windows.Forms.Button btnSendExpressionsStringToMainWindow;
     }
 }

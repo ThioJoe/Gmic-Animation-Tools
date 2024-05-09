@@ -9,17 +9,25 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace GmicDrosteAnimate
 {
     public partial class ExpressionsForm : Form
     {
         private MainForm mainForm;
+        private string customExpressionStringFromMainWindow;
+        private string masterParamExpressionStringFromMainWindow;
+        private int masterParamIndexFromMainWindow;
+
+        private Color disabledForeColor = Color.Gray;
+        private Color disabledBackgroundColor = Color.LightGray;
+        private Color disabledMasterBackgroundColor = Color.DarkSeaGreen;
 
         // Get parameter names from AppParameters
         private string[] paramNames = AppParameters.GetParameterNamesList();
 
-        public ExpressionsForm(MainForm mainform, string incomingExpressionParamString, int incomingMasterParamIndex)
+        public ExpressionsForm(MainForm mainform, string incomingExpressionParamString, int incomingMasterParamIndex, string incomingMasterParamExpression)
         {
             InitializeComponent();
             InitializeDataGridView(); // Setup your DataGridView here
@@ -27,13 +35,35 @@ namespace GmicDrosteAnimate
             string[] expressions = null;
             if (!String.IsNullOrEmpty(incomingExpressionParamString))
             {
-                expressions = incomingExpressionParamString.Split(',');
+                customExpressionStringFromMainWindow = incomingExpressionParamString;
+            }
+            else
+            // Set defaults from app info class
+            {
+                incomingExpressionParamString = AppParameters.GetParameterValuesAsString("DefaultExponent");
+                customExpressionStringFromMainWindow = incomingExpressionParamString;
             }
 
+            if (incomingMasterParamExpression != null)
+            {
+                masterParamExpressionStringFromMainWindow = incomingMasterParamExpression;
+            }
+            else
+            {
+                incomingMasterParamExpression= AppParameters.GetParameterValuesAsList("DefaultExponent")[incomingMasterParamIndex].ToString();
+                masterParamExpressionStringFromMainWindow = incomingMasterParamExpression;
+            }
+
+            expressions = incomingExpressionParamString.Split(',');
+
             UpdateExpressionsDataGridView(expressions: expressions, incomingMasterParamIndex);
+
             // Set expression string. If it's empty the function will handle it by auto filling from the data table
             SetCurrenExpressionParamString(expressions);
-        }
+
+            //this.masterParamIndexFromMainWindow = masterParamIndexFromMainWindow;
+
+         }
 
         private void InitializeDataGridView()
         {
@@ -42,6 +72,8 @@ namespace GmicDrosteAnimate
 
             // Hide the row headers by setting their visibility to false
             dataGridViewExpressions.RowHeadersVisible = false;
+
+            
 
             // Add a checkbox column
             DataGridViewCheckBoxColumn chkBoxColumn = new DataGridViewCheckBoxColumn();
@@ -75,11 +107,14 @@ namespace GmicDrosteAnimate
 
         private void UpdateExpressionsDataGridView(string[] expressions, int masterParamIndex)
         {
+            // Get current expression values in the grid
+            string[] currentExpressionValuesBeforeUpdate = ValuesFromDataTable(dataGridView: dataGridViewExpressions, columnName: "Expression");
+
             // Clear existing rows
             dataGridViewExpressions.Rows.Clear();
 
             // Get default exponent values if needed. Assuming exponents are for initialization or defaults.
-            double[] exponents = AppParameters.GetParameterValuesAsList("DefaultExponent");
+            double[] defaultExponents = AppParameters.GetParameterValuesAsList("DefaultExponent");
 
             for (int i = 0; i < paramNames.Length; i++)
             {
@@ -106,12 +141,17 @@ namespace GmicDrosteAnimate
                         row.Cells["Expression"].Value = "";
                     }
                 }
+                // If already values in the grid use those
+                else if (currentExpressionValuesBeforeUpdate[i] != null)
+                {
+                    row.Cells["Expression"].Value = currentExpressionValuesBeforeUpdate[i];
+                }
                 else
                 {
                     // Set default exponent value if available, but if parameter type is binary set it blank
                     if ((paramType == "Continuous") || (paramType == "Step") || (paramType == "MultiPole"))
                     {
-                        row.Cells["Expression"].Value = exponents[i].ToString();
+                        row.Cells["Expression"].Value = defaultExponents[i].ToString();
                     }
                     else
                     {
@@ -122,7 +162,7 @@ namespace GmicDrosteAnimate
                 // Highlight the master parameter row, if specified
                 if (i == masterParamIndex)
                 {
-                    row.DefaultCellStyle.BackColor = Color.LightBlue;  // Choose a highlighting color that suits your UI design
+                    row.DefaultCellStyle.BackColor = Color.LightGreen;  // Choose a highlighting color that suits your UI design
                 }
             }
 
@@ -134,13 +174,72 @@ namespace GmicDrosteAnimate
                 if (!(paramType == "Continuous") && !(paramType == "Step") && !(paramType == "MultiPole"))
                 {
                     dataGridViewExpressions.Rows[i].Cells["CheckBox"].ReadOnly = true;
-                    dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledBackgroundColor;
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor = disabledForeColor;
                     dataGridViewExpressions.Rows[i].Cells["Expression"].ReadOnly = true;
-                    dataGridViewExpressions.Rows[i].Cells["Expression"].Style.BackColor = Color.LightGray;
-                    dataGridViewExpressions.Rows[i].Cells["ParameterName"].Style.ForeColor = Color.Gray;
+                    //dataGridViewExpressions.Rows[i].Cells["Expression"].Style.BackColor = Color.LightGray;
+                    //dataGridViewExpressions.Rows[i].Cells["ParameterName"].Style.ForeColor = Color.Gray;
                 }
             }
 
+        }
+
+        public void UpdateMasterExponentIndex(int masterParamIndex)
+        {
+            // Set globals to latest
+            masterParamIndexFromMainWindow = masterParamIndex;
+            UpdateMasterExponentHighlighting(masterParamIndex);
+        }
+
+        private void ClearDataGridViewStyles()
+        {
+            foreach (DataGridViewRow row in dataGridViewExpressions.Rows)
+            {
+                row.DefaultCellStyle.BackColor = Color.White;  // Clear row background color
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    //cell. = Color.White;  // Clear specific style properties
+                }
+            }
+        }
+
+        // Update master exponent highlighting
+        private void UpdateMasterExponentHighlighting(int masterParamIndex)
+        {
+            // Get current expression values in the grid even if null
+            //string[] currentExpressionValuesBeforeUpdate = ValuesFromDataTable(dataGridView: dataGridViewExpressions, columnName: "Expression");
+            ClearDataGridViewStyles();
+            for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
+            {
+                
+                // If the row is the master parameter row
+                if (i == masterParamIndex)
+                {
+                    // If it's disabled then set it as darker green
+                    if (dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor == disabledForeColor)
+                    {
+                        dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledMasterBackgroundColor;
+                        //dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = disabledMasterBackgroundColor;
+                    }
+                    // If it's not disabled, set it as light green
+                    else
+                    {
+                        dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = Color.LightGreen;
+                        //dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = Color.LightGreen;
+                    }
+                }
+                // If the cell is not the master parameter row and it's not disabled
+                else if (dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor != disabledForeColor)
+                {
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = Color.White;
+                    //dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = Color.White;
+                }
+                else
+                {
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledBackgroundColor;
+                    //dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = disabledBackgroundColor;
+                }
+            }
         }
 
         // Function to set current start param string from array
@@ -200,7 +299,22 @@ namespace GmicDrosteAnimate
                     UpdateParameterStringsWithNewTableData();
                 }
             }
+            // Update highlighting again
+            UpdateMasterExponentHighlighting(masterParamIndexFromMainWindow);
         }
+
+        // When exiting a cell update the highlighting
+        private void dataGridViewExpressions_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            UpdateMasterExponentHighlighting(masterParamIndexFromMainWindow);
+        }
+
+        private void dataGridViewExpressions_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Update highlighting when clicking on a cell
+            UpdateMasterExponentHighlighting(masterParamIndexFromMainWindow);
+        }
+
 
         private void UpdateParameterStringsWithNewTableData()
         {
@@ -233,6 +347,20 @@ namespace GmicDrosteAnimate
             // Set the text boxes to the new comma-separated strings of the start and end parameters
             SetCurrenExpressionParamString(expressions);
         }
+
+
+        private void btnSendExpressionsStringToMainWindow_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //public void UpdateExpressionParamValues(string customExpressionString, string masterParamExpressionString, int masterParamIndex)
+        //{
+        //    // Split custom expressions into array of strings
+        //    string[] customExpressionArray = customExpressionString.Split(',');
+
+        //    UpdateExpressionsDataGridView(customExpressionArray, masterParamIndex);
+        //}
 
     } //End form class
 } // End namespace

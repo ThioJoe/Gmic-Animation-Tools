@@ -1516,11 +1516,19 @@ namespace DrosteEffectApp
 
         private void nudMasterParamIndex_ValueChanged(object sender, EventArgs e)
         {
-            // Update other form if open with new index
+            // Update param info form if open with new index
             if (Application.OpenForms["ParamNamesForm"] != null)
             {
                 ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
                 paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+            }
+
+            // Update exponent/expression form if open with new index
+            if (Application.OpenForms["ExpressionsForm"] != null)
+            {
+                ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
+                //expressionForm.UpdateExpressionParamValues(txtExponentArray.Text, txtMasterExponent.Text, (int)nudMasterParamIndex.Value - 1);
+                expressionForm.UpdateMasterExponentIndex((int)nudMasterParamIndex.Value - 1);
             }
 
             // Update label to show current name corresponding to the index
@@ -1706,7 +1714,11 @@ namespace DrosteEffectApp
             //ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);
             //paramNamesForm.Show();
             // Open the expressions form
-            ExpressionsForm expressionForm = new ExpressionsForm(mainform: this, incomingExpressionParamString: txtExponentArray.Text, incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1);
+            ExpressionsForm expressionForm = new ExpressionsForm(
+                mainform: this,
+                incomingExpressionParamString: txtExponentArray.Text, 
+                incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1, 
+                incomingMasterParamExpression: txtMasterExponent.Text);
             expressionForm.Show();
         }
     }
