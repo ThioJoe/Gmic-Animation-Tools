@@ -21,9 +21,8 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -31,8 +30,12 @@
             this.chartCurve = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnTestChart = new System.Windows.Forms.Button();
             this.btnChartValues = new System.Windows.Forms.Button();
+            this.checkBoxKeepFramesConstant = new System.Windows.Forms.CheckBox();
+            this.nudGraphConstantFrameCount = new System.Windows.Forms.NumericUpDown();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewExpressions
@@ -76,45 +79,91 @@
             // 
             // chartCurve
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartCurve.Legends.Add(legend1);
-            this.chartCurve.Location = new System.Drawing.Point(470, 231);
+            chartArea3.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea3);
+            this.chartCurve.Location = new System.Drawing.Point(439, 12);
             this.chartCurve.Name = "chartCurve";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series1);
-            this.chartCurve.Size = new System.Drawing.Size(348, 300);
+            series3.ChartArea = "ChartArea1";
+            series3.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series3);
+            this.chartCurve.Size = new System.Drawing.Size(439, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
             // 
             // btnTestChart
             // 
-            this.btnTestChart.Location = new System.Drawing.Point(519, 568);
+            this.btnTestChart.Location = new System.Drawing.Point(452, 332);
             this.btnTestChart.Name = "btnTestChart";
             this.btnTestChart.Size = new System.Drawing.Size(75, 23);
             this.btnTestChart.TabIndex = 8;
             this.btnTestChart.Text = "Test";
             this.btnTestChart.UseVisualStyleBackColor = true;
+            this.btnTestChart.Visible = false;
             this.btnTestChart.Click += new System.EventHandler(this.btnTestChart_Click);
             // 
             // btnChartValues
             // 
-            this.btnChartValues.Location = new System.Drawing.Point(626, 568);
+            this.btnChartValues.Location = new System.Drawing.Point(574, 325);
             this.btnChartValues.Name = "btnChartValues";
-            this.btnChartValues.Size = new System.Drawing.Size(192, 23);
+            this.btnChartValues.Size = new System.Drawing.Size(192, 37);
             this.btnChartValues.TabIndex = 9;
             this.btnChartValues.Text = "Preview Selected Expression";
             this.btnChartValues.UseVisualStyleBackColor = true;
             this.btnChartValues.Click += new System.EventHandler(this.btnChartValues_Click);
+            // 
+            // checkBoxKeepFramesConstant
+            // 
+            this.checkBoxKeepFramesConstant.AutoSize = true;
+            this.checkBoxKeepFramesConstant.Location = new System.Drawing.Point(452, 387);
+            this.checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
+            this.checkBoxKeepFramesConstant.Size = new System.Drawing.Size(153, 17);
+            this.checkBoxKeepFramesConstant.TabIndex = 10;
+            this.checkBoxKeepFramesConstant.Text = "Use Constant Frame Count";
+            this.checkBoxKeepFramesConstant.UseVisualStyleBackColor = true;
+            this.checkBoxKeepFramesConstant.CheckedChanged += new System.EventHandler(this.checkBoxKeepFramesConstant_CheckedChanged);
+            // 
+            // nudGraphConstantFrameCount
+            // 
+            this.nudGraphConstantFrameCount.Enabled = false;
+            this.nudGraphConstantFrameCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(611, 384);
+            this.nudGraphConstantFrameCount.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudGraphConstantFrameCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudGraphConstantFrameCount.Name = "nudGraphConstantFrameCount";
+            this.nudGraphConstantFrameCount.Size = new System.Drawing.Size(72, 23);
+            this.nudGraphConstantFrameCount.TabIndex = 11;
+            this.nudGraphConstantFrameCount.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(452, 410);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(80, 17);
+            this.checkBox1.TabIndex = 12;
+            this.checkBox1.Text = "checkBox1";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(890, 744);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.nudGraphConstantFrameCount);
+            this.Controls.Add(this.checkBoxKeepFramesConstant);
             this.Controls.Add(this.btnChartValues);
             this.Controls.Add(this.btnTestChart);
             this.Controls.Add(this.chartCurve);
@@ -127,6 +176,7 @@
             this.Text = "Expression Parameters";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,5 +191,8 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chartCurve;
         private System.Windows.Forms.Button btnTestChart;
         private System.Windows.Forms.Button btnChartValues;
+        private System.Windows.Forms.CheckBox checkBoxKeepFramesConstant;
+        private System.Windows.Forms.NumericUpDown nudGraphConstantFrameCount;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

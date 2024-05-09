@@ -148,7 +148,8 @@ namespace DrosteEffectApp
                     txtStartParams.Text = value;
                     txtStartParams.ForeColor = Color.Black;  // Ensure it's treated as actual data
                 }
-            }
+                txtStartParams_TextChanged(null, null);
+            } 
         }
 
         public string EndParamsTextTextBoxChange
@@ -169,6 +170,7 @@ namespace DrosteEffectApp
                     txtEndParams.Text = value;
                     txtEndParams.ForeColor = Color.Black;  // Ensure it's treated as actual data
                 }
+                txtEndParams_TextChanged(null, null);
             }
         }
 
@@ -578,11 +580,11 @@ namespace DrosteEffectApp
         }
 
         // Create getter to use the InterpolateValues function in the MainForm class from the ExpressionsForm class
-        public List<string> GetInterpolatedValues(int masterParamIndex, string[] allExpressionsList)
+        public List<string> GetInterpolatedValues(int masterParamIndex, string[] allExpressionsList, int frameCount)
         {
             // Use data from this form to interpolate values
-            double[] startValues = ParseParamsToArray(startParams);
-            double[] endValues = ParseParamsToArray(endParams);
+            double[] startValues = ParseParamsToArray(txtStartParams.Text);
+            double[] endValues = ParseParamsToArray(txtEndParams.Text);
 
             // If the start and end values are null, just set them to 1 and 100 as general case
             if (startValues == null || endValues == null)
@@ -596,10 +598,22 @@ namespace DrosteEffectApp
                 endParams += "100";
             }
 
-            int totalFrames = CalcTotalFrames(startValues[masterParamIndex], endValues[masterParamIndex], masterParamIncrement);
+
+            // Get total frame count from the main form numeric updown controller, unless frame count was passed in (won't be zero if passed in
+            int totalFrames;
+            if (frameCount == 0)
+            {
+                totalFrames = (int)nudTotalFrames.Value;
+            }
+            else
+            {
+                totalFrames = frameCount;
+            }
+            
+            // Always use custom-master mode for this function because the calling function will send in a full array with only the master parameter expression set
             string exponentMode = "custom-master";
 
-            return InterpolateValues(startValues, endValues, totalFrames, masterParamIndex, masterParamIncrement, allExpressionsList, exponentMode);
+            return InterpolateValues(startValues, endValues, totalFrames, masterParamIndex, (int)nudMasterParamIncrement.Value, allExpressionsList, exponentMode);
         }
 
         // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.

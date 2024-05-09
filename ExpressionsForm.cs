@@ -419,8 +419,15 @@ namespace GmicDrosteAnimate
                 }
             }
 
+            // Get frame count from numeric up down control if constant frame count option is checked. Otherwise use 0 to let the main form decide
+            int frameCount = 0;
+            if (checkBoxKeepFramesConstant.Checked)
+            {
+                frameCount = (int)nudGraphConstantFrameCount.Value;
+            }
+
             // Get the interpolated values
-            double[] valuesToGraph = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow);
+            double[] valuesToGraph = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount);
 
             // Plot
             try
@@ -440,7 +447,7 @@ namespace GmicDrosteAnimate
         }
 
         // Get interpolated data into graphable form
-        private double[] GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex)
+        private double[] GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex, int frameCount)
         {
             List<string> interpolatedValuesPerFrameArray = new List<string>();
             if (mainForm != null)
@@ -459,7 +466,7 @@ namespace GmicDrosteAnimate
                     }
                 }
 
-                interpolatedValuesPerFrameArray = mainForm.GetInterpolatedValues(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray);
+                interpolatedValuesPerFrameArray = mainForm.GetInterpolatedValues(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount);
 
                 double[] allFrameValuesForMasterParameter = new double[interpolatedValuesPerFrameArray.Count];
                 // Get the interpolated values for the master parameter
@@ -480,6 +487,18 @@ namespace GmicDrosteAnimate
             return null;
         }
 
-        
+        private void checkBoxKeepFramesConstant_CheckedChanged(object sender, EventArgs e)
+        {
+            // If checked, enable the nudFrameCount control
+            if (checkBoxKeepFramesConstant.Checked)
+            {
+                nudGraphConstantFrameCount.Enabled = true;
+            }
+            else
+            {
+                nudGraphConstantFrameCount.Enabled = false;
+            }
+
+        }
     } //End form class
 } // End namespace
