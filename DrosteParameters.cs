@@ -34,11 +34,11 @@ public class ParameterInfo
     }
 }
 
-public static class AppParameters
+public static class FilterParameters
 {
     public static List<ParameterInfo> Parameters { get; private set; }
 
-    static AppParameters()
+    static FilterParameters()
     {
         InitializeParameterRanges();
     }

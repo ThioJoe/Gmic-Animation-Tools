@@ -26,7 +26,7 @@ namespace GmicDrosteAnimate
         //    "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
         //};
 
-        private static string[] paramNames = AppParameters.GetParameterNamesList();
+        private static string[] paramNames = FilterParameters.GetParameterNamesList();
 
         private MainForm mainForm;
         private double[] startParamValuesFromMainWindow;
@@ -35,7 +35,7 @@ namespace GmicDrosteAnimate
         private static readonly Random random = new Random();
 
         //Parameter count
-        private int filterParameterCount = AppParameters.GetParameterCount();
+        private int filterParameterCount = FilterParameters.GetParameterCount();
 
         //Global checkbox for whether to sync with other window
         public bool syncWithOtherWindow = true;
@@ -46,11 +46,11 @@ namespace GmicDrosteAnimate
             // If the values are null or empty then use defaults
             if (incomingStartParamValues == null || incomingStartParamValues.Length == 0)
             {
-                incomingStartParamValues = AppParameters.GetParameterValuesAsList("DefaultStart");
+                incomingStartParamValues = FilterParameters.GetParameterValuesAsList("DefaultStart");
             }
             if (incomingEndParamValues == null || incomingEndParamValues.Length == 0)
             {
-                incomingEndParamValues = AppParameters.GetParameterValuesAsList("DefaultEnd");
+                incomingEndParamValues = FilterParameters.GetParameterValuesAsList("DefaultEnd");
             }
 
             startParamValuesFromMainWindow = incomingStartParamValues;
@@ -176,16 +176,16 @@ namespace GmicDrosteAnimate
         {
             dataGridView1.Rows.Clear();
 
-            // If start or end values are null or empty, set them to defaults from AppParameters startDefaults and endDefaults
+            // If start or end values are null or empty, set them to defaults from FilterParameters startDefaults and endDefaults
             if (startParamValues == null || startParamValues.Length == 0)
             {
-                // Set the start values to the default values from AppParameters
-                startParamValues = AppParameters.GetParameterValuesAsList("DefaultStart");
+                // Set the start values to the default values from FilterParameters
+                startParamValues = FilterParameters.GetParameterValuesAsList("DefaultStart");
             }
             if (endParamValues == null || endParamValues.Length == 0)
             {
-                // Set the end values to the default values from AppParameters
-                endParamValues = AppParameters.GetParameterValuesAsList("DefaultEnd");
+                // Set the end values to the default values from FilterParameters
+                endParamValues = FilterParameters.GetParameterValuesAsList("DefaultEnd");
             }
 
             for (int i = 0; i < paramNames.Length; i++)
@@ -356,7 +356,7 @@ namespace GmicDrosteAnimate
                 if (isChecked)
                 {
                     // Retrieve the parameter information for the current row
-                    ParameterInfo paramInfo = AppParameters.Parameters[rowIndex];
+                    ParameterInfo paramInfo = FilterParameters.Parameters[rowIndex];
 
                     // Determine the minimum and maximum values for the random number generation
                     // If the 'Extended Range' checkbox is checked, use the extended min and max; otherwise, use the regular min and max
@@ -689,7 +689,7 @@ namespace GmicDrosteAnimate
             // Iterate through each row in the DataGridView, determine whether to check row box if parameter type is included in the list of types to randomize
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                string paramType = AppParameters.Parameters[row.Index].Type;
+                string paramType = FilterParameters.Parameters[row.Index].Type;
                 row.Cells["CheckBox"].Value = includedTypes.Contains(paramType);
             }
         }

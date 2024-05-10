@@ -48,16 +48,16 @@ namespace DrosteEffectApp
         // Setting a default array of exponents for use with exponential interpolation if no custom array is provided.
         // These are arbitrarily chosen values based on experience.
         //private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-        // Get default values from AppParameters ParameterInfo class defaultStart value
-        private double[] defaultExponents = AppParameters.GetParameterValuesAsList("DefaultStart");
+        // Get default values from FilterParameters ParameterInfo class defaultStart value
+        private double[] defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultStart");
 
         // Default values for the start and end parameters to be displayed as placeholders in the textboxes and if user opens parameters info window without entering any values
         //private string defaultStartParams = "34,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
         //private string defaultEndParams = "100,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
 
-        // Get default values from AppParameters ParameterInfo class defaultStart value
-        private string defaultStartParams = AppParameters.GetParameterValuesAsString("DefaultStart");
-        private string defaultEndParams = AppParameters.GetParameterValuesAsString("DefaultEnd");
+        // Get default values from FilterParameters ParameterInfo class defaultStart value
+        private string defaultStartParams = FilterParameters.GetParameterValuesAsString("DefaultStart");
+        private string defaultEndParams = FilterParameters.GetParameterValuesAsString("DefaultEnd");
 
         // Parameter Count
         private int filterParameterCount;
@@ -99,7 +99,7 @@ namespace DrosteEffectApp
             createGif = false;
 
             // Parameter Count
-            filterParameterCount = AppParameters.GetParameterCount();
+            filterParameterCount = FilterParameters.GetParameterCount();
 
             // Start with totalframes box and master increment box read only
             nudTotalFrames.Enabled = false;
@@ -943,13 +943,13 @@ namespace DrosteEffectApp
             else if (radioNormalizeMaxRanges.Checked)
             {
                 // Get max and min values from ParametersInfo class
-                targetMin = AppParameters.GetParameterValuesAsList("Min")[paramIndex];
-                targetMax = AppParameters.GetParameterValuesAsList("Max")[paramIndex];
+                targetMin = FilterParameters.GetParameterValuesAsList("Min")[paramIndex];
+                targetMax = FilterParameters.GetParameterValuesAsList("Max")[paramIndex];
             }
             else if (radioNormalizeExtendedRanges.Checked)
             {
-                targetMin = AppParameters.GetParameterValuesAsList("ExtendedMin")[paramIndex];
-                targetMax = AppParameters.GetParameterValuesAsList("ExtendedMax")[paramIndex];
+                targetMin = FilterParameters.GetParameterValuesAsList("ExtendedMin")[paramIndex];
+                targetMax = FilterParameters.GetParameterValuesAsList("ExtendedMax")[paramIndex];
             }
             else
             {
@@ -1828,7 +1828,7 @@ namespace DrosteEffectApp
             string labelTextStr = "= ";
             if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= filterParameterCount)
             {
-                labelTextStr += AppParameters.Parameters[(int)nudMasterParamIndex.Value - 1].Name;
+                labelTextStr += FilterParameters.Parameters[(int)nudMasterParamIndex.Value - 1].Name;
             }
             else
             {

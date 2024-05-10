@@ -25,11 +25,11 @@ namespace GmicDrosteAnimate
         private Color disabledBackgroundColor = Color.LightGray;
         private Color disabledMasterBackgroundColor = Color.DarkSeaGreen;
 
-        // Get parameter names from AppParameters
-        private string[] paramNames = AppParameters.GetParameterNamesList();
+        // Get parameter names from FilterParameters
+        private string[] paramNames = FilterParameters.GetParameterNamesList();
 
         //Parameter count
-        private int filterParameterCount = AppParameters.GetParameterCount();
+        private int filterParameterCount = FilterParameters.GetParameterCount();
 
         public ExpressionsForm(MainForm mainform, string incomingExpressionParamString, int incomingMasterParamIndex, string incomingMasterParamExpression)
         {
@@ -47,7 +47,7 @@ namespace GmicDrosteAnimate
             else
             // Set defaults from app info class
             {
-                incomingExpressionParamString = AppParameters.GetParameterValuesAsString("DefaultExponent");
+                incomingExpressionParamString = FilterParameters.GetParameterValuesAsString("DefaultExponent");
                 customExpressionStringFromMainWindow = incomingExpressionParamString;
             }
 
@@ -57,7 +57,7 @@ namespace GmicDrosteAnimate
             }
             else
             {
-                incomingMasterParamExpression= AppParameters.GetParameterValuesAsList("DefaultExponent")[incomingMasterParamIndex].ToString();
+                incomingMasterParamExpression= FilterParameters.GetParameterValuesAsList("DefaultExponent")[incomingMasterParamIndex].ToString();
                 masterParamExpressionStringFromMainWindow = incomingMasterParamExpression;
             }
 
@@ -222,7 +222,7 @@ namespace GmicDrosteAnimate
             dataGridViewExpressions.Rows.Clear();
 
             // Get default exponent values if needed. Assuming exponents are for initialization or defaults.
-            double[] defaultExponents = AppParameters.GetParameterValuesAsList("DefaultExponent");
+            double[] defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultExponent");
 
             for (int i = 0; i < paramNames.Length; i++)
             {
@@ -235,7 +235,7 @@ namespace GmicDrosteAnimate
                 // Set parameter name
                 row.Cells["ParameterName"].Value = paramNames[i];
 
-                string paramType = AppParameters.GetParameterType(i);
+                string paramType = FilterParameters.GetParameterType(i);
 
                 // Set expression from the expressions array or default to an empty string if out of range
                 if (expressions != null && i < expressions.Length)
@@ -269,7 +269,7 @@ namespace GmicDrosteAnimate
             // Disable checkboxes for binary parameters, gray out the entire row
             for (int i = 0; i < paramNames.Length; i++)
             {
-                string paramType = AppParameters.GetParameterType(i);
+                string paramType = FilterParameters.GetParameterType(i);
 
                 if (!(paramType == "Continuous") && !(paramType == "Step") && !(paramType == "MultiPole"))
                 {
@@ -365,7 +365,7 @@ namespace GmicDrosteAnimate
                     // If a value is for a binary parameter, set it to 1
                     for (int i = 0; i < expressionParamValuesFromGrid.Length; i++)
                     {
-                        if (AppParameters.GetNonExponentableParamIndexes().Contains(i))
+                        if (FilterParameters.GetNonExponentableParamIndexes().Contains(i))
                         {
                             expressionParamValuesFromGrid[i] = "1";
                         }
@@ -444,7 +444,7 @@ namespace GmicDrosteAnimate
                     else
                     {
                         // If it's a binary parameter, set it to 1
-                        if (AppParameters.GetNonExponentableParamIndexes().Contains(i))
+                        if (FilterParameters.GetNonExponentableParamIndexes().Contains(i))
                         {
                             expressions[i] = "1";
                         }
@@ -522,7 +522,7 @@ namespace GmicDrosteAnimate
         {
             labelErrorWhileGraphing.Visible = false;
             //If the parameter to be graphed is binary, don't graph
-            if (AppParameters.GetNonExponentableParamIndexes().Contains(masterParamIndexFromMainWindow))
+            if (FilterParameters.GetNonExponentableParamIndexes().Contains(masterParamIndexFromMainWindow))
             {
                 //Show empty graph
                 Series series = chartCurve.Series["ValueSeries"];
