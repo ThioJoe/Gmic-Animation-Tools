@@ -21,8 +21,8 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -36,6 +36,7 @@
             this.nudMasterParamIndexClone = new System.Windows.Forms.NumericUpDown();
             this.labelMasterIndexClone = new System.Windows.Forms.Label();
             this.labelNoGraphToggleParam = new System.Windows.Forms.Label();
+            this.btnHelpExpressionsForm = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
@@ -83,16 +84,16 @@
             // 
             // chartCurve
             // 
-            chartArea6.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea6);
+            chartArea2.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea2);
             this.chartCurve.Location = new System.Drawing.Point(438, 12);
             this.chartCurve.Name = "chartCurve";
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series6.MarkerSize = 7;
-            series6.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series6.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series6);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.MarkerSize = 7;
+            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series2.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series2);
             this.chartCurve.Size = new System.Drawing.Size(440, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -211,11 +212,22 @@
             this.labelNoGraphToggleParam.Text = "Graph Not Applicable - Parameter is a Toggle";
             this.labelNoGraphToggleParam.Visible = false;
             // 
+            // btnHelpExpressionsForm
+            // 
+            this.btnHelpExpressionsForm.Location = new System.Drawing.Point(265, 684);
+            this.btnHelpExpressionsForm.Name = "btnHelpExpressionsForm";
+            this.btnHelpExpressionsForm.Size = new System.Drawing.Size(91, 28);
+            this.btnHelpExpressionsForm.TabIndex = 16;
+            this.btnHelpExpressionsForm.Text = "Help";
+            this.btnHelpExpressionsForm.UseVisualStyleBackColor = true;
+            this.btnHelpExpressionsForm.Click += new System.EventHandler(this.btnHelpExpressionsForm_Click);
+            // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 744);
+            this.Controls.Add(this.btnHelpExpressionsForm);
             this.Controls.Add(this.labelNoGraphToggleParam);
             this.Controls.Add(this.labelMasterIndexClone);
             this.Controls.Add(this.nudMasterParamIndexClone);
@@ -256,5 +268,6 @@
         private System.Windows.Forms.NumericUpDown nudMasterParamIndexClone;
         private System.Windows.Forms.Label labelMasterIndexClone;
         private System.Windows.Forms.Label labelNoGraphToggleParam;
+        private System.Windows.Forms.Button btnHelpExpressionsForm;
     }
 }
