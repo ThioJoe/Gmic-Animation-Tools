@@ -21,9 +21,9 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -38,8 +38,10 @@
             this.labelMasterIndexClone = new System.Windows.Forms.Label();
             this.labelNoGraphToggleParam = new System.Windows.Forms.Label();
             this.btnHelpExpressionsForm = new System.Windows.Forms.Button();
-            this.btnExampleSin = new System.Windows.Forms.Button();
+            this.btnExampleSine = new System.Windows.Forms.Button();
             this.labelExampleExpressionButtons = new System.Windows.Forms.Label();
+            this.btnExampleCosine = new System.Windows.Forms.Button();
+            this.labelErrorWhileGraphing = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
@@ -52,14 +54,14 @@
             this.dataGridViewExpressions.AllowUserToDeleteRows = false;
             this.dataGridViewExpressions.AllowUserToResizeRows = false;
             this.dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewExpressions.Location = new System.Drawing.Point(9, 10);
             this.dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -98,18 +100,18 @@
             // 
             // chartCurve
             // 
-            chartArea3.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea3.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea3.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea3);
+            chartArea2.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea2.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea2.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea2);
             this.chartCurve.Location = new System.Drawing.Point(371, 78);
             this.chartCurve.Name = "chartCurve";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series3.MarkerSize = 7;
-            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series3.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series3);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.MarkerSize = 7;
+            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series2.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series2);
             this.chartCurve.Size = new System.Drawing.Size(513, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -238,16 +240,16 @@
             this.btnHelpExpressionsForm.UseVisualStyleBackColor = true;
             this.btnHelpExpressionsForm.Click += new System.EventHandler(this.btnHelpExpressionsForm_Click);
             // 
-            // btnExampleSin
+            // btnExampleSine
             // 
-            this.btnExampleSin.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExampleSin.Location = new System.Drawing.Point(439, 548);
-            this.btnExampleSin.Name = "btnExampleSin";
-            this.btnExampleSin.Size = new System.Drawing.Size(129, 38);
-            this.btnExampleSin.TabIndex = 17;
-            this.btnExampleSin.Text = "sin(2*pi*t)";
-            this.btnExampleSin.UseVisualStyleBackColor = true;
-            this.btnExampleSin.Click += new System.EventHandler(this.btnExampleSin_Click);
+            this.btnExampleSine.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExampleSine.Location = new System.Drawing.Point(439, 548);
+            this.btnExampleSine.Name = "btnExampleSine";
+            this.btnExampleSine.Size = new System.Drawing.Size(129, 38);
+            this.btnExampleSine.TabIndex = 17;
+            this.btnExampleSine.Text = "sin(2*pi*t)";
+            this.btnExampleSine.UseVisualStyleBackColor = true;
+            this.btnExampleSine.Click += new System.EventHandler(this.btnExampleSin_Click);
             // 
             // labelExampleExpressionButtons
             // 
@@ -259,13 +261,38 @@
             this.labelExampleExpressionButtons.TabIndex = 18;
             this.labelExampleExpressionButtons.Text = "Example Expressions:";
             // 
+            // btnExampleCosine
+            // 
+            this.btnExampleCosine.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExampleCosine.Location = new System.Drawing.Point(593, 548);
+            this.btnExampleCosine.Name = "btnExampleCosine";
+            this.btnExampleCosine.Size = new System.Drawing.Size(129, 38);
+            this.btnExampleCosine.TabIndex = 19;
+            this.btnExampleCosine.Text = "cos(3*pi*t)";
+            this.btnExampleCosine.UseVisualStyleBackColor = true;
+            this.btnExampleCosine.Click += new System.EventHandler(this.btnExampleCosine_Click);
+            // 
+            // labelErrorWhileGraphing
+            // 
+            this.labelErrorWhileGraphing.AutoSize = true;
+            this.labelErrorWhileGraphing.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelErrorWhileGraphing.ForeColor = System.Drawing.Color.Red;
+            this.labelErrorWhileGraphing.Location = new System.Drawing.Point(446, 51);
+            this.labelErrorWhileGraphing.Name = "labelErrorWhileGraphing";
+            this.labelErrorWhileGraphing.Size = new System.Drawing.Size(387, 15);
+            this.labelErrorWhileGraphing.TabIndex = 20;
+            this.labelErrorWhileGraphing.Text = "Error While Graphing: Click graph preview button for details";
+            this.labelErrorWhileGraphing.Visible = false;
+            // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 744);
+            this.Controls.Add(this.labelErrorWhileGraphing);
+            this.Controls.Add(this.btnExampleCosine);
             this.Controls.Add(this.labelExampleExpressionButtons);
-            this.Controls.Add(this.btnExampleSin);
+            this.Controls.Add(this.btnExampleSine);
             this.Controls.Add(this.btnHelpExpressionsForm);
             this.Controls.Add(this.labelNoGraphToggleParam);
             this.Controls.Add(this.labelMasterIndexClone);
@@ -308,7 +335,9 @@
         private System.Windows.Forms.Label labelMasterIndexClone;
         private System.Windows.Forms.Label labelNoGraphToggleParam;
         private System.Windows.Forms.Button btnHelpExpressionsForm;
-        private System.Windows.Forms.Button btnExampleSin;
+        private System.Windows.Forms.Button btnExampleSine;
         private System.Windows.Forms.Label labelExampleExpressionButtons;
+        private System.Windows.Forms.Button btnExampleCosine;
+        private System.Windows.Forms.Label labelErrorWhileGraphing;
     }
 }

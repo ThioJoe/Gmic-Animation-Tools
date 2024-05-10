@@ -455,6 +455,7 @@ namespace GmicDrosteAnimate
         // Function to plot graph from button or otherwise
         public void PlotGraph(bool silent = true)
         {
+            labelErrorWhileGraphing.Visible = false;
             //If the parameter to be graphed is binary, don't graph
             if (AppParameters.GetNonExponentableParamIndexes().Contains(masterParamIndexFromMainWindow))
             {
@@ -503,6 +504,7 @@ namespace GmicDrosteAnimate
                     {
                         MessageBox.Show("The expression string must either be only a number, or an expression that includes only the variable 't'. Constants like pi are allowed too.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    labelErrorWhileGraphing.Visible = true;
                     return;
                 }
             }
@@ -519,6 +521,7 @@ namespace GmicDrosteAnimate
                 {
                     MessageBox.Show($"Error plotting the function: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                labelErrorWhileGraphing.Visible = true;
                 return;
             }
             
@@ -542,6 +545,7 @@ namespace GmicDrosteAnimate
             catch (Exception ex)
             {
                 MessageBox.Show($"Error plotting the function: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                labelErrorWhileGraphing.Visible = true;
                 return;
             }
         }
@@ -644,7 +648,12 @@ namespace GmicDrosteAnimate
         private void btnExampleSin_Click(object sender, EventArgs e)
         {
             // Set the master parameter to a sine wave
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "sin(t*2*pi)";
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "sin(2*pi*t)";
+        }
+
+        private void btnExampleCosine_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "cos(3*pi*t)";
         }
     } //End form class
 } // End namespace
