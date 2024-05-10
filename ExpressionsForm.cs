@@ -135,7 +135,13 @@ namespace GmicDrosteAnimate
             }
         }
 
-
+        public decimal MasterParamIndexNUDChangeSetterExpressionsForm
+        {
+            set
+            {
+                nudMasterParamIndexClone.Value = value;
+            }
+        }
 
         private void InitializeDataGridView()
         {

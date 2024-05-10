@@ -66,6 +66,9 @@ namespace DrosteEffectApp
             InitializeComponent();
             InitializeDefaults();
 
+            // Create mouse scroll handler to properly scroll increment on master increment numeric updown
+            nudMasterParamIndex.MouseWheel += new MouseEventHandler(this.ScrollHandlerFunction);
+
             // Check if ffmpeg is in the same folder as the application, if not disable the GIF creation checkbox and display message
             if (!CheckForFFmpeg(silent: true))
             {
@@ -127,6 +130,15 @@ namespace DrosteEffectApp
             {
                 MessageBox.Show("This tool uses the G'MIC image processor program, but it was not found.\n\ngmic.exe is required for this application to function at all. Please make sure it is located in the same folder as this application.\n\nYou can find it at:\nhttps://gmic.eu/download.html\n\nLook for where it says 'G'MIC for Windows - Other interfaces', then the zip download for 'Command-line interface (CLI)' ", "gmic.exe Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        // Override mouse scroll increment for numeric updown control of master increment so it doesn't change by 3
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            NumericUpDown control = (NumericUpDown)sender;
+            ((HandledMouseEventArgs)e).Handled = true;
+            decimal value = control.Value + ((e.Delta > 0) ? control.Increment : -control.Increment);
+            control.Value = Math.Max(control.Minimum, Math.Min(value, control.Maximum));
         }
 
         //Property getter setter needs to also be able to deal with the placeholder manager event handler, otherwise it will not work
@@ -1739,6 +1751,8 @@ namespace DrosteEffectApp
             {
                 ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
                 expressionForm.UpdateMasterExponentIndex((int)nudMasterParamIndex.Value - 1);
+                // Use setter to update NUD
+                expressionForm.MasterParamIndexNUDChangeSetterExpressionsForm = nudMasterParamIndex.Value;
             }
 
             // Update label to show current name corresponding to the index
