@@ -1319,6 +1319,11 @@ namespace DrosteEffectApp
             }
 
             ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);
+            // Set the start position of the form manually
+            paramNamesForm.StartPosition = FormStartPosition.Manual;
+            // Set the location relative to the main form (e.g., offsetting by 60 pixels to the right and down)
+            paramNamesForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+            // Show the new form
             paramNamesForm.Show();
         }
 
@@ -1842,14 +1847,21 @@ namespace DrosteEffectApp
 
         private void btnShowExpressionForm_Click(object sender, EventArgs e)
         {
-            //ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);
-            //paramNamesForm.Show();
-            // Open the expressions form
+            // Create a new instance of ExpressionsForm with specified parameters
             ExpressionsForm expressionForm = new ExpressionsForm(
                 mainform: this,
-                incomingExpressionParamString: txtExponentArray.Text, 
-                incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1, 
-                incomingMasterParamExpression: txtMasterExponent.Text);
+                incomingExpressionParamString: txtExponentArray.Text,
+                incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1,
+                incomingMasterParamExpression: txtMasterExponent.Text
+            );
+
+            // Set the start position of the form manually
+            expressionForm.StartPosition = FormStartPosition.Manual;
+
+            // Set the location relative to the main form (e.g., offsetting by 60 pixels to the right and down)
+            expressionForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+
+            // Show the new form
             expressionForm.Show();
         }
     }
