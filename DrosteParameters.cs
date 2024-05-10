@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GmicDrosteAnimate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -142,7 +143,108 @@ public static class FilterParameters
     // Some can seemingly have underscore or tilde prefixes, but I'm not sure what that means
     // Example: ~int, _int, ~float, ~choice, ~color, ~bool, _bool, others
 
-    // Method that automatically generates parameter info for a filter
+    // Methods that automatically generates parameter info for a filter from loaded data. Call this one from the main program
+    public static void LoadParameters(List<Parameter> parameterList)
+    {
+        Parameters.Clear();
+        foreach (var param in parameterList)
+        {
+            string tempType = param.Type;
+            CleanType(param.Type);
+            if (tempType == "float")
+            {
+                tempType = "Continuous";
+            }
+            else if (tempType == "int")
+            {
+                tempType = "Step";
+            }
+            else if (tempType == "bool")
+            {
+                tempType = "Binary";
+            }
+            else if (tempType == "choice")
+            {
+                tempType = "Choice";
+            }
+
+            double? tempExtendedMin = null;
+            double? tempExtendedMax = null;
+            double? tempMin = null;
+            double? tempMax = null;
+            // Get extended ranges by doubling original. Also convert regular min max to doubles
+            if (param.MinValue.HasValue && param.MaxValue.HasValue)
+            {
+                // This also means if the minimum is negative, the extended minimum will be negative as well
+                tempExtendedMin = param.MinValue * 2;
+                tempExtendedMax = param.MaxValue * 2;
+                tempMin = param.MinValue.Value;
+                tempMax = param.MaxValue.Value;
+            }
+            // Depending on type, assign other default values if not assigned already via existing defaults
+            if (tempType == "Binary")
+            {
+                tempMin = 0;
+                tempMax = 1;
+                tempExtendedMin = 0;
+                tempExtendedMax = 1;
+            }
+            else if (tempType == "Step")
+            {
+                tempMin = 0;
+                tempMax = 100;
+                tempExtendedMin = 0;
+                tempExtendedMax = 200;
+            }
+            else if (tempType == "Choice")
+            {
+                // Count how many choices are in the parameter
+                int choiceCount = param.Choices.Count;
+                tempMin = 0;
+                tempMax = choiceCount;
+                tempExtendedMin = 0;
+                tempExtendedMax = choiceCount;
+            }
+            else
+            {
+                tempMin = 0;
+                tempMax = 1;
+                tempExtendedMin = 0;
+                tempExtendedMax = 1;
+            }
+
+            Parameters.Add(new ParameterInfo(
+                paramIndex: Parameters.Count,  // Index is dynamically set based on count
+                name: param.Name,
+                defaultStart: param.DefaultValue ?? 0,  // Using null-coalescing operator if DefaultValue is nullable
+                defaultEnd: param.DefaultValue ?? 0,    // You might want to adjust this as per your logic
+                min: tempMin ?? 0,               // Assume defaults if null
+                max: tempMax ?? 100,             // Assume defaults if null
+                extendedMin: tempExtendedMin ?? 0,       // Same as min for extendedMin
+                extendedMax: tempExtendedMax ?? 100,    // Same as max for extendedMax
+                type: tempType,           // Helper method to clean up types
+                decimals: DetermineDecimalsFromType(param.Type),  // A method to determine decimals
+                defaultExponent: 1.0                   // Default exponent
+            ));
+        }
+    }
+
+    private static string CleanType(string type)
+    {
+        // Removes prefixes like '~' if your logic requires it
+        type = type.Trim('~');
+        type = type.Trim('_');
+        return type;
+    }
+
+    private static int DetermineDecimalsFromType(string type)
+    {
+        // Simple logic to determine the number of decimal places
+        if (type.Contains("float"))
+            return 2;
+        return 0;
+    }
+
 
     // Manually prepared parameter info for the Souphead Droste 10 filter
     private static void InitializeSoupheadDroste10()

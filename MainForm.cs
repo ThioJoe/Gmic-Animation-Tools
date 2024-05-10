@@ -2131,5 +2131,12 @@ namespace DrosteEffectApp
             File.WriteAllText(outputFile, jsonOutput);
         }
 
+        private void btnLoadFilters_Click(object sender, EventArgs e)
+        {
+            // Load json data from Filters.json
+            string jsonFileName = "Filters.json";
+            
+            // 
+        }
     }
 }

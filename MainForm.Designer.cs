@@ -79,6 +79,7 @@
             this.btnShowExpressionForm = new System.Windows.Forms.Button();
             this.TestButton1 = new System.Windows.Forms.Button();
             this.btnParseTest = new System.Windows.Forms.Button();
+            this.btnLoadFilters = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -642,7 +643,7 @@
             // 
             // btnParseTest
             // 
-            this.btnParseTest.Location = new System.Drawing.Point(124, 449);
+            this.btnParseTest.Location = new System.Drawing.Point(12, 454);
             this.btnParseTest.Name = "btnParseTest";
             this.btnParseTest.Size = new System.Drawing.Size(75, 23);
             this.btnParseTest.TabIndex = 46;
@@ -651,11 +652,22 @@
             this.btnParseTest.Visible = false;
             this.btnParseTest.Click += new System.EventHandler(this.btnParseTest_Click);
             // 
+            // btnLoadFilters
+            // 
+            this.btnLoadFilters.Location = new System.Drawing.Point(95, 454);
+            this.btnLoadFilters.Name = "btnLoadFilters";
+            this.btnLoadFilters.Size = new System.Drawing.Size(75, 23);
+            this.btnLoadFilters.TabIndex = 47;
+            this.btnLoadFilters.Text = "Load Filters";
+            this.btnLoadFilters.UseVisualStyleBackColor = true;
+            this.btnLoadFilters.Click += new System.EventHandler(this.btnLoadFilters_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 484);
+            this.Controls.Add(this.btnLoadFilters);
             this.Controls.Add(this.btnParseTest);
             this.Controls.Add(this.btnShowExpressionForm);
             this.Controls.Add(this.checkBoxLogOnly);
@@ -775,5 +787,6 @@
         private System.Windows.Forms.Button TestButton1;
         private System.Windows.Forms.CheckBox checkBoxAbsoluteModeMain;
         private System.Windows.Forms.Button btnParseTest;
+        private System.Windows.Forms.Button btnLoadFilters;
     }
 }
