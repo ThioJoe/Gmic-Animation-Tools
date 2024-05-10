@@ -120,4 +120,17 @@
   <metadata name="toolTipExpressionsForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="checkBoxAbsoluteMode.ToolTip" xml:space="preserve">
+    <value>When checked, exponents/expressions directly calculate the actual interpolated
+values per parameter instead of manipulating their relative weighting.
+
+If using master expression/exponent mode with absolute mode,
+all other parameters will be interpolated linearly as normal.
+
+If using custom array mode, keeping a parameter's expression set
+to 1 will also make it interpolate linearly as nomal.
+
+When absolute mode is enabled, you may use an additional variable 'x'.
+This represents the frame number, as opposed to 't', the normalized time value.</value>
+  </data>
 </root>

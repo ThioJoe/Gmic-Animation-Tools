@@ -612,8 +612,7 @@
             this.checkBoxAbsoluteModeMain.Size = new System.Drawing.Size(97, 17);
             this.checkBoxAbsoluteModeMain.TabIndex = 46;
             this.checkBoxAbsoluteModeMain.Text = "Absolute Mode";
-            this.toolTip1.SetToolTip(this.checkBoxAbsoluteModeMain, "When checked, exponents/expressions directly calculate the actual interpolated\r\nv" +
-        "alues per parameter instead of manipulating their relative weighting");
+            this.toolTip1.SetToolTip(this.checkBoxAbsoluteModeMain, resources.GetString("checkBoxAbsoluteModeMain.ToolTip"));
             this.checkBoxAbsoluteModeMain.UseVisualStyleBackColor = true;
             this.checkBoxAbsoluteModeMain.CheckedChanged += new System.EventHandler(this.checkBoxAbsoluteModeMain_CheckedChanged);
             // 
