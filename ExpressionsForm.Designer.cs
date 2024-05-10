@@ -21,9 +21,9 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -47,6 +47,7 @@
             this.radioNoNormalizeClone = new System.Windows.Forms.RadioButton();
             this.radioNormalizeMaxRangesClone = new System.Windows.Forms.RadioButton();
             this.radioNormalizeExtendedRangesClone = new System.Windows.Forms.RadioButton();
+            this.checkBoxAbsoluteMode = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
@@ -60,14 +61,14 @@
             this.dataGridViewExpressions.AllowUserToDeleteRows = false;
             this.dataGridViewExpressions.AllowUserToResizeRows = false;
             this.dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewExpressions.Location = new System.Drawing.Point(9, 10);
             this.dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -106,18 +107,18 @@
             // 
             // chartCurve
             // 
-            chartArea5.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea5.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea5.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea5);
+            chartArea2.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea2.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea2.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea2);
             this.chartCurve.Location = new System.Drawing.Point(371, 78);
             this.chartCurve.Name = "chartCurve";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series5.MarkerSize = 7;
-            series5.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series5.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series5);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.MarkerSize = 7;
+            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series2.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series2);
             this.chartCurve.Size = new System.Drawing.Size(513, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -177,6 +178,7 @@
             0,
             0,
             0});
+            this.nudGraphConstantFrameCount.ValueChanged += new System.EventHandler(this.nudGraphConstantFrameCount_ValueChanged);
             // 
             // checkBoxAutoUpdateGraph
             // 
@@ -350,11 +352,23 @@
             this.radioNormalizeExtendedRangesClone.UseVisualStyleBackColor = true;
             this.radioNormalizeExtendedRangesClone.CheckedChanged += new System.EventHandler(this.radioNormalizeExtendedRangesClone_CheckedChanged);
             // 
+            // checkBoxAbsoluteMode
+            // 
+            this.checkBoxAbsoluteMode.AutoSize = true;
+            this.checkBoxAbsoluteMode.Location = new System.Drawing.Point(371, 601);
+            this.checkBoxAbsoluteMode.Name = "checkBoxAbsoluteMode";
+            this.checkBoxAbsoluteMode.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxAbsoluteMode.TabIndex = 46;
+            this.checkBoxAbsoluteMode.Text = "Absolute Mode";
+            this.checkBoxAbsoluteMode.UseVisualStyleBackColor = true;
+            this.checkBoxAbsoluteMode.CheckedChanged += new System.EventHandler(this.checkBoxAbsoluteMode_CheckedChanged);
+            // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 744);
+            this.Controls.Add(this.checkBoxAbsoluteMode);
             this.Controls.Add(this.groupBoxNormalizeRadiosClone);
             this.Controls.Add(this.labelErrorWhileGraphing);
             this.Controls.Add(this.btnExampleCosine);
@@ -413,5 +427,6 @@
         private System.Windows.Forms.RadioButton radioNoNormalizeClone;
         private System.Windows.Forms.RadioButton radioNormalizeMaxRangesClone;
         private System.Windows.Forms.RadioButton radioNormalizeExtendedRangesClone;
+        private System.Windows.Forms.CheckBox checkBoxAbsoluteMode;
     }
 }

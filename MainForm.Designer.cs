@@ -77,6 +77,7 @@
             this.groupBoxNormalizeRadios = new System.Windows.Forms.GroupBox();
             this.btnShowExpressionForm = new System.Windows.Forms.Button();
             this.TestButton1 = new System.Windows.Forms.Button();
+            this.checkBoxAbsoluteModeMain = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -330,7 +331,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(15, 399);
+            this.btnStart.Location = new System.Drawing.Point(15, 418);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(100, 30);
             this.btnStart.TabIndex = 17;
@@ -340,7 +341,7 @@
             // 
             // btnViewOutputDirectory
             // 
-            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 422);
+            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 441);
             this.btnViewOutputDirectory.Name = "btnViewOutputDirectory";
             this.btnViewOutputDirectory.Size = new System.Drawing.Size(130, 30);
             this.btnViewOutputDirectory.TabIndex = 18;
@@ -350,7 +351,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(15, 399);
+            this.btnCancel.Location = new System.Drawing.Point(15, 418);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 30);
             this.btnCancel.TabIndex = 19;
@@ -451,7 +452,7 @@
             // 
             this.btnShowParamNames.BackColor = System.Drawing.Color.SkyBlue;
             this.btnShowParamNames.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowParamNames.Location = new System.Drawing.Point(273, 375);
+            this.btnShowParamNames.Location = new System.Drawing.Point(273, 394);
             this.btnShowParamNames.Name = "btnShowParamNames";
             this.btnShowParamNames.Size = new System.Drawing.Size(130, 22);
             this.btnShowParamNames.TabIndex = 27;
@@ -472,7 +473,7 @@
             // TextLabelNearStartButton
             // 
             this.TextLabelNearStartButton.AutoSize = true;
-            this.TextLabelNearStartButton.Location = new System.Drawing.Point(121, 399);
+            this.TextLabelNearStartButton.Location = new System.Drawing.Point(121, 418);
             this.TextLabelNearStartButton.Name = "TextLabelNearStartButton";
             this.TextLabelNearStartButton.Size = new System.Drawing.Size(37, 13);
             this.TextLabelNearStartButton.TabIndex = 30;
@@ -590,6 +591,7 @@
             // 
             // groupBoxNormalizeRadios
             // 
+            this.groupBoxNormalizeRadios.Controls.Add(this.checkBoxAbsoluteModeMain);
             this.groupBoxNormalizeRadios.Controls.Add(this.radioNormalizeStartEnd);
             this.groupBoxNormalizeRadios.Controls.Add(this.radioNoNormalize);
             this.groupBoxNormalizeRadios.Controls.Add(this.radioNormalizeMaxRanges);
@@ -598,7 +600,7 @@
             this.groupBoxNormalizeRadios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBoxNormalizeRadios.Location = new System.Drawing.Point(228, 292);
             this.groupBoxNormalizeRadios.Name = "groupBoxNormalizeRadios";
-            this.groupBoxNormalizeRadios.Size = new System.Drawing.Size(175, 79);
+            this.groupBoxNormalizeRadios.Size = new System.Drawing.Size(175, 100);
             this.groupBoxNormalizeRadios.TabIndex = 44;
             this.groupBoxNormalizeRadios.TabStop = false;
             // 
@@ -606,7 +608,7 @@
             // 
             this.btnShowExpressionForm.BackColor = System.Drawing.Color.LightCoral;
             this.btnShowExpressionForm.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowExpressionForm.Location = new System.Drawing.Point(273, 399);
+            this.btnShowExpressionForm.Location = new System.Drawing.Point(273, 418);
             this.btnShowExpressionForm.Name = "btnShowExpressionForm";
             this.btnShowExpressionForm.Size = new System.Drawing.Size(130, 23);
             this.btnShowExpressionForm.TabIndex = 45;
@@ -616,7 +618,7 @@
             // 
             // TestButton1
             // 
-            this.TestButton1.Location = new System.Drawing.Point(3, 435);
+            this.TestButton1.Location = new System.Drawing.Point(217, 449);
             this.TestButton1.Name = "TestButton1";
             this.TestButton1.Size = new System.Drawing.Size(26, 23);
             this.TestButton1.TabIndex = 31;
@@ -625,11 +627,22 @@
             this.TestButton1.Visible = false;
             this.TestButton1.Click += new System.EventHandler(this.TestButton1_Click);
             // 
+            // checkBoxAbsoluteModeMain
+            // 
+            this.checkBoxAbsoluteModeMain.AutoSize = true;
+            this.checkBoxAbsoluteModeMain.Location = new System.Drawing.Point(71, 77);
+            this.checkBoxAbsoluteModeMain.Name = "checkBoxAbsoluteModeMain";
+            this.checkBoxAbsoluteModeMain.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxAbsoluteModeMain.TabIndex = 46;
+            this.checkBoxAbsoluteModeMain.Text = "Absolute Mode";
+            this.checkBoxAbsoluteModeMain.UseVisualStyleBackColor = true;
+            this.checkBoxAbsoluteModeMain.CheckedChanged += new System.EventHandler(this.checkBoxAbsoluteModeMain_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 458);
+            this.ClientSize = new System.Drawing.Size(410, 484);
             this.Controls.Add(this.btnShowExpressionForm);
             this.Controls.Add(this.checkBoxLogOnly);
             this.Controls.Add(this.infoIconUseSameDirectory);
@@ -746,5 +759,6 @@
         private System.Windows.Forms.GroupBox groupBoxNormalizeRadios;
         private System.Windows.Forms.Button btnShowExpressionForm;
         private System.Windows.Forms.Button TestButton1;
+        private System.Windows.Forms.CheckBox checkBoxAbsoluteModeMain;
     }
 }

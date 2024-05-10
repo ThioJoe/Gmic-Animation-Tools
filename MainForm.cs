@@ -234,6 +234,18 @@ namespace DrosteEffectApp
             }
         }
 
+        public bool AbsoluteModeCheckBoxChangeSetter
+        {
+            get
+            {
+                return checkBoxAbsoluteModeMain.Checked;
+            }
+            set
+            {
+                checkBoxAbsoluteModeMain.Checked = value;
+            }
+        }
+
         public string NormalizersChangeSetter
         {
             set
@@ -345,6 +357,7 @@ namespace DrosteEffectApp
 
             // Determine the exponent mode and set up the exponents array based on user selections.
             string exponentMode = null;
+            bool absoluteMode = false;
             // Set exponents array to the default array to start
             string[] exponents = Array.ConvertAll(defaultExponents, x => x.ToString());
             string masterExponentStr = "?";
@@ -358,7 +371,7 @@ namespace DrosteEffectApp
             else if (rbMasterExponent.Checked)
             {
                 exponentialIncrements = true;
-                var (isValid, reason) = IsValidMathExpression(txtMasterExponent.Text);
+                var (isValid, reason) = IsValidMathExpression(txtMasterExponent.Text, absoluteMode: checkBoxAbsoluteModeMain.Checked);
 
                 if (double.TryParse(txtMasterExponent.Text, out _) || isValid)
                 {
@@ -366,6 +379,7 @@ namespace DrosteEffectApp
                     exponents[masterParamIndexAtTimeOfClick] = txtMasterExponent.Text;
                     exponentMode = "custom-master";
                     masterExponentStr = txtMasterExponent.Text;
+                    absoluteMode = checkBoxAbsoluteModeMain.Checked; // Absolute mode is only relevant in custom array mode or custom master mode
                 }
                 else if (!string.IsNullOrEmpty(txtMasterExponent.Text) && !isValid)
                 {
@@ -410,7 +424,7 @@ namespace DrosteEffectApp
                         {
                             // Track invalid values and alert user at end of all of them, if any
                             // Test expression with sample values 
-                            var (isValid, reason) = IsValidMathExpression(exponents[i]);
+                            var (isValid, reason) = IsValidMathExpression(exponents[i], absoluteMode: checkBoxAbsoluteModeMain.Checked);
                             if (!double.TryParse(exponents[i], out _) && !isValid)
                             {
                                 invalidValues.Add(new List<string> { (i + 1).ToString(), exponents[i], $"Reason: {reason}"});
@@ -428,6 +442,7 @@ namespace DrosteEffectApp
                             return;
                         }
                         exponentMode = "custom-array";
+                        absoluteMode = checkBoxAbsoluteModeMain.Checked; // Absolute mode is only relevant in custom array mode or custom master mode
                     }
                     else
                     {
@@ -447,7 +462,7 @@ namespace DrosteEffectApp
 
             // Calculate interpolated parameter values for each frame using the selected interpolation method.
             // Note - Master parameter is not passed in because it should just be set in the array, then the function will pull the value from the array
-            List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndexAtTimeOfClick, masterParamIncrementAtTimeOfClick, exponents, exponentMode);
+            List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndexAtTimeOfClick, masterParamIncrementAtTimeOfClick, exponents, exponentMode, absoluteMode: absoluteMode);
 
             // Decide frame starting number
             int frameNumberStart = 1;
@@ -623,7 +638,7 @@ namespace DrosteEffectApp
         }
 
         // Create getter to use the InterpolateValues function in the MainForm class from the ExpressionsForm class
-        public List<string> GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount)
+        public List<string> GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false)
         {
             // Use data from this form to interpolate values
             double[] startValues = ParseParamsToArray(txtStartParams.Text);
@@ -656,12 +671,12 @@ namespace DrosteEffectApp
             // Always use custom-master mode for this function because the calling function will send in a full array with only the master parameter expression set
             string exponentMode = "custom-master";
 
-            return InterpolateValues(startValues, endValues, totalFrames, masterParamIndex, (int)nudMasterParamIncrement.Value, allExpressionsList, exponentMode, masterParamOnly: true);
+            return InterpolateValues(startValues, endValues, totalFrames, masterParamIndex, (int)nudMasterParamIncrement.Value, allExpressionsList, exponentMode, masterParamOnly: true, absoluteMode: absoluteMode);
         }
 
         // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.
         // Returns a list of strings representing the interpolated parameter values for each frame.
-        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode,bool masterParamOnly = false)
+        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode,bool masterParamOnly = false, bool absoluteMode = false)
         {
             double[] originalStartValues = startValues;
             double[] originalEndValues = endValues;
@@ -695,6 +710,16 @@ namespace DrosteEffectApp
                     // Create variable to hold error if any
                     string evalErrorString = null;
 
+                    // If absolute mode is enabled but exponent mode is not custom array or custom master, set change it to custom array
+                    // This would only be if the graph is calling it so it doesn't really matter exponent mode is set
+                    if (absoluteMode)
+                    { 
+                        if (exponentMode != "custom-array" && exponentMode != "custom-master")
+                        {
+                            exponentMode = "custom-array";
+                        }
+                    }
+
                     // Decide the interpolation method for the current individual parameter based on the mode set.
                     switch (exponentMode)
                     {
@@ -702,10 +727,10 @@ namespace DrosteEffectApp
                         case "custom-master":
                             if (i == masterIndex)
                             {
-                                if (exponents[i].Contains("t"))
+                                if (exponents[i].Contains("t") || (absoluteMode && exponents[i].Contains("x")))
                                 {
                                     // Evaluate the formula using the normalized time value
-                                    (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i]);
+                                    (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i], absoluteMode: absoluteMode, frameNum: frame);
                                     // Add to indexes using expressions
                                     exponentsUsingExpressions.Add(i);
                                 }
@@ -725,10 +750,10 @@ namespace DrosteEffectApp
 
                         // If the user has specified a custom array of exponents for all parameters and exponential increments are enabled.
                         case "custom-array":
-                            if (exponents[i].Contains("t"))
+                            if (exponents[i].Contains("t") || (absoluteMode && exponents[i].Contains("x")))
                             {
                                 // Evaluate the formula using the normalized time value
-                                (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i]);
+                                (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i], absoluteMode: absoluteMode, frameNum: frame);
                                 exponentsUsingExpressions.Add(i);
                             }
                             else
@@ -781,7 +806,7 @@ namespace DrosteEffectApp
             }
 
             // If an exponent mode is being used, normalize and scale the interpolated values for each frame.
-            if (exponentMode == "custom-array" || exponentMode == "custom-master")
+            if ((exponentMode == "custom-array" || exponentMode == "custom-master") && !absoluteMode)
             {
                 double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, 31];
                 // Normalize and scale the interpolated values for each frame.
@@ -940,7 +965,7 @@ namespace DrosteEffectApp
             // Add more constants as needed
         };
 
-        public (double interpolatedValue, string errorString) EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue, bool normalize = true, bool testing=false)
+        public (double interpolatedValue, string errorString) EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue, bool normalize = true, bool testing=false, bool absoluteMode = false, int frameNum = 0)
         {
             try
             {
@@ -950,6 +975,12 @@ namespace DrosteEffectApp
                 // Add or update the specific variable 't' for this evaluation
                 //t is the normalized time value, which equals the current frame number divided by the total number of frames.
                 variables["t"] = t;  // This will add 't' or update its value if 't' is somehow already in the dictionary
+
+                // If absolute mode is enabled, 'x' is allowed as a variable to represent the frame number
+                if (absoluteMode)
+                {
+                    variables["x"] = frameNum;
+                }
                 
                 // Parse the formula as a symbolic expression
                 var expression = SymbolicExpression.Parse(formula);
@@ -960,15 +991,17 @@ namespace DrosteEffectApp
                 // Convert the result to a double
                 double weightingFactor = (double)substitutedExpression.RealValue;
 
-                // If checkBoxNormalizeValues is checked, normalize the weighting factor relative to t
-                //if (checkBoxNormalizeValues.Checked)
-                //{
-                //    weightingFactor = false ? weightingFactor : Math.Min(1, Math.Max(0, weightingFactor));
-
-                //}
-
-                // Calculate the interpolated value using the weighting factor
-                double interpolatedValue = startValue + (endValue - startValue) * weightingFactor;
+                double interpolatedValue = 0;
+                // If using absolute mode, the weight factor is the final value
+                if (absoluteMode)
+                {
+                    interpolatedValue = weightingFactor;
+                }
+                else
+                {
+                    // Calculate the interpolated value using the weighting factor
+                    interpolatedValue = startValue + (endValue - startValue) * weightingFactor;
+                }
 
                 return (interpolatedValue, null);
             }
@@ -980,10 +1013,10 @@ namespace DrosteEffectApp
 
 
 
-        public (bool IsValid, string Reason) IsValidMathExpression(string input, double testStart=1, double testEnd=10, double testTime = 0.50)
+        public (bool IsValid, string Reason) IsValidMathExpression(string input, double testStart=1, double testEnd=10, double testTime = 0.50, int testFrameNum = 10, bool absoluteMode = false)
         {
             // Check via MathNet.Symbolics if the input string is a valid mathematical expression
-            (double _, string errorString) = EvaluateFormulaWithSymbolics(formula: input, t: testTime, startValue: testStart, endValue: testEnd, testing: true);
+            (double _, string errorString) = EvaluateFormulaWithSymbolics(formula: input, t: testTime, startValue: testStart, endValue: testEnd, testing: true, frameNum: testFrameNum, absoluteMode: absoluteMode);
             // If no exception is thrown in other function, the expression is valid
             if (errorString == null)
             {
@@ -1922,22 +1955,48 @@ namespace DrosteEffectApp
 
         private void radioNormalizeStartEnd_CheckedChanged(object sender, EventArgs e)
         {
+            // Uncheck the absolute mode checkbox if this is checked
+            if (radioNormalizeStartEnd.Checked)
+            {
+                checkBoxAbsoluteModeMain.Checked = false;
+            }
             RefreshGraph();
         }
 
         private void radioNormalizeMaxRanges_CheckedChanged(object sender, EventArgs e)
         {
+            // Uncheck the absolute mode checkbox if this is checked
+            if (radioNormalizeMaxRanges.Checked)
+            {
+                checkBoxAbsoluteModeMain.Checked = false;
+            }
             RefreshGraph();
         }
 
         private void radioNormalizeExtendedRanges_CheckedChanged(object sender, EventArgs e)
         {
+            // Uncheck the absolute mode checkbox if this is checked
+            if (radioNormalizeExtendedRanges.Checked)
+            {
+                checkBoxAbsoluteModeMain.Checked = false;
+            }
             RefreshGraph();
         }
 
         private void radioNoNormalize_CheckedChanged(object sender, EventArgs e)
         {
             RefreshGraph();
+        }
+
+        private void checkBoxAbsoluteModeMain_CheckedChanged(object sender, EventArgs e)
+        {
+            // Change the radio button to no normalize
+            if (checkBoxAbsoluteModeMain.Checked)
+            {
+                radioNoNormalize.Checked = true;
+            }
+            RefreshGraph();
+        
         }
     }
 }

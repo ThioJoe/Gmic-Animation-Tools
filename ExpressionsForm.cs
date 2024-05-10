@@ -494,9 +494,26 @@ namespace GmicDrosteAnimate
                 frameCount = (int)nudGraphConstantFrameCount.Value;
             }
 
-            // Do some validation on the expression
-            // First ensure that if 't' is not in there, it's only a number value
-            if (!expressionToEvaluate.Contains("t"))
+            // Do some validation on the expression. If not t or x, ensure it's only a number value
+            // Additional variables allowed for absolute mode. Can allow x and t
+            if (checkBoxAbsoluteMode.Checked)
+            {
+                if (!expressionToEvaluate.Contains("t") && !expressionToEvaluate.Contains("x"))
+                {
+                    if (!double.TryParse(expressionToEvaluate, out double exponent))
+                    {
+                        if (!silent)
+                        {
+                            MessageBox.Show("The expression string must include the variable 't' or 'x' when using absolute mode. " +
+                                "Where t is normalized for time between 0 and 1, and x is the frame number.",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        labelErrorWhileGraphing.Visible = true;
+                        return;
+                    }
+                }
+            }
+            else if (!expressionToEvaluate.Contains("t"))
             {
                 if (!double.TryParse(expressionToEvaluate, out double exponent))
                 {
@@ -594,7 +611,10 @@ namespace GmicDrosteAnimate
                     }
                 }
 
-                interpolatedValuesPerFrameArray = mainForm.GetInterpolatedValuesForGraph(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount);
+                // Absolute mode enabled if the check box is checked. This forces the InterpolateValues function even if exponent mode isn't set to custom array or custom master
+                bool absoluteMode = checkBoxAbsoluteMode.Checked;
+
+                interpolatedValuesPerFrameArray = mainForm.GetInterpolatedValuesForGraph(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount, absoluteMode: absoluteMode);
 
                 double[] allFrameValuesForMasterParameter = new double[interpolatedValuesPerFrameArray.Count];
                 // Get the interpolated values for the master parameter
@@ -682,18 +702,33 @@ namespace GmicDrosteAnimate
 
         private void radioNormalizeStartEndClone_CheckedChanged(object sender, EventArgs e)
         {
+            // Uncheck the absolute mode checkbox if this is checked
+            if (radioNormalizeStartEndClone.Checked)
+            {
+                checkBoxAbsoluteMode.Checked = false;
+            }
             mainForm.NormalizersChangeSetter = "NormalizeStartEndClone";
             PlotGraph();
         }
 
         private void radioNormalizeMaxRangesClone_CheckedChanged(object sender, EventArgs e)
         {
+            // Uncheck the absolute mode checkbox if this is checked
+            if (radioNormalizeMaxRangesClone.Checked)
+            {
+                checkBoxAbsoluteMode.Checked = false;
+            }
             mainForm.NormalizersChangeSetter = "NormalizeMaxRanges";
             PlotGraph();
         }
 
         private void radioNormalizeExtendedRangesClone_CheckedChanged(object sender, EventArgs e)
         {
+            // Uncheck the absolute mode checkbox if this is checked
+            if (radioNormalizeExtendedRangesClone.Checked)
+            {
+                checkBoxAbsoluteMode.Checked = false;
+            }
             mainForm.NormalizersChangeSetter = "NormalizeExtendedRanges";
             PlotGraph();
         }
@@ -701,6 +736,23 @@ namespace GmicDrosteAnimate
         private void radioNoNormalizeClone_CheckedChanged(object sender, EventArgs e)
         {
             mainForm.NormalizersChangeSetter = "NoNormalize";
+            PlotGraph();
+        }
+
+        private void checkBoxAbsoluteMode_CheckedChanged(object sender, EventArgs e)
+        {
+            // Change the radio button to no normalize
+            if (checkBoxAbsoluteMode.Checked)
+            {
+                radioNoNormalizeClone.Checked = true;
+            }
+            mainForm.AbsoluteModeCheckBoxChangeSetter = checkBoxAbsoluteMode.Checked;
+            PlotGraph();
+
+        }
+
+        private void nudGraphConstantFrameCount_ValueChanged(object sender, EventArgs e)
+        {
             PlotGraph();
         }
     } //End form class
