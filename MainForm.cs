@@ -1988,7 +1988,10 @@ namespace DrosteEffectApp
             {
                 checkBoxAbsoluteModeMain.Checked = false;
                 ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
-                expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeStartEnd";
+                if (expressionForm != null)
+                {
+                    expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeStartEnd";
+                }
             }
             
             RefreshGraph();
@@ -2001,7 +2004,10 @@ namespace DrosteEffectApp
             {
                 checkBoxAbsoluteModeMain.Checked = false;
                 ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
-                expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeMaxRanges";
+                if (expressionForm != null)
+                {
+                    expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeMaxRanges";
+                }
             }
             RefreshGraph();
         }
@@ -2013,7 +2019,10 @@ namespace DrosteEffectApp
             {
                 checkBoxAbsoluteModeMain.Checked = false;
                 ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
-                expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeExtendedRanges";
+                if (expressionForm != null)
+                {
+                    expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeExtendedRanges";
+                }
             }
             RefreshGraph();
         }
@@ -2023,7 +2032,11 @@ namespace DrosteEffectApp
             if (radioNoNormalize.Checked)
             {
                 ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
-                expressionForm.NormalizersChangeSetterExpressionsForm = "NoNormalize";
+                if (expressionForm != null)
+                {
+                    expressionForm.NormalizersChangeSetterExpressionsForm = "NoNormalize";
+                }
+                
             }
             RefreshGraph();
         }
@@ -2037,7 +2050,10 @@ namespace DrosteEffectApp
             }
             // Update absolute mode checkbox on expressions form to keep in sync
             ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
-            expressionForm.AbsoluteModeCheckBoxChangeSetterExpressionsForm = checkBoxAbsoluteModeMain.Checked;
+            if (expressionForm != null)
+            {
+                expressionForm.AbsoluteModeCheckBoxChangeSetterExpressionsForm = checkBoxAbsoluteModeMain.Checked;
+            }
 
             RefreshGraph();
         
