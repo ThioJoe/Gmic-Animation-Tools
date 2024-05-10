@@ -21,8 +21,8 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -68,7 +68,7 @@
             this.txtCurrentExpressionParamString.Location = new System.Drawing.Point(12, 647);
             this.txtCurrentExpressionParamString.Name = "txtCurrentExpressionParamString";
             this.txtCurrentExpressionParamString.ReadOnly = true;
-            this.txtCurrentExpressionParamString.Size = new System.Drawing.Size(399, 20);
+            this.txtCurrentExpressionParamString.Size = new System.Drawing.Size(344, 20);
             this.txtCurrentExpressionParamString.TabIndex = 4;
             // 
             // btnSendExpressionsStringToMainWindow
@@ -83,16 +83,16 @@
             // 
             // chartCurve
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea4);
+            chartArea6.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea6);
             this.chartCurve.Location = new System.Drawing.Point(438, 12);
             this.chartCurve.Name = "chartCurve";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series4.MarkerSize = 7;
-            series4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series4.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series4);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series6.MarkerSize = 7;
+            series6.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series6.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series6);
             this.chartCurve.Size = new System.Drawing.Size(440, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -164,6 +164,7 @@
             this.checkBoxAutoUpdateGraph.TabIndex = 12;
             this.checkBoxAutoUpdateGraph.Text = "Auto Update Graph";
             this.checkBoxAutoUpdateGraph.UseVisualStyleBackColor = true;
+            this.checkBoxAutoUpdateGraph.CheckedChanged += new System.EventHandler(this.checkBoxAutoUpdateGraph_CheckedChanged);
             // 
             // nudMasterParamIndexClone
             // 

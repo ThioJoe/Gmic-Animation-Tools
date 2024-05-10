@@ -148,6 +148,11 @@ namespace DrosteEffectApp
                     txtStartParams.Text = value;
                     txtStartParams.ForeColor = Color.Black;  // Ensure it's treated as actual data
                 }
+                ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
+                if (expressionForm != null)
+                {
+                    expressionForm.TriggerGraphRefresh = true;
+                }
                 txtStartParams_TextChanged(null, null);
             } 
         }
@@ -169,6 +174,11 @@ namespace DrosteEffectApp
                 {
                     txtEndParams.Text = value;
                     txtEndParams.ForeColor = Color.Black;  // Ensure it's treated as actual data
+                    ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
+                    if (expressionForm != null)
+                    {
+                        expressionForm.TriggerGraphRefresh = true;
+                    }
                 }
                 txtEndParams_TextChanged(null, null);
             }
@@ -1525,6 +1535,11 @@ namespace DrosteEffectApp
                         return;
                     }
                 }
+                ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
+                if (expressionForm != null)
+                {
+                    expressionForm.TriggerGraphRefresh = true;
+                }
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
@@ -1570,9 +1585,16 @@ namespace DrosteEffectApp
                         return;
                     }
                 }
+                ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
+                if (expressionForm != null)
+                {
+                    expressionForm.TriggerGraphRefresh = true;
+                }
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
+
+            
         }
 
         public static class PlaceholderManager
@@ -1624,7 +1646,6 @@ namespace DrosteEffectApp
             if (Application.OpenForms["ExpressionsForm"] != null)
             {
                 ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
-                //expressionForm.UpdateExpressionParamValues(txtExponentArray.Text, txtMasterExponent.Text, (int)nudMasterParamIndex.Value - 1);
                 expressionForm.UpdateMasterExponentIndex((int)nudMasterParamIndex.Value - 1);
             }
 

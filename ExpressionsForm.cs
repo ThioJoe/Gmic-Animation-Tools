@@ -87,6 +87,19 @@ namespace GmicDrosteAnimate
             control.Value = Math.Max(control.Minimum, Math.Min(value, control.Maximum));
         }
 
+        // Getter setter to trigger chart refresh
+        public bool TriggerGraphRefresh
+        {
+            get { return checkBoxAutoUpdateGraph.Checked; }
+            set
+            { 
+                if (checkBoxAutoUpdateGraph.Checked)
+                {
+                    btnChartValues_Click(null, null);
+                }
+            }
+        }
+
         private void InitializeDataGridView()
         {
             dataGridViewExpressions.Columns.Clear();
@@ -486,6 +499,11 @@ namespace GmicDrosteAnimate
                 {
                     series.Points.AddXY(i, valuesToGraph[i]);
                 }
+                // Set chart info - title, min axis, etc
+                // Set minimum axis values
+                chartCurve.ChartAreas[0].AxisX.Minimum = 0;
+                chartCurve.ChartAreas[0].AxisX.Title = "Frame Number";
+                chartCurve.ChartAreas[0].AxisY.Title = "Value";
             }
             catch (Exception ex)
             {
@@ -556,6 +574,14 @@ namespace GmicDrosteAnimate
         {
             // Send the new value to the numeric updown in the main form and trigger its event handler
             mainForm.MasterParamIndexNUDChange = nudMasterParamIndexClone.Value;
+        }
+
+        private void checkBoxAutoUpdateGraph_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxAutoUpdateGraph.Checked)
+            {
+                btnChartValues_Click(this, null);
+            }
         }
     } //End form class
 } // End namespace
