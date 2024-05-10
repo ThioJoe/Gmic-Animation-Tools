@@ -75,9 +75,9 @@
             this.radioNormalizeExtendedRanges = new System.Windows.Forms.RadioButton();
             this.radioNoNormalize = new System.Windows.Forms.RadioButton();
             this.groupBoxNormalizeRadios = new System.Windows.Forms.GroupBox();
+            this.checkBoxAbsoluteModeMain = new System.Windows.Forms.CheckBox();
             this.btnShowExpressionForm = new System.Windows.Forms.Button();
             this.TestButton1 = new System.Windows.Forms.Button();
-            this.checkBoxAbsoluteModeMain = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -604,6 +604,19 @@
             this.groupBoxNormalizeRadios.TabIndex = 44;
             this.groupBoxNormalizeRadios.TabStop = false;
             // 
+            // checkBoxAbsoluteModeMain
+            // 
+            this.checkBoxAbsoluteModeMain.AutoSize = true;
+            this.checkBoxAbsoluteModeMain.Location = new System.Drawing.Point(71, 77);
+            this.checkBoxAbsoluteModeMain.Name = "checkBoxAbsoluteModeMain";
+            this.checkBoxAbsoluteModeMain.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxAbsoluteModeMain.TabIndex = 46;
+            this.checkBoxAbsoluteModeMain.Text = "Absolute Mode";
+            this.toolTip1.SetToolTip(this.checkBoxAbsoluteModeMain, "When checked, exponents/expressions directly calculate the actual interpolated\r\nv" +
+        "alues per parameter instead of manipulating their relative weighting");
+            this.checkBoxAbsoluteModeMain.UseVisualStyleBackColor = true;
+            this.checkBoxAbsoluteModeMain.CheckedChanged += new System.EventHandler(this.checkBoxAbsoluteModeMain_CheckedChanged);
+            // 
             // btnShowExpressionForm
             // 
             this.btnShowExpressionForm.BackColor = System.Drawing.Color.LightCoral;
@@ -626,17 +639,6 @@
             this.TestButton1.UseVisualStyleBackColor = true;
             this.TestButton1.Visible = false;
             this.TestButton1.Click += new System.EventHandler(this.TestButton1_Click);
-            // 
-            // checkBoxAbsoluteModeMain
-            // 
-            this.checkBoxAbsoluteModeMain.AutoSize = true;
-            this.checkBoxAbsoluteModeMain.Location = new System.Drawing.Point(71, 77);
-            this.checkBoxAbsoluteModeMain.Name = "checkBoxAbsoluteModeMain";
-            this.checkBoxAbsoluteModeMain.Size = new System.Drawing.Size(97, 17);
-            this.checkBoxAbsoluteModeMain.TabIndex = 46;
-            this.checkBoxAbsoluteModeMain.Text = "Absolute Mode";
-            this.checkBoxAbsoluteModeMain.UseVisualStyleBackColor = true;
-            this.checkBoxAbsoluteModeMain.CheckedChanged += new System.EventHandler(this.checkBoxAbsoluteModeMain_CheckedChanged);
             // 
             // MainForm
             // 
