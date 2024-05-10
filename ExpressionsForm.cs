@@ -72,7 +72,7 @@ namespace GmicDrosteAnimate
             // Update graph
             if (checkBoxAutoUpdateGraph.Checked)
             {
-                btnChartValues_Click(this, null);
+                PlotGraph();
             }
 
 
@@ -95,7 +95,7 @@ namespace GmicDrosteAnimate
             { 
                 if (checkBoxAutoUpdateGraph.Checked)
                 {
-                    btnChartValues_Click(null, null);
+                    PlotGraph();
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace GmicDrosteAnimate
             // If checkbox to auto update graph is checked, update the graph
             if (checkBoxAutoUpdateGraph.Checked)
             {
-                btnChartValues_Click(this, null);
+                PlotGraph();
             }
         }
 
@@ -342,7 +342,7 @@ namespace GmicDrosteAnimate
                 }
                 if (checkBoxAutoUpdateGraph.Checked)
                 {
-                    btnChartValues_Click(this, null);
+                    PlotGraph();
                 }
             }
             // Update highlighting again
@@ -448,6 +448,12 @@ namespace GmicDrosteAnimate
         }
 
         private void btnChartValues_Click(object sender, EventArgs e)
+        {
+            PlotGraph();
+        }
+
+        // Function to plot graph from button or otherwise
+        public void PlotGraph()
         {
             //If the parameter to be graphed is binary, don't graph
             if (AppParameters.GetNonExponentableParamIndexes().Contains(masterParamIndexFromMainWindow))
@@ -567,7 +573,7 @@ namespace GmicDrosteAnimate
             // Refresh graph
             if (checkBoxAutoUpdateGraph.Checked)
             {
-                btnChartValues_Click(this, null);
+                PlotGraph();
             }
         }
 
@@ -581,7 +587,7 @@ namespace GmicDrosteAnimate
         {
             if (checkBoxAutoUpdateGraph.Checked)
             {
-                btnChartValues_Click(this, null);
+                PlotGraph();
             }
         }
 
