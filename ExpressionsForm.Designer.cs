@@ -45,6 +45,9 @@
             // 
             // dataGridViewExpressions
             // 
+            this.dataGridViewExpressions.AllowUserToAddRows = false;
+            this.dataGridViewExpressions.AllowUserToDeleteRows = false;
+            this.dataGridViewExpressions.AllowUserToResizeRows = false;
             this.dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewExpressions.Location = new System.Drawing.Point(9, 10);
             this.dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
@@ -124,9 +127,9 @@
             this.checkBoxKeepFramesConstant.AutoSize = true;
             this.checkBoxKeepFramesConstant.Location = new System.Drawing.Point(452, 415);
             this.checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
-            this.checkBoxKeepFramesConstant.Size = new System.Drawing.Size(153, 17);
+            this.checkBoxKeepFramesConstant.Size = new System.Drawing.Size(197, 17);
             this.checkBoxKeepFramesConstant.TabIndex = 10;
-            this.checkBoxKeepFramesConstant.Text = "Use Constant Frame Count";
+            this.checkBoxKeepFramesConstant.Text = "Preview With Constant Frame Count";
             this.checkBoxKeepFramesConstant.UseVisualStyleBackColor = true;
             this.checkBoxKeepFramesConstant.CheckedChanged += new System.EventHandler(this.checkBoxKeepFramesConstant_CheckedChanged);
             // 
@@ -134,7 +137,7 @@
             // 
             this.nudGraphConstantFrameCount.Enabled = false;
             this.nudGraphConstantFrameCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(611, 412);
+            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(655, 409);
             this.nudGraphConstantFrameCount.Maximum = new decimal(new int[] {
             1000000,
             0,

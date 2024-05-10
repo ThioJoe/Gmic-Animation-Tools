@@ -214,6 +214,10 @@ namespace GmicDrosteAnimate
                     dataGridViewExpressions.Rows[i].Cells["Expression"].ReadOnly = true;
                     //dataGridViewExpressions.Rows[i].Cells["Expression"].Style.BackColor = Color.LightGray;
                     //dataGridViewExpressions.Rows[i].Cells["ParameterName"].Style.ForeColor = Color.Gray;
+
+                    // Set font to smaller for row and row height smaller
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.Font = new Font("Arial", 7);
+                    dataGridViewExpressions.Rows[i].Height = 12;
                 }
             }
 
@@ -593,8 +597,9 @@ namespace GmicDrosteAnimate
                 "\n\nFor simple exponential expressions such as t^2 or t^0.5, you can simply enter that exponent ('5' or '0.5') instead of a full expression. " +
                 "\n\nNote that the expression technically applies to the weighting of the parameter values, not the values themselves. " +
                     "Behind the scenes, the value 't' goes from 0 to 1 depending on which frame out of the total you're on. " +
+                    "The graph does show the actual values that will be used in the final image though. " +
                 "\n\nTry some more complicated expressions including sin(t), cos(t), e^t + 2t, etc. Also try the various normalization options on the main window." +
-                "\n\nYou can even use mathematical constants such as pi and e in your expressions, such as sin(t*pi)" +
+                "\n\nYou can even use mathematical constants such as pi and e in your expressions, such as sin(t*2*pi)" +
                 "\n\nThe master parameter is highlighted in green and is the one that is graphed." +
                 "\n\nThe \"Use Above Values\" button will send the currently set exponents/expressions back to the main window to use. " +
                 "\n",
