@@ -36,17 +36,26 @@ public class ParameterInfo
 
 public static class FilterParameters
 {
-    public static List<ParameterInfo> Parameters { get; private set; }
+    public static List<ParameterInfo> Parameters { get; private set; } = new List<ParameterInfo>();
 
+    // Static initializer to set up default parameters
     static FilterParameters()
     {
-        InitializeParameterRanges();
+        LoadDefaultParameters("souphead_droste10");
     }
 
-    // Method to reinitialize or update parameters
-    public static void UpdateParameterRanges()
+
+    public static void LoadDefaultParameters(string filterName)
     {
-        InitializeParameterRanges();
+        switch (filterName)
+        {
+            case "souphead_droste10":
+                InitializeSoupheadDroste10();
+                break;
+            // Add cases for other filters
+            default:
+                throw new ArgumentException("Filter not recognized");
+        }
     }
 
     public static string GetParameterValuesAsString(string propertyName)
@@ -133,9 +142,12 @@ public static class FilterParameters
     // Some can seemingly have underscore or tilde prefixes, but I'm not sure what that means
     // Example: ~int, _int, ~float, ~choice, ~color, ~bool, _bool, others
 
+    // Method that automatically generates parameter info for a filter
 
-    private static void InitializeParameterRanges()
+    // Manually prepared parameter info for the Souphead Droste 10 filter
+    private static void InitializeSoupheadDroste10()
     {
+        Parameters.Clear();
         Parameters = new List<ParameterInfo>
         {
             new ParameterInfo(
