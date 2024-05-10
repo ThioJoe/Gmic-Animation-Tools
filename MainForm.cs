@@ -1524,9 +1524,18 @@ namespace DrosteEffectApp
 
         private int CalcTotalFrames(double masterStartValue, double masterEndValue, double masterIncrement)
         {
-            int totalFrames = (int)Math.Ceiling((Math.Abs(masterStartValue - masterEndValue)) / masterIncrement) + 1;
-            //nudTotalFrames.Value = totalFrames;
-            return totalFrames;
+            // If absolute mode is enabled, just return the total frames value directly
+            if (checkBoxAbsoluteModeMain.Checked)
+            {
+                return (int)nudTotalFrames.Value;
+            }
+            else 
+            {
+                int totalFrames = (int)Math.Ceiling((Math.Abs(masterStartValue - masterEndValue)) / masterIncrement) + 1;
+                //nudTotalFrames.Value = totalFrames;
+                return totalFrames;
+            }
+            
         }
 
         private void UpdateTotalFrames()
@@ -1546,7 +1555,7 @@ namespace DrosteEffectApp
                     double endValue = double.Parse(endParamsArray[(int)nudMasterParamIndex.Value - 1]);
                     double increment = (double)nudMasterParamIncrement.Value;
 
-                    int totalFrames = CalcTotalFrames(startValue, endValue, increment);
+                    int totalFrames = CalcTotalFrames(startValue, endValue, increment); // Is this even necessary if just getting from the NUD next anyway?
 
                     // Ensure increment will not cause total frames to go above its maximum value, if so set total frames to max and change increment accordingly
                     // Also check for negative because of overflow
@@ -1554,11 +1563,17 @@ namespace DrosteEffectApp
                     {
                         totalFrames = (int)nudTotalFrames.Value;
                         increment = Math.Abs(endValue - startValue) / (totalFrames - 1);
-                        //Disable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
-                        nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
-                        nudMasterParamIncrement.Value = (decimal)increment;
-                        //Re-enable the ValueChanged event of nudMasterParamIncrement
-                        nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+
+                        // If increment is zero at this point it means absolute mode is enabled, so total frames was set directly
+                        if (increment != 0)
+                        {
+                            //Disable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
+                            nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
+                            nudMasterParamIncrement.Value = (decimal)increment;
+                            //Re-enable the ValueChanged event of nudMasterParamIncrement
+                            nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+                        }
+                        
                     }
 
                     // Disable the ValueChanged event of nudTotalFrames so it doesn't create circular calls
@@ -1584,12 +1599,20 @@ namespace DrosteEffectApp
                 // Disable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
                 // Update decimal places to match the number of decimal places in the increment, but keep a minimum of 2 and maximum of 5
                 nudMasterParamIncrement.DecimalPlaces = Math.Min(Math.Max(2, increment.ToString().Length - increment.ToString().IndexOf('.') - 1), 5);
-                nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
-                nudMasterParamIncrement.Value = (decimal)increment;
-                // Re-enable the ValueChanged event of nudMasterParamIncrement
-                nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+
+                // If the increment would be zero, don't update anything - possibly the result of absolute mode where number of frames is directly set
+                if (increment == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
+                    nudMasterParamIncrement.Value = (decimal)increment;
+                    // Re-enable the ValueChanged event of nudMasterParamIncrement
+                    nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+                }
             }
-            
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -1767,13 +1790,22 @@ namespace DrosteEffectApp
                 double endValue = endValueArray[(int)nudMasterParamIndex.Value - 1];
 
                 // If difference between start and end values is zero, or both param strings invalid, disable the total frames and master increment boxes
-                if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text) && startValue != endValue)
+                // Unless absolute mode is enabled
+                if (checkBoxAbsoluteModeMain.Checked || (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text) && startValue != endValue))
                 {
                     // Update total frames and master increment
                     EnableFrameAndMasterParamBoxes();
 
                     UpdateTotalFrames();
-                    UpdateMasterParamIncrement();
+
+                    if (!checkBoxAbsoluteModeMain.Checked)
+                    {
+                        UpdateMasterParamIncrement();
+                    }
+                    else
+                    {
+                        nudMasterParamIncrement.Enabled = false;
+                    }
 
                     return;
                 }
@@ -2043,13 +2075,32 @@ namespace DrosteEffectApp
 
         private void checkBoxAbsoluteModeMain_CheckedChanged(object sender, EventArgs e)
         {
-            // Change the radio button to no normalize
+            ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
+            // Change the radio button to no normalize, also enable the total frames NUD and give it a value if it was disabled
             if (checkBoxAbsoluteModeMain.Checked)
             {
                 radioNoNormalize.Checked = true;
+                nudTotalFrames.Enabled = true;
+
+                // Check if expressions window is open and the constant frames NUD is enabled, if so use that value, otherwise use 50
+                if (expressionForm != null && expressionForm.nudGraphConstantFrameCountGetterSetter != 0)
+                {
+                    nudTotalFrames.Value = expressionForm.nudGraphConstantFrameCountGetterSetter;
+                }
+                else
+                {
+                    nudTotalFrames.Value = 50;
+                }
+
+                // Disable the increment NUD
+                nudMasterParamIncrement.Enabled = false;
+            }
+            else
+            {
+                //Trigger the text parameter change event to update the total frames and master increment
+                txtStartParams_TextChanged(null, null);
             }
             // Update absolute mode checkbox on expressions form to keep in sync
-            ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
             if (expressionForm != null)
             {
                 expressionForm.AbsoluteModeCheckBoxChangeSetterExpressionsForm = checkBoxAbsoluteModeMain.Checked;

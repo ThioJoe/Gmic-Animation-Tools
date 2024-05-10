@@ -143,6 +143,25 @@ namespace GmicDrosteAnimate
             }
         }
 
+        public decimal nudGraphConstantFrameCountGetterSetter
+        {
+            get
+            {
+                if (nudGraphConstantFrameCount.Enabled)
+                {
+                    return nudGraphConstantFrameCount.Value;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+                nudGraphConstantFrameCount.Value = value;
+            }
+        }
+
         private void InitializeDataGridView()
         {
             dataGridViewExpressions.Columns.Clear();
@@ -517,6 +536,13 @@ namespace GmicDrosteAnimate
             {
                 return;
             }
+
+            // If cell value is null, return
+            if (dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value == null)
+            {
+                return;
+            }
+
             // Get the expression to evaluate from the master parameter text box
             string expressionToEvaluate = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
 
