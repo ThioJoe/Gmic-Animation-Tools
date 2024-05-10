@@ -655,5 +655,29 @@ namespace GmicDrosteAnimate
         {
             dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "cos(3*pi*t)";
         }
+
+        private void radioNormalizeStartEndClone_CheckedChanged(object sender, EventArgs e)
+        {
+            mainForm.NormalizersChangeSetter = "NormalizeStartEndClone";
+            PlotGraph();
+        }
+
+        private void radioNormalizeMaxRangesClone_CheckedChanged(object sender, EventArgs e)
+        {
+            mainForm.NormalizersChangeSetter = "NormalizeMaxRanges";
+            PlotGraph();
+        }
+
+        private void radioNormalizeExtendedRangesClone_CheckedChanged(object sender, EventArgs e)
+        {
+            mainForm.NormalizersChangeSetter = "NormalizeExtendedRanges";
+            PlotGraph();
+        }
+
+        private void radioNoNormalizeClone_CheckedChanged(object sender, EventArgs e)
+        {
+            mainForm.NormalizersChangeSetter = "NoNormalize";
+            PlotGraph();
+        }
     } //End form class
 } // End namespace

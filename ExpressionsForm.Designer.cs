@@ -21,9 +21,9 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -42,10 +42,16 @@
             this.labelExampleExpressionButtons = new System.Windows.Forms.Label();
             this.btnExampleCosine = new System.Windows.Forms.Button();
             this.labelErrorWhileGraphing = new System.Windows.Forms.Label();
+            this.groupBoxNormalizeRadiosClone = new System.Windows.Forms.GroupBox();
+            this.radioNormalizeStartEndClone = new System.Windows.Forms.RadioButton();
+            this.radioNoNormalizeClone = new System.Windows.Forms.RadioButton();
+            this.radioNormalizeMaxRangesClone = new System.Windows.Forms.RadioButton();
+            this.radioNormalizeExtendedRangesClone = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndexClone)).BeginInit();
+            this.groupBoxNormalizeRadiosClone.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridViewExpressions
@@ -54,14 +60,14 @@
             this.dataGridViewExpressions.AllowUserToDeleteRows = false;
             this.dataGridViewExpressions.AllowUserToResizeRows = false;
             this.dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridViewExpressions.Location = new System.Drawing.Point(9, 10);
             this.dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -100,18 +106,18 @@
             // 
             // chartCurve
             // 
-            chartArea2.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea2.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea2.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea2);
+            chartArea5.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea5.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea5.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea5);
             this.chartCurve.Location = new System.Drawing.Point(371, 78);
             this.chartCurve.Name = "chartCurve";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series2.MarkerSize = 7;
-            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series2.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series2);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series5.MarkerSize = 7;
+            series5.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series5.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series5);
             this.chartCurve.Size = new System.Drawing.Size(513, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -243,7 +249,7 @@
             // btnExampleSine
             // 
             this.btnExampleSine.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExampleSine.Location = new System.Drawing.Point(439, 548);
+            this.btnExampleSine.Location = new System.Drawing.Point(578, 538);
             this.btnExampleSine.Name = "btnExampleSine";
             this.btnExampleSine.Size = new System.Drawing.Size(129, 38);
             this.btnExampleSine.TabIndex = 17;
@@ -255,7 +261,7 @@
             // 
             this.labelExampleExpressionButtons.AutoSize = true;
             this.labelExampleExpressionButtons.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelExampleExpressionButtons.Location = new System.Drawing.Point(506, 506);
+            this.labelExampleExpressionButtons.Location = new System.Drawing.Point(617, 496);
             this.labelExampleExpressionButtons.Name = "labelExampleExpressionButtons";
             this.labelExampleExpressionButtons.Size = new System.Drawing.Size(216, 24);
             this.labelExampleExpressionButtons.TabIndex = 18;
@@ -264,7 +270,7 @@
             // btnExampleCosine
             // 
             this.btnExampleCosine.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExampleCosine.Location = new System.Drawing.Point(593, 548);
+            this.btnExampleCosine.Location = new System.Drawing.Point(732, 538);
             this.btnExampleCosine.Name = "btnExampleCosine";
             this.btnExampleCosine.Size = new System.Drawing.Size(129, 38);
             this.btnExampleCosine.TabIndex = 19;
@@ -284,11 +290,72 @@
             this.labelErrorWhileGraphing.Text = "Error While Graphing: Click graph preview button for details";
             this.labelErrorWhileGraphing.Visible = false;
             // 
+            // groupBoxNormalizeRadiosClone
+            // 
+            this.groupBoxNormalizeRadiosClone.Controls.Add(this.radioNormalizeStartEndClone);
+            this.groupBoxNormalizeRadiosClone.Controls.Add(this.radioNoNormalizeClone);
+            this.groupBoxNormalizeRadiosClone.Controls.Add(this.radioNormalizeMaxRangesClone);
+            this.groupBoxNormalizeRadiosClone.Controls.Add(this.radioNormalizeExtendedRangesClone);
+            this.groupBoxNormalizeRadiosClone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxNormalizeRadiosClone.Location = new System.Drawing.Point(371, 510);
+            this.groupBoxNormalizeRadiosClone.Name = "groupBoxNormalizeRadiosClone";
+            this.groupBoxNormalizeRadiosClone.Size = new System.Drawing.Size(175, 79);
+            this.groupBoxNormalizeRadiosClone.TabIndex = 45;
+            this.groupBoxNormalizeRadiosClone.TabStop = false;
+            // 
+            // radioNormalizeStartEndClone
+            // 
+            this.radioNormalizeStartEndClone.AutoSize = true;
+            this.radioNormalizeStartEndClone.Checked = true;
+            this.radioNormalizeStartEndClone.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.radioNormalizeStartEndClone.Location = new System.Drawing.Point(6, 10);
+            this.radioNormalizeStartEndClone.Name = "radioNormalizeStartEndClone";
+            this.radioNormalizeStartEndClone.Size = new System.Drawing.Size(153, 17);
+            this.radioNormalizeStartEndClone.TabIndex = 40;
+            this.radioNormalizeStartEndClone.TabStop = true;
+            this.radioNormalizeStartEndClone.Text = "Normalize Within Start/End";
+            this.radioNormalizeStartEndClone.UseVisualStyleBackColor = true;
+            this.radioNormalizeStartEndClone.CheckedChanged += new System.EventHandler(this.radioNormalizeStartEndClone_CheckedChanged);
+            // 
+            // radioNoNormalizeClone
+            // 
+            this.radioNoNormalizeClone.AutoSize = true;
+            this.radioNoNormalizeClone.Location = new System.Drawing.Point(6, 55);
+            this.radioNoNormalizeClone.Name = "radioNoNormalizeClone";
+            this.radioNoNormalizeClone.Size = new System.Drawing.Size(99, 17);
+            this.radioNoNormalizeClone.TabIndex = 43;
+            this.radioNoNormalizeClone.Text = "Don\'t Normalize";
+            this.radioNoNormalizeClone.UseVisualStyleBackColor = true;
+            this.radioNoNormalizeClone.CheckedChanged += new System.EventHandler(this.radioNoNormalizeClone_CheckedChanged);
+            // 
+            // radioNormalizeMaxRangesClone
+            // 
+            this.radioNormalizeMaxRangesClone.AutoSize = true;
+            this.radioNormalizeMaxRangesClone.Location = new System.Drawing.Point(6, 25);
+            this.radioNormalizeMaxRangesClone.Name = "radioNormalizeMaxRangesClone";
+            this.radioNormalizeMaxRangesClone.Size = new System.Drawing.Size(167, 17);
+            this.radioNormalizeMaxRangesClone.TabIndex = 41;
+            this.radioNormalizeMaxRangesClone.Text = "Normalize Within Max Ranges";
+            this.radioNormalizeMaxRangesClone.UseVisualStyleBackColor = true;
+            this.radioNormalizeMaxRangesClone.CheckedChanged += new System.EventHandler(this.radioNormalizeMaxRangesClone_CheckedChanged);
+            // 
+            // radioNormalizeExtendedRangesClone
+            // 
+            this.radioNormalizeExtendedRangesClone.AutoSize = true;
+            this.radioNormalizeExtendedRangesClone.Location = new System.Drawing.Point(6, 40);
+            this.radioNormalizeExtendedRangesClone.Name = "radioNormalizeExtendedRangesClone";
+            this.radioNormalizeExtendedRangesClone.Size = new System.Drawing.Size(159, 17);
+            this.radioNormalizeExtendedRangesClone.TabIndex = 42;
+            this.radioNormalizeExtendedRangesClone.Text = "Normalize Extended Ranges";
+            this.radioNormalizeExtendedRangesClone.UseVisualStyleBackColor = true;
+            this.radioNormalizeExtendedRangesClone.CheckedChanged += new System.EventHandler(this.radioNormalizeExtendedRangesClone_CheckedChanged);
+            // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 744);
+            this.Controls.Add(this.groupBoxNormalizeRadiosClone);
             this.Controls.Add(this.labelErrorWhileGraphing);
             this.Controls.Add(this.btnExampleCosine);
             this.Controls.Add(this.labelExampleExpressionButtons);
@@ -314,6 +381,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndexClone)).EndInit();
+            this.groupBoxNormalizeRadiosClone.ResumeLayout(false);
+            this.groupBoxNormalizeRadiosClone.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -339,5 +408,10 @@
         private System.Windows.Forms.Label labelExampleExpressionButtons;
         private System.Windows.Forms.Button btnExampleCosine;
         private System.Windows.Forms.Label labelErrorWhileGraphing;
+        private System.Windows.Forms.GroupBox groupBoxNormalizeRadiosClone;
+        private System.Windows.Forms.RadioButton radioNormalizeStartEndClone;
+        private System.Windows.Forms.RadioButton radioNoNormalizeClone;
+        private System.Windows.Forms.RadioButton radioNormalizeMaxRangesClone;
+        private System.Windows.Forms.RadioButton radioNormalizeExtendedRangesClone;
     }
 }

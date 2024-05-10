@@ -234,6 +234,33 @@ namespace DrosteEffectApp
             }
         }
 
+        public string NormalizersChangeSetter
+        {
+            set
+            {
+                if (value == "NormalizeStartEndClone")
+                {
+                    radioNormalizeStartEnd.Checked = true;
+                    radioNormalizeStartEnd_CheckedChanged(null, null);
+                }
+                else if (value == "NormalizeMaxRanges")
+                {
+                    radioNormalizeMaxRanges.Checked = true;
+                    radioNormalizeMaxRanges_CheckedChanged(null, null);
+                }
+                else if(value == "NormalizeExtendedRanges")
+                {
+                    radioNormalizeExtendedRanges.Checked = true;
+                    radioNormalizeExtendedRanges_CheckedChanged(null, null);
+                }
+                else if (value == "NoNormalize")
+                {
+                    radioNoNormalize.Checked = true;
+                    radioNoNormalize_CheckedChanged(null, null);
+                }
+            }
+        }
+
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -753,8 +780,8 @@ namespace DrosteEffectApp
                 //interpolatedValuesPerFrameStrings.Add(string.Join(",", currentValues));
             }
 
-            // If the normalization radio buttons are enabled as a result of an exponent/expression mode being selected, normalize the interpolated values using radio setting
-            if (groupBoxNormalizeRadios.Enabled)
+            // If an exponent mode is being used, normalize and scale the interpolated values for each frame.
+            if (exponentMode == "custom-array" || exponentMode == "custom-master")
             {
                 double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, 31];
                 // Normalize and scale the interpolated values for each frame.
@@ -1852,6 +1879,10 @@ namespace DrosteEffectApp
 
             if (expressionForm == null)
             {
+                // First set exponent mode to custom array
+                rbCustomExponents.Checked = true;
+                rbCustomExponents_CheckedChanged(null, null);
+
                 // Form is not open, create and show it
                 expressionForm = new ExpressionsForm(
                     mainform: this,
