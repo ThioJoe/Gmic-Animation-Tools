@@ -28,6 +28,9 @@ namespace GmicDrosteAnimate
         // Get parameter names from AppParameters
         private string[] paramNames = AppParameters.GetParameterNamesList();
 
+        //Parameter count
+        private int filterParameterCount = AppParameters.GetParameterCount();
+
         public ExpressionsForm(MainForm mainform, string incomingExpressionParamString, int incomingMasterParamIndex, string incomingMasterParamExpression)
         {
             InitializeComponent();
@@ -356,7 +359,7 @@ namespace GmicDrosteAnimate
             // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
             else
             {
-                if (dataGridViewExpressions.Rows.Count == 31)
+                if (dataGridViewExpressions.Rows.Count == filterParameterCount)
                 {
                     string[] expressionParamValuesFromGrid = ValuesFromDataTable(dataGridView: dataGridViewExpressions, columnName: "Expression");
                     // If a value is for a binary parameter, set it to 1
@@ -429,7 +432,7 @@ namespace GmicDrosteAnimate
             string[] expressions = new string[dataGridViewExpressions.Rows.Count];
 
             // Ensure the grids have all the values
-            if (expressions.Length == 31)
+            if (expressions.Length == filterParameterCount)
             {
                 for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
                 {
@@ -673,8 +676,8 @@ namespace GmicDrosteAnimate
             if (mainForm != null)
             {
                 // Send an array with 1 for everything except the master parameter's expression
-                string[] expressionsArray = new string[31];
-                for (int i = 0; i < 31; i++)
+                string[] expressionsArray = new string[filterParameterCount];
+                for (int i = 0; i < filterParameterCount; i++)
                 {
                     if (i == masterParamIndex)
                     {

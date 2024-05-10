@@ -124,6 +124,12 @@ public static class AppParameters
         return nonExponentableIndexes;
     }
 
+    public static int GetParameterCount()
+    {
+        return Parameters.Count;
+    }
+
+
     private static void InitializeParameterRanges()
     {
         Parameters = new List<ParameterInfo>

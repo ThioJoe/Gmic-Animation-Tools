@@ -47,7 +47,9 @@ namespace DrosteEffectApp
 
         // Setting a default array of exponents for use with exponential interpolation if no custom array is provided.
         // These are arbitrarily chosen values based on experience.
-        private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+        //private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+        // Get default values from AppParameters ParameterInfo class defaultStart value
+        private double[] defaultExponents = AppParameters.GetParameterValuesAsList("DefaultStart");
 
         // Default values for the start and end parameters to be displayed as placeholders in the textboxes and if user opens parameters info window without entering any values
         //private string defaultStartParams = "34,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
@@ -97,7 +99,7 @@ namespace DrosteEffectApp
             createGif = false;
 
             // Parameter Count
-            filterParameterCount = 31;
+            filterParameterCount = AppParameters.GetParameterCount();
 
             // Start with totalframes box and master increment box read only
             nudTotalFrames.Enabled = false;
@@ -677,11 +679,13 @@ namespace DrosteEffectApp
             // If the start and end values are null, just set them to 1 and 100 as general case
             if (startValues == null || endValues == null)
             {
-                for (int i = 0; i < 30; i++)
+                // Only go to one less than the filter because add the last one separately
+                for (int i = 0; i < (filterParameterCount-1); i++)
                 {
                     startParams += "1,";
                     endParams += "100,";
                 }
+                // Add the last one without a comma
                 startParams += "1";
                 endParams += "100";
             }

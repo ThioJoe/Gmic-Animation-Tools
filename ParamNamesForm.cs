@@ -16,18 +16,17 @@ namespace GmicDrosteAnimate
 {
     public partial class ParamNamesForm : Form
     {
-        private static string[] paramNames = {
-            "Inner Radius", "Outer Radius", "Periodicity", "Strands", "Zoom",
-            "Rotate", "X-Shift", "Y-Shift", "Center X-Shift", "Center Y-Shift",
-            "Starting Level", "Number of Levels", "Level Frequency", "Show Both Poles",
-            "Pole Rotation", "Pole Long", "Pole Lat", "Tile Poles", "Hyper Droste",
-            "Fractal Points", "Auto-Set Periodicity", "No Transparency", "External Transparency",
-            "Mirror Effect", "Untwist", "No Flatten Transparency", "Show Grid",
-            "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
-        };
+        //private static string[] paramNames = {
+        //    "Inner Radius", "Outer Radius", "Periodicity", "Strands", "Zoom",
+        //    "Rotate", "X-Shift", "Y-Shift", "Center X-Shift", "Center Y-Shift",
+        //    "Starting Level", "Number of Levels", "Level Frequency", "Show Both Poles",
+        //    "Pole Rotation", "Pole Long", "Pole Lat", "Tile Poles", "Hyper Droste",
+        //    "Fractal Points", "Auto-Set Periodicity", "No Transparency", "External Transparency",
+        //    "Mirror Effect", "Untwist", "No Flatten Transparency", "Show Grid",
+        //    "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
+        //};
 
-        // Parameters that are either on or off
-        private static int[] binaryParamIndexes = { 13, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
+        private static string[] paramNames = AppParameters.GetParameterNamesList();
 
         private MainForm mainForm;
         private double[] startParamValuesFromMainWindow;
@@ -35,6 +34,8 @@ namespace GmicDrosteAnimate
         private int masterParamIndexFromMainWindow;
         private static readonly Random random = new Random();
 
+        //Parameter count
+        private int filterParameterCount = AppParameters.GetParameterCount();
 
         //Global checkbox for whether to sync with other window
         public bool syncWithOtherWindow = true;
@@ -142,7 +143,7 @@ namespace GmicDrosteAnimate
             double[] endParamValues = new double[dataGridView1.Rows.Count];
 
             // Ensure the grids have all the values
-            if (startParamValues.Length == 31 && endParamValues.Length == 31)
+            if (startParamValues.Length == filterParameterCount && endParamValues.Length == filterParameterCount)
             {
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
@@ -281,7 +282,7 @@ namespace GmicDrosteAnimate
             // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
             else
             {
-                if (dataGridView1.Rows.Count == 31)
+                if (dataGridView1.Rows.Count == filterParameterCount)
                 {
                     double[] startParamValuesFromGrid = ValuesFromDataTable(dataGridView1, "Start");
                     txtCurrentStartParamString.Text = string.Join(",", startParamValuesFromGrid);
@@ -299,7 +300,7 @@ namespace GmicDrosteAnimate
             // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
             else
             {
-                if (dataGridView1.Rows.Count == 31)
+                if (dataGridView1.Rows.Count == filterParameterCount)
                 {
                     double[] endParamValuesFromGrid = ValuesFromDataTable(dataGridView1, "End");
                     txtCurrentEndParamString.Text = string.Join(",", endParamValuesFromGrid);
