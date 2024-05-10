@@ -1239,6 +1239,7 @@ namespace DrosteEffectApp
         {
             txtMasterExponent.Enabled = false;
             txtExponentArray.Enabled = false;
+            RefreshGraph();
         }
 
         private void rbMasterExponent_CheckedChanged(object sender, EventArgs e)
@@ -1254,12 +1255,14 @@ namespace DrosteEffectApp
             {
                 groupBoxNormalizeRadios.Enabled = true;
             }
+            RefreshGraph();
         }
 
         private void rbDefaultExponents_CheckedChanged(object sender, EventArgs e)
         {
             txtMasterExponent.Enabled = false;
             txtExponentArray.Enabled = false;
+            RefreshGraph();
         }
 
         private void rbCustomExponents_CheckedChanged(object sender, EventArgs e)
@@ -1276,6 +1279,7 @@ namespace DrosteEffectApp
             {
                 groupBoxNormalizeRadios.Enabled = true;
             }
+            RefreshGraph();
         }
 
         private void chkCreateGif_CheckedChanged(object sender, EventArgs e)
