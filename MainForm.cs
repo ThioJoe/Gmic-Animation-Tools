@@ -604,7 +604,7 @@ namespace DrosteEffectApp
         }
 
         // Create getter to use the InterpolateValues function in the MainForm class from the ExpressionsForm class
-        public List<string> GetInterpolatedValues(int masterParamIndex, string[] allExpressionsList, int frameCount)
+        public List<string> GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount)
         {
             // Use data from this form to interpolate values
             double[] startValues = ParseParamsToArray(txtStartParams.Text);
@@ -637,12 +637,12 @@ namespace DrosteEffectApp
             // Always use custom-master mode for this function because the calling function will send in a full array with only the master parameter expression set
             string exponentMode = "custom-master";
 
-            return InterpolateValues(startValues, endValues, totalFrames, masterParamIndex, (int)nudMasterParamIncrement.Value, allExpressionsList, exponentMode);
+            return InterpolateValues(startValues, endValues, totalFrames, masterParamIndex, (int)nudMasterParamIncrement.Value, allExpressionsList, exponentMode, masterParamOnly: true);
         }
 
         // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.
         // Returns a list of strings representing the interpolated parameter values for each frame.
-        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode)
+        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode,bool masterParamOnly = false)
         {
             double[] originalStartValues = startValues;
             double[] originalEndValues = endValues;
@@ -662,6 +662,13 @@ namespace DrosteEffectApp
                 // Loop through each parameter to interpolate its value.
                 for (int i = 0; i < 31; i++)
                 {
+                    if (masterParamOnly && i != masterIndex)
+                    {
+                        // If only the master parameter is being interpolated, skip the rest.
+                        currentValues[i] = startValues[i];
+                        continue;
+                    }
+
                     // Initialize the current value with the start value of the parameter.
                     double currentValue = startValues[i];
                     // Calculate the normalized time value (t) for the current frame.
@@ -761,6 +768,12 @@ namespace DrosteEffectApp
                 // Normalize and scale the interpolated values for each frame.
                 for (int i = 0; i < 31; i++)
                 {
+                    // Skip if only master parameter is being interpolated and this is not the master parameter
+                    if (masterParamOnly && i != masterIndex)
+                    {
+                        continue;
+                    }
+
                     double[] allFrameValuesForSingleParam = new double[totalFrames];
                     for (int j = 0; j < totalFrames; j++)
                     {

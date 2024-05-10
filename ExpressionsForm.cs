@@ -531,7 +531,7 @@ namespace GmicDrosteAnimate
                     }
                 }
 
-                interpolatedValuesPerFrameArray = mainForm.GetInterpolatedValues(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount);
+                interpolatedValuesPerFrameArray = mainForm.GetInterpolatedValuesForGraph(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount);
 
                 double[] allFrameValuesForMasterParameter = new double[interpolatedValuesPerFrameArray.Count];
                 // Get the interpolated values for the master parameter
