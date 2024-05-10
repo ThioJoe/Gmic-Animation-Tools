@@ -2108,5 +2108,20 @@ namespace DrosteEffectApp
             RefreshGraph();
         
         }
+
+        private void btnParseTest_Click(object sender, EventArgs e)
+        {
+            // Get the path to your filter.gmic file
+            string gmicFileName = "Update336.gmic";
+            string outputFile = "Update336.json";
+
+            string[] lines = File.ReadAllLines(gmicFileName);
+            GmicFilterParser parser = new GmicFilterParser();
+            string jsonOutput = parser.ParseFiltersToJSON(lines);
+            //Console.WriteLine(jsonOutput);
+
+            File.WriteAllText(outputFile, jsonOutput);
+        }
+
     }
 }

@@ -29,6 +29,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+	<LangVersion>12.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,6 +41,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+	<LangVersion>12.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,6 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+	<LangVersion>12.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -57,7 +60,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>12.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
@@ -72,6 +75,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+	<LangVersion>12.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FParsec, Version=2.0.0.0, Culture=neutral, PublicKeyToken=40ccfc0a09edbb5d, processorArchitecture=MSIL">
@@ -91,6 +95,9 @@
     </Reference>
     <Reference Include="MathNet.Symbolics, Version=0.25.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MathNet.Symbolics.0.25.0\lib\net48\MathNet.Symbolics.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -126,6 +133,7 @@
     <Compile Include="ExpressionsForm.Designer.cs">
       <DependentUpon>ExpressionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GmicFilterParser.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

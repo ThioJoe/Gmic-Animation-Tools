@@ -61,6 +61,7 @@
             this.InfoIconLinearInterpolation = new System.Windows.Forms.PictureBox();
             this.InfoIconCreateGif = new System.Windows.Forms.PictureBox();
             this.infoIconUseSameDirectory = new System.Windows.Forms.PictureBox();
+            this.checkBoxAbsoluteModeMain = new System.Windows.Forms.CheckBox();
             this.btnShowParamNames = new System.Windows.Forms.Button();
             this.labelTotalFrames = new System.Windows.Forms.Label();
             this.TextLabelNearStartButton = new System.Windows.Forms.Label();
@@ -75,9 +76,9 @@
             this.radioNormalizeExtendedRanges = new System.Windows.Forms.RadioButton();
             this.radioNoNormalize = new System.Windows.Forms.RadioButton();
             this.groupBoxNormalizeRadios = new System.Windows.Forms.GroupBox();
-            this.checkBoxAbsoluteModeMain = new System.Windows.Forms.CheckBox();
             this.btnShowExpressionForm = new System.Windows.Forms.Button();
             this.TestButton1 = new System.Windows.Forms.Button();
+            this.btnParseTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -448,6 +449,18 @@
             this.infoIconUseSameDirectory.TabStop = false;
             this.toolTip1.SetToolTip(this.infoIconUseSameDirectory, resources.GetString("infoIconUseSameDirectory.ToolTip"));
             // 
+            // checkBoxAbsoluteModeMain
+            // 
+            this.checkBoxAbsoluteModeMain.AutoSize = true;
+            this.checkBoxAbsoluteModeMain.Location = new System.Drawing.Point(71, 77);
+            this.checkBoxAbsoluteModeMain.Name = "checkBoxAbsoluteModeMain";
+            this.checkBoxAbsoluteModeMain.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxAbsoluteModeMain.TabIndex = 46;
+            this.checkBoxAbsoluteModeMain.Text = "Absolute Mode";
+            this.toolTip1.SetToolTip(this.checkBoxAbsoluteModeMain, resources.GetString("checkBoxAbsoluteModeMain.ToolTip"));
+            this.checkBoxAbsoluteModeMain.UseVisualStyleBackColor = true;
+            this.checkBoxAbsoluteModeMain.CheckedChanged += new System.EventHandler(this.checkBoxAbsoluteModeMain_CheckedChanged);
+            // 
             // btnShowParamNames
             // 
             this.btnShowParamNames.BackColor = System.Drawing.Color.SkyBlue;
@@ -604,18 +617,6 @@
             this.groupBoxNormalizeRadios.TabIndex = 44;
             this.groupBoxNormalizeRadios.TabStop = false;
             // 
-            // checkBoxAbsoluteModeMain
-            // 
-            this.checkBoxAbsoluteModeMain.AutoSize = true;
-            this.checkBoxAbsoluteModeMain.Location = new System.Drawing.Point(71, 77);
-            this.checkBoxAbsoluteModeMain.Name = "checkBoxAbsoluteModeMain";
-            this.checkBoxAbsoluteModeMain.Size = new System.Drawing.Size(97, 17);
-            this.checkBoxAbsoluteModeMain.TabIndex = 46;
-            this.checkBoxAbsoluteModeMain.Text = "Absolute Mode";
-            this.toolTip1.SetToolTip(this.checkBoxAbsoluteModeMain, resources.GetString("checkBoxAbsoluteModeMain.ToolTip"));
-            this.checkBoxAbsoluteModeMain.UseVisualStyleBackColor = true;
-            this.checkBoxAbsoluteModeMain.CheckedChanged += new System.EventHandler(this.checkBoxAbsoluteModeMain_CheckedChanged);
-            // 
             // btnShowExpressionForm
             // 
             this.btnShowExpressionForm.BackColor = System.Drawing.Color.LightCoral;
@@ -639,11 +640,22 @@
             this.TestButton1.Visible = false;
             this.TestButton1.Click += new System.EventHandler(this.TestButton1_Click);
             // 
+            // btnParseTest
+            // 
+            this.btnParseTest.Location = new System.Drawing.Point(124, 449);
+            this.btnParseTest.Name = "btnParseTest";
+            this.btnParseTest.Size = new System.Drawing.Size(75, 23);
+            this.btnParseTest.TabIndex = 46;
+            this.btnParseTest.Text = "Parse Test";
+            this.btnParseTest.UseVisualStyleBackColor = true;
+            this.btnParseTest.Click += new System.EventHandler(this.btnParseTest_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 484);
+            this.Controls.Add(this.btnParseTest);
             this.Controls.Add(this.btnShowExpressionForm);
             this.Controls.Add(this.checkBoxLogOnly);
             this.Controls.Add(this.infoIconUseSameDirectory);
@@ -761,5 +773,6 @@
         private System.Windows.Forms.Button btnShowExpressionForm;
         private System.Windows.Forms.Button TestButton1;
         private System.Windows.Forms.CheckBox checkBoxAbsoluteModeMain;
+        private System.Windows.Forms.Button btnParseTest;
     }
 }
