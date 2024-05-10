@@ -157,7 +157,7 @@ namespace GmicDrosteAnimate
                 var row = dataGridViewExpressions.Rows[idx];
 
                 // Set checkbox value. Assuming unchecked by default. Adjust logic as needed.
-                //row.Cells["CheckBox"].Value = false;
+                // row.Cells["CheckBox"].Value = false;
 
                 // Set parameter name
                 row.Cells["ParameterName"].Value = paramNames[i];
@@ -167,14 +167,7 @@ namespace GmicDrosteAnimate
                 // Set expression from the expressions array or default to an empty string if out of range
                 if (expressions != null && i < expressions.Length)
                 {
-                    if (!string.IsNullOrEmpty(expressions[i]))
-                    {
-                        row.Cells["Expression"].Value = expressions[i];
-                    }
-                    else
-                    {
-                        row.Cells["Expression"].Value = "";
-                    }
+                    row.Cells["Expression"].Value = !string.IsNullOrEmpty(expressions[i]) ? expressions[i] : "";
                 }
                 // If already values in the grid use those
                 else if (currentExpressionValuesBeforeUpdate[i] != null)
@@ -184,20 +177,19 @@ namespace GmicDrosteAnimate
                 else
                 {
                     // Set default exponent value if available, but if parameter type is binary set it blank
-                    if ((paramType == "Continuous") || (paramType == "Step") || (paramType == "MultiPole"))
-                    {
-                        row.Cells["Expression"].Value = defaultExponents[i].ToString();
-                    }
-                    else
-                    {
-                        row.Cells["Expression"].Value = "";
-                    }
+                    row.Cells["Expression"].Value = (paramType == "Continuous" || paramType == "Step" || paramType == "MultiPole") ? defaultExponents[i].ToString() : "";
                 }
 
                 // Highlight the master parameter row, if specified
                 if (i == masterParamIndex)
                 {
                     row.DefaultCellStyle.BackColor = Color.LightGreen;  // Choose a highlighting color that suits your UI design
+                }
+
+                // Set font of set-expressions column cells to Consolas - but only for applicable types
+                if (paramType == "Continuous" || paramType == "Step" || paramType == "MultiPole")
+                {
+                    row.Cells["Expression"].Style.Font = new Font("Consolas", 10);
                 }
             }
 
@@ -208,19 +200,16 @@ namespace GmicDrosteAnimate
 
                 if (!(paramType == "Continuous") && !(paramType == "Step") && !(paramType == "MultiPole"))
                 {
-                    dataGridViewExpressions.Rows[i].Cells["CheckBox"].ReadOnly = true;
-                    dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledBackgroundColor;
-                    dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor = disabledForeColor;
-                    dataGridViewExpressions.Rows[i].Cells["Expression"].ReadOnly = true;
-                    //dataGridViewExpressions.Rows[i].Cells["Expression"].Style.BackColor = Color.LightGray;
-                    //dataGridViewExpressions.Rows[i].Cells["ParameterName"].Style.ForeColor = Color.Gray;
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledBackgroundColor; // Assuming you have a color defined for this
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor = disabledForeColor; // Assuming you have a color defined for this
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.Font = new Font("Arial", 7); // Smaller font for disabled rows
+                    dataGridViewExpressions.Rows[i].Height = 12; // Smaller height for less important data
 
-                    // Set font to smaller for row and row height smaller
-                    dataGridViewExpressions.Rows[i].DefaultCellStyle.Font = new Font("Arial", 7);
-                    dataGridViewExpressions.Rows[i].Height = 12;
+                    dataGridViewExpressions.Rows[i].Cells["CheckBox"].ReadOnly = true;
+                    dataGridViewExpressions.Rows[i].Cells["Expression"].ReadOnly = true;
+                    // Optionally set other styles or properties as needed
                 }
             }
-
         }
 
         public void UpdateMasterExponentIndex(int masterParamIndex)
