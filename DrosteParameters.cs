@@ -112,11 +112,11 @@ public static class FilterParameters
 
     public static List<int> GetNonExponentableParamIndexes()
     {
-        // Return indexes of parameters that are not continuous, step, or multipole
+        // Return indexes of parameters that are not continuous or step
         List<int> nonExponentableIndexes = new List<int>();
         for (int i = 0; i < Parameters.Count; i++)
         {
-            if (Parameters[i].Type != "Continuous" && Parameters[i].Type != "Step" && Parameters[i].Type != "MultiPole")
+            if (Parameters[i].Type != "Continuous" && Parameters[i].Type != "Step")
             {
                 nonExponentableIndexes.Add(i);
             }
@@ -128,6 +128,10 @@ public static class FilterParameters
     {
         return Parameters.Count;
     }
+
+    // Possible variable types are: int, float, choice, bool, file, file_in, file_out, color, text, value, point
+    // Some can seemingly have underscore or tilde prefixes, but I'm not sure what that means
+    // Example: ~int, _int, ~float, ~choice, ~color, ~bool, _bool, others
 
 
     private static void InitializeParameterRanges()
@@ -325,7 +329,7 @@ public static class FilterParameters
                 max: 180,
                 extendedMin: -200,
                 extendedMax: 200,
-                type: "MultiPole",
+                type: "Continuous",
                 decimals: 0,
                 defaultExponent: 1.0
             ),
@@ -338,7 +342,7 @@ public static class FilterParameters
                 max: 100,
                 extendedMin: -200,
                 extendedMax: 200,
-                type: "MultiPole",
+                type: "Continuous",
                 decimals: 0,
                 defaultExponent: 1.0
             ),
@@ -351,7 +355,7 @@ public static class FilterParameters
                 max: 100,
                 extendedMin: -200,
                 extendedMax: 200,
-                type: "MultiPole",
+                type: "Continuous",
                 decimals: 0,
                 defaultExponent: 1.0
             ),
@@ -390,7 +394,7 @@ public static class FilterParameters
                 max: 10,
                 extendedMin: 0,
                 extendedMax: 20,
-                type: "MultiPole",
+                type: "Continuous",
                 decimals: 1,
                 defaultExponent: 1.0
             ),

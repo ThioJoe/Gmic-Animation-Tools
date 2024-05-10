@@ -47,7 +47,6 @@
             this.toggleRandomEnd = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
             this.toggleRandomStart = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.checkBoxDisableMultiPole = new System.Windows.Forms.CheckBox();
             this.paramNamesTooltip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -241,25 +240,11 @@
             this.paramNamesTooltip.SetToolTip(this.toggleRandomStart, "This toggle enables/disables the randomization of end values");
             this.toggleRandomStart.UseVisualStyleBackColor = true;
             // 
-            // checkBoxDisableMultiPole
-            // 
-            this.checkBoxDisableMultiPole.AutoSize = true;
-            this.checkBoxDisableMultiPole.Checked = true;
-            this.checkBoxDisableMultiPole.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDisableMultiPole.Location = new System.Drawing.Point(245, 772);
-            this.checkBoxDisableMultiPole.Name = "checkBoxDisableMultiPole";
-            this.checkBoxDisableMultiPole.Size = new System.Drawing.Size(212, 17);
-            this.checkBoxDisableMultiPole.TabIndex = 18;
-            this.checkBoxDisableMultiPole.Text = "Don\'t Randomize Multi-Pole Parameters";
-            this.checkBoxDisableMultiPole.UseVisualStyleBackColor = true;
-            this.checkBoxDisableMultiPole.CheckedChanged += new System.EventHandler(this.checkBoxDisableMultiPole_CheckedChanged);
-            // 
             // ParamNamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(457, 796);
-            this.Controls.Add(this.checkBoxDisableMultiPole);
             this.Controls.Add(this.checkBoxRecommendedRules);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnSendParmsToMain);
@@ -304,7 +289,6 @@
         private CustomToggleCheckBox toggleRandomStart;
         private CustomToggleCheckBox toggleRandomEnd;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.CheckBox checkBoxDisableMultiPole;
         private System.Windows.Forms.ToolTip paramNamesTooltip;
     }
 }

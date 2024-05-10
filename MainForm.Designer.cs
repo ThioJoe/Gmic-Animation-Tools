@@ -648,6 +648,7 @@
             this.btnParseTest.TabIndex = 46;
             this.btnParseTest.Text = "Parse Test";
             this.btnParseTest.UseVisualStyleBackColor = true;
+            this.btnParseTest.Visible = false;
             this.btnParseTest.Click += new System.EventHandler(this.btnParseTest_Click);
             // 
             // MainForm

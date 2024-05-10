@@ -250,7 +250,7 @@ namespace GmicDrosteAnimate
                 else
                 {
                     // Set default exponent value if available, but if parameter type is binary set it blank
-                    row.Cells["Expression"].Value = (paramType == "Continuous" || paramType == "Step" || paramType == "MultiPole") ? defaultExponents[i].ToString() : "";
+                    row.Cells["Expression"].Value = (paramType == "Continuous" || paramType == "Step") ? defaultExponents[i].ToString() : "";
                 }
 
                 // Highlight the master parameter row, if specified
@@ -260,7 +260,7 @@ namespace GmicDrosteAnimate
                 }
 
                 // Set font of set-expressions column cells to Consolas - but only for applicable types
-                if (paramType == "Continuous" || paramType == "Step" || paramType == "MultiPole")
+                if (paramType == "Continuous" || paramType == "Step")
                 {
                     row.Cells["Expression"].Style.Font = new Font("Consolas", 10);
                 }
@@ -271,7 +271,7 @@ namespace GmicDrosteAnimate
             {
                 string paramType = FilterParameters.GetParameterType(i);
 
-                if (!(paramType == "Continuous") && !(paramType == "Step") && !(paramType == "MultiPole"))
+                if (!(paramType == "Continuous") && !(paramType == "Step"))
                 {
                     dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledBackgroundColor; // Assuming you have a color defined for this
                     dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor = disabledForeColor; // Assuming you have a color defined for this

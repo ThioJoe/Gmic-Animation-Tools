@@ -460,6 +460,13 @@ namespace GmicDrosteAnimate
                             end = RandomNumberBetween(3, max - 1);
                         }
 
+                        // Special case to set multi-pole related settings to their defaults and stay there
+                        if (paramInfo.Name == "Pole Rotation" || paramInfo.Name == "Pole Long" || paramInfo.Name == "Pole Lat" || paramInfo.Name == "Fractal Points")
+                        {
+                            start = FilterParameters.GetParameterValuesAsList("DefaultStart")[rowIndex];
+                            end = FilterParameters.GetParameterValuesAsList("DefaultEnd")[rowIndex];
+                        }
+
                         // Special case for total number of levels - Should not be less than 5, and not drop below the starting level at any time
                         // Need to check if either the start/end of the number of levels is less than either the start/end of the starting level
                         if (paramInfo.Name == "Number of Levels")
@@ -683,7 +690,6 @@ namespace GmicDrosteAnimate
             List<string> includedTypes = new List<string>();
             if (!checkBoxDisableBinaryRandom.Checked) includedTypes.Add("Binary");
             if (!checkBoxDisableStepRandom.Checked) includedTypes.Add("Step");
-            if (!checkBoxDisableMultiPole.Checked) includedTypes.Add("MultiPole");
             includedTypes.Add("Continuous");
 
             // Iterate through each row in the DataGridView, determine whether to check row box if parameter type is included in the list of types to randomize
@@ -802,16 +808,6 @@ namespace GmicDrosteAnimate
                 // Enable checkboxes to not check various parameters
                 checkBoxDisableBinaryRandom.Checked = true;
                 checkBoxDisableStepRandom.Checked = true;
-                checkBoxDisableMultiPole.Checked = true;
-            }
-        }
-
-        private void checkBoxDisableMultiPole_CheckedChanged(object sender, EventArgs e)
-        {
-            // If this unchecked, disable recommended rules
-            if (!checkBoxDisableMultiPole.Checked)
-            {
-                checkBoxRecommendedRules.Checked = false;
             }
         }
 
