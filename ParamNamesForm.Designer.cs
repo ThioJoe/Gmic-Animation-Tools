@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnRandom = new System.Windows.Forms.Button();
             this.txtCurrentStartParamString = new System.Windows.Forms.TextBox();
             this.labelCurrentStartParamString = new System.Windows.Forms.Label();
@@ -47,6 +48,7 @@
             this.toggleRandomStart = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.checkBoxDisableMultiPole = new System.Windows.Forms.CheckBox();
+            this.paramNamesTooltip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -223,6 +225,7 @@
             this.toggleRandomEnd.Name = "toggleRandomEnd";
             this.toggleRandomEnd.Size = new System.Drawing.Size(20, 20);
             this.toggleRandomEnd.TabIndex = 17;
+            this.paramNamesTooltip.SetToolTip(this.toggleRandomEnd, "This toggle enables/disables the randomization of end values");
             this.toggleRandomEnd.UseVisualStyleBackColor = true;
             // 
             // toggleRandomStart
@@ -235,6 +238,7 @@
             this.toggleRandomStart.Name = "toggleRandomStart";
             this.toggleRandomStart.Size = new System.Drawing.Size(20, 20);
             this.toggleRandomStart.TabIndex = 16;
+            this.paramNamesTooltip.SetToolTip(this.toggleRandomStart, "This toggle enables/disables the randomization of end values");
             this.toggleRandomStart.UseVisualStyleBackColor = true;
             // 
             // checkBoxDisableMultiPole
@@ -301,5 +305,6 @@
         private CustomToggleCheckBox toggleRandomEnd;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.CheckBox checkBoxDisableMultiPole;
+        private System.Windows.Forms.ToolTip paramNamesTooltip;
     }
 }

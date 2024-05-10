@@ -113,7 +113,7 @@ namespace DrosteEffectApp
             //txtEndParams.Text = endParams;
             inputFilePath = txtInputFilePath.Text;
             //Enable test button for debugging only
-            TestButton1.Visible = true;
+            //TestButton1.Visible = true;
             #endif
 
             // Set default values for the new controls

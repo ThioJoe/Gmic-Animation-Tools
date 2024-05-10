@@ -588,6 +588,7 @@ namespace GmicDrosteAnimate
         private void btnHelpExpressionsForm_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
+                "Not satisfied with simply animating directly between two values? This window is for you!\n\n" +
                 "This form makes it easier to visualize modifying the distribution of parameter values using exponents or expressions. " + 
                 "\n\nYou can enter a mathematical expression for any of the parameters using the variable 't' for time. " +
                 "For example, setting an expression to t^2 (t squared) will make the values change slowly at first and then rapidly, just like when plotting a xy graph. " +

@@ -64,7 +64,6 @@
             this.btnShowParamNames = new System.Windows.Forms.Button();
             this.labelTotalFrames = new System.Windows.Forms.Label();
             this.TextLabelNearStartButton = new System.Windows.Forms.Label();
-            this.TestButton1 = new System.Windows.Forms.Button();
             this.labelMasterExponent = new System.Windows.Forms.Label();
             this.labelMasterParamName = new System.Windows.Forms.Label();
             this.checkBoxUseSameOutputDir = new System.Windows.Forms.CheckBox();
@@ -77,6 +76,7 @@
             this.radioNoNormalize = new System.Windows.Forms.RadioButton();
             this.groupBoxNormalizeRadios = new System.Windows.Forms.GroupBox();
             this.btnShowExpressionForm = new System.Windows.Forms.Button();
+            this.TestButton1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -266,10 +266,10 @@
             this.rbMasterExponent.AutoSize = true;
             this.rbMasterExponent.Location = new System.Drawing.Point(15, 240);
             this.rbMasterExponent.Name = "rbMasterExponent";
-            this.rbMasterExponent.Size = new System.Drawing.Size(105, 17);
+            this.rbMasterExponent.Size = new System.Drawing.Size(111, 17);
             this.rbMasterExponent.TabIndex = 12;
             this.rbMasterExponent.TabStop = true;
-            this.rbMasterExponent.Text = "Master Exponent";
+            this.rbMasterExponent.Text = "Master Expression";
             this.rbMasterExponent.UseVisualStyleBackColor = true;
             this.rbMasterExponent.CheckedChanged += new System.EventHandler(this.rbMasterExponent_CheckedChanged);
             // 
@@ -290,10 +290,10 @@
             this.rbCustomExponents.AutoSize = true;
             this.rbCustomExponents.Location = new System.Drawing.Point(15, 270);
             this.rbCustomExponents.Name = "rbCustomExponents";
-            this.rbCustomExponents.Size = new System.Drawing.Size(113, 17);
+            this.rbCustomExponents.Size = new System.Drawing.Size(119, 17);
             this.rbCustomExponents.TabIndex = 14;
             this.rbCustomExponents.TabStop = true;
-            this.rbCustomExponents.Text = "Custom Exponents";
+            this.rbCustomExponents.Text = "Custom Expressions";
             this.rbCustomExponents.UseVisualStyleBackColor = true;
             this.rbCustomExponents.CheckedChanged += new System.EventHandler(this.rbCustomExponents_CheckedChanged);
             // 
@@ -340,7 +340,7 @@
             // 
             // btnViewOutputDirectory
             // 
-            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 399);
+            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 422);
             this.btnViewOutputDirectory.Name = "btnViewOutputDirectory";
             this.btnViewOutputDirectory.Size = new System.Drawing.Size(130, 30);
             this.btnViewOutputDirectory.TabIndex = 18;
@@ -449,12 +449,14 @@
             // 
             // btnShowParamNames
             // 
+            this.btnShowParamNames.BackColor = System.Drawing.Color.SkyBlue;
+            this.btnShowParamNames.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnShowParamNames.Location = new System.Drawing.Point(273, 375);
             this.btnShowParamNames.Name = "btnShowParamNames";
             this.btnShowParamNames.Size = new System.Drawing.Size(130, 22);
             this.btnShowParamNames.TabIndex = 27;
-            this.btnShowParamNames.Text = "Advanced Control";
-            this.btnShowParamNames.UseVisualStyleBackColor = true;
+            this.btnShowParamNames.Text = "Parameters";
+            this.btnShowParamNames.UseVisualStyleBackColor = false;
             this.btnShowParamNames.Click += new System.EventHandler(this.btnShowParamNames_Click);
             // 
             // labelTotalFrames
@@ -476,17 +478,6 @@
             this.TextLabelNearStartButton.TabIndex = 30;
             this.TextLabelNearStartButton.Text = "Status";
             this.TextLabelNearStartButton.Visible = false;
-            // 
-            // TestButton1
-            // 
-            this.TestButton1.Location = new System.Drawing.Point(188, 416);
-            this.TestButton1.Name = "TestButton1";
-            this.TestButton1.Size = new System.Drawing.Size(75, 23);
-            this.TestButton1.TabIndex = 31;
-            this.TestButton1.Text = "Test";
-            this.TestButton1.UseVisualStyleBackColor = true;
-            this.TestButton1.Visible = false;
-            this.TestButton1.Click += new System.EventHandler(this.TestButton1_Click);
             // 
             // labelMasterExponent
             // 
@@ -609,19 +600,32 @@
             // 
             // btnShowExpressionForm
             // 
-            this.btnShowExpressionForm.Location = new System.Drawing.Point(188, 390);
+            this.btnShowExpressionForm.BackColor = System.Drawing.Color.LightCoral;
+            this.btnShowExpressionForm.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnShowExpressionForm.Location = new System.Drawing.Point(273, 399);
             this.btnShowExpressionForm.Name = "btnShowExpressionForm";
-            this.btnShowExpressionForm.Size = new System.Drawing.Size(75, 23);
+            this.btnShowExpressionForm.Size = new System.Drawing.Size(130, 23);
             this.btnShowExpressionForm.TabIndex = 45;
             this.btnShowExpressionForm.Text = "Expressions";
-            this.btnShowExpressionForm.UseVisualStyleBackColor = true;
+            this.btnShowExpressionForm.UseVisualStyleBackColor = false;
             this.btnShowExpressionForm.Click += new System.EventHandler(this.btnShowExpressionForm_Click);
+            // 
+            // TestButton1
+            // 
+            this.TestButton1.Location = new System.Drawing.Point(3, 435);
+            this.TestButton1.Name = "TestButton1";
+            this.TestButton1.Size = new System.Drawing.Size(26, 23);
+            this.TestButton1.TabIndex = 31;
+            this.TestButton1.Text = "Test";
+            this.TestButton1.UseVisualStyleBackColor = true;
+            this.TestButton1.Visible = false;
+            this.TestButton1.Click += new System.EventHandler(this.TestButton1_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 441);
+            this.ClientSize = new System.Drawing.Size(410, 458);
             this.Controls.Add(this.btnShowExpressionForm);
             this.Controls.Add(this.checkBoxLogOnly);
             this.Controls.Add(this.infoIconUseSameDirectory);
@@ -723,7 +727,6 @@
         private System.Windows.Forms.Label labelTotalFrames;
         private System.Windows.Forms.Label TextLabelNearStartButton;
         private InvisibleNumericUpDown nudTotalFrames;
-        private System.Windows.Forms.Button TestButton1;
         private InvisibleNumericUpDown nudMasterParamIncrement;
         private System.Windows.Forms.Label labelMasterExponent;
         private System.Windows.Forms.Label labelMasterParamName;
@@ -738,5 +741,6 @@
         private System.Windows.Forms.RadioButton radioNoNormalize;
         private System.Windows.Forms.GroupBox groupBoxNormalizeRadios;
         private System.Windows.Forms.Button btnShowExpressionForm;
+        private System.Windows.Forms.Button TestButton1;
     }
 }

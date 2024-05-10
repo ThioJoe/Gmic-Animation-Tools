@@ -180,15 +180,19 @@ based on the number of frames.</value>
 </value>
   </data>
   <data name="InfoIconMasterExponent.ToolTip" xml:space="preserve">
-    <value>Master Exponent: Allows you to apply exponential interpolation to the
+    <value>Master Exponent/ Expressions: Allows you to apply advanced interpolation to the
 'master parameter' (the parameter you select to drive the transformation).
 
 Usage:
    - If left empty will apply a default value that was selected for each parameter.
-   - Can be any positive or negative number including decimals
+   - You can use mathematical expressions with the variable 't' for time
+   - For simple exponent expressions like t^5, you can simply put '5' for example
+   - The exponent can be any positive or negative number including decimals
+   - For expressions, you can use constants like pi and e, and even trig functions like sin(t) and cos(t)
    - When using an exponential mode, the master increment will still be used to
       calculate the number of frames
 
+The below describes if you're using just a simple exponent:
 
 With this setting, instead of incrementing linearly (evenly spaced), the master parameter
 will change more slowly at first and then more quickly towards the end, or vice versa,
@@ -244,7 +248,8 @@ Example:
 </value>
   </data>
   <data name="InfoIconDefaultExponents.ToolTip" xml:space="preserve">
-    <value>A pre-selected set  of exponents for each parameter to use in exponential mode.
+    <value>A pre-selected set  of exponents for each parameter to use in
+exponential / expression mode.
 
 Note: This will result in exponential interpolation for all parameters,
 and might not give results as you might expect. The default mode

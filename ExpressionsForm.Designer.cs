@@ -96,6 +96,8 @@
             // 
             // chartCurve
             // 
+            chartArea1.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
             chartArea1.Name = "ChartArea1";
             this.chartCurve.ChartAreas.Add(chartArea1);
             this.chartCurve.Location = new System.Drawing.Point(371, 78);
