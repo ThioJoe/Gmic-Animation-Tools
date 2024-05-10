@@ -553,6 +553,7 @@
             this.radioNormalizeStartEnd.TabStop = true;
             this.radioNormalizeStartEnd.Text = "Normalize Within Start/End";
             this.radioNormalizeStartEnd.UseVisualStyleBackColor = true;
+            this.radioNormalizeStartEnd.CheckedChanged += new System.EventHandler(this.radioNormalizeStartEnd_CheckedChanged);
             // 
             // radioNormalizeMaxRanges
             // 
@@ -563,6 +564,7 @@
             this.radioNormalizeMaxRanges.TabIndex = 41;
             this.radioNormalizeMaxRanges.Text = "Normalize Within Max Ranges";
             this.radioNormalizeMaxRanges.UseVisualStyleBackColor = true;
+            this.radioNormalizeMaxRanges.CheckedChanged += new System.EventHandler(this.radioNormalizeMaxRanges_CheckedChanged);
             // 
             // radioNormalizeExtendedRanges
             // 
@@ -573,6 +575,7 @@
             this.radioNormalizeExtendedRanges.TabIndex = 42;
             this.radioNormalizeExtendedRanges.Text = "Normalize Extended Ranges";
             this.radioNormalizeExtendedRanges.UseVisualStyleBackColor = true;
+            this.radioNormalizeExtendedRanges.CheckedChanged += new System.EventHandler(this.radioNormalizeExtendedRanges_CheckedChanged);
             // 
             // radioNoNormalize
             // 
@@ -583,6 +586,7 @@
             this.radioNoNormalize.TabIndex = 43;
             this.radioNoNormalize.Text = "Don\'t Normalize";
             this.radioNoNormalize.UseVisualStyleBackColor = true;
+            this.radioNoNormalize.CheckedChanged += new System.EventHandler(this.radioNoNormalize_CheckedChanged);
             // 
             // groupBoxNormalizeRadios
             // 

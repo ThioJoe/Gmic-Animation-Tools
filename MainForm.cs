@@ -148,11 +148,7 @@ namespace DrosteEffectApp
                     txtStartParams.Text = value;
                     txtStartParams.ForeColor = Color.Black;  // Ensure it's treated as actual data
                 }
-                ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
-                if (expressionForm != null)
-                {
-                    expressionForm.TriggerGraphRefresh = true;
-                }
+                RefreshGraph();
                 txtStartParams_TextChanged(null, null);
             } 
         }
@@ -174,11 +170,7 @@ namespace DrosteEffectApp
                 {
                     txtEndParams.Text = value;
                     txtEndParams.ForeColor = Color.Black;  // Ensure it's treated as actual data
-                    ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
-                    if (expressionForm != null)
-                    {
-                        expressionForm.TriggerGraphRefresh = true;
-                    }
+                    RefreshGraph();
                 }
                 txtEndParams_TextChanged(null, null);
             }
@@ -1341,6 +1333,7 @@ namespace DrosteEffectApp
         private void nudTotalFrames_ValueChanged(object sender, EventArgs e)
         {
             UpdateMasterParamIncrement();
+            RefreshGraph();
         }
 
         private void nudMasterParamIncrement_ValueChanged(object sender, EventArgs e)
@@ -1564,11 +1557,7 @@ namespace DrosteEffectApp
                         return;
                     }
                 }
-                ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
-                if (expressionForm != null)
-                {
-                    expressionForm.TriggerGraphRefresh = true;
-                }
+                RefreshGraph();
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
@@ -1614,11 +1603,7 @@ namespace DrosteEffectApp
                         return;
                     }
                 }
-                ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
-                if (expressionForm != null)
-                {
-                    expressionForm.TriggerGraphRefresh = true;
-                }
+                RefreshGraph();
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
@@ -1890,5 +1875,34 @@ namespace DrosteEffectApp
             }
         }
 
+        // Trigger graph refresh
+        private void RefreshGraph()
+        {
+            ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
+            if (expressionForm != null)
+            {
+                expressionForm.TriggerGraphRefresh = true;
+            }
+        }
+
+        private void radioNormalizeStartEnd_CheckedChanged(object sender, EventArgs e)
+        {
+            RefreshGraph();
+        }
+
+        private void radioNormalizeMaxRanges_CheckedChanged(object sender, EventArgs e)
+        {
+            RefreshGraph();
+        }
+
+        private void radioNormalizeExtendedRanges_CheckedChanged(object sender, EventArgs e)
+        {
+            RefreshGraph();
+        }
+
+        private void radioNoNormalize_CheckedChanged(object sender, EventArgs e)
+        {
+            RefreshGraph();
+        }
     }
 }

@@ -606,5 +606,11 @@ namespace GmicDrosteAnimate
             MessageBoxIcon.Information
             );
         }
+
+        private void btnExampleSin_Click(object sender, EventArgs e)
+        {
+            // Set the master parameter to a sine wave
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "sin(t*2*pi)";
+        }
     } //End form class
 } // End namespace

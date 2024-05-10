@@ -21,9 +21,9 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -38,6 +38,8 @@
             this.labelMasterIndexClone = new System.Windows.Forms.Label();
             this.labelNoGraphToggleParam = new System.Windows.Forms.Label();
             this.btnHelpExpressionsForm = new System.Windows.Forms.Button();
+            this.btnExampleSin = new System.Windows.Forms.Button();
+            this.labelExampleExpressionButtons = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).BeginInit();
@@ -50,14 +52,14 @@
             this.dataGridViewExpressions.AllowUserToDeleteRows = false;
             this.dataGridViewExpressions.AllowUserToResizeRows = false;
             this.dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewExpressions.Location = new System.Drawing.Point(9, 10);
             this.dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -96,18 +98,18 @@
             // 
             // chartCurve
             // 
-            chartArea1.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea1.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea1);
+            chartArea3.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea3.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea3.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea3);
             this.chartCurve.Location = new System.Drawing.Point(371, 78);
             this.chartCurve.Name = "chartCurve";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series1.MarkerSize = 7;
-            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series1.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.MarkerSize = 7;
+            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series3.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series3);
             this.chartCurve.Size = new System.Drawing.Size(513, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -136,7 +138,7 @@
             // checkBoxKeepFramesConstant
             // 
             this.checkBoxKeepFramesConstant.AutoSize = true;
-            this.checkBoxKeepFramesConstant.Location = new System.Drawing.Point(371, 500);
+            this.checkBoxKeepFramesConstant.Location = new System.Drawing.Point(371, 453);
             this.checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
             this.checkBoxKeepFramesConstant.Size = new System.Drawing.Size(197, 17);
             this.checkBoxKeepFramesConstant.TabIndex = 10;
@@ -148,7 +150,7 @@
             // 
             this.nudGraphConstantFrameCount.Enabled = false;
             this.nudGraphConstantFrameCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(574, 494);
+            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(574, 447);
             this.nudGraphConstantFrameCount.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -173,7 +175,7 @@
             this.checkBoxAutoUpdateGraph.AutoSize = true;
             this.checkBoxAutoUpdateGraph.Checked = true;
             this.checkBoxAutoUpdateGraph.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoUpdateGraph.Location = new System.Drawing.Point(371, 466);
+            this.checkBoxAutoUpdateGraph.Location = new System.Drawing.Point(371, 476);
             this.checkBoxAutoUpdateGraph.Name = "checkBoxAutoUpdateGraph";
             this.checkBoxAutoUpdateGraph.Size = new System.Drawing.Size(118, 17);
             this.checkBoxAutoUpdateGraph.TabIndex = 12;
@@ -236,11 +238,34 @@
             this.btnHelpExpressionsForm.UseVisualStyleBackColor = true;
             this.btnHelpExpressionsForm.Click += new System.EventHandler(this.btnHelpExpressionsForm_Click);
             // 
+            // btnExampleSin
+            // 
+            this.btnExampleSin.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExampleSin.Location = new System.Drawing.Point(439, 548);
+            this.btnExampleSin.Name = "btnExampleSin";
+            this.btnExampleSin.Size = new System.Drawing.Size(129, 38);
+            this.btnExampleSin.TabIndex = 17;
+            this.btnExampleSin.Text = "sin(2*pi*t)";
+            this.btnExampleSin.UseVisualStyleBackColor = true;
+            this.btnExampleSin.Click += new System.EventHandler(this.btnExampleSin_Click);
+            // 
+            // labelExampleExpressionButtons
+            // 
+            this.labelExampleExpressionButtons.AutoSize = true;
+            this.labelExampleExpressionButtons.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelExampleExpressionButtons.Location = new System.Drawing.Point(506, 506);
+            this.labelExampleExpressionButtons.Name = "labelExampleExpressionButtons";
+            this.labelExampleExpressionButtons.Size = new System.Drawing.Size(216, 24);
+            this.labelExampleExpressionButtons.TabIndex = 18;
+            this.labelExampleExpressionButtons.Text = "Example Expressions:";
+            // 
             // ExpressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 744);
+            this.Controls.Add(this.labelExampleExpressionButtons);
+            this.Controls.Add(this.btnExampleSin);
             this.Controls.Add(this.btnHelpExpressionsForm);
             this.Controls.Add(this.labelNoGraphToggleParam);
             this.Controls.Add(this.labelMasterIndexClone);
@@ -283,5 +308,7 @@
         private System.Windows.Forms.Label labelMasterIndexClone;
         private System.Windows.Forms.Label labelNoGraphToggleParam;
         private System.Windows.Forms.Button btnHelpExpressionsForm;
+        private System.Windows.Forms.Button btnExampleSin;
+        private System.Windows.Forms.Label labelExampleExpressionButtons;
     }
 }
