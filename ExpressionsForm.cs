@@ -682,7 +682,7 @@ namespace GmicDrosteAnimate
                 "\n\nYou can even use mathematical constants such as pi and e in your expressions, such as sin(t*2*pi)" +
                 "\n\nThe master parameter is highlighted in green and is the one that is graphed." +
                 "\n\nThe \"Use Above Values\" button will send the currently set exponents/expressions back to the main window to use. " +
-                "\n",
+                "\n\nTip: Try using sine and cosine functions (or others) to make perfect loops! (Example buttons provided)",
             "Help",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information
@@ -697,7 +697,7 @@ namespace GmicDrosteAnimate
 
         private void btnExampleCosine_Click(object sender, EventArgs e)
         {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "cos(3*pi*t)";
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "cos(4*pi*t)";
         }
 
         private void radioNormalizeStartEndClone_CheckedChanged(object sender, EventArgs e)

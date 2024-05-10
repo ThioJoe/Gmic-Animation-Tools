@@ -21,9 +21,9 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -61,14 +61,14 @@
             this.dataGridViewExpressions.AllowUserToDeleteRows = false;
             this.dataGridViewExpressions.AllowUserToResizeRows = false;
             this.dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewExpressions.Location = new System.Drawing.Point(9, 10);
             this.dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -107,18 +107,18 @@
             // 
             // chartCurve
             // 
-            chartArea2.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea2.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea2.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea2);
+            chartArea3.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea3.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea3.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea3);
             this.chartCurve.Location = new System.Drawing.Point(371, 78);
             this.chartCurve.Name = "chartCurve";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series2.MarkerSize = 7;
-            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series2.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.MarkerSize = 7;
+            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series3.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series3);
             this.chartCurve.Size = new System.Drawing.Size(513, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -276,7 +276,7 @@
             this.btnExampleCosine.Name = "btnExampleCosine";
             this.btnExampleCosine.Size = new System.Drawing.Size(129, 38);
             this.btnExampleCosine.TabIndex = 19;
-            this.btnExampleCosine.Text = "cos(3*pi*t)";
+            this.btnExampleCosine.Text = "cos(4*pi*t)";
             this.btnExampleCosine.UseVisualStyleBackColor = true;
             this.btnExampleCosine.Click += new System.EventHandler(this.btnExampleCosine_Click);
             // 
