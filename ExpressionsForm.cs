@@ -541,6 +541,30 @@ namespace GmicDrosteAnimate
                 chartCurve.ChartAreas[0].AxisX.Minimum = 0;
                 chartCurve.ChartAreas[0].AxisX.Title = "Frame Number";
                 chartCurve.ChartAreas[0].AxisY.Title = "Value";
+
+                // If any values are negative, create zero line strip
+                if (valuesToGraph.Min() < 0)
+                {
+                    // Create a new StripLine
+                    StripLine zeroLineStrip = new StripLine();
+                    zeroLineStrip.IntervalOffset = 0;  // Position at Y = 0
+                    zeroLineStrip.StripWidth = 0;      // Set the width of the strip line to 0 for it to appear as a line
+                    zeroLineStrip.BackColor = Color.Black;  // Choose the color to make it visible, matching or contrasting the axis color
+                    zeroLineStrip.BorderWidth = 5;     // Set the thickness of the zero line
+                    zeroLineStrip.BorderColor = Color.Black;  // Set the color of the border
+
+                    // Add the StripLine to the Y-axis
+                    chartCurve.ChartAreas[0].AxisY.StripLines.Add(zeroLineStrip);
+                }
+                else
+                {
+                    // Remove the zero line strip if it exists
+                    if (chartCurve.ChartAreas[0].AxisY.StripLines.Count > 0)
+                    {
+                        chartCurve.ChartAreas[0].AxisY.StripLines.Clear();
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
