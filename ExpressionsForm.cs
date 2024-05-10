@@ -749,12 +749,16 @@ namespace GmicDrosteAnimate
             MessageBox.Show(
                 "Not satisfied with simply animating directly between two values? This window is for you!\n\n" +
                 "This form makes it easier to visualize modifying the distribution of parameter values using exponents or expressions. " + 
-                "\n\nYou can enter a mathematical expression for any of the parameters using the variable 't' for time. " +
+                "\n\nYou can enter a mathematical expression for any of the parameters using the variable 't' for time." +
                 "For example, setting an expression to t^2 (t squared) will make the values change slowly at first and then rapidly, just like when plotting a xy graph. " +
+                "\n\nYou can also use the variable 'x' for the frame number in addition to 't', but t must at least be used. (Unless in absolute mode)" + 
                 "\n\nFor simple exponential expressions such as t^2 or t^0.5, you can simply enter that exponent ('5' or '0.5') instead of a full expression. " +
                 "\n\nNote that the expression technically applies to the weighting of the parameter values, not the values themselves. " +
                     "Behind the scenes, the value 't' goes from 0 to 1 depending on which frame out of the total you're on. " +
                     "The graph does show the actual values that will be used in the final image though. " +
+                "\n\nOn the other hand, in 'absolute mode', variable values directly instead of using entered start/end values. In absolute mode, 'x' can be used without 't'." +
+                "\nWhen in absolute mode, you can still have a parameter's values calculated normally and linearly by setting its expression/exponent to '1'. " +
+                "You can also still calcualte exclusively with 't'. Setting the expression to 1 effectively makes the expression t^1 for example., which is why it calculates linearly in that case." + 
                 "\n\nTry some more complicated expressions including sin(t), cos(t), e^t + 2t, etc. Also try the various normalization options on the main window." +
                 "\n\nYou can even use mathematical constants such as pi and e in your expressions, such as sin(t*2*pi)" +
                 "\n\nThe master parameter is highlighted in green and is the one that is graphed." +

@@ -186,6 +186,8 @@ based on the number of frames.</value>
 Usage:
    - If left empty will apply a default value that was selected for each parameter.
    - You can use mathematical expressions with the variable 't' for time
+   - You can also use the variable 'x' for the frame number in addition to 't', but t must at least be used.
+   - You can use 'x' exclusively without 't' in absolute mode
    - For simple exponent expressions like t^5, you can simply put '5' for example
    - The exponent can be any positive or negative number including decimals
    - For expressions, you can use constants like pi and e, and even trig functions like sin(t) and cos(t)
