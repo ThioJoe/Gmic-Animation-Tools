@@ -56,8 +56,9 @@ namespace DrosteEffectApp
         // Get default values from AppParameters ParameterInfo class defaultStart value
         private string defaultStartParams = AppParameters.GetParameterValuesAsString("DefaultStart");
         private string defaultEndParams = AppParameters.GetParameterValuesAsString("DefaultEnd");
-        
 
+        // Parameter Count
+        private int filterParameterCount;
 
         //private decimal previousMasterIncrementNUDValue = 0;
 
@@ -94,6 +95,9 @@ namespace DrosteEffectApp
             masterExponent = 0;
             exponentArrayString = string.Empty;
             createGif = false;
+
+            // Parameter Count
+            filterParameterCount = 31;
 
             // Start with totalframes box and master increment box read only
             nudTotalFrames.Enabled = false;
@@ -442,11 +446,11 @@ namespace DrosteEffectApp
                     exponentArrayString = exponentArrayString.Replace("souphead_droste10", "").Trim();
 
                     exponents = exponentArrayString.Split(',');
-                    if (exponents.Length == 31)
+                    if (exponents.Length == filterParameterCount)
                     {
                         List<List<string>> invalidValues = new List<List<string>>();
                         // Check that all values are either valid numbers or valid math expressions. If not, alert the user to the position of the invalid value and the value itself.
-                        for (int i = 0; i < 31; i++)
+                        for (int i = 0; i < filterParameterCount; i++)
                         {
                             // Track invalid values and alert user at end of all of them, if any
                             // Test expression with sample values 
@@ -472,7 +476,7 @@ namespace DrosteEffectApp
                     }
                     else
                     {
-                        MessageBox.Show("Exponent array must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Exponent array must contain {filterParameterCount} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -558,19 +562,19 @@ namespace DrosteEffectApp
             string[] paramsArray = paramsString.Split(',');
 
             // Ensure the parameter array has exactly 31 elements.
-            if (paramsArray.Length != 31)
+            if (paramsArray.Length != filterParameterCount)
             {
                 if (!silent)
                 {
-                    MessageBox.Show("Parameters must contain 31 comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Parameter array must contain {filterParameterCount} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return null;
             }
 
             // Convert the parameter strings to double values and store them in an array.
-            double[] paramValuesArray = new double[31];
+            double[] paramValuesArray = new double[filterParameterCount];
 
-            for (int i = 0; i < 31; i++)
+            for (int i = 0; i < filterParameterCount; i++)
             {
                 if (!double.TryParse(paramsArray[i], out paramValuesArray[i]))
                 {
@@ -711,16 +715,16 @@ namespace DrosteEffectApp
             // List to store all interpolated values for each frame.
             //List<string> interpolatedValuesPerFrameStrings = new List<string>();
             // List of 31 arrays of doubles to hold the interpolated values for each parameter.
-            double[,] interpolatedValuesPerFrameArray = new double[totalFrames, 31];
+            double[,] interpolatedValuesPerFrameArray = new double[totalFrames, filterParameterCount];
 
             // Loop through each frame to calculate parameter values.
             for (int frame = 0; frame < totalFrames; frame++)
             {
                 // Array to hold the current set of interpolated parameters.
-                double[] currentValues = new double[31];
+                double[] currentValues = new double[filterParameterCount];
 
                 // Loop through each parameter to interpolate its value.
-                for (int i = 0; i < 31; i++)
+                for (int i = 0; i < filterParameterCount; i++)
                 {
                     if (masterParamOnly && i != masterIndex)
                     {
@@ -836,9 +840,9 @@ namespace DrosteEffectApp
             // If an exponent mode is being used, normalize and scale the interpolated values for each frame.
             if ((exponentMode == "custom-array" || exponentMode == "custom-master") && !absoluteMode)
             {
-                double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, 31];
+                double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, filterParameterCount];
                 // Normalize and scale the interpolated values for each frame.
-                for (int i = 0; i < 31; i++)
+                for (int i = 0; i < filterParameterCount; i++)
                 {
                     // Skip if only master parameter is being interpolated and this is not the master parameter
                     if (masterParamOnly && i != masterIndex)
@@ -869,7 +873,7 @@ namespace DrosteEffectApp
                 for (int frame = 0; frame < totalFrames; frame++)
                 {
                     //double[] tempArray = new double[31];
-                    for (int index = 0; index < 31; index++)
+                    for (int index = 0; index < filterParameterCount; index++)
                     {
                         // Check if index is in list of indexes using expressions
                         if (exponentsUsingExpressions.Contains(index))
@@ -886,8 +890,8 @@ namespace DrosteEffectApp
             List<string> interpolatedValuesPerFrameStrings = new List<string>();
             for (int i = 0; i < totalFrames; i++)
             {
-                double[] tempArray = new double[31];
-                for (int j = 0; j < 31; j++)
+                double[] tempArray = new double[filterParameterCount];
+                for (int j = 0; j < filterParameterCount; j++)
                 {
                     tempArray[j] = interpolatedValuesPerFrameArray[i, j];
                 }
@@ -1548,7 +1552,7 @@ namespace DrosteEffectApp
                 string[] startParamsArray = rawStartString.Split(',');
                 string[] endParamsArray = rawEndString.Split(',');
 
-                if (startParamsArray.Length == 31 && endParamsArray.Length == 31)
+                if (startParamsArray.Length == filterParameterCount && endParamsArray.Length == filterParameterCount)
                 {
                     double startValue = double.Parse(startParamsArray[(int)nudMasterParamIndex.Value - 1]);
                     double endValue = double.Parse(endParamsArray[(int)nudMasterParamIndex.Value - 1]);
@@ -1818,7 +1822,7 @@ namespace DrosteEffectApp
         {
             // Update label to show current name corresponding to the index
             string labelTextStr = "= ";
-            if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= 31)
+            if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= filterParameterCount)
             {
                 labelTextStr += AppParameters.Parameters[(int)nudMasterParamIndex.Value - 1].Name;
             }
