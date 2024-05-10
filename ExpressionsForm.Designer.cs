@@ -21,6 +21,7 @@
 
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
@@ -49,11 +50,19 @@
             this.dataGridViewExpressions.AllowUserToDeleteRows = false;
             this.dataGridViewExpressions.AllowUserToResizeRows = false;
             this.dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewExpressions.Location = new System.Drawing.Point(9, 10);
             this.dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewExpressions.Name = "dataGridViewExpressions";
             this.dataGridViewExpressions.RowHeadersWidth = 62;
-            this.dataGridViewExpressions.RowTemplate.Height = 18;
+            this.dataGridViewExpressions.RowTemplate.Height = 20;
             this.dataGridViewExpressions.Size = new System.Drawing.Size(347, 609);
             this.dataGridViewExpressions.TabIndex = 0;
             this.dataGridViewExpressions.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExpressions_CellValueChanged);

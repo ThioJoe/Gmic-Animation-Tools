@@ -108,22 +108,30 @@ namespace GmicDrosteAnimate
             // Hide the row headers by setting their visibility to false
             dataGridViewExpressions.RowHeadersVisible = false;
 
-            
+
 
             // Add a checkbox column
-            DataGridViewCheckBoxColumn chkBoxColumn = new DataGridViewCheckBoxColumn();
-            chkBoxColumn.HeaderText = "";
-            chkBoxColumn.Width = 50;
-            chkBoxColumn.Name = "CheckBox";
-            chkBoxColumn.TrueValue = true;
-            chkBoxColumn.FalseValue = false;
-            dataGridViewExpressions.Columns.Add(chkBoxColumn);
+            //DataGridViewCheckBoxColumn chkBoxColumn = new DataGridViewCheckBoxColumn();
+            //chkBoxColumn.HeaderText = "";
+            //chkBoxColumn.Width = 0;
+            //chkBoxColumn.Name = "CheckBox";
+            //chkBoxColumn.TrueValue = true;
+            //chkBoxColumn.FalseValue = false;
+            //dataGridViewExpressions.Columns.Add(chkBoxColumn);
+
+            // Add column for parameter names
+            DataGridViewTextBoxColumn dummyColumn = new DataGridViewTextBoxColumn();
+            dummyColumn.HeaderText = "";
+            dummyColumn.Name = "Dummy";
+            dummyColumn.Width = 0;
+            dummyColumn.ReadOnly = true;
+            dataGridViewExpressions.Columns.Add(dummyColumn);
 
             // Add column for parameter names
             DataGridViewTextBoxColumn paramNameColumn = new DataGridViewTextBoxColumn();
             paramNameColumn.HeaderText = "Parameter Name";
             paramNameColumn.Name = "ParameterName";
-            paramNameColumn.Width = 130;
+            paramNameColumn.Width = 140;
             paramNameColumn.ReadOnly = true;
             dataGridViewExpressions.Columns.Add(paramNameColumn);
 
@@ -131,7 +139,7 @@ namespace GmicDrosteAnimate
             DataGridViewTextBoxColumn expressionColumn = new DataGridViewTextBoxColumn();
             expressionColumn.HeaderText = "Exponent / Expression";
             expressionColumn.Name = "Expression";
-            expressionColumn.Width = 100;
+            expressionColumn.Width = 198;
             expressionColumn.ReadOnly = false;  // Set to false to allow user to enter expressions
             dataGridViewExpressions.Columns.Add(expressionColumn);
 
@@ -205,7 +213,7 @@ namespace GmicDrosteAnimate
                     dataGridViewExpressions.Rows[i].DefaultCellStyle.Font = new Font("Arial", 7); // Smaller font for disabled rows
                     dataGridViewExpressions.Rows[i].Height = 12; // Smaller height for less important data
 
-                    dataGridViewExpressions.Rows[i].Cells["CheckBox"].ReadOnly = true;
+                    //dataGridViewExpressions.Rows[i].Cells["CheckBox"].ReadOnly = true;
                     dataGridViewExpressions.Rows[i].Cells["Expression"].ReadOnly = true;
                     // Optionally set other styles or properties as needed
                 }
