@@ -449,11 +449,11 @@ namespace GmicDrosteAnimate
 
         private void btnChartValues_Click(object sender, EventArgs e)
         {
-            PlotGraph();
+            PlotGraph(silent:false);
         }
 
         // Function to plot graph from button or otherwise
-        public void PlotGraph()
+        public void PlotGraph(bool silent = true)
         {
             //If the parameter to be graphed is binary, don't graph
             if (AppParameters.GetNonExponentableParamIndexes().Contains(masterParamIndexFromMainWindow))
@@ -493,8 +493,35 @@ namespace GmicDrosteAnimate
                 frameCount = (int)nudGraphConstantFrameCount.Value;
             }
 
-            // Get the interpolated values
-            double[] valuesToGraph = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount);
+            // Do some validation on the expression
+            // First ensure that if 't' is not in there, it's only a number value
+            if (!expressionToEvaluate.Contains("t"))
+            {
+                if (!double.TryParse(expressionToEvaluate, out double exponent))
+                {
+                    if (!silent)
+                    {
+                        MessageBox.Show("The expression string must either be only a number, or an expression that includes only the variable 't'. Constants like pi are allowed too.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    return;
+                }
+            }
+
+            double[] valuesToGraph = null;
+            try
+            {
+                // Get the interpolated values
+                valuesToGraph = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount);
+            }
+            catch (Exception ex)
+            {
+                if (!silent)
+                {
+                    MessageBox.Show($"Error plotting the function: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return;
+            }
+            
 
             // Plot
             try
@@ -515,6 +542,7 @@ namespace GmicDrosteAnimate
             catch (Exception ex)
             {
                 MessageBox.Show($"Error plotting the function: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 
