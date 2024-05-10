@@ -130,7 +130,7 @@ namespace DrosteEffectApp
         }
 
         //Property getter setter needs to also be able to deal with the placeholder manager event handler, otherwise it will not work
-        public string StartParamsTextBoxChange
+        public string StartParamsTextBoxChangeSetter
         {
             get
             {
@@ -153,7 +153,7 @@ namespace DrosteEffectApp
             } 
         }
 
-        public string EndParamsTextTextBoxChange
+        public string EndParamsTextTextBoxChangeSetter
         {
             get
             {
@@ -176,7 +176,7 @@ namespace DrosteEffectApp
             }
         }
 
-        public string CustomExpressionArrayTextBoxChange
+        public string CustomExpressionArrayTextBoxChangeSetter
         {
             get
             {
@@ -198,7 +198,7 @@ namespace DrosteEffectApp
             }
         }
 
-        public string CustomMasterExpressionTextBoxChange
+        public string CustomMasterExpressionTextBoxChangeSetter
         {
             get
             {
@@ -220,7 +220,7 @@ namespace DrosteEffectApp
             }
         }
 
-        public decimal MasterParamIndexNUDChange
+        public decimal MasterParamIndexNUDChangeSetter
         {
             get
             {
@@ -234,7 +234,21 @@ namespace DrosteEffectApp
             }
         }
 
-        public bool AbsoluteModeCheckBoxChangeSetter
+        public decimal TotalFramesNUDChangeSetter
+        {
+            get
+            {
+                return (decimal)nudTotalFrames.Value;
+            }
+            set
+            {
+                nudTotalFrames.Value = value;
+                // Trigger event handler
+                nudTotalFrames_ValueChanged(null, null);
+            }
+        }
+
+        public bool AbsoluteModeCheckBoxChangeSetterMainForm
         {
             get
             {
@@ -246,7 +260,7 @@ namespace DrosteEffectApp
             }
         }
 
-        public string NormalizersChangeSetter
+        public string NormalizersChangeSetterMainForm
         {
             set
             {
@@ -1949,7 +1963,7 @@ namespace DrosteEffectApp
             ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
             if (expressionForm != null)
             {
-                expressionForm.TriggerGraphRefresh = true;
+                expressionForm.TriggerGraphRefreshSetter = true;
             }
         }
 
@@ -1959,7 +1973,10 @@ namespace DrosteEffectApp
             if (radioNormalizeStartEnd.Checked)
             {
                 checkBoxAbsoluteModeMain.Checked = false;
+                ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
+                expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeStartEnd";
             }
+            
             RefreshGraph();
         }
 
@@ -1969,6 +1986,8 @@ namespace DrosteEffectApp
             if (radioNormalizeMaxRanges.Checked)
             {
                 checkBoxAbsoluteModeMain.Checked = false;
+                ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
+                expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeMaxRanges";
             }
             RefreshGraph();
         }
@@ -1979,12 +1998,19 @@ namespace DrosteEffectApp
             if (radioNormalizeExtendedRanges.Checked)
             {
                 checkBoxAbsoluteModeMain.Checked = false;
+                ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
+                expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeExtendedRanges";
             }
             RefreshGraph();
         }
 
         private void radioNoNormalize_CheckedChanged(object sender, EventArgs e)
         {
+            if (radioNoNormalize.Checked)
+            {
+                ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
+                expressionForm.NormalizersChangeSetterExpressionsForm = "NoNormalize";
+            }
             RefreshGraph();
         }
 
@@ -1995,6 +2021,10 @@ namespace DrosteEffectApp
             {
                 radioNoNormalize.Checked = true;
             }
+            // Update absolute mode checkbox on expressions form to keep in sync
+            ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
+            expressionForm.AbsoluteModeCheckBoxChangeSetterExpressionsForm = checkBoxAbsoluteModeMain.Checked;
+
             RefreshGraph();
         
         }

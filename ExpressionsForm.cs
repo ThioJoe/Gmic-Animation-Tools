@@ -88,7 +88,7 @@ namespace GmicDrosteAnimate
         }
 
         // Getter setter to trigger chart refresh
-        public bool TriggerGraphRefresh
+        public bool TriggerGraphRefreshSetter
         {
             get { return checkBoxAutoUpdateGraph.Checked; }
             set
@@ -99,6 +99,43 @@ namespace GmicDrosteAnimate
                 }
             }
         }
+
+        public string NormalizersChangeSetterExpressionsForm
+        {
+            set
+            {
+                if (value == "NormalizeStartEnd")
+                {
+                    radioNormalizeStartEndClone.Checked = true;
+                    //radioNormalizeStartEndClone_CheckedChanged(null, null);
+                }
+                else if (value == "NormalizeMaxRanges")
+                {
+                    radioNormalizeMaxRangesClone.Checked = true;
+                    //radioNormalizeMaxRangesClone_CheckedChanged(null, null);
+                }
+                else if (value == "NormalizeExtendedRanges")
+                {
+                    radioNormalizeExtendedRangesClone.Checked = true;
+                    //radioNormalizeExtendedRangesClone_CheckedChanged(null, null);
+                }
+                else if (value == "NoNormalize")
+                {
+                    radioNoNormalizeClone.Checked = true;
+                    //radioNoNormalizeClone_CheckedChanged(null, null);
+                }
+            }
+        }
+
+        public bool AbsoluteModeCheckBoxChangeSetterExpressionsForm
+        {
+            set
+            {
+                checkBoxAbsoluteMode.Checked = value;
+            }
+        }
+
+
 
         private void InitializeDataGridView()
         {
@@ -400,9 +437,9 @@ namespace GmicDrosteAnimate
             if (mainForm != null)
             {
                 // Send the full string to the custom array text box
-                mainForm.CustomExpressionArrayTextBoxChange = txtCurrentExpressionParamString.Text;
+                mainForm.CustomExpressionArrayTextBoxChangeSetter = txtCurrentExpressionParamString.Text;
                 // Send only the master parameter expression to the master parameter text box
-                mainForm.CustomMasterExpressionTextBoxChange = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+                mainForm.CustomMasterExpressionTextBoxChangeSetter = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
             }
         }
 
@@ -641,6 +678,8 @@ namespace GmicDrosteAnimate
             if (checkBoxKeepFramesConstant.Checked)
             {
                 nudGraphConstantFrameCount.Enabled = true;
+                // Update NUD on main form
+                mainForm.TotalFramesNUDChangeSetter = nudGraphConstantFrameCount.Value;
             }
             else
             {
@@ -656,7 +695,7 @@ namespace GmicDrosteAnimate
         private void nudMasterParamIndexClone_ValueChanged(object sender, EventArgs e)
         {
             // Send the new value to the numeric updown in the main form and trigger its event handler
-            mainForm.MasterParamIndexNUDChange = nudMasterParamIndexClone.Value;
+            mainForm.MasterParamIndexNUDChangeSetter = nudMasterParamIndexClone.Value;
         }
 
         private void checkBoxAutoUpdateGraph_CheckedChanged(object sender, EventArgs e)
@@ -705,9 +744,10 @@ namespace GmicDrosteAnimate
             // Uncheck the absolute mode checkbox if this is checked
             if (radioNormalizeStartEndClone.Checked)
             {
+                mainForm.NormalizersChangeSetterMainForm = "NormalizeStartEndClone";
                 checkBoxAbsoluteMode.Checked = false;
             }
-            mainForm.NormalizersChangeSetter = "NormalizeStartEndClone";
+            
             PlotGraph();
         }
 
@@ -716,9 +756,10 @@ namespace GmicDrosteAnimate
             // Uncheck the absolute mode checkbox if this is checked
             if (radioNormalizeMaxRangesClone.Checked)
             {
+                mainForm.NormalizersChangeSetterMainForm = "NormalizeMaxRanges";
                 checkBoxAbsoluteMode.Checked = false;
             }
-            mainForm.NormalizersChangeSetter = "NormalizeMaxRanges";
+            
             PlotGraph();
         }
 
@@ -727,15 +768,19 @@ namespace GmicDrosteAnimate
             // Uncheck the absolute mode checkbox if this is checked
             if (radioNormalizeExtendedRangesClone.Checked)
             {
+                mainForm.NormalizersChangeSetterMainForm = "NormalizeExtendedRanges";
                 checkBoxAbsoluteMode.Checked = false;
             }
-            mainForm.NormalizersChangeSetter = "NormalizeExtendedRanges";
+            
             PlotGraph();
         }
 
         private void radioNoNormalizeClone_CheckedChanged(object sender, EventArgs e)
         {
-            mainForm.NormalizersChangeSetter = "NoNormalize";
+            if (radioNoNormalizeClone.Checked)
+            {
+                mainForm.NormalizersChangeSetterMainForm = "NoNormalize";
+            }
             PlotGraph();
         }
 
@@ -746,13 +791,19 @@ namespace GmicDrosteAnimate
             {
                 radioNoNormalizeClone.Checked = true;
             }
-            mainForm.AbsoluteModeCheckBoxChangeSetter = checkBoxAbsoluteMode.Checked;
+            mainForm.AbsoluteModeCheckBoxChangeSetterMainForm = checkBoxAbsoluteMode.Checked;
             PlotGraph();
 
         }
 
         private void nudGraphConstantFrameCount_ValueChanged(object sender, EventArgs e)
         {
+            // Update NUD on main form
+            if (checkBoxKeepFramesConstant.Checked)
+            {
+                mainForm.TotalFramesNUDChangeSetter = nudGraphConstantFrameCount.Value;
+            }
+            
             PlotGraph();
         }
     } //End form class

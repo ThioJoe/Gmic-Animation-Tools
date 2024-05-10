@@ -732,8 +732,8 @@ namespace GmicDrosteAnimate
             // Use the reference to update the text boxes in MainForm
             if (mainForm != null)
             {
-                mainForm.StartParamsTextBoxChange = startParamsToSend;
-                mainForm.EndParamsTextTextBoxChange = endParamsToSend;
+                mainForm.StartParamsTextBoxChangeSetter = startParamsToSend;
+                mainForm.EndParamsTextTextBoxChangeSetter = endParamsToSend;
             }
         }
 
