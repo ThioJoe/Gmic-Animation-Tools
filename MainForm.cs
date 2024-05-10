@@ -1318,13 +1318,24 @@ namespace DrosteEffectApp
                 endParamArray = ParseParamsToArray(defaultEndParams, silent: true);
             }
 
-            ParamNamesForm paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);
-            // Set the start position of the form manually
-            paramNamesForm.StartPosition = FormStartPosition.Manual;
-            // Set the location relative to the main form (e.g., offsetting by 60 pixels to the right and down)
-            paramNamesForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
-            // Show the new form
-            paramNamesForm.Show();
+            // Check if it's already open, if so move it to the default location I have set
+
+            ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+
+            if (paramNamesForm != null)
+            {
+                paramNamesForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+            }
+            else
+            {
+                paramNamesForm = new ParamNamesForm(this, startParamArray, endParamArray, (int)nudMasterParamIndex.Value - 1);
+                // Set the start position of the form manually
+                paramNamesForm.StartPosition = FormStartPosition.Manual;
+                // Set the location relative to the main form (e.g., offsetting by 60 pixels to the right and down)
+                paramNamesForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+                // Show the new form
+                paramNamesForm.Show();
+            }
         }
 
         private void nudTotalFrames_ValueChanged(object sender, EventArgs e)
@@ -1847,22 +1858,37 @@ namespace DrosteEffectApp
 
         private void btnShowExpressionForm_Click(object sender, EventArgs e)
         {
-            // Create a new instance of ExpressionsForm with specified parameters
-            ExpressionsForm expressionForm = new ExpressionsForm(
-                mainform: this,
-                incomingExpressionParamString: txtExponentArray.Text,
-                incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1,
-                incomingMasterParamExpression: txtMasterExponent.Text
-            );
+            // Check if the ExpressionsForm is already open
+            ExpressionsForm expressionForm = Application.OpenForms["ExpressionsForm"] as ExpressionsForm;
 
-            // Set the start position of the form manually
-            expressionForm.StartPosition = FormStartPosition.Manual;
+            if (expressionForm == null)
+            {
+                // Form is not open, create and show it
+                expressionForm = new ExpressionsForm(
+                    mainform: this,
+                    incomingExpressionParamString: txtExponentArray.Text,
+                    incomingMasterParamIndex: (int)nudMasterParamIndex.Value - 1,
+                    incomingMasterParamExpression: txtMasterExponent.Text
+                );
 
-            // Set the location relative to the main form (e.g., offsetting by 60 pixels to the right and down)
-            expressionForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+                // Set the start position of the form manually
+                expressionForm.StartPosition = FormStartPosition.Manual;
 
-            // Show the new form
-            expressionForm.Show();
+                // Set the location relative to the main form (e.g., offsetting by 60 pixels to the right and down)
+                expressionForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+
+                // Show the new form
+                expressionForm.Show();
+            }
+            else
+            {
+                // Form is already open, just move it to the specified location
+                expressionForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+
+                // Bring the existing form to the front
+                expressionForm.BringToFront();
+            }
         }
+
     }
 }
