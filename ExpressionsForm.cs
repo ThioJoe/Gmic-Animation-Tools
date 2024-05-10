@@ -573,7 +573,8 @@ namespace GmicDrosteAnimate
                     {
                         if (!silent)
                         {
-                            MessageBox.Show("The expression string must include the variable 't' or 'x' when using absolute mode. " +
+                            MessageBox.Show(
+                                "The expression string must include the variable 't' or 'x' when using absolute mode. " +
                                 "Where t is normalized for time between 0 and 1, and x is the frame number.",
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
@@ -588,7 +589,12 @@ namespace GmicDrosteAnimate
                 {
                     if (!silent)
                     {
-                        MessageBox.Show("The expression string must either be only a number, or an expression that includes only the variable 't'. Constants like pi are allowed too.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(
+                            "The expression string must either be only a number, or an expression that use at least the variable 't'. " +
+                            "Where t is normalized for time between 0 and 1." + 
+                            "\n\nExpressions can also contain the variable 'x' (which equals to the frame number), but only in absolute mode can an expression use only 'x' without 't'." +
+                            "\n\nConstants like pi are allowed too.", 
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     labelErrorWhileGraphing.Visible = true;
                     return;

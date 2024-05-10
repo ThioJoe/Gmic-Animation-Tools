@@ -753,7 +753,8 @@ namespace DrosteEffectApp
                         case "custom-master":
                             if (i == masterIndex)
                             {
-                                if (exponents[i].Contains("t") || (absoluteMode && exponents[i].Contains("x")))
+                                // If not in absolute mode, at least the 't' variable must be used in the expression. If absolute mode, 'x' can be exclusively used in addition to t.
+                                if (exponents[i].Contains("t") || (absoluteMode && (exponents[i].Contains("t") || (exponents[i].Contains("x")))))
                                 {
                                     // Evaluate the formula using the normalized time value
                                     (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i], absoluteMode: absoluteMode, frameNum: frame);
@@ -776,7 +777,8 @@ namespace DrosteEffectApp
 
                         // If the user has specified a custom array of exponents for all parameters and exponential increments are enabled.
                         case "custom-array":
-                            if (exponents[i].Contains("t") || (absoluteMode && exponents[i].Contains("x")))
+                            // If not in absolute mode, at least the 't' variable must be used in the expression. If absolute mode, 'x' can be exclusively used in addition to t.
+                            if (exponents[i].Contains("t") || (absoluteMode && (exponents[i].Contains("t") || (exponents[i].Contains("x")))))
                             {
                                 // Evaluate the formula using the normalized time value
                                 (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i], absoluteMode: absoluteMode, frameNum: frame);
@@ -1002,12 +1004,9 @@ namespace DrosteEffectApp
                 //t is the normalized time value, which equals the current frame number divided by the total number of frames.
                 variables["t"] = t;  // This will add 't' or update its value if 't' is somehow already in the dictionary
 
-                // If absolute mode is enabled, 'x' is allowed as a variable to represent the frame number
-                if (absoluteMode)
-                {
-                    variables["x"] = frameNum;
-                }
-                
+                // Also allow 'x' which represents the frame number
+                variables["x"] = frameNum;
+
                 // Parse the formula as a symbolic expression
                 var expression = SymbolicExpression.Parse(formula);
 
