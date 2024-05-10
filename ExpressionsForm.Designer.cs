@@ -21,8 +21,8 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             this.labelCurrentExpressionString = new System.Windows.Forms.Label();
             this.txtCurrentExpressionParamString = new System.Windows.Forms.TextBox();
@@ -87,23 +87,23 @@
             // 
             // chartCurve
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartCurve.ChartAreas.Add(chartArea2);
-            this.chartCurve.Location = new System.Drawing.Point(438, 12);
+            chartArea1.Name = "ChartArea1";
+            this.chartCurve.ChartAreas.Add(chartArea1);
+            this.chartCurve.Location = new System.Drawing.Point(371, 78);
             this.chartCurve.Name = "chartCurve";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series2.MarkerSize = 7;
-            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series2.Name = "ValueSeries";
-            this.chartCurve.Series.Add(series2);
-            this.chartCurve.Size = new System.Drawing.Size(440, 300);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series1.MarkerSize = 7;
+            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series1.Name = "ValueSeries";
+            this.chartCurve.Series.Add(series1);
+            this.chartCurve.Size = new System.Drawing.Size(513, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
             // 
             // btnTestChart
             // 
-            this.btnTestChart.Location = new System.Drawing.Point(452, 332);
+            this.btnTestChart.Location = new System.Drawing.Point(388, 401);
             this.btnTestChart.Name = "btnTestChart";
             this.btnTestChart.Size = new System.Drawing.Size(75, 23);
             this.btnTestChart.TabIndex = 8;
@@ -114,7 +114,7 @@
             // 
             // btnChartValues
             // 
-            this.btnChartValues.Location = new System.Drawing.Point(574, 325);
+            this.btnChartValues.Location = new System.Drawing.Point(523, 394);
             this.btnChartValues.Name = "btnChartValues";
             this.btnChartValues.Size = new System.Drawing.Size(192, 37);
             this.btnChartValues.TabIndex = 9;
@@ -125,7 +125,7 @@
             // checkBoxKeepFramesConstant
             // 
             this.checkBoxKeepFramesConstant.AutoSize = true;
-            this.checkBoxKeepFramesConstant.Location = new System.Drawing.Point(452, 415);
+            this.checkBoxKeepFramesConstant.Location = new System.Drawing.Point(371, 500);
             this.checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
             this.checkBoxKeepFramesConstant.Size = new System.Drawing.Size(197, 17);
             this.checkBoxKeepFramesConstant.TabIndex = 10;
@@ -137,7 +137,7 @@
             // 
             this.nudGraphConstantFrameCount.Enabled = false;
             this.nudGraphConstantFrameCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(655, 409);
+            this.nudGraphConstantFrameCount.Location = new System.Drawing.Point(574, 494);
             this.nudGraphConstantFrameCount.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -162,7 +162,7 @@
             this.checkBoxAutoUpdateGraph.AutoSize = true;
             this.checkBoxAutoUpdateGraph.Checked = true;
             this.checkBoxAutoUpdateGraph.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoUpdateGraph.Location = new System.Drawing.Point(452, 381);
+            this.checkBoxAutoUpdateGraph.Location = new System.Drawing.Point(371, 466);
             this.checkBoxAutoUpdateGraph.Name = "checkBoxAutoUpdateGraph";
             this.checkBoxAutoUpdateGraph.Size = new System.Drawing.Size(118, 17);
             this.checkBoxAutoUpdateGraph.TabIndex = 12;
@@ -173,7 +173,7 @@
             // nudMasterParamIndexClone
             // 
             this.nudMasterParamIndexClone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.nudMasterParamIndexClone.Location = new System.Drawing.Point(371, 46);
+            this.nudMasterParamIndexClone.Location = new System.Drawing.Point(371, 27);
             this.nudMasterParamIndexClone.Maximum = new decimal(new int[] {
             31,
             0,
@@ -197,7 +197,7 @@
             // labelMasterIndexClone
             // 
             this.labelMasterIndexClone.AutoSize = true;
-            this.labelMasterIndexClone.Location = new System.Drawing.Point(368, 30);
+            this.labelMasterIndexClone.Location = new System.Drawing.Point(368, 11);
             this.labelMasterIndexClone.Name = "labelMasterIndexClone";
             this.labelMasterIndexClone.Size = new System.Drawing.Size(58, 13);
             this.labelMasterIndexClone.TabIndex = 14;
