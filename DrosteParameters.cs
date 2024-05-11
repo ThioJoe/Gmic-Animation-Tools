@@ -1,27 +1,25 @@
-﻿using GmicDrosteAnimate;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
 public class Filter
 {
     public string FriendlyName { get; set; }
     public string GmicCommand { get; set; }
-    public List<ParameterInfo> Parameters { get; set; }
+    public List<SingleParameterInfo> Parameters { get; set; }
     public Filter(string friendlyName, string gmicCommand)
     {
+        // Create parts of the filter object
         FriendlyName = friendlyName;
         GmicCommand = gmicCommand;
-        Parameters = new List<ParameterInfo>();
+        Parameters = new List<SingleParameterInfo>();
     }
 }
 
 
-public class ParameterInfo
+public class SingleParameterInfo
 {
     public int ParamIndex { get; set; }
     public string Name { get; set; }
@@ -35,7 +33,7 @@ public class ParameterInfo
     public int Decimals { get; set; } // How many decimals to keep in the value after random generation
     public double DefaultExponent { get; set; }
 
-    public ParameterInfo(int paramIndex, string name, double defaultStart, double defaultEnd, double min, double max, double extendedMin, double extendedMax, string type, int decimals, double defaultExponent)
+    public SingleParameterInfo(int paramIndex, string name, double defaultStart, double defaultEnd, double min, double max, double extendedMin, double extendedMax, string type, int decimals, double defaultExponent)
     {
         ParamIndex = paramIndex;
         Name = name;
@@ -53,9 +51,25 @@ public class ParameterInfo
 
 public static class FilterParameters
 {
-    public static List<ParameterInfo> Parameters { get; private set; } = new List<ParameterInfo>();
+    
     public static List<Filter> Filters { get; private set; } = new List<Filter>();
     public static Filter ActiveFilter { get; private set; } // Property to store the currently active filter
+
+    private static List<SingleParameterInfo> parameters = new List<SingleParameterInfo>();
+
+    public static List<SingleParameterInfo> GetActiveFilterParameters()
+    {
+        return ActiveFilter.Parameters;
+    }
+
+    public static string[] filtersToNotLoadFromFile = new string[] {
+        // Put any names of filters here that should not be loaded from file
+    };
+
+    private static void SetParameters(List<SingleParameterInfo> value)
+    {
+        parameters = value;
+    }
 
     // Static initializer to set up default parameters
     static FilterParameters()
@@ -84,23 +98,23 @@ public static class FilterParameters
         switch (propertyName)
         {
             case "DefaultStart":
-                return string.Join(",", Parameters.Select(p => p.DefaultStart));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.DefaultStart));
             case "DefaultEnd":
-                return string.Join(",", Parameters.Select(p => p.DefaultEnd));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.DefaultEnd));
             case "Min":
-                return string.Join(",", Parameters.Select(p => p.Min));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.Min));
             case "Max":
-                return string.Join(",", Parameters.Select(p => p.Max));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.Max));
             case "ExtendedMin":
-                return string.Join(",", Parameters.Select(p => p.ExtendedMin));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.ExtendedMin));
             case "ExtendedMax":
-                return string.Join(",", Parameters.Select(p => p.ExtendedMax));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.ExtendedMax));
             case "Type":
-                return string.Join(",", Parameters.Select(p => p.Type));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.Type));
             case "Decimals":
-                return string.Join(",", Parameters.Select(p => p.Decimals));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.Decimals));
             case "DefaultExponent":
-                return string.Join(",", Parameters.Select(p => p.DefaultExponent));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.DefaultExponent));
             default:
                 throw new ArgumentException("Property name not recognized", nameof(propertyName));
         }
@@ -112,19 +126,19 @@ public static class FilterParameters
         switch (propertyName)
         {
             case "DefaultStart":
-                return Parameters.Select(p => p.DefaultStart).ToArray();
+                return GetActiveFilterParameters().Select(p => p.DefaultStart).ToArray();
             case "DefaultEnd":
-                return Parameters.Select(p => p.DefaultEnd).ToArray();
+                return GetActiveFilterParameters().Select(p => p.DefaultEnd).ToArray();
             case "Min":
-                return Parameters.Select(p => p.Min).ToArray();
+                return GetActiveFilterParameters().Select(p => p.Min).ToArray();
             case "Max":
-                return Parameters.Select(p => p.Max).ToArray();
+                return GetActiveFilterParameters().Select(p => p.Max).ToArray();
             case "ExtendedMin":
-                return Parameters.Select(p => p.ExtendedMin).ToArray();
+                return GetActiveFilterParameters().Select(p => p.ExtendedMin).ToArray();
             case "ExtendedMax":
-                return Parameters.Select(p => p.ExtendedMax).ToArray();
+                return GetActiveFilterParameters().Select(p => p.ExtendedMax).ToArray();
             case "DefaultExponent":
-                return Parameters.Select(p => p.DefaultExponent).ToArray();
+                return GetActiveFilterParameters().Select(p => p.DefaultExponent).ToArray();
             default:
                 throw new ArgumentException("Property name not recognized", nameof(propertyName));
         }
@@ -132,21 +146,21 @@ public static class FilterParameters
 
     public static string[] GetParameterNamesList()
     {
-        return Parameters.Select(p => p.Name).ToArray();
+        return GetActiveFilterParameters().Select(p => p.Name).ToArray();
     }
 
     public static string GetParameterType(int index)
     {
-        return Parameters[index].Type;
+        return GetActiveFilterParameters()[index].Type;
     }
 
     public static List<int> GetNonExponentableParamIndexes()
     {
         // Return indexes of parameters that are not continuous or step
         List<int> nonExponentableIndexes = new List<int>();
-        for (int i = 0; i < Parameters.Count; i++)
+        for (int i = 0; i < GetActiveFilterParameters().Count; i++)
         {
-            if (Parameters[i].Type != "Continuous" && Parameters[i].Type != "Step")
+            if (GetActiveFilterParameters()[i].Type != "Continuous" && GetActiveFilterParameters()[i].Type != "Step")
             {
                 nonExponentableIndexes.Add(i);
             }
@@ -156,24 +170,41 @@ public static class FilterParameters
 
     public static int GetParameterCount()
     {
-        return Parameters.Count;
+        return GetActiveFilterParameters().Count;
     }
 
     // Possible variable types are: int, float, choice, bool, file, file_in, file_out, color, text, value, point
     // Some can seemingly have underscore or tilde prefixes, but I'm not sure what that means
     // Example: ~int, _int, ~float, ~choice, ~color, ~bool, _bool, others
 
-    public static void LoadParametersForAllFiltersFromJson(string jsonText)
+    public static void LoadParametersForAllFiltersFromJson(string jsonText, bool clearExistingFilters)
     {
-        // Load data from JSON string
-        JArray filtersArray = JArray.Parse(jsonText);
-        Filters.Clear(); // Clear existing filters if re-loading
-
-        foreach (JObject filterObj in filtersArray)
+        if (clearExistingFilters)
         {
-            LoadIndividualFilterFromJSON(filterObj);
+            // Clear existing filters if re-loading. Don't clear if adding to existing filters like custom filters
+            Filters.Clear(); 
+            // Add custom built in souphead droste10 filter when refreshing filters
+            Filters.Add(new Filter("Continuous Droste (Custom)", "souphead_droste10"));
+        }
+        
+        if (!String.IsNullOrEmpty(jsonText))
+        {
+            // Load data from JSON string
+            JArray filtersArray = JArray.Parse(jsonText);
+
+            foreach (JObject filterObj in filtersArray)
+            {
+                LoadIndividualFilterFromJSON(filterObj);
+            }
+        }
+
+        if (Filters.Count > 0)
+        {
+            // Sort Filters by FriendlyName
+            Filters = Filters.OrderBy(f => f.FriendlyName).ToList();
         }
     }
+
 
     // Methods that automatically generates parameter info for a filter from loaded data. Call this one from the main program
     public static void LoadIndividualFilterFromJSON(JObject filterObj)
@@ -279,8 +310,8 @@ public static class FilterParameters
                 tempExtendedMax = 1;
             }
 
-            var parameterInfo = new ParameterInfo(
-                paramIndex: Parameters.Count,  // Index is dynamically set based on count
+            var parameterInfo = new SingleParameterInfo(
+                paramIndex: GetActiveFilterParameters().Count,  // Index is dynamically set based on count. As each gets added the count and therefore the index increases
                 name: name,
                 defaultStart: defaultValue,  // Using null-coalescing operator if DefaultValue is nullable
                 defaultEnd: maxValue ?? 0,    // You might want to adjust this as per your logic
@@ -294,7 +325,11 @@ public static class FilterParameters
             );
             filter.Parameters.Add(parameterInfo);
         }
-        Filters.Add(filter);
+        // If it doesn't contain a filter that shouldn't be loaded from file, add it to the list
+        if (!filtersToNotLoadFromFile.Contains(gmicCommand) && !filtersToNotLoadFromFile.Contains(friendlyName))
+        {
+            Filters.Add(filter);
+        }
     }
 
     // Print out list of loaded filters
@@ -346,15 +381,23 @@ public static class FilterParameters
 
     public static void InitializeChosenFilter(string filterName)
     {
+        // Only do this if the filter is not already the active filter
+        if (ActiveFilter != null && ActiveFilter.GmicCommand == filterName)
+        {
+            return;
+        }
         // Clear existing parameters
-        Parameters.Clear();
+        ActiveFilter.Parameters.Clear();
 
         // Find the filter with the given name
         var selectedFilter = Filters.FirstOrDefault(f => f.FriendlyName.Equals(filterName, StringComparison.OrdinalIgnoreCase) || f.GmicCommand.Equals(filterName, StringComparison.OrdinalIgnoreCase));
         if (selectedFilter != null)
         {
             // Load parameters from the found filter
-            Parameters.AddRange(selectedFilter.Parameters);
+            ActiveFilter.Parameters.AddRange(selectedFilter.Parameters);
+            // Set friendly name and G'MIC command
+            ActiveFilter.FriendlyName = selectedFilter.FriendlyName;
+            ActiveFilter.GmicCommand = selectedFilter.GmicCommand;
         }
         else
         {
@@ -387,9 +430,9 @@ public static class FilterParameters
     // Manually prepared parameter info for the Souphead Droste 10 filter
     private static void InitializeSoupheadDroste10()
     {
-        var localParameters = new List<ParameterInfo>
+        var localParameters = new List<SingleParameterInfo>
         {
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 0,
                 name: "Inner Radius",
                 defaultStart: 40,
@@ -402,7 +445,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 2.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 1,
                 name: "Outer Radius",
                 defaultStart: 100,
@@ -415,7 +458,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 3.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 2,
                 name: "Periodicity",
                 defaultStart: 1,
@@ -428,7 +471,7 @@ public static class FilterParameters
                 decimals: 2,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 3,
                 name: "Strands",
                 defaultStart: 1,
@@ -441,7 +484,7 @@ public static class FilterParameters
                 decimals: 1,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 4,
                 name: "Zoom",
                 defaultStart: 1,
@@ -454,7 +497,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 5,
                 name: "Rotate",
                 defaultStart: 0,
@@ -467,7 +510,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 6,
                 name: "X-Shift",
                 defaultStart: 0,
@@ -480,7 +523,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 7,
                 name: "Y-Shift",
                 defaultStart: 0,
@@ -493,7 +536,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 8,
                 name: "Center X-Shift",
                 defaultStart: 0,
@@ -506,7 +549,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 9,
                 name: "Center Y-Shift",
                 defaultStart: 0,
@@ -519,7 +562,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 10,
                 name: "Starting Level",
                 defaultStart: 10,
@@ -532,7 +575,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 11,
                 name: "Number of Levels",
                 defaultStart: 30,
@@ -545,7 +588,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-                new ParameterInfo(
+                new SingleParameterInfo(
                 paramIndex: 12,
                 name: "Level Frequency",
                 defaultStart: 1,
@@ -558,7 +601,7 @@ public static class FilterParameters
                 decimals: 1,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 13,
                 name: "Show Both Poles",
                 defaultStart: 0,
@@ -571,7 +614,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 14,
                 name: "Pole Rotation",
                 defaultStart: 90,
@@ -584,7 +627,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 15,
                 name: "Pole Long",
                 defaultStart: 0,
@@ -597,7 +640,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 16,
                 name: "Pole Lat",
                 defaultStart: 0,
@@ -610,7 +653,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 17,
                 name: "Tile Poles",
                 defaultStart: 0,
@@ -623,7 +666,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 18,
                 name: "Hyper Droste",
                 defaultStart: 0,
@@ -636,7 +679,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 19,
                 name: "Fractal Points",
                 defaultStart: 1,
@@ -649,7 +692,7 @@ public static class FilterParameters
                 decimals: 1,
                 defaultExponent: 1.0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 20,
                 name: "Auto-Set Periodicity",
                 defaultStart: 0,
@@ -662,7 +705,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 21,
                 name: "No Transparency",
                 defaultStart: 0,
@@ -675,7 +718,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 22,
                 name: "External Transparency",
                 defaultStart: 1,
@@ -688,7 +731,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 23,
                 name: "Mirror Effect",
                 defaultStart: 0,
@@ -701,7 +744,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 24,
                 name: "Untwist",
                 defaultStart: 0,
@@ -714,7 +757,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 25,
                 name: "Do Not Flatten Transparency",
                 defaultStart: 1,
@@ -727,7 +770,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 26,
                 name: "Show Grid",
                 defaultStart: 0,
@@ -740,7 +783,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 27,
                 name: "Show Frame",
                 defaultStart: 0,
@@ -753,7 +796,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 28,
                 name: "Antialiasing",
                 defaultStart: 1,
@@ -766,7 +809,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 29,
                 name: "Edge Behavior X",
                 defaultStart: 0,
@@ -779,7 +822,7 @@ public static class FilterParameters
                 decimals: 0,
                 defaultExponent: 0
             ),
-            new ParameterInfo(
+            new SingleParameterInfo(
                 paramIndex: 30,
                 name: "Edge Behavior Y",
                 defaultStart: 0,

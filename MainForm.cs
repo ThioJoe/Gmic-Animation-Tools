@@ -49,14 +49,14 @@ namespace DrosteEffectApp
         // Setting a default array of exponents for use with exponential interpolation if no custom array is provided.
         // These are arbitrarily chosen values based on experience.
         //private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-        // Get default values from FilterParameters ParameterInfo class defaultStart value
+        // Get default values from FilterParameters SingleParameterInfo class defaultStart value
         private double[] defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultExponent");
 
         // Default values for the start and end parameters to be displayed as placeholders in the textboxes and if user opens parameters info window without entering any values
         //private string defaultStartParams = "34,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
         //private string defaultEndParams = "100,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
 
-        // Get default values from FilterParameters ParameterInfo class defaultStart value
+        // Get default values from FilterParameters SingleParameterInfo class defaultStart value
         private string defaultStartParams = FilterParameters.GetParameterValuesAsString("DefaultStart");
         private string defaultEndParams = FilterParameters.GetParameterValuesAsString("DefaultEnd");
 
@@ -1843,7 +1843,7 @@ namespace DrosteEffectApp
             string labelTextStr = "= ";
             if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= filterParameterCount)
             {
-                labelTextStr += FilterParameters.Parameters[(int)nudMasterParamIndex.Value - 1].Name;
+                labelTextStr += FilterParameters.GetActiveFilterParameters()[(int)nudMasterParamIndex.Value - 1].Name;
             }
             else
             {
@@ -2239,10 +2239,14 @@ namespace DrosteEffectApp
 
 
         // Load and parse filter files using gmic
-        private async void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", bool silent = false)
+        private async void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", string customFilterJsonFileName = "CustomFilterParameters.json", bool silent = false)
         {
             string gmicFilterFilePath;
             string jsonData;
+
+            // First check if the custom filter file exists, if so get the data, otherwise set to null
+            string customJsonData = LoadJSONFromCustomFilterFile(customFilterJsonFileName);
+            
             // First check if the file exists, and if not then try to run "gmic update" to download the latest filters
             if (!File.Exists(filterJsonfileName))
             {
@@ -2317,7 +2321,8 @@ namespace DrosteEffectApp
                         // Load all the data from the file as a string
                         jsonData = File.ReadAllText(filterJsonfileName);
                         // Parse the JSON data into a list of Filter objects
-                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonData);
+                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true);
+                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false);
                         PopulateListBox();
                         // Clear search box
                         txtSearchBoxMain.Text = "";
@@ -2334,11 +2339,32 @@ namespace DrosteEffectApp
             // Load the filter file
             jsonData = File.ReadAllText(filterJsonfileName);
             // Parse the JSON data into a list of Filter objects
-            FilterParameters.LoadParametersForAllFiltersFromJson(jsonData);
+            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true);
+            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false);
             // Populate search box
             PopulateListBox();
             txtSearchBoxMain.Text = "";
             return;
+        }
+
+        // Check for and load a user-created custom filter file
+        private string LoadJSONFromCustomFilterFile(string customFilterFileName="CustomFilterParameters.json")
+        {
+            if (File.Exists(customFilterFileName))
+            {
+                string jsonData = File.ReadAllText(customFilterFileName);
+                return jsonData;
+                //FilterParameters.LoadParametersForAllFiltersFromJson(jsonData);
+                //PopulateListBox();
+            }
+            else
+            {
+                return null;
+            }
+            //else
+            //{
+            //    MessageBox.Show("Custom filter file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
 
         private string RunGmicUpdate()

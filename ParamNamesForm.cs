@@ -356,7 +356,7 @@ namespace GmicDrosteAnimate
                 if (isChecked)
                 {
                     // Retrieve the parameter information for the current row
-                    ParameterInfo paramInfo = FilterParameters.Parameters[rowIndex];
+                    SingleParameterInfo paramInfo = FilterParameters.GetActiveFilterParameters()[rowIndex];
 
                     // Determine the minimum and maximum values for the random number generation
                     // If the 'Extended Range' checkbox is checked, use the extended min and max; otherwise, use the regular min and max
@@ -695,7 +695,7 @@ namespace GmicDrosteAnimate
             // Iterate through each row in the DataGridView, determine whether to check row box if parameter type is included in the list of types to randomize
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                string paramType = FilterParameters.Parameters[row.Index].Type;
+                string paramType = FilterParameters.GetActiveFilterParameters()[row.Index].Type;
                 row.Cells["CheckBox"].Value = includedTypes.Contains(paramType);
             }
         }
