@@ -86,10 +86,13 @@ namespace DrosteEffectApp
             listBoxFiltersMain.ItemHeight = 15;  // Make sure this is enough to show the text.
             listBoxFiltersMain.DrawItem += ListBoxFiltersMain_DrawItem;
             Load += MainForm_Load;
+            // Run method to load filters file not silent, will display message asking user to update files
+            LoadFiltersFile(silent: true);
 
             // Store data about master increment NUD to properly increment up down arrows
             //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
             //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+
         }
 
         private void InitializeDefaults()
@@ -2211,7 +2214,7 @@ namespace DrosteEffectApp
         }
 
         // Load and parse filter files using gmic
-        private void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", bool silent = false)
+        private async void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", bool silent = false)
         {
             string gmicFilterFilePath;
             string jsonData;
@@ -2238,36 +2241,34 @@ namespace DrosteEffectApp
                             return;
                         }
                         // Display in the filters list box that the filters are being updated
-                        listBoxFiltersMain.Text = "Updating GMIC filters...";
+                        txtSearchBoxMain.Text = "Updating GMIC filters...";
 
                         // Run gmic update to download the latest filters
-                        ProcessStartInfo startInfo = new ProcessStartInfo
+                        try
                         {
-                            FileName = "gmic",
-                            Arguments = "update",
-                            UseShellExecute = false,
-                            RedirectStandardOutput = true,
-                            CreateNoWindow = true
-                        };
+                            string output = await Task.Run(() => RunGmicUpdate());
+                            txtSearchBoxMain.Text = output;
 
-                        // Display the output of the command in the text box
-                        using (Process process = Process.Start(startInfo))
-                        {
-                            string output = process.StandardOutput.ReadToEnd();
-                            listBoxFiltersMain.Text = output;
+                            // Check if the file is there
+                            gmicFilterFilePath = SearchFolderForUpdateFilterFile();
+                            if (!String.IsNullOrEmpty(gmicFilterFilePath))
+                            {
+                                filterFileFound = true;
+                                //txtSearchBoxMain.Text = "GMIC filters updated!";
+                            }
                         }
-                        gmicFilterFilePath = SearchFolderForUpdateFilterFile();
-                        if (!String.IsNullOrEmpty(gmicFilterFilePath))
+                        catch (Exception ex)
                         {
-                            filterFileFound = true;
+                            MessageBox.Show("Failed to update filters: " + ex.Message);
                         }
+
                     }
                 }
 
                 // Parse to json file
                 if (filterFileFound)
                 {
-                    listBoxFiltersMain.Text = "GMIC filters found!\r\nNow parsing parameter data...";
+                    txtSearchBoxMain.Text = "GMIC filters found!\r\nNow parsing parameter data...";
                     string[] filterFileLines = File.ReadAllLines(gmicFilterFilePath);
                     GmicFilterParser filterParser = new GmicFilterParser();
                     string resultString = filterParser.ParseFiltersToJSON(filterFileLines);
@@ -2293,6 +2294,8 @@ namespace DrosteEffectApp
                         // Parse the JSON data into a list of Filter objects
                         FilterParameters.LoadParametersFromJson(jsonData);
                         PopulateListBox();
+                        // Clear search box
+                        txtSearchBoxMain.Text = "";
                     }
                 }
                 // If filter file was not found even after trying to update
@@ -2309,7 +2312,28 @@ namespace DrosteEffectApp
             FilterParameters.LoadParametersFromJson(jsonData);
             // Populate search box
             PopulateListBox();
+            txtSearchBoxMain.Text = "";
             return;
+        }
+
+        private string RunGmicUpdate()
+        {
+            string output = "";
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "gmic",
+                Arguments = "update",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(startInfo))
+            {
+                output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();  // Ensure the process has completed
+            }
+            return output;
         }
 
         private string SearchFolderForUpdateFilterFile()
