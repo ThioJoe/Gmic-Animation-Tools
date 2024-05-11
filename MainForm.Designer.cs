@@ -674,6 +674,8 @@
             // 
             // listBoxFiltersMain
             // 
+            this.listBoxFiltersMain.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.listBoxFiltersMain.Font = new System.Drawing.Font("Arial", 8.25F);
             this.listBoxFiltersMain.FormattingEnabled = true;
             this.listBoxFiltersMain.Location = new System.Drawing.Point(12, 509);
             this.listBoxFiltersMain.Name = "listBoxFiltersMain";

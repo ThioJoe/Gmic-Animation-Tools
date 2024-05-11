@@ -80,6 +80,12 @@ namespace DrosteEffectApp
                 chkCreateGif.Checked = false;
             }
 
+            // For the box with the list of filters
+            listBoxFiltersMain.DrawMode = DrawMode.OwnerDrawFixed;
+            listBoxFiltersMain.ItemHeight = 15;  // Make sure this is enough to show the text.
+            listBoxFiltersMain.DrawItem += ListBoxFiltersMain_DrawItem;
+            Load += MainForm_Load;
+
             // Store data about master increment NUD to properly increment up down arrows
             //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
             //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
@@ -2143,7 +2149,9 @@ namespace DrosteEffectApp
             FilterParameters.LoadParametersFromJson(jsonData);
 
             // Populate search box
-            listBoxFiltersMain.Items.AddRange(FilterParameters.Filters.Select(f => f.FriendlyName).ToArray());
+            //listBoxFiltersMain.Items.AddRange(FilterParameters.Filters.Select(f => f.FriendlyName).ToArray());
+
+            PopulateListBox(); // Initially populate the list box when the form loads
 
             // Print list of filters to console
             //(int filterCount, string filterSamples) = FilterParameters.GetFilterCount(sample: true);
@@ -2152,12 +2160,39 @@ namespace DrosteEffectApp
 
         private void txtSearchBoxMain_TextChanged(object sender, EventArgs e)
         {
-            listBoxFiltersMain.Items.Clear();
             string searchText = txtSearchBoxMain.Text.ToLower();
             var filteredItems = FilterParameters.Filters
-                                  .Where(f => f.FriendlyName.ToLower().Contains(searchText))
-                                  .Select(f => f.FriendlyName);
+                .Where(f => f.FriendlyName.ToLower().Contains(searchText) || f.GmicCommand.ToLower().Contains(searchText))
+                .Select(f => $"{f.FriendlyName} - {f.GmicCommand}");
+
+            listBoxFiltersMain.Items.Clear();
             listBoxFiltersMain.Items.AddRange(filteredItems.ToArray());
+        }
+
+        private void ListBoxFiltersMain_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();  // Ensures the selected item is highlighted.
+
+            if (e.Index >= 0)
+            {
+                string item = listBoxFiltersMain.Items[e.Index].ToString();
+                using (var brush = new SolidBrush(e.ForeColor))  // Ensure text color is appropriate.
+                {
+                    e.Graphics.DrawString(item, e.Font, brush, e.Bounds);
+                }
+            }
+
+            e.DrawFocusRectangle();  // Optionally, draw a focus rectangle around the selected item.
+        }
+
+        private void PopulateListBox()
+        {
+            listBoxFiltersMain.Items.Clear();
+            foreach (var filter in FilterParameters.Filters)
+            {
+                string displayText = $"{filter.FriendlyName}   ({filter.GmicCommand})";
+                listBoxFiltersMain.Items.Add(displayText);
+            }
         }
     }
     
