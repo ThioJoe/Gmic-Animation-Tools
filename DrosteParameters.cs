@@ -179,7 +179,7 @@ public static class FilterParameters
     // Some can seemingly have underscore or tilde prefixes, but I'm not sure what that means
     // Example: ~int, _int, ~float, ~choice, ~color, ~bool, _bool, others
 
-    public static void LoadParametersForAllFiltersFromJson(string jsonText, bool clearExistingFilters, bool isCustom)
+    public static void LoadParametersForAllFiltersFromJson(string jsonText, bool clearExistingFilters, bool isCustom, string fileName)
     {
         if (clearExistingFilters)
         {
@@ -193,8 +193,43 @@ public static class FilterParameters
         
         if (!String.IsNullOrEmpty(jsonText))
         {
-            // Load data from JSON string
-            JArray filtersArray = JArray.Parse(jsonText);
+            // First take out any lines at the beginning that start with a #, as these are comments
+            string[] jsonLines;
+            // Split jsonText into lines
+            jsonLines = jsonText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            // Remove lines starting with # or are empty, but stop once it reaches one not like that, because that means it's the start of the JSON
+            foreach (string line in jsonLines)
+            {
+                if (line.Trim().StartsWith("#") || string.IsNullOrWhiteSpace(line))
+                {
+                    jsonLines = jsonLines.Skip(1).ToArray();
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // Put lines back together without lines starting with #
+            jsonText = jsonText = string.Join("\n", jsonLines);
+
+            // Start parsing
+            JArray filtersArray = null;
+            try
+            {
+                // Load data from JSON string
+                filtersArray = JArray.Parse(jsonText);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error parsing JSON from filters file {fileName}\n\nError Message:\n" + ex.Message +
+                    "\n\nIt may have been corrupted or data was entered in the wrong format. " +
+                    "Try renaming it and letting the program create a new blank one, then copy the old data in, ensuring it is correct.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+            
 
             foreach (JObject filterObj in filtersArray)
             {

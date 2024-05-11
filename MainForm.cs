@@ -2239,7 +2239,7 @@ namespace DrosteEffectApp
 
 
         // Load and parse filter files using gmic
-        private async void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", string customFilterJsonFileName = "CustomFilterParameters.json", bool silent = false)
+        private async void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", string customFilterJsonFileName = "FiltersParameterListCustom.json", bool silent = false)
         {
             string gmicFilterFilePath;
             string jsonData;
@@ -2318,11 +2318,17 @@ namespace DrosteEffectApp
                     }
                     else
                     {
+                        // If a file wasn't found initially, only create new custom filter file if the regular filter was created succesfully
+                        if (!silent)
+                        {
+                            CheckForAndCreateCustomFilterJsonFile(customFilterFileName: customFilterJsonFileName);
+                        }
+
                         // Load all the data from the file as a string
                         jsonData = File.ReadAllText(filterJsonfileName);
                         // Parse the JSON data into a list of Filter objects
-                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true, isCustom: false);
-                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false, isCustom: true);
+                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true, isCustom: false, fileName: filterJsonfileName);
+                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false, isCustom: true, fileName: customFilterJsonFileName);
                         PopulateListBox();
                         // Clear search box
                         txtSearchBoxMain.Text = "";
@@ -2336,19 +2342,25 @@ namespace DrosteEffectApp
                 return;
             }
 
+            // If the regular filter file exists, but the custom one doesn't, only create it if the user presses the button
+            if (!silent)
+            {
+                CheckForAndCreateCustomFilterJsonFile(customFilterFileName: customFilterJsonFileName);
+            }
+
             // Load the filter file
             jsonData = File.ReadAllText(filterJsonfileName);
             // Parse the JSON data into a list of Filter objects
-            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true, isCustom: false);
-            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false, isCustom: true);
-            // Populate search box
+            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true, isCustom: false, fileName: filterJsonfileName);
+            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false, isCustom: true, fileName: customFilterJsonFileName);
+            // Populate search box Newtonsoft.Json.JsonReaderException
             PopulateListBox();
             txtSearchBoxMain.Text = "";
             return;
         }
 
         // Check for and load a user-created custom filter file
-        private string LoadJSONFromCustomFilterFile(string customFilterFileName="CustomFilterParameters.json")
+        private string LoadJSONFromCustomFilterFile(string customFilterFileName)
         {
             if (File.Exists(customFilterFileName))
             {
@@ -2361,10 +2373,33 @@ namespace DrosteEffectApp
             {
                 return null;
             }
-            //else
-            //{
-            //    MessageBox.Show("Custom filter file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+        }
+
+        // Create a new empty custom filter file with empty with notes
+        private void CheckForAndCreateCustomFilterJsonFile(string customFilterFileName)
+        {
+            if (!File.Exists(customFilterFileName))
+            {
+                string emptyJson = "" +
+                    "# Here you can place custom sets of parameter values that are different from the defaults." +
+                    "\n# You can copy the parameters for a filter from the regular filter parameters json file and paste it into this one." +
+                    "\n# You can then edit things like default minimum and maximum ranges, default starting values, etc." +
+                    "\n# Custom filters will appear in the list with a * in front at the top. You can also rename them in the custom json file." +
+                    "\n# The original version of any custom filters will still be available in the list too." +
+                    "\n# You can have multiple custom versions of a filter, but make sure they have unique names." +
+                    "\n[\n\n]";
+                File.WriteAllText(customFilterFileName, emptyJson);
+                
+                // Tell user the file was created
+                MessageBox.Show($"A file for custom filter parameters has been created if you want to use it." +
+                    $"\n\nIt will be called {customFilterFileName}" + 
+                    "\n\nYou can copy the parameters for a filter from the regular filter parameters json file and paste it into" +
+                    "the custom file, then edit things like default minimum and maximum ranges, default starting values, etc." +
+                    "\n\nCustom filters will appear in the list with a * in front at the top. You can also rename them in the custom json file." +
+                    "\n\nThe original version of any custom filters will still be available in the list too." +
+                    "You can have multiple custom versions of a filter, but make sure they have unique names.",
+                    "Custom filter file created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private string RunGmicUpdate()
