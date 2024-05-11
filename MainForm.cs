@@ -2136,7 +2136,29 @@ namespace DrosteEffectApp
             // Load json data from Filters.json
             string jsonFileName = "Filters.json";
             
-            // 
+            // Load all the data from the file as a string
+            string jsonData = File.ReadAllText(jsonFileName);
+
+            // Parse the JSON data into a list of Filter objects
+            FilterParameters.LoadParametersFromJson(jsonData);
+
+            // Populate search box
+            listBoxFiltersMain.Items.AddRange(FilterParameters.Filters.Select(f => f.FriendlyName).ToArray());
+
+            // Print list of filters to console
+            //(int filterCount, string filterSamples) = FilterParameters.GetFilterCount(sample: true);
+            //Console.WriteLine($"Loaded {filterCount} filters from {jsonFileName}.\nSamples: {filterSamples}");
+        }
+
+        private void txtSearchBoxMain_TextChanged(object sender, EventArgs e)
+        {
+            listBoxFiltersMain.Items.Clear();
+            string searchText = txtSearchBoxMain.Text.ToLower();
+            var filteredItems = FilterParameters.Filters
+                                  .Where(f => f.FriendlyName.ToLower().Contains(searchText))
+                                  .Select(f => f.FriendlyName);
+            listBoxFiltersMain.Items.AddRange(filteredItems.ToArray());
         }
     }
+    
 }

@@ -80,6 +80,8 @@
             this.TestButton1 = new System.Windows.Forms.Button();
             this.btnParseTest = new System.Windows.Forms.Button();
             this.btnLoadFilters = new System.Windows.Forms.Button();
+            this.txtSearchBoxMain = new System.Windows.Forms.TextBox();
+            this.listBoxFiltersMain = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -662,11 +664,29 @@
             this.btnLoadFilters.UseVisualStyleBackColor = true;
             this.btnLoadFilters.Click += new System.EventHandler(this.btnLoadFilters_Click);
             // 
+            // txtSearchBoxMain
+            // 
+            this.txtSearchBoxMain.Location = new System.Drawing.Point(15, 483);
+            this.txtSearchBoxMain.Name = "txtSearchBoxMain";
+            this.txtSearchBoxMain.Size = new System.Drawing.Size(372, 20);
+            this.txtSearchBoxMain.TabIndex = 48;
+            this.txtSearchBoxMain.TextChanged += new System.EventHandler(this.txtSearchBoxMain_TextChanged);
+            // 
+            // listBoxFiltersMain
+            // 
+            this.listBoxFiltersMain.FormattingEnabled = true;
+            this.listBoxFiltersMain.Location = new System.Drawing.Point(12, 509);
+            this.listBoxFiltersMain.Name = "listBoxFiltersMain";
+            this.listBoxFiltersMain.Size = new System.Drawing.Size(375, 69);
+            this.listBoxFiltersMain.TabIndex = 49;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 484);
+            this.ClientSize = new System.Drawing.Size(410, 590);
+            this.Controls.Add(this.listBoxFiltersMain);
+            this.Controls.Add(this.txtSearchBoxMain);
             this.Controls.Add(this.btnLoadFilters);
             this.Controls.Add(this.btnParseTest);
             this.Controls.Add(this.btnShowExpressionForm);
@@ -788,5 +808,7 @@
         private System.Windows.Forms.CheckBox checkBoxAbsoluteModeMain;
         private System.Windows.Forms.Button btnParseTest;
         private System.Windows.Forms.Button btnLoadFilters;
+        private System.Windows.Forms.TextBox txtSearchBoxMain;
+        private System.Windows.Forms.ListBox listBoxFiltersMain;
     }
 }

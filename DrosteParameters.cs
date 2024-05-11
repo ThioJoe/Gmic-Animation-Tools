@@ -1,9 +1,24 @@
 ﻿using GmicDrosteAnimate;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms.VisualStyles;
+
+public class Filter
+{
+    public string FriendlyName { get; set; }
+    public string GmicCommand { get; set; }
+    public List<ParameterInfo> Parameters { get; set; }
+    public Filter(string friendlyName, string gmicCommand)
+    {
+        FriendlyName = friendlyName;
+        GmicCommand = gmicCommand;
+        Parameters = new List<ParameterInfo>();
+    }
+}
+
 
 public class ParameterInfo
 {
@@ -38,6 +53,7 @@ public class ParameterInfo
 public static class FilterParameters
 {
     public static List<ParameterInfo> Parameters { get; private set; } = new List<ParameterInfo>();
+    public static List<Filter> Filters { get; private set; } = new List<Filter>();
 
     // Static initializer to set up default parameters
     static FilterParameters()
@@ -143,14 +159,60 @@ public static class FilterParameters
     // Some can seemingly have underscore or tilde prefixes, but I'm not sure what that means
     // Example: ~int, _int, ~float, ~choice, ~color, ~bool, _bool, others
 
-    // Methods that automatically generates parameter info for a filter from loaded data. Call this one from the main program
-    public static void LoadParameters(List<Parameter> parameterList)
+    public static void LoadParametersFromJson(string jsonText)
     {
-        Parameters.Clear();
-        foreach (var param in parameterList)
+        // Load data from JSON string
+        JArray filtersArray = JArray.Parse(jsonText);
+        Filters.Clear(); // Clear existing filters if re-loading
+
+        foreach (JObject filterObj in filtersArray)
         {
-            string tempType = param.Type;
-            CleanType(param.Type);
+            LoadIndividualFilter(filterObj);
+        }
+    }
+
+    // Methods that automatically generates parameter info for a filter from loaded data. Call this one from the main program
+    public static void LoadIndividualFilter(JObject filterObj)
+    {
+        string friendlyName = (string)filterObj["FriendlyName"];
+        string gmicCommand = (string)filterObj["GmicCommand"];
+        var filter = new Filter(friendlyName, gmicCommand);
+
+        JArray parameters = (JArray)filterObj["Parameters"];
+        foreach (JObject param in parameters)
+        {
+            var name = (string)param["Name"];
+            var minValue = param["MinValue"]?.Value<double?>();
+            var maxValue = param["MaxValue"]?.Value<double?>();
+
+            // Special handling of default value because it might be a hex string for colors, need to convert to decimal
+            string defaultValueString = param["DefaultValue"]?.Value<string>();
+            double defaultValue = 0;
+            if (defaultValueString != null && defaultValueString.StartsWith("#"))
+            {
+                defaultValue = Convert.ToInt32(defaultValueString.Substring(1), 16);
+            }
+            else if (defaultValueString != null)
+            {
+                // Try to parse to double
+                double.TryParse(defaultValueString, out defaultValue);
+            }
+            // Otherwise set to 0
+            else
+            {
+                defaultValue = 0;
+            }
+
+            // Special handling of choices becaue it might be either a list or null
+            var choicesNode = param["Choices"];
+            List<string> choices = null;
+            if (choicesNode != null && choicesNode.Type == JTokenType.Array)
+            {
+                choices = choicesNode.Values<string>().ToList();
+            }
+
+            string tempType = (string)param["Type"];
+            CleanType(tempType);
             if (tempType == "float")
             {
                 tempType = "Continuous";
@@ -173,13 +235,13 @@ public static class FilterParameters
             double? tempMin = null;
             double? tempMax = null;
             // Get extended ranges by doubling original. Also convert regular min max to doubles
-            if (param.MinValue.HasValue && param.MaxValue.HasValue)
+            if (minValue.HasValue && maxValue.HasValue)
             {
                 // This also means if the minimum is negative, the extended minimum will be negative as well
-                tempExtendedMin = param.MinValue * 2;
-                tempExtendedMax = param.MaxValue * 2;
-                tempMin = param.MinValue.Value;
-                tempMax = param.MaxValue.Value;
+                tempExtendedMin = minValue * 2;
+                tempExtendedMax = maxValue * 2;
+                tempMin = minValue;
+                tempMax = maxValue;
             }
             // Depending on type, assign other default values if not assigned already via existing defaults
             if (tempType == "Binary")
@@ -199,7 +261,7 @@ public static class FilterParameters
             else if (tempType == "Choice")
             {
                 // Count how many choices are in the parameter
-                int choiceCount = param.Choices.Count;
+                int choiceCount = choices.Count;
                 tempMin = 0;
                 tempMax = choiceCount;
                 tempExtendedMin = 0;
@@ -213,20 +275,53 @@ public static class FilterParameters
                 tempExtendedMax = 1;
             }
 
-            Parameters.Add(new ParameterInfo(
+            var parameterInfo = new ParameterInfo(
                 paramIndex: Parameters.Count,  // Index is dynamically set based on count
-                name: param.Name,
-                defaultStart: param.DefaultValue ?? 0,  // Using null-coalescing operator if DefaultValue is nullable
-                defaultEnd: param.DefaultValue ?? 0,    // You might want to adjust this as per your logic
+                name: name,
+                defaultStart: defaultValue,  // Using null-coalescing operator if DefaultValue is nullable
+                defaultEnd: maxValue ?? 0,    // You might want to adjust this as per your logic
                 min: tempMin ?? 0,               // Assume defaults if null
                 max: tempMax ?? 100,             // Assume defaults if null
                 extendedMin: tempExtendedMin ?? 0,       // Same as min for extendedMin
                 extendedMax: tempExtendedMax ?? 100,    // Same as max for extendedMax
                 type: tempType,           // Helper method to clean up types
-                decimals: DetermineDecimalsFromType(param.Type),  // A method to determine decimals
+                decimals: DetermineDecimalsFromType((string)param["Type"]),  // A method to determine decimals
                 defaultExponent: 1.0                   // Default exponent
-            ));
+            );
+            filter.Parameters.Add(parameterInfo);
         }
+        Filters.Add(filter);
+    }
+
+    // Print out list of loaded filters
+    public static (int, string) GetFilterCount(bool sample = false)
+    {
+        // Get random sampling of 5 filters
+        string filterNames = "";
+        if (sample)
+        {
+            var random = new Random();
+            var sampleFilters = Filters.OrderBy(x => random.Next()).Take(5);
+            foreach (var filter in sampleFilters)
+            {
+                filterNames += filter.FriendlyName + "\n";
+            }
+            return (Filters.Count, filterNames);
+        }
+        else
+        {
+            return (Filters.Count, "");
+        }
+
+        //foreach (var filter in Filters)
+        //{
+        //    Console.WriteLine($"Filter: {filter.FriendlyName}");
+        //    foreach (var param in filter.Parameters)
+        //    {
+        //        Console.WriteLine($"  Param: {param.Name}");
+        //    }
+        //}
+
     }
 
     private static string CleanType(string type)
