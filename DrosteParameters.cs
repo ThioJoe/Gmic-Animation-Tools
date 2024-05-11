@@ -66,6 +66,8 @@ public static class FilterParameters
         // Put any names of filters here that should not be loaded from file
     };
 
+    public const string customBuiltInDrosteName = "*Continuous Droste (Custom)";
+
     private static void SetParameters(List<SingleParameterInfo> value)
     {
         parameters = value;
@@ -74,18 +76,18 @@ public static class FilterParameters
     // Static initializer to set up default parameters
     static FilterParameters()
     {
-        LoadDefaultParameters("souphead_droste10");
+        LoadDefaultParameters(customBuiltInDrosteName);
         //SetActiveFilter("Continuous Droste");
     }
 
 
-    public static void LoadDefaultParameters(string filterName)
+    public static void LoadDefaultParameters(string filterFriendlyName)
     {
-        switch (filterName)
+        switch (filterFriendlyName)
         {
-            case "souphead_droste10":
+            case customBuiltInDrosteName:
                 InitializeSoupheadDroste10();
-                SetActiveFilter("souphead_droste10");
+                SetActiveFilter(customBuiltInDrosteName);
                 break;
             // Add cases for other filters
             default:
@@ -177,14 +179,16 @@ public static class FilterParameters
     // Some can seemingly have underscore or tilde prefixes, but I'm not sure what that means
     // Example: ~int, _int, ~float, ~choice, ~color, ~bool, _bool, others
 
-    public static void LoadParametersForAllFiltersFromJson(string jsonText, bool clearExistingFilters)
+    public static void LoadParametersForAllFiltersFromJson(string jsonText, bool clearExistingFilters, bool isCustom)
     {
         if (clearExistingFilters)
         {
+            //Create copy of custom droste10 filter to add back in after clearing
+            var tempDroste = Filters.FirstOrDefault(f => f.FriendlyName == customBuiltInDrosteName);
             // Clear existing filters if re-loading. Don't clear if adding to existing filters like custom filters
             Filters.Clear(); 
             // Add custom built in souphead droste10 filter when refreshing filters
-            Filters.Add(new Filter("Continuous Droste (Custom)", "souphead_droste10"));
+            Filters.Add(tempDroste);
         }
         
         if (!String.IsNullOrEmpty(jsonText))
@@ -194,7 +198,7 @@ public static class FilterParameters
 
             foreach (JObject filterObj in filtersArray)
             {
-                LoadIndividualFilterFromJSON(filterObj);
+                LoadIndividualFilterFromJSON(filterObj: filterObj, isCustom: isCustom);
             }
         }
 
@@ -207,10 +211,17 @@ public static class FilterParameters
 
 
     // Methods that automatically generates parameter info for a filter from loaded data. Call this one from the main program
-    public static void LoadIndividualFilterFromJSON(JObject filterObj)
+    public static void LoadIndividualFilterFromJSON(JObject filterObj, bool isCustom)
     {
         string friendlyName = (string)filterObj["FriendlyName"];
         string gmicCommand = (string)filterObj["GmicCommand"];
+
+        // If it's a custom filter, prepend an asterisk to the friendly name
+        if (isCustom)
+        {
+            friendlyName = "*" + friendlyName;
+        }
+
         var filter = new Filter(friendlyName, gmicCommand);
 
         JArray parameters = (JArray)filterObj["Parameters"];
@@ -379,10 +390,10 @@ public static class FilterParameters
         return 0;
     }
 
-    public static void InitializeChosenFilter(string filterName)
+    public static void InitializeChosenFilter(string filterFriendlyName)
     {
         // Only do this if the filter is not already the active filter
-        if (ActiveFilter != null && ActiveFilter.GmicCommand == filterName)
+        if (ActiveFilter != null && (ActiveFilter.FriendlyName == filterFriendlyName))
         {
             return;
         }
@@ -390,7 +401,7 @@ public static class FilterParameters
         ActiveFilter.Parameters.Clear();
 
         // Find the filter with the given name
-        var selectedFilter = Filters.FirstOrDefault(f => f.FriendlyName.Equals(filterName, StringComparison.OrdinalIgnoreCase) || f.GmicCommand.Equals(filterName, StringComparison.OrdinalIgnoreCase));
+        var selectedFilter = Filters.FirstOrDefault(f => f.FriendlyName.Equals(filterFriendlyName, StringComparison.OrdinalIgnoreCase) || f.GmicCommand.Equals(filterFriendlyName, StringComparison.OrdinalIgnoreCase));
         if (selectedFilter != null)
         {
             // Load parameters from the found filter
@@ -402,22 +413,23 @@ public static class FilterParameters
         else
         {
             // Handle the case where the filter is not found
-            MessageBox.Show("Filter not found: " + filterName, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Filter not found: " + filterFriendlyName, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
     // Method to set the active filter by name
-    public static void SetActiveFilter(string filterName)
+    public static void SetActiveFilter(string filterFriendlyName)
     {
-        var filter = Filters.FirstOrDefault(f => f.FriendlyName == filterName || f.GmicCommand == filterName);
+        // Need to use friendly name in case user has multiple custom filters with the same G'MIC command
+        var filter = Filters.FirstOrDefault(f => f.FriendlyName == filterFriendlyName || f.GmicCommand == filterFriendlyName);
         if (filter != null)
         {
             ActiveFilter = filter;
-            InitializeChosenFilter(filterName);
+            InitializeChosenFilter(filterFriendlyName);
         }
         else
         {
-            throw new ArgumentException("Filter name not found.", nameof(filterName));
+            throw new ArgumentException("Filter name not found.", nameof(filterFriendlyName));
         }
     }
 
@@ -836,7 +848,7 @@ public static class FilterParameters
                 defaultExponent: 0
             )
         };
-        var soupheadDroste10 = new Filter("Continuous Droste (Custom)", "souphead_droste10");
+        var soupheadDroste10 = new Filter(customBuiltInDrosteName, "souphead_droste10");
         soupheadDroste10.Parameters = localParameters;
         Filters.Add(soupheadDroste10);
         Console.WriteLine("Souphead Droste 10 initialized.");

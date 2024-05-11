@@ -2321,8 +2321,8 @@ namespace DrosteEffectApp
                         // Load all the data from the file as a string
                         jsonData = File.ReadAllText(filterJsonfileName);
                         // Parse the JSON data into a list of Filter objects
-                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true);
-                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false);
+                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true, isCustom: false);
+                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false, isCustom: true);
                         PopulateListBox();
                         // Clear search box
                         txtSearchBoxMain.Text = "";
@@ -2339,8 +2339,8 @@ namespace DrosteEffectApp
             // Load the filter file
             jsonData = File.ReadAllText(filterJsonfileName);
             // Parse the JSON data into a list of Filter objects
-            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true);
-            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false);
+            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: jsonData, clearExistingFilters: true, isCustom: false);
+            FilterParameters.LoadParametersForAllFiltersFromJson(jsonText: customJsonData, clearExistingFilters: false, isCustom: true);
             // Populate search box
             PopulateListBox();
             txtSearchBoxMain.Text = "";
@@ -2417,8 +2417,8 @@ namespace DrosteEffectApp
             if (listBoxFiltersMain.SelectedItem != null)
             {
                 string selectedItem = listBoxFiltersMain.SelectedItem.ToString();
-                string filterName = ExtractNameFromDisplayText(selectedItem);
-                ActivateFilter(filterName);
+                string filterFriendlyName = ExtractNameFromDisplayText(selectedItem);
+                ActivateFilter(filterFriendlyName);
             }
         }
 
@@ -2426,14 +2426,15 @@ namespace DrosteEffectApp
         {
             // Assuming displayText is formatted as "FriendlyName -- (GmicCommand)"
             int endIndex = displayText.IndexOf(" -- ");
-            return endIndex > -1 ? displayText.Substring(0, endIndex) : displayText;
+            string friendlyName = endIndex > -1 ? displayText.Substring(0, endIndex) : displayText;
+            return friendlyName;
         }
 
-        private void ActivateFilter(string filterName)
+        private void ActivateFilter(string filterFriendlyName)
         {
             try
             {
-                FilterParameters.SetActiveFilter(filterName);
+                FilterParameters.SetActiveFilter(filterFriendlyName);
                 UpdateParameterUI();  // Refresh UI with the new active filter's parameters
             }
             catch (ArgumentException ex)
