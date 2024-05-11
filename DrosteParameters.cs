@@ -163,7 +163,7 @@ public static class FilterParameters
     // Some can seemingly have underscore or tilde prefixes, but I'm not sure what that means
     // Example: ~int, _int, ~float, ~choice, ~color, ~bool, _bool, others
 
-    public static void LoadParametersFromJson(string jsonText)
+    public static void LoadParametersForAllFiltersFromJson(string jsonText)
     {
         // Load data from JSON string
         JArray filtersArray = JArray.Parse(jsonText);
@@ -171,12 +171,12 @@ public static class FilterParameters
 
         foreach (JObject filterObj in filtersArray)
         {
-            LoadIndividualFilter(filterObj);
+            LoadIndividualFilterFromJSON(filterObj);
         }
     }
 
     // Methods that automatically generates parameter info for a filter from loaded data. Call this one from the main program
-    public static void LoadIndividualFilter(JObject filterObj)
+    public static void LoadIndividualFilterFromJSON(JObject filterObj)
     {
         string friendlyName = (string)filterObj["FriendlyName"];
         string gmicCommand = (string)filterObj["GmicCommand"];
@@ -387,9 +387,7 @@ public static class FilterParameters
     // Manually prepared parameter info for the Souphead Droste 10 filter
     private static void InitializeSoupheadDroste10()
     {
-        Parameters.Clear();
-        var soupheadDroste10 = new Filter("Continuous Droste", "souphead_droste10");
-        Parameters = new List<ParameterInfo>
+        var localParameters = new List<ParameterInfo>
         {
             new ParameterInfo(
                 paramIndex: 0,
@@ -795,7 +793,9 @@ public static class FilterParameters
                 defaultExponent: 0
             )
         };
-        soupheadDroste10.Parameters = Parameters;
+        var soupheadDroste10 = new Filter("Continuous Droste (Custom)", "souphead_droste10");
+        soupheadDroste10.Parameters = localParameters;
         Filters.Add(soupheadDroste10);
+        Console.WriteLine("Souphead Droste 10 initialized.");
     }
 }

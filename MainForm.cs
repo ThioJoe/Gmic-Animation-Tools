@@ -50,7 +50,7 @@ namespace DrosteEffectApp
         // These are arbitrarily chosen values based on experience.
         //private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         // Get default values from FilterParameters ParameterInfo class defaultStart value
-        private double[] defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultStart");
+        private double[] defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultExponent");
 
         // Default values for the start and end parameters to be displayed as placeholders in the textboxes and if user opens parameters info window without entering any values
         //private string defaultStartParams = "34,100,1,1,1,0,0,0,0,0,20,30,1,0,90,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0";
@@ -89,10 +89,15 @@ namespace DrosteEffectApp
             // Run method to load filters file not silent, will display message asking user to update files
             LoadFiltersFile(silent: true);
 
+            // Load parameters of current filter
+            LoadActiveFilterParameters();
+
             // Store data about master increment NUD to properly increment up down arrows
             //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
             //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
+
             UpdateParameterUI();
+            Console.WriteLine("Finished Loading Main Form.");
         }
 
         private void InitializeDefaults()
@@ -2213,6 +2218,26 @@ namespace DrosteEffectApp
             }
         }
 
+        // Load parameters from currently active filter
+        private void LoadActiveFilterParameters()
+        {
+            var currentFilter = FilterParameters.GetActiveFilter();
+
+            defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultExponent");
+            filterParameterCount = currentFilter.Parameters.Count;
+
+            //if (listBoxFiltersMain.SelectedItem != null)
+            //{
+            //    var currentFilter = FilterParameters.GetActiveFilter();
+            //    if (currentFilter != null)
+            //    {
+            //        // Load all the parameters
+
+            //    }
+            //}
+        }
+
+
         // Load and parse filter files using gmic
         private async void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", bool silent = false)
         {
@@ -2292,7 +2317,7 @@ namespace DrosteEffectApp
                         // Load all the data from the file as a string
                         jsonData = File.ReadAllText(filterJsonfileName);
                         // Parse the JSON data into a list of Filter objects
-                        FilterParameters.LoadParametersFromJson(jsonData);
+                        FilterParameters.LoadParametersForAllFiltersFromJson(jsonData);
                         PopulateListBox();
                         // Clear search box
                         txtSearchBoxMain.Text = "";
@@ -2309,7 +2334,7 @@ namespace DrosteEffectApp
             // Load the filter file
             jsonData = File.ReadAllText(filterJsonfileName);
             // Parse the JSON data into a list of Filter objects
-            FilterParameters.LoadParametersFromJson(jsonData);
+            FilterParameters.LoadParametersForAllFiltersFromJson(jsonData);
             // Populate search box
             PopulateListBox();
             txtSearchBoxMain.Text = "";
