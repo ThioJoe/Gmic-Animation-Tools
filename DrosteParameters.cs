@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
 public class Filter
@@ -54,11 +55,13 @@ public static class FilterParameters
 {
     public static List<ParameterInfo> Parameters { get; private set; } = new List<ParameterInfo>();
     public static List<Filter> Filters { get; private set; } = new List<Filter>();
+    public static Filter ActiveFilter { get; private set; } // Property to store the currently active filter
 
     // Static initializer to set up default parameters
     static FilterParameters()
     {
         LoadDefaultParameters("souphead_droste10");
+        //SetActiveFilter("Continuous Droste");
     }
 
 
@@ -68,6 +71,7 @@ public static class FilterParameters
         {
             case "souphead_droste10":
                 InitializeSoupheadDroste10();
+                SetActiveFilter("souphead_droste10");
                 break;
             // Add cases for other filters
             default:
@@ -340,11 +344,51 @@ public static class FilterParameters
         return 0;
     }
 
+    public static void InitializeChosenFilter(string filterName)
+    {
+        // Clear existing parameters
+        Parameters.Clear();
+
+        // Find the filter with the given name
+        var selectedFilter = Filters.FirstOrDefault(f => f.FriendlyName.Equals(filterName, StringComparison.OrdinalIgnoreCase) || f.GmicCommand.Equals(filterName, StringComparison.OrdinalIgnoreCase));
+        if (selectedFilter != null)
+        {
+            // Load parameters from the found filter
+            Parameters.AddRange(selectedFilter.Parameters);
+        }
+        else
+        {
+            // Handle the case where the filter is not found
+            MessageBox.Show("Filter not found: " + filterName, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    // Method to set the active filter by name
+    public static void SetActiveFilter(string filterName)
+    {
+        var filter = Filters.FirstOrDefault(f => f.FriendlyName == filterName || f.GmicCommand == filterName);
+        if (filter != null)
+        {
+            ActiveFilter = filter;
+            InitializeChosenFilter(filterName);
+        }
+        else
+        {
+            throw new ArgumentException("Filter name not found.", nameof(filterName));
+        }
+    }
+
+    // Method to retrieve the active filter
+    public static Filter GetActiveFilter()
+    {
+        return ActiveFilter;
+    }
 
     // Manually prepared parameter info for the Souphead Droste 10 filter
     private static void InitializeSoupheadDroste10()
     {
         Parameters.Clear();
+        var soupheadDroste10 = new Filter("Continuous Droste", "souphead_droste10");
         Parameters = new List<ParameterInfo>
         {
             new ParameterInfo(
@@ -751,5 +795,7 @@ public static class FilterParameters
                 defaultExponent: 0
             )
         };
+        soupheadDroste10.Parameters = Parameters;
+        Filters.Add(soupheadDroste10);
     }
 }

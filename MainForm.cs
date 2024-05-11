@@ -92,7 +92,7 @@ namespace DrosteEffectApp
             // Store data about master increment NUD to properly increment up down arrows
             //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
             //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
-
+            UpdateParameterUI();
         }
 
         private void InitializeDefaults()
@@ -2356,6 +2356,64 @@ namespace DrosteEffectApp
 
         }
 
+        private void listBoxFiltersMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBoxFiltersMain_DoubleClick(object sender, EventArgs e)
+        {
+            if (listBoxFiltersMain.SelectedItem != null)
+            {
+                string selectedItem = listBoxFiltersMain.SelectedItem.ToString();
+                string filterName = ExtractNameFromDisplayText(selectedItem);
+                ActivateFilter(filterName);
+            }
+        }
+
+        private string ExtractNameFromDisplayText(string displayText)
+        {
+            // Assuming displayText is formatted as "FriendlyName -- (GmicCommand)"
+            int endIndex = displayText.IndexOf(" -- ");
+            return endIndex > -1 ? displayText.Substring(0, endIndex) : displayText;
+        }
+
+        private void ActivateFilter(string filterName)
+        {
+            try
+            {
+                FilterParameters.SetActiveFilter(filterName);
+                UpdateParameterUI();  // Refresh UI with the new active filter's parameters
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void UpdateParameterUI()
+        {
+            var activeFilter = FilterParameters.GetActiveFilter();
+            if (activeFilter != null)
+            {
+                //MessageBox.Show($"Active Filter: {activeFilter.FriendlyName}\nCommand: {activeFilter.GmicCommand}");
+                labelCurrentlyLoadedFilter.Text = $"Currently loaded filter: {activeFilter.FriendlyName}";
+            }
+            else
+            {
+                //MessageBox.Show("No active filter selected.");
+            }
+            // Example: Update parameter controls to reflect new parameters
+            //parametersPanel.Controls.Clear();
+            //foreach (var param in FilterParameters.Parameters)
+            //{
+            //    // Create UI elements dynamically based on the parameters
+            //    Label label = new Label { Text = param.Name };
+            //    TextBox textBox = new TextBox { Text = param.DefaultStart.ToString() };
+            //    parametersPanel.Controls.Add(label);
+            //    parametersPanel.Controls.Add(textBox);
+            //}
+        }
     }
     
 }
