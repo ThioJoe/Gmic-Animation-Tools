@@ -18,6 +18,7 @@ using MathNet.Symbolics;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using FParsec;
+using System.Drawing.Text;
 
 namespace DrosteEffectApp
 {
@@ -2139,23 +2140,9 @@ namespace DrosteEffectApp
 
         private void btnLoadFilters_Click(object sender, EventArgs e)
         {
-            // Load json data from Filters.json
-            string jsonFileName = "Filters.json";
-            
-            // Load all the data from the file as a string
-            string jsonData = File.ReadAllText(jsonFileName);
+            // Run method to load filters file not silent, will display message asking user to update files
+            LoadFiltersFile(silent: false);
 
-            // Parse the JSON data into a list of Filter objects
-            FilterParameters.LoadParametersFromJson(jsonData);
-
-            // Populate search box
-            //listBoxFiltersMain.Items.AddRange(FilterParameters.Filters.Select(f => f.FriendlyName).ToArray());
-
-            PopulateListBox(); // Initially populate the list box when the form loads
-
-            // Print list of filters to console
-            //(int filterCount, string filterSamples) = FilterParameters.GetFilterCount(sample: true);
-            //Console.WriteLine($"Loaded {filterCount} filters from {jsonFileName}.\nSamples: {filterSamples}");
         }
 
         private void txtSearchBoxMain_TextChanged(object sender, EventArgs e)
@@ -2163,7 +2150,7 @@ namespace DrosteEffectApp
             string searchText = txtSearchBoxMain.Text.ToLower();
             var filteredItems = FilterParameters.Filters
                 .Where(f => f.FriendlyName.ToLower().Contains(searchText) || f.GmicCommand.ToLower().Contains(searchText))
-                .Select(f => $"{f.FriendlyName} - {f.GmicCommand}");
+                .Select(f => $"{f.FriendlyName} -- ({f.GmicCommand})");
 
             listBoxFiltersMain.Items.Clear();
             listBoxFiltersMain.Items.AddRange(filteredItems.ToArray());
@@ -2175,10 +2162,38 @@ namespace DrosteEffectApp
 
             if (e.Index >= 0)
             {
+                // Extract the item and split into parts
                 string item = listBoxFiltersMain.Items[e.Index].ToString();
-                using (var brush = new SolidBrush(e.ForeColor))  // Ensure text color is appropriate.
+                int dashIndex = item.LastIndexOf(" -- ");  // Assuming the format "FriendlyName - GmicCommand"
+                if (dashIndex != -1)
                 {
-                    e.Graphics.DrawString(item, e.Font, brush, e.Bounds);
+                    string friendlyName = item.Substring(0, dashIndex);
+                    string gmicCommand = item.Substring(dashIndex + 3);
+
+                    // Define fonts
+                    Font friendlyNameFont = new Font(e.Font, FontStyle.Bold);
+                    Font gmicCommandFont = new Font(e.Font, FontStyle.Regular);
+
+                    // Measure text to position them nicely
+                    SizeF nameSize = e.Graphics.MeasureString(friendlyName, friendlyNameFont);
+                    SizeF commandSize = e.Graphics.MeasureString(gmicCommand, gmicCommandFont);
+
+                    // Calculate positions
+                    float nameX = e.Bounds.X;
+                    float nameY = e.Bounds.Y + (e.Bounds.Height - nameSize.Height) / 2;
+                    float commandX = nameX + nameSize.Width + 5;  // 5 pixels space between texts
+                    float commandY = e.Bounds.Y + (e.Bounds.Height - commandSize.Height) / 2;
+
+                    // Draw texts
+                    using (Brush textBrush = new SolidBrush(e.ForeColor))
+                    {
+                        e.Graphics.DrawString(friendlyName, friendlyNameFont, textBrush, nameX, nameY);
+                        e.Graphics.DrawString(gmicCommand, gmicCommandFont, textBrush, commandX, commandY);
+                    }
+
+                    // Clean up fonts if not using system font
+                    friendlyNameFont.Dispose();
+                    gmicCommandFont.Dispose();
                 }
             }
 
@@ -2190,10 +2205,133 @@ namespace DrosteEffectApp
             listBoxFiltersMain.Items.Clear();
             foreach (var filter in FilterParameters.Filters)
             {
-                string displayText = $"{filter.FriendlyName}   ({filter.GmicCommand})";
+                string displayText = $"{filter.FriendlyName} -- ({filter.GmicCommand})";
                 listBoxFiltersMain.Items.Add(displayText);
             }
         }
+
+        // Load and parse filter files using gmic
+        private void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", bool silent = false)
+        {
+            string gmicFilterFilePath;
+            string jsonData;
+            // First check if the file exists, and if not then try to run "gmic update" to download the latest filters
+            if (!File.Exists(filterJsonfileName))
+            {
+                bool filterFileFound = false;
+                // Check if the gmic update file is there
+                gmicFilterFilePath = SearchFolderForUpdateFilterFile();
+                if (!String.IsNullOrEmpty(gmicFilterFilePath))
+                {
+                    filterFileFound = true;
+                }
+                else
+                {
+                    // Message box to ask user to update filters
+                    if (!silent)
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Filters file not found. Would you like to download the latest the filters now?",
+                            "Filters file not found",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (dialogResult == DialogResult.No)
+                        {
+                            return;
+                        }
+                        // Display in the filters list box that the filters are being updated
+                        listBoxFiltersMain.Text = "Updating GMIC filters...";
+
+                        // Run gmic update to download the latest filters
+                        ProcessStartInfo startInfo = new ProcessStartInfo
+                        {
+                            FileName = "gmic",
+                            Arguments = "update",
+                            UseShellExecute = false,
+                            RedirectStandardOutput = true,
+                            CreateNoWindow = true
+                        };
+
+                        // Display the output of the command in the text box
+                        using (Process process = Process.Start(startInfo))
+                        {
+                            string output = process.StandardOutput.ReadToEnd();
+                            listBoxFiltersMain.Text = output;
+                        }
+                        gmicFilterFilePath = SearchFolderForUpdateFilterFile();
+                        if (!String.IsNullOrEmpty(gmicFilterFilePath))
+                        {
+                            filterFileFound = true;
+                        }
+                    }
+                }
+
+                // Parse to json file
+                if (filterFileFound)
+                {
+                    listBoxFiltersMain.Text = "GMIC filters found!\r\nNow parsing parameter data...";
+                    string[] filterFileLines = File.ReadAllLines(gmicFilterFilePath);
+                    GmicFilterParser filterParser = new GmicFilterParser();
+                    string resultString = filterParser.ParseFiltersToJSON(filterFileLines);
+                    // Check if the file is there
+                    if (!File.Exists(filterJsonfileName))
+                    {
+                        // If the result string doesn't say 'success' (case insensitive), tell user something went wrong
+                        if (!resultString.ToLower().Contains("success"))
+                        {
+                            MessageBox.Show($"Something went wrong parsing the filter file.\n\nResults:\n{resultString}", "gmic.exe Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Parsing the file was apparently a success but something went wrong in creating the json file. Maybe try again.\n\nResults:\n{resultString}", "gmic.exe Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        return;
+
+                    }
+                    else
+                    {
+                        // Load all the data from the file as a string
+                        jsonData = File.ReadAllText(filterJsonfileName);
+                        // Parse the JSON data into a list of Filter objects
+                        FilterParameters.LoadParametersFromJson(jsonData);
+                        PopulateListBox();
+                    }
+                }
+                // If filter file was not found even after trying to update
+                else
+                {
+                    listBoxFiltersMain.Text = "Filters.json file not found - You can still use this app for the \"Continuous Droste\" filter.\n\nClick \"Reload Filters\" to download the latest filters.";
+                }
+                return;
+            }
+
+            // Load the filter file
+            jsonData = File.ReadAllText(filterJsonfileName);
+            // Parse the JSON data into a list of Filter objects
+            FilterParameters.LoadParametersFromJson(jsonData);
+            // Populate search box
+            PopulateListBox();
+            return;
+        }
+
+        private string SearchFolderForUpdateFilterFile()
+        {
+            // Search user AppData\Roaming\gmic folder for latest update[number].gmic file
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string gmicFolderPath = Path.Combine(appDataPath, "gmic");
+            string searchPattern = "update*.gmic";
+            string[] files = Directory.GetFiles(gmicFolderPath, searchPattern);
+
+            if (files.Length > 0)
+            {
+                string latestFileFullPath = files.OrderByDescending(f => f).First();
+                return latestFileFullPath;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
     }
     
 }

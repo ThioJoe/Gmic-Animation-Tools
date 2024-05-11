@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace GmicDrosteAnimate
 {
@@ -37,51 +38,62 @@ namespace GmicDrosteAnimate
             List<Filter> filters = new List<Filter>();
             Filter currentFilter = null;
 
-            foreach (var line in lines)
+            try
             {
-                if (line.StartsWith("#@gui") && !IsExcludedLine(line))
+                foreach (var line in lines)
                 {
-                    if (line.Contains(':') && !line.Trim().StartsWith("#@gui :"))
+                    if (line.StartsWith("#@gui") && !IsExcludedLine(line))
                     {
-                        // New filter definition
-                        string trimmedLine = Regex.Replace(line.Substring(6), @"<[^>]+>", String.Empty).Trim();
-                        int colonIndex = trimmedLine.IndexOf(':');
-                        string filterName = trimmedLine.Substring(0, colonIndex).Trim();
-                        string[] commandParts = trimmedLine.Substring(colonIndex + 1).Split(',');
-
-                        string command = commandParts[0].Trim();
-                        if (ExcludedFilters.Contains(command) || command == "_none_")
+                        if (line.Contains(':') && !line.Trim().StartsWith("#@gui :"))
                         {
-                            currentFilter = null; // Reset current filter on special commands or non-processing filters
-                            continue;
+                            // New filter definition
+                            string trimmedLine = Regex.Replace(line.Substring(6), @"<[^>]+>", String.Empty).Trim();
+                            int colonIndex = trimmedLine.IndexOf(':');
+                            string filterName = trimmedLine.Substring(0, colonIndex).Trim();
+                            string[] commandParts = trimmedLine.Substring(colonIndex + 1).Split(',');
+
+                            string command = commandParts[0].Trim();
+                            if (ExcludedFilters.Contains(command) || command == "_none_")
+                            {
+                                currentFilter = null; // Reset current filter on special commands or non-processing filters
+                                continue;
+                            }
+
+                            currentFilter = new Filter
+                            {
+                                FriendlyName = filterName,
+                                GmicCommand = command
+                            };
+                            filters.Add(currentFilter);
                         }
-
-                        currentFilter = new Filter
+                        else if (line.Trim().StartsWith("#@gui :") && currentFilter != null)
                         {
-                            FriendlyName = filterName,
-                            GmicCommand = command
-                        };
-                        filters.Add(currentFilter);
+                            // Parameter of the current filter
+                            string paramLine = line.Substring(6).Trim();
+                            Parameter param = ParseParameter(paramLine);
+                            if (param != null)
+                            {
+                                currentFilter.Parameters.Add(param);
+                            }
+                        }
                     }
-                    else if (line.Trim().StartsWith("#@gui :") && currentFilter != null)
+                    else if (line.StartsWith("#@gui _") || line.StartsWith("#@gui :_="))
                     {
-                        // Parameter of the current filter
-                        string paramLine = line.Substring(6).Trim();
-                        Parameter param = ParseParameter(paramLine);
-                        if (param != null)
-                        {
-                            currentFilter.Parameters.Add(param);
-                        }
+                        // Handle transitions for special GUI elements or reset filter context
+                        currentFilter = null;  // Reset on new sections or specific non-parameter GUI elements
                     }
-                }
-                else if (line.StartsWith("#@gui _") || line.StartsWith("#@gui :_="))
-                {
-                    // Handle transitions for special GUI elements or reset filter context
-                    currentFilter = null;  // Reset on new sections or specific non-parameter GUI elements
                 }
             }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
 
-            return JsonConvert.SerializeObject(filters, Newtonsoft.Json.Formatting.Indented);
+            // Write the JSON to a file
+            string outputJsonFileName = "FiltersParameterList.json";
+            File.WriteAllText(outputJsonFileName, JsonConvert.SerializeObject(filters, Newtonsoft.Json.Formatting.Indented));
+
+            return "Successfully parsed filter file to JSON as FiltersParameterList.json";
         }
 
 

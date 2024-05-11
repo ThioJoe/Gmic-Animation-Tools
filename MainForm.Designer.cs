@@ -82,6 +82,7 @@
             this.btnLoadFilters = new System.Windows.Forms.Button();
             this.txtSearchBoxMain = new System.Windows.Forms.TextBox();
             this.listBoxFiltersMain = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -335,7 +336,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(15, 418);
+            this.btnStart.Location = new System.Drawing.Point(12, 414);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(100, 30);
             this.btnStart.TabIndex = 17;
@@ -355,7 +356,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(15, 418);
+            this.btnCancel.Location = new System.Drawing.Point(12, 414);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 30);
             this.btnCancel.TabIndex = 19;
@@ -489,7 +490,7 @@
             // TextLabelNearStartButton
             // 
             this.TextLabelNearStartButton.AutoSize = true;
-            this.TextLabelNearStartButton.Location = new System.Drawing.Point(121, 418);
+            this.TextLabelNearStartButton.Location = new System.Drawing.Point(118, 414);
             this.TextLabelNearStartButton.Name = "TextLabelNearStartButton";
             this.TextLabelNearStartButton.Size = new System.Drawing.Size(37, 13);
             this.TextLabelNearStartButton.TabIndex = 30;
@@ -645,9 +646,9 @@
             // 
             // btnParseTest
             // 
-            this.btnParseTest.Location = new System.Drawing.Point(12, 454);
+            this.btnParseTest.Location = new System.Drawing.Point(217, 422);
             this.btnParseTest.Name = "btnParseTest";
-            this.btnParseTest.Size = new System.Drawing.Size(75, 23);
+            this.btnParseTest.Size = new System.Drawing.Size(37, 23);
             this.btnParseTest.TabIndex = 46;
             this.btnParseTest.Text = "Parse Test";
             this.btnParseTest.UseVisualStyleBackColor = true;
@@ -656,37 +657,48 @@
             // 
             // btnLoadFilters
             // 
-            this.btnLoadFilters.Location = new System.Drawing.Point(95, 454);
+            this.btnLoadFilters.Location = new System.Drawing.Point(12, 454);
             this.btnLoadFilters.Name = "btnLoadFilters";
-            this.btnLoadFilters.Size = new System.Drawing.Size(75, 23);
+            this.btnLoadFilters.Size = new System.Drawing.Size(103, 23);
             this.btnLoadFilters.TabIndex = 47;
-            this.btnLoadFilters.Text = "Load Filters";
+            this.btnLoadFilters.Text = "Reload Filters";
             this.btnLoadFilters.UseVisualStyleBackColor = true;
             this.btnLoadFilters.Click += new System.EventHandler(this.btnLoadFilters_Click);
             // 
             // txtSearchBoxMain
             // 
-            this.txtSearchBoxMain.Location = new System.Drawing.Point(15, 483);
+            this.txtSearchBoxMain.Location = new System.Drawing.Point(104, 483);
             this.txtSearchBoxMain.Name = "txtSearchBoxMain";
-            this.txtSearchBoxMain.Size = new System.Drawing.Size(372, 20);
+            this.txtSearchBoxMain.Size = new System.Drawing.Size(283, 20);
             this.txtSearchBoxMain.TabIndex = 48;
             this.txtSearchBoxMain.TextChanged += new System.EventHandler(this.txtSearchBoxMain_TextChanged);
             // 
             // listBoxFiltersMain
             // 
             this.listBoxFiltersMain.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.listBoxFiltersMain.Font = new System.Drawing.Font("Arial", 8.25F);
+            this.listBoxFiltersMain.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxFiltersMain.FormattingEnabled = true;
             this.listBoxFiltersMain.Location = new System.Drawing.Point(12, 509);
             this.listBoxFiltersMain.Name = "listBoxFiltersMain";
-            this.listBoxFiltersMain.Size = new System.Drawing.Size(375, 69);
+            this.listBoxFiltersMain.Size = new System.Drawing.Size(375, 108);
             this.listBoxFiltersMain.TabIndex = 49;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 485);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(86, 15);
+            this.label1.TabIndex = 50;
+            this.label1.Text = "Filters Search:";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 590);
+            this.ClientSize = new System.Drawing.Size(410, 625);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.listBoxFiltersMain);
             this.Controls.Add(this.txtSearchBoxMain);
             this.Controls.Add(this.btnLoadFilters);
@@ -812,5 +824,6 @@
         private System.Windows.Forms.Button btnLoadFilters;
         private System.Windows.Forms.TextBox txtSearchBoxMain;
         private System.Windows.Forms.ListBox listBoxFiltersMain;
+        private System.Windows.Forms.Label label1;
     }
 }
