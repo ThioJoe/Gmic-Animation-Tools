@@ -32,6 +32,7 @@ public class SingleParameterInfo
     public string Type { get; set; } // "Binary", "Step", "Continuous"
     public int Decimals { get; set; } // How many decimals to keep in the value after random generation
     public double DefaultExponent { get; set; }
+    public Dictionary<string, object> Properties { get; set; }
 
     public SingleParameterInfo(int paramIndex, string name, double defaultStart, double defaultEnd, double min, double max, double extendedMin, double extendedMax, string type, int decimals, double defaultExponent)
     {
@@ -46,6 +47,7 @@ public class SingleParameterInfo
         Type = type;
         Decimals = decimals;
         DefaultExponent = defaultExponent;
+        Properties = new Dictionary<string, object>();
     }
 }
 
@@ -312,6 +314,10 @@ public static class FilterParameters
             {
                 tempType = "Choice";
             }
+            else if (tempType == "text")
+            {
+                tempType = "Text";
+            }
 
             double? tempExtendedMin = null;
             double? tempExtendedMax = null;
@@ -395,13 +401,9 @@ public static class FilterParameters
                     tempExtendedMin = -1;
                     tempExtendedMax = 1;
                 }
-                // Other conditions or settings can be handled similarly
             }
-            
-            // Currently possible types: "Binary", "Trinary", "Step", "Continuous", "Choice"
-
-
-            var parameterInfo = new SingleParameterInfo(
+                // Currently possible types: "Binary", "Trinary", "Step", "Continuous", "Choice", "Text
+                var parameterInfo = new SingleParameterInfo(
                 paramIndex: GetActiveFilterParameters().Count,  // Index is dynamically set based on count. As each gets added the count and therefore the index increases
                 name: name,
                 defaultStart: defaultValue,  // Using null-coalescing operator if DefaultValue is nullable
@@ -410,10 +412,20 @@ public static class FilterParameters
                 max: tempMax ?? 100,             // Assume defaults if null
                 extendedMin: tempExtendedMin ?? 0,       // Same as min for extendedMin
                 extendedMax: tempExtendedMax ?? 100,    // Same as max for extendedMax
-                type: tempType,           
+                type: tempType,
                 decimals: DetermineDecimalsFromType((string)param["Type"]),  // A method to determine decimals
                 defaultExponent: 1.0                   // Default exponent
             );
+            // If it's text get the string
+            if (tempType.ToLower() == "text")
+            {
+                if (properties.TryGetValue("TextString", out JToken textString))
+                {
+                    // Assign to properties dictionary
+                    parameterInfo.Properties.Add("DefaultTextValue", textString.ToString());
+                }
+            }
+
             filter.Parameters.Add(parameterInfo);
         }
         // If it doesn't contain a filter that shouldn't be loaded from file, add it to the list

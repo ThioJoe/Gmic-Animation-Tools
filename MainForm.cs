@@ -380,8 +380,8 @@ namespace DrosteEffectApp
             createGif = chkCreateGif.Checked;
 
             // Get the start and end parameter values as a tuple of array of doubles.
-            double[] startValues = ParseParamsToArray(startParams);
-            double[] endValues = ParseParamsToArray(endParams);
+            double[] startValues = ParseParamsToDoublesArray(startParams);
+            double[] endValues = ParseParamsToDoublesArray(endParams);
             if (startValues == null || endValues == null)
             {
                 return;
@@ -567,7 +567,7 @@ namespace DrosteEffectApp
         }
 
         // Function to parse parameter values from a string and return them as an array of doubles.
-        private double[] ParseParamsToArray(string paramsString, bool silent = false)
+        private double[] ParseParamsToDoublesArray(string paramsString, bool silent = false)
         {
             // Check if the parameters string is valid.
             if (string.IsNullOrEmpty(paramsString))
@@ -696,8 +696,8 @@ namespace DrosteEffectApp
         public List<string> GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false)
         {
             // Use data from this form to interpolate values
-            double[] startValues = ParseParamsToArray(txtStartParams.Text);
-            double[] endValues = ParseParamsToArray(txtEndParams.Text);
+            double[] startValues = ParseParamsToDoublesArray(txtStartParams.Text);
+            double[] endValues = ParseParamsToDoublesArray(txtEndParams.Text);
 
             // If the start and end values are null, just set them to 1 and 100 as general case
             if (startValues == null || endValues == null)
@@ -1470,19 +1470,19 @@ namespace DrosteEffectApp
             // Get the start and end parameter values from text box if there, otherwise use the default values
             if (!string.IsNullOrEmpty(startParamString))
             {
-                startParamArray = ParseParamsToArray(startParamString, silent: true);
+                startParamArray = ParseParamsToDoublesArray(startParamString, silent: true);
             }
             else
             {
-                startParamArray = ParseParamsToArray(defaultStartParams, silent: true);
+                startParamArray = ParseParamsToDoublesArray(defaultStartParams, silent: true);
             }
             if (!string.IsNullOrEmpty(endParamString))
             {
-                endParamArray = ParseParamsToArray(endParamString, silent: true);
+                endParamArray = ParseParamsToDoublesArray(endParamString, silent: true);
             }
             else
             {
-                endParamArray = ParseParamsToArray(defaultEndParams, silent: true);
+                endParamArray = ParseParamsToDoublesArray(defaultEndParams, silent: true);
             }
 
             // Check if it's already open, if so move it to the default location I have set
@@ -1570,8 +1570,8 @@ namespace DrosteEffectApp
             //Ensure increment doesn't go higher than the difference between start and end values
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
-                double startValue = ParseParamsToArray(txtStartParams.Text, silent: true)[(int)nudMasterParamIndex.Value - 1];
-                double endValue = ParseParamsToArray(txtEndParams.Text, silent: true)[(int)nudMasterParamIndex.Value - 1];
+                double startValue = ParseParamsToDoublesArray(txtStartParams.Text, silent: true)[(int)nudMasterParamIndex.Value - 1];
+                double endValue = ParseParamsToDoublesArray(txtEndParams.Text, silent: true)[(int)nudMasterParamIndex.Value - 1];
                 double increment = (double)nudMasterParamIncrement.Value;
 
                 if (increment > Math.Abs(endValue - startValue))
@@ -1675,8 +1675,8 @@ namespace DrosteEffectApp
         {
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
-                double startValue = ParseParamsToArray(txtStartParams.Text, silent:true)[(int)nudMasterParamIndex.Value - 1];
-                double endValue = ParseParamsToArray(txtEndParams.Text, silent:true)[(int)nudMasterParamIndex.Value - 1];
+                double startValue = ParseParamsToDoublesArray(txtStartParams.Text, silent:true)[(int)nudMasterParamIndex.Value - 1];
+                double endValue = ParseParamsToDoublesArray(txtEndParams.Text, silent:true)[(int)nudMasterParamIndex.Value - 1];
 
                 int totalFrames = (int)nudTotalFrames.Value;
                 double increment = Math.Abs(endValue - startValue) / (totalFrames - 1);
@@ -1733,8 +1733,8 @@ namespace DrosteEffectApp
                 txtStartParams.Text = rawsStartstring;
                 txtStartParams.TextChanged += txtStartParams_TextChanged;
 
-                double[] startParamArray = ParseParamsToArray(rawsStartstring, silent: true);
-                double[] endParamArray = ParseParamsToArray(rawEndString, silent: true);
+                double[] startParamArray = ParseParamsToDoublesArray(rawsStartstring, silent: true);
+                double[] endParamArray = ParseParamsToDoublesArray(rawEndString, silent: true);
                 // Silently check if both parameter strings are valid
                 if (startParamArray != null && endParamArray != null)
                 {
@@ -1750,7 +1750,7 @@ namespace DrosteEffectApp
                         if (Application.OpenForms["ParamNamesForm"] != null)
                         {
                             ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
-                            paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                            paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
                         }
 
                         // Return so the rest of the code is not executed, otherwise will disable the boxes again
@@ -1781,8 +1781,8 @@ namespace DrosteEffectApp
                 txtEndParams.Text = rawEndString;
                 txtEndParams.TextChanged += txtStartParams_TextChanged;
 
-                double[] startParamArray = ParseParamsToArray(rawsStartstring, silent: true);
-                double[] endParamArray = ParseParamsToArray(rawEndString, silent: true);
+                double[] startParamArray = ParseParamsToDoublesArray(rawsStartstring, silent: true);
+                double[] endParamArray = ParseParamsToDoublesArray(rawEndString, silent: true);
 
                 // Check if both parameter strings are valid
                 if (startParamArray != null && endParamArray != null)
@@ -1799,7 +1799,7 @@ namespace DrosteEffectApp
                         if (Application.OpenForms["ParamNamesForm"] != null)
                         {
                             ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
-                            paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                            paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
                         }
                         // Return so the rest of the code is not executed, otherwise will disable the boxes again
                         return;
@@ -1856,7 +1856,7 @@ namespace DrosteEffectApp
             if (Application.OpenForms["ParamNamesForm"] != null)
             {
                 ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
-                paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
             }
 
             // Update exponent/expression form if open with new index
@@ -1871,8 +1871,8 @@ namespace DrosteEffectApp
             // Update label to show current name corresponding to the index
             WriteLatestParamNameStringLabel();
 
-            double[] startValueArray = ParseParamsToArray(txtStartParams.Text, silent: true);
-            double[] endValueArray = ParseParamsToArray(txtEndParams.Text, silent: true);
+            double[] startValueArray = ParseParamsToDoublesArray(txtStartParams.Text, silent: true);
+            double[] endValueArray = ParseParamsToDoublesArray(txtEndParams.Text, silent: true);
 
             if (startValueArray != null && endValueArray != null)
             {
@@ -2311,7 +2311,7 @@ namespace DrosteEffectApp
             {
                 ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
                 paramNamesForm.UpdateParamInfoWIndowNamesAndCount();
-                paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
             }
 
             // Reset the expressions window

@@ -169,6 +169,10 @@ namespace GmicDrosteAnimate
             {
                 param = HandleChoiceType(param, args);
             }
+            else if (type == "text")
+            {
+                param.Properties["TextString"] = args.Trim('"'); // Store the text string for text type parameters
+            }
             else
             {
                 param = HandleStandardType(param, args);
