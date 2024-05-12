@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Globalization;
 
 namespace GmicDrosteAnimate
 {
@@ -127,10 +128,12 @@ namespace GmicDrosteAnimate
             int endArgs = FindMatchingBracket(value, startArgs, openBracket, closeBracket);
             if (endArgs == -1) return null; // Handle unmatched brackets
 
+            string type = value.Substring(0, startArgs).Trim();
+            string args = value.Substring(startArgs + 1, endArgs - startArgs - 1).Trim();
+
             // Track if it has a tilde or underscore character, to add it back later
             bool hasTilde = false;
             bool hasUnderscore = false;
-            string type = value.Substring(0, startArgs).Trim();
 
             if (type.StartsWith("~"))
             {
@@ -144,8 +147,6 @@ namespace GmicDrosteAnimate
                 type = type.Substring(1); // Remove underscore if present
             }
 
-            string args = value.Substring(startArgs + 1, endArgs - startArgs - 1).Trim();
-
             if (type.Equals("link") || type.Equals("separator") || type.Equals("note"))
             {
                 return null; // Skip non-parameter GUI elements
@@ -157,7 +158,12 @@ namespace GmicDrosteAnimate
                 Type = type
             };
 
-            if (type == "choice" || type == "file" || type == "file_in" || type == "file_out")
+            // Special handling for point type
+            if (type == "point")
+            {
+                param.DefaultValue = args; // Set the entire argument string as DefaultValue
+            }
+            else if (type == "choice" || type == "file" || type == "file_in" || type == "file_out")
             {
                 param = HandleChoiceType(param, args);
             }
@@ -259,6 +265,10 @@ namespace GmicDrosteAnimate
             {
                 SplitColorHexToRGBA(param, parameters);
             }
+            else if (cleanType == "point")
+            {
+                SplitPointParameters(param, parameters);
+            }
             else
             {
                 parameters.Add(param);
@@ -311,5 +321,54 @@ namespace GmicDrosteAnimate
             }
         }
 
+        private void SplitPointParameters(Parameter param, List<Parameter> parameters)
+        {
+            if (param.DefaultValue is string pointValues)
+            {
+                var values = pointValues.Split(new char[] { ',' })
+                            .Select(v => v.Trim().TrimEnd('%'))
+                            .ToList();
+                int count = values.Count;
+
+                // Clear existing values if any
+                param.Values.Clear();
+
+                // Handling X and Y, which should be available in every point parameter as basics
+                if (count > 0) AddParameter(param, parameters, "_X", "float", values[0]);
+                if (count > 1) AddParameter(param, parameters, "_Y", "float", values[1]);
+
+                // Optional parameters with safe checking for existence
+                if (count > 2) AddParameter(param, parameters, "_Removable", "int", values[2]);
+                if (count > 3) AddParameter(param, parameters, "_Burst", "bool", values[3]);
+                if (count > 4) AddParameter(param, parameters, "_Red", "int", values[4]);
+                if (count > 5) AddParameter(param, parameters, "_Green", "int", values[5]);
+                if (count > 6) AddParameter(param, parameters, "_Blue", "int", values[6]);
+                if (count > 7) AddParameter(param, parameters, "_Alpha", "int", values[7]);
+                if (count > 8) AddParameter(param, parameters, "_Radius", "float", values[8]);
+            }
+
+        }
+
+        private void AddParameter(Parameter parentParam, List<Parameter> parameters, string suffix, string type, string value)
+        {
+            var newParam = new Parameter
+            {
+                Name = $"{parentParam.Name}{suffix}",
+                Type = type
+            };
+
+            // Use invariant culture for parsing numbers
+            if (type == "int")
+            {
+                newParam.DefaultValue = int.Parse(value, CultureInfo.InvariantCulture);
+            }
+            else if (type == "float")
+            {
+                newParam.DefaultValue = float.Parse(value, CultureInfo.InvariantCulture);
+            }
+
+            parentParam.Values.Add(newParam);
+            parameters.Add(newParam);
+        }
     }
 }
