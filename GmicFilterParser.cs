@@ -22,6 +22,7 @@ namespace GmicDrosteAnimate
         public dynamic MinValue { get; set; }
         public dynamic MaxValue { get; set; }
         public List<string> Choices { get; set; }
+        public List<dynamic> Values { get; set; } = new List<dynamic>(); // To store multiple values if needed
     }
 
     internal class GmicFilterParser
@@ -73,7 +74,7 @@ namespace GmicDrosteAnimate
                             Parameter param = ParseParameter(paramLine);
                             if (param != null)
                             {
-                                currentFilter.Parameters.Add(param);
+                                SplitIfRequired(param, currentFilter.Parameters); // Instead of directly adding, split if required
                             }
                         }
                     }
@@ -250,6 +251,63 @@ namespace GmicDrosteAnimate
             return param;
         }
 
+        private void SplitIfRequired(Parameter param, List<Parameter> parameters)
+        {
+            if (param.Type == "color" || param.Type == "~color" || param.Type == "_color")
+            {
+                SplitColorHexToRGBA(param, parameters);
+            }
+            else
+            {
+                parameters.Add(param);
+            }
+            
+        }
+
+        private void SplitColorHexToRGBA(Parameter param, List<Parameter> parameters)
+        {
+            if (param.DefaultValue is string hexColor)
+            {
+                // Check hexColor length to determine if it's RGB (#RRGGBB) or RGBA (#RRGGBBAA)
+                if (hexColor.StartsWith("#")) hexColor = hexColor.Substring(1); // Remove the # if present
+                
+                string originalType = param.Type;
+
+                if (hexColor.Length == 6 || hexColor.Length == 8)
+                {
+                    List<int> rgbaValues = new List<int>
+                    {
+                    Convert.ToInt32(hexColor.Substring(0, 2), 16), // Red
+                    Convert.ToInt32(hexColor.Substring(2, 2), 16), // Green
+                    Convert.ToInt32(hexColor.Substring(4, 2), 16)  // Blue
+                    };
+
+                    if (hexColor.Length == 8)
+                    {
+                        rgbaValues.Add(Convert.ToInt32(hexColor.Substring(6, 2), 16)); // Alpha
+                    }
+
+                    // Clear the original hex value as we've split it into components
+                    param.DefaultValue = null;
+                    param.Values.Clear(); // Make sure to clear existing values before adding new
+
+                    // Add parameters for each color component
+                    for (int i = 0; i < rgbaValues.Count; i++)
+                    {
+                        Parameter colorComponentParam = new Parameter
+                        {
+                            Name = $"{param.Name} - {(i == 0 ? "Red" : i == 1 ? "Green" : i == 2 ? "Blue" : "Alpha")}",
+                            Type = originalType,
+                            DefaultValue = rgbaValues[i],
+                            MinValue = 0,
+                            MaxValue = 255
+                        };
+                        param.Values.Add(colorComponentParam);
+                        parameters.Add(colorComponentParam); // Optionally add each as separate parameters if needed
+                    }
+                }
+            }
+        }
 
     }
 }

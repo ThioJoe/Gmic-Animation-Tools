@@ -293,7 +293,9 @@ public static class FilterParameters
             }
 
             string tempType = (string)param["Type"];
-            CleanType(tempType);
+
+            tempType = CleanType(tempType); // Removes any prefixes like ~ or _
+
             if (tempType == "float")
             {
                 tempType = "Continuous";
@@ -348,6 +350,11 @@ public static class FilterParameters
                 tempExtendedMin = 0;
                 tempExtendedMax = choiceCount;
             }
+            else if (tempType == "Color")
+            {
+                tempExtendedMin = 0;
+                tempExtendedMax = 255;
+            }
             else
             {
                 tempMin = 0;
@@ -365,7 +372,7 @@ public static class FilterParameters
                 max: tempMax ?? 100,             // Assume defaults if null
                 extendedMin: tempExtendedMin ?? 0,       // Same as min for extendedMin
                 extendedMax: tempExtendedMax ?? 100,    // Same as max for extendedMax
-                type: tempType,           // Helper method to clean up types
+                type: tempType,           
                 decimals: DetermineDecimalsFromType((string)param["Type"]),  // A method to determine decimals
                 defaultExponent: 1.0                   // Default exponent
             );
@@ -376,6 +383,17 @@ public static class FilterParameters
         {
             Filters.Add(filter);
         }
+    }
+    private static string CleanType(string typeString)
+    {
+        if (typeString.Contains("~") || typeString.Contains("_"))
+        {
+            // Removes prefixes like '~' if your logic requires it
+            typeString = typeString.Trim('~');
+            typeString = typeString.Trim('_');
+        }
+        
+        return typeString;
     }
 
     // Print out list of loaded filters
@@ -407,14 +425,6 @@ public static class FilterParameters
         //    }
         //}
 
-    }
-
-    private static string CleanType(string type)
-    {
-        // Removes prefixes like '~' if your logic requires it
-        type = type.Trim('~');
-        type = type.Trim('_');
-        return type;
     }
 
     private static int DetermineDecimalsFromType(string type)
