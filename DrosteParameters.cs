@@ -327,21 +327,21 @@ public static class FilterParameters
                 tempMax = maxValue;
             }
             // Depending on type, assign other default values if not assigned already via existing defaults
-            if (tempType == "Binary")
+            if (tempType.ToLower() == "binary")
             {
                 tempMin = 0;
                 tempMax = 1;
                 tempExtendedMin = 0;
                 tempExtendedMax = 1;
             }
-            else if (tempType == "Step")
+            else if (tempType.ToLower() == "step")
             {
                 tempMin = 0;
                 tempMax = 100;
                 tempExtendedMin = 0;
                 tempExtendedMax = 200;
             }
-            else if (tempType == "Choice")
+            else if (tempType.ToLower() == "choice")
             {
                 // Count how many choices are in the parameter
                 int choiceCount = choices.Count;
@@ -350,7 +350,7 @@ public static class FilterParameters
                 tempExtendedMin = 0;
                 tempExtendedMax = choiceCount;
             }
-            else if (tempType == "Color")
+            else if (tempType.ToLower() == "color")
             {
                 tempType = "Step";
                 tempExtendedMin = 0;

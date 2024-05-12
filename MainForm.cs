@@ -2299,6 +2299,9 @@ namespace DrosteEffectApp
             txtExponentArray.Text = "";
             txtMasterExponent.Text = "";
 
+            // Set master parameter to the first one because if you switch to a new filter that doesn't have that many it will be problematic
+            nudMasterParamIndex.Value = 1;
+
             // Reset the parameter info window
             if (Application.OpenForms["ParamNamesForm"] != null)
             {
