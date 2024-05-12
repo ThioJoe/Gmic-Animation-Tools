@@ -572,8 +572,9 @@ namespace DrosteEffectApp
                 return null;
             }
 
-            // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there. Also remove spaces from inside the string.
-            paramsString = paramsString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+            // Remove GMIC GUI Produced filter extra string from the start of the string if there. Also remove spaces from inside the string.
+            string commandName = FilterParameters.ActiveFilter.GmicCommand;
+            paramsString = paramsString.Replace(commandName, "").Replace(" ", "").Trim();
 
             // Split the parameters string into an array.
             string[] paramsArray = paramsString.Split(',');
@@ -1096,6 +1097,12 @@ namespace DrosteEffectApp
                 j++;
             }
 
+            string commandToRun = FilterParameters.ActiveFilter.GmicCommand;
+
+            string logFileName = "log.txt";
+            string logContents = "";
+            string verbosity = ""; // Set it to the verbose setting for Gmic, such as '-verbose 3', '-debug' etc
+
             while (attempt <= maxAttempts)
             {
                 await Task.Run(() =>
@@ -1115,14 +1122,32 @@ namespace DrosteEffectApp
                             // Execute gmic.exe to process frame
                             ProcessStartInfo startInfo = new ProcessStartInfo();
                             startInfo.FileName = "gmic.exe";
-                            startInfo.Arguments = $"-input \"{inputFilePath}\" -command \"Droste.gmic\" -souphead_droste10 {parameters} -output \"{outputFile}\"";
+                            startInfo.Arguments = $"{verbosity} -input \"{inputFilePath}\" -command \"Droste.gmic\" -{commandToRun} {parameters} -output \"{outputFile}\"";
                             startInfo.UseShellExecute = false;
                             startInfo.CreateNoWindow = true;
+                            startInfo.RedirectStandardOutput = true;  // Redirect standard output
+                            startInfo.RedirectStandardError = true;   // Redirect standard error
 
                             using (Process process = new Process())
                             {
                                 process.StartInfo = startInfo;
                                 process.Start();
+
+                                // Read the output - these are synchronous calls, consider async alternatives for UI applications
+                                string output = process.StandardOutput.ReadToEnd();
+                                string errors = process.StandardError.ReadToEnd();
+
+                                Console.WriteLine("Output:");
+                                Console.WriteLine(output);
+                                Console.WriteLine("Errors:");
+                                Console.WriteLine(errors);
+
+                                if (logFileName != null)
+                                {
+                                    // Write output to string to write to log file
+                                    logContents += $"Frame {i + 1}:\nArguments: {startInfo.Arguments}\n{output}\n{errors}\n\n";
+                                }
+
                                 process.WaitForExit();
                             }
                         }
@@ -1136,6 +1161,13 @@ namespace DrosteEffectApp
                 }
 
                 attempt++;
+            }
+
+            // Write log file if logFileName is not null
+            if (logFileName != null)
+            {
+                string logFilePath = Path.Combine(outputDir, logFileName);
+                File.WriteAllText(logFilePath, logContents);
             }
 
             List<string> missingFilesAfterRerun = expectedFiles.Where(file => !File.Exists(file)).ToList();
@@ -1294,12 +1326,14 @@ namespace DrosteEffectApp
 
             using (StreamWriter writer = new StreamWriter(logFilePath))
             {
-                writer.WriteLine("Run Metadata:");
+                writer.WriteLine($"Filter Used: {FilterParameters.ActiveFilter.FriendlyName} -- Filter Command: {FilterParameters.ActiveFilter.GmicCommand}");
+                writer.WriteLine($"Filter Command: {FilterParameters.ActiveFilter.GmicCommand}");
                 writer.WriteLine($"\n\tOutput Base Name: {baseName}");
                 writer.WriteLine($"\tFrames Generated: {totalFrames}");
 
                 writer.WriteLine($"\n\tStart Parameters: {startParams}");
                 writer.WriteLine($"\tEnd Parameters: {endParams}");
+                writer.WriteLine($"\tMaster Parameter: {FilterParameters.ActiveFilter.Parameters[masterParamIndex].Name}");
                 writer.WriteLine($"\tMaster Parameter Index: {masterParamIndex+1}");
                 writer.WriteLine($"\tMaster Parameter Increment: {masterParamIncrement}");
                 writer.WriteLine($"\tExponential Increments: {exponentialIncrements}");
@@ -2223,8 +2257,12 @@ namespace DrosteEffectApp
         {
             var currentFilter = FilterParameters.GetActiveFilter();
 
+            defaultStartParams = FilterParameters.GetParameterValuesAsString("DefaultStart");
+            defaultEndParams = FilterParameters.GetParameterValuesAsString("DefaultEnd");
             defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultExponent");
             filterParameterCount = currentFilter.Parameters.Count;
+            
+
 
             //if (listBoxFiltersMain.SelectedItem != null)
             //{
@@ -2455,6 +2493,7 @@ namespace DrosteEffectApp
                 string filterFriendlyName = ExtractNameFromDisplayText(selectedItem);
                 ActivateFilter(filterFriendlyName);
             }
+            LoadActiveFilterParameters();
         }
 
         private string ExtractNameFromDisplayText(string displayText)
