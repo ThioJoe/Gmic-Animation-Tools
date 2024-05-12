@@ -352,6 +352,7 @@ public static class FilterParameters
             }
             else if (tempType == "Color")
             {
+                tempType = "Step";
                 tempExtendedMin = 0;
                 tempExtendedMax = 255;
             }
@@ -372,7 +373,7 @@ public static class FilterParameters
                 bool isPercentage = (bool)isPercentageToken;
                 if (isPercentage)
                 {
-                    tempType = "Percentage";
+                    tempType = "Continuous";
                     tempMin = 0;
                     tempMax = 100;
                     tempExtendedMin = 0;
@@ -396,6 +397,8 @@ public static class FilterParameters
                 }
                 // Other conditions or settings can be handled similarly
             }
+            
+            // Currently possible types: "Binary", "Trinary", "Step", "Continuous", "Choice"
 
 
             var parameterInfo = new SingleParameterInfo(
