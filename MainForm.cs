@@ -89,6 +89,10 @@ namespace DrosteEffectApp
             // Run method to load filters file not silent, will display message asking user to update files
             LoadFiltersFile(silent: true);
 
+            // Set dropdown to show the first filter and not be editable
+            dropdownDebugLog.SelectedIndex = 0;
+            dropdownDebugLog.DropDownStyle = ComboBoxStyle.DropDownList;
+
             // Load parameters of current filter
             LoadActiveFilterParameters();
 
@@ -538,8 +542,10 @@ namespace DrosteEffectApp
             // See if checkbox to only log is enabled
             if (!checkBoxLogOnly.Checked)
             {
+                int debugSetting = dropdownDebugLog.SelectedIndex;
+
                 // Process each frame using the specified parameters and gmic.exe.
-                await Task.Run(() => ProcessFrames(outputDir, interpolatedParams, frameNumberStart));
+                await Task.Run(() => ProcessFrames(outputDir, interpolatedParams, frameNumberStart, debugSetting));
 
                 // Optionally create a GIF from the generated frames using ffmpeg.
                 if (createGif)
@@ -1077,7 +1083,7 @@ namespace DrosteEffectApp
             }
         }
 
-        private async Task ProcessFrames(string outputDir, List<string> interpolatedParams, int frameNumberStart)
+        private async Task ProcessFrames(string outputDir, List<string> interpolatedParams, int frameNumberStart, int debugSetting)
         {
             int parallelJobs = 10;
             int maxAttempts = 7;
@@ -1102,6 +1108,28 @@ namespace DrosteEffectApp
             string logFileName = "log.txt";
             string logContents = "";
             string verbosity = ""; // Set it to the verbose setting for Gmic, such as '-verbose 3', '-debug' etc
+
+            // Set verbosity based on dropdown combobox index, which is passed in via debugSetting because it can't be called from another thread
+            if (debugSetting == 0)
+            {
+                verbosity = "";
+            }
+            else if (debugSetting == 1)
+            {
+                verbosity = "-verbose 1";
+            }
+            else if (debugSetting == 2)
+            {
+                verbosity = "-verbose 2";
+            }
+            else if (debugSetting == 3)
+            {
+                verbosity = "-verbose 3";
+            }
+            else if (debugSetting == 4)
+            {
+                verbosity = "-debug";
+            }
 
             while (attempt <= maxAttempts)
             {
@@ -1164,7 +1192,7 @@ namespace DrosteEffectApp
             }
 
             // Write log file if logFileName is not null
-            if (logFileName != null)
+            if (debugSetting != 0)
             {
                 string logFilePath = Path.Combine(outputDir, logFileName);
                 File.WriteAllText(logFilePath, logContents);
@@ -2265,6 +2293,13 @@ namespace DrosteEffectApp
             PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)defaultStartParams);
             PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)defaultEndParams);
 
+            // Reset the parameter info window
+            if (Application.OpenForms["ParamNamesForm"] != null)
+            {
+                ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                paramNamesForm.UpdateParamInfoWIndowNamesAndCount();
+                paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+            }
 
             //if (listBoxFiltersMain.SelectedItem != null)
             //{

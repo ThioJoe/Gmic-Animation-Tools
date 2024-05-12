@@ -84,6 +84,9 @@
             this.listBoxFiltersMain = new System.Windows.Forms.ListBox();
             this.labelFilterSearch = new System.Windows.Forms.Label();
             this.labelCurrentlyLoadedFilter = new System.Windows.Forms.Label();
+            this.dropdownDebugLog = new System.Windows.Forms.ComboBox();
+            this.labelDebugLog = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -96,6 +99,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoIconUseSameDirectory)).BeginInit();
             this.groupBoxNormalizeRadios.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // nudTotalFrames
@@ -327,7 +331,7 @@
             this.chkCreateGif.AutoSize = true;
             this.chkCreateGif.Checked = true;
             this.chkCreateGif.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCreateGif.Location = new System.Drawing.Point(15, 375);
+            this.chkCreateGif.Location = new System.Drawing.Point(15, 369);
             this.chkCreateGif.Name = "chkCreateGif";
             this.chkCreateGif.Size = new System.Drawing.Size(77, 17);
             this.chkCreateGif.TabIndex = 16;
@@ -337,7 +341,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 398);
+            this.btnStart.Location = new System.Drawing.Point(12, 422);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(100, 30);
             this.btnStart.TabIndex = 17;
@@ -347,7 +351,7 @@
             // 
             // btnViewOutputDirectory
             // 
-            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 441);
+            this.btnViewOutputDirectory.Location = new System.Drawing.Point(273, 465);
             this.btnViewOutputDirectory.Name = "btnViewOutputDirectory";
             this.btnViewOutputDirectory.Size = new System.Drawing.Size(130, 30);
             this.btnViewOutputDirectory.TabIndex = 18;
@@ -357,7 +361,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(12, 398);
+            this.btnCancel.Location = new System.Drawing.Point(12, 422);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 30);
             this.btnCancel.TabIndex = 19;
@@ -435,7 +439,7 @@
             // InfoIconCreateGif
             // 
             this.InfoIconCreateGif.Image = ((System.Drawing.Image)(resources.GetObject("InfoIconCreateGif.Image")));
-            this.InfoIconCreateGif.Location = new System.Drawing.Point(90, 375);
+            this.InfoIconCreateGif.Location = new System.Drawing.Point(90, 369);
             this.InfoIconCreateGif.Name = "InfoIconCreateGif";
             this.InfoIconCreateGif.Size = new System.Drawing.Size(16, 16);
             this.InfoIconCreateGif.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -446,7 +450,7 @@
             // infoIconUseSameDirectory
             // 
             this.infoIconUseSameDirectory.Image = ((System.Drawing.Image)(resources.GetObject("infoIconUseSameDirectory.Image")));
-            this.infoIconUseSameDirectory.Location = new System.Drawing.Point(166, 335);
+            this.infoIconUseSameDirectory.Location = new System.Drawing.Point(166, 329);
             this.infoIconUseSameDirectory.Name = "infoIconUseSameDirectory";
             this.infoIconUseSameDirectory.Size = new System.Drawing.Size(16, 16);
             this.infoIconUseSameDirectory.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -470,7 +474,7 @@
             // 
             this.btnShowParamNames.BackColor = System.Drawing.Color.SkyBlue;
             this.btnShowParamNames.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowParamNames.Location = new System.Drawing.Point(273, 394);
+            this.btnShowParamNames.Location = new System.Drawing.Point(273, 418);
             this.btnShowParamNames.Name = "btnShowParamNames";
             this.btnShowParamNames.Size = new System.Drawing.Size(130, 22);
             this.btnShowParamNames.TabIndex = 27;
@@ -491,7 +495,7 @@
             // TextLabelNearStartButton
             // 
             this.TextLabelNearStartButton.AutoSize = true;
-            this.TextLabelNearStartButton.Location = new System.Drawing.Point(118, 398);
+            this.TextLabelNearStartButton.Location = new System.Drawing.Point(118, 422);
             this.TextLabelNearStartButton.Name = "TextLabelNearStartButton";
             this.TextLabelNearStartButton.Size = new System.Drawing.Size(37, 13);
             this.TextLabelNearStartButton.TabIndex = 30;
@@ -520,7 +524,7 @@
             // checkBoxUseSameOutputDir
             // 
             this.checkBoxUseSameOutputDir.AutoSize = true;
-            this.checkBoxUseSameOutputDir.Location = new System.Drawing.Point(15, 335);
+            this.checkBoxUseSameOutputDir.Location = new System.Drawing.Point(15, 329);
             this.checkBoxUseSameOutputDir.Name = "checkBoxUseSameOutputDir";
             this.checkBoxUseSameOutputDir.Size = new System.Drawing.Size(155, 17);
             this.checkBoxUseSameOutputDir.TabIndex = 34;
@@ -542,7 +546,7 @@
             // 
             this.labelFFmpegNotFound.AutoSize = true;
             this.labelFFmpegNotFound.ForeColor = System.Drawing.Color.Red;
-            this.labelFFmpegNotFound.Location = new System.Drawing.Point(110, 374);
+            this.labelFFmpegNotFound.Location = new System.Drawing.Point(110, 368);
             this.labelFFmpegNotFound.Name = "labelFFmpegNotFound";
             this.labelFFmpegNotFound.Size = new System.Drawing.Size(155, 13);
             this.labelFFmpegNotFound.TabIndex = 36;
@@ -552,7 +556,7 @@
             // checkBoxLogOnly
             // 
             this.checkBoxLogOnly.AutoSize = true;
-            this.checkBoxLogOnly.Location = new System.Drawing.Point(15, 355);
+            this.checkBoxLogOnly.Location = new System.Drawing.Point(15, 349);
             this.checkBoxLogOnly.Name = "checkBoxLogOnly";
             this.checkBoxLogOnly.Size = new System.Drawing.Size(173, 17);
             this.checkBoxLogOnly.TabIndex = 38;
@@ -626,7 +630,7 @@
             // 
             this.btnShowExpressionForm.BackColor = System.Drawing.Color.LightCoral;
             this.btnShowExpressionForm.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowExpressionForm.Location = new System.Drawing.Point(273, 418);
+            this.btnShowExpressionForm.Location = new System.Drawing.Point(273, 442);
             this.btnShowExpressionForm.Name = "btnShowExpressionForm";
             this.btnShowExpressionForm.Size = new System.Drawing.Size(130, 23);
             this.btnShowExpressionForm.TabIndex = 45;
@@ -636,7 +640,7 @@
             // 
             // TestButton1
             // 
-            this.TestButton1.Location = new System.Drawing.Point(234, 448);
+            this.TestButton1.Location = new System.Drawing.Point(234, 472);
             this.TestButton1.Name = "TestButton1";
             this.TestButton1.Size = new System.Drawing.Size(26, 23);
             this.TestButton1.TabIndex = 31;
@@ -647,7 +651,7 @@
             // 
             // btnParseTest
             // 
-            this.btnParseTest.Location = new System.Drawing.Point(223, 419);
+            this.btnParseTest.Location = new System.Drawing.Point(223, 443);
             this.btnParseTest.Name = "btnParseTest";
             this.btnParseTest.Size = new System.Drawing.Size(37, 23);
             this.btnParseTest.TabIndex = 46;
@@ -658,7 +662,7 @@
             // 
             // btnLoadFilters
             // 
-            this.btnLoadFilters.Location = new System.Drawing.Point(12, 434);
+            this.btnLoadFilters.Location = new System.Drawing.Point(12, 458);
             this.btnLoadFilters.Name = "btnLoadFilters";
             this.btnLoadFilters.Size = new System.Drawing.Size(103, 23);
             this.btnLoadFilters.TabIndex = 47;
@@ -668,7 +672,7 @@
             // 
             // txtSearchBoxMain
             // 
-            this.txtSearchBoxMain.Location = new System.Drawing.Point(104, 483);
+            this.txtSearchBoxMain.Location = new System.Drawing.Point(104, 507);
             this.txtSearchBoxMain.Name = "txtSearchBoxMain";
             this.txtSearchBoxMain.Size = new System.Drawing.Size(283, 20);
             this.txtSearchBoxMain.TabIndex = 48;
@@ -679,7 +683,7 @@
             this.listBoxFiltersMain.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.listBoxFiltersMain.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxFiltersMain.FormattingEnabled = true;
-            this.listBoxFiltersMain.Location = new System.Drawing.Point(12, 509);
+            this.listBoxFiltersMain.Location = new System.Drawing.Point(12, 533);
             this.listBoxFiltersMain.Name = "listBoxFiltersMain";
             this.listBoxFiltersMain.Size = new System.Drawing.Size(375, 108);
             this.listBoxFiltersMain.TabIndex = 49;
@@ -690,7 +694,7 @@
             // 
             this.labelFilterSearch.AutoSize = true;
             this.labelFilterSearch.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFilterSearch.Location = new System.Drawing.Point(12, 485);
+            this.labelFilterSearch.Location = new System.Drawing.Point(12, 509);
             this.labelFilterSearch.Name = "labelFilterSearch";
             this.labelFilterSearch.Size = new System.Drawing.Size(86, 15);
             this.labelFilterSearch.TabIndex = 50;
@@ -699,17 +703,54 @@
             // labelCurrentlyLoadedFilter
             // 
             this.labelCurrentlyLoadedFilter.AutoSize = true;
-            this.labelCurrentlyLoadedFilter.Location = new System.Drawing.Point(12, 465);
+            this.labelCurrentlyLoadedFilter.Location = new System.Drawing.Point(12, 489);
             this.labelCurrentlyLoadedFilter.Name = "labelCurrentlyLoadedFilter";
             this.labelCurrentlyLoadedFilter.Size = new System.Drawing.Size(69, 13);
             this.labelCurrentlyLoadedFilter.TabIndex = 51;
             this.labelCurrentlyLoadedFilter.Text = "Current Filter:";
             // 
+            // dropdownDebugLog
+            // 
+            this.dropdownDebugLog.FormattingEnabled = true;
+            this.dropdownDebugLog.Items.AddRange(new object[] {
+            "None",
+            "Verbose 1",
+            "Verbose 2",
+            "Verbose 3",
+            "Debug"});
+            this.dropdownDebugLog.Location = new System.Drawing.Point(83, 393);
+            this.dropdownDebugLog.Name = "dropdownDebugLog";
+            this.dropdownDebugLog.Size = new System.Drawing.Size(99, 21);
+            this.dropdownDebugLog.TabIndex = 52;
+            // 
+            // labelDebugLog
+            // 
+            this.labelDebugLog.AutoSize = true;
+            this.labelDebugLog.Location = new System.Drawing.Point(15, 395);
+            this.labelDebugLog.Name = "labelDebugLog";
+            this.labelDebugLog.Size = new System.Drawing.Size(63, 13);
+            this.labelDebugLog.TabIndex = 53;
+            this.labelDebugLog.Text = "Debug Log:";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(188, 395);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 54;
+            this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 625);
+            this.ClientSize = new System.Drawing.Size(410, 653);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.labelDebugLog);
+            this.Controls.Add(this.dropdownDebugLog);
             this.Controls.Add(this.labelCurrentlyLoadedFilter);
             this.Controls.Add(this.labelFilterSearch);
             this.Controls.Add(this.listBoxFiltersMain);
@@ -776,6 +817,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.infoIconUseSameDirectory)).EndInit();
             this.groupBoxNormalizeRadios.ResumeLayout(false);
             this.groupBoxNormalizeRadios.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -839,5 +881,8 @@
         private System.Windows.Forms.ListBox listBoxFiltersMain;
         private System.Windows.Forms.Label labelFilterSearch;
         private System.Windows.Forms.Label labelCurrentlyLoadedFilter;
+        private System.Windows.Forms.ComboBox dropdownDebugLog;
+        private System.Windows.Forms.Label labelDebugLog;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -344,4 +344,28 @@ When absolute mode is enabled, you may use an additional variable 'x'.
 This represents the frame number, as opposed to 't', the normalized time value.
 </value>
   </data>
+  <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="pictureBox1.ToolTip" xml:space="preserve">
+    <value>This will let you create a log file of the command-line
+output of GMIC when it tries to run. It is separate from
+the log file with details about each run which is always
+created.
+
+The debug log file will be called log.txt and be put in the
+same output folder.
+
+None: Creates no log files
+Verbose 1 is the least detailed, and Debug is the most.
+
+</value>
+  </data>
 </root>

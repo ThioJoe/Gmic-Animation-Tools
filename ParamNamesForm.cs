@@ -82,6 +82,25 @@ namespace GmicDrosteAnimate
             
         }
 
+        // Add function setter to get latest parameter names and variable coun
+        public void UpdateParamInfoWIndowNamesAndCount()
+        {
+            paramNames = FilterParameters.GetParameterNamesList();
+            filterParameterCount = FilterParameters.GetParameterCount();
+            // If the filter is not droste, then disable the recommended rules checkbox
+            if (FilterParameters.ActiveFilter.GmicCommand != "souphead_droste10")
+            {
+                checkBoxRecommendedRules.Checked = false;
+                checkBoxRecommendedRules.Enabled = false;
+            }
+            else
+            {
+                checkBoxRecommendedRules.Enabled = true;
+                checkBoxRecommendedRules.Checked = true;
+            }
+        }
+
+
         private void InitializeDataGridView()
         {
             dataGridView1.Columns.Clear();
