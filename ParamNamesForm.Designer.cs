@@ -186,7 +186,7 @@
             this.btnSendParmsToMain.TabIndex = 13;
             this.btnSendParmsToMain.Text = "Use Above Values";
             this.btnSendParmsToMain.UseVisualStyleBackColor = false;
-            this.btnSendParmsToMain.Click += new System.EventHandler(this.btnSendParmsToMain_Click);
+            this.btnSendParmsToMain.Click += new System.EventHandler(this.btnSendParamsToMain_Click);
             // 
             // dataGridView1
             // 

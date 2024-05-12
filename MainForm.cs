@@ -2261,7 +2261,9 @@ namespace DrosteEffectApp
             defaultEndParams = FilterParameters.GetParameterValuesAsString("DefaultEnd");
             defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultExponent");
             filterParameterCount = currentFilter.Parameters.Count;
-            
+
+            PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)defaultStartParams);
+            PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)defaultEndParams);
 
 
             //if (listBoxFiltersMain.SelectedItem != null)

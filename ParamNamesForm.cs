@@ -729,7 +729,7 @@ namespace GmicDrosteAnimate
 
 
 
-        private void btnSendParmsToMain_Click(object sender, EventArgs e)
+        private void btnSendParamsToMain_Click(object sender, EventArgs e)
         {
             // Send the strings in txtCurrentStartParamString and txtCurrentEndParamString to main form's txtStartParams and txtEndParams
             // Get the strings from the textboxes
