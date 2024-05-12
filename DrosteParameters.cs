@@ -363,6 +363,41 @@ public static class FilterParameters
                 tempExtendedMax = 1;
             }
 
+            //Check for TypeDetails or other extra info in Properties
+            JObject properties = (JObject)param["Properties"];
+
+            // Safe access to 'IsPercentage' property
+            if (properties.TryGetValue("IsPercentage", out JToken isPercentageToken))
+            {
+                bool isPercentage = (bool)isPercentageToken;
+                if (isPercentage)
+                {
+                    tempType = "Percentage";
+                    tempMin = 0;
+                    tempMax = 100;
+                    tempExtendedMin = 0;
+                    tempExtendedMax = 100;
+                }
+            }
+
+            // Check for TypeDetails
+            if (properties.TryGetValue("TypeDetail", out JToken typeDetailsToken))
+            {
+                // Directly get the value as a string, since it's not a JObject but a simple JValue
+                string typeDetailValue = typeDetailsToken.ToString();
+
+                // Check if the value indicates 'Trinary'
+                if (typeDetailValue == "Trinary")
+                {
+                    tempMin = -1;
+                    tempMax = 1;
+                    tempExtendedMin = -1;
+                    tempExtendedMax = 1;
+                }
+                // Other conditions or settings can be handled similarly
+            }
+
+
             var parameterInfo = new SingleParameterInfo(
                 paramIndex: GetActiveFilterParameters().Count,  // Index is dynamically set based on count. As each gets added the count and therefore the index increases
                 name: name,

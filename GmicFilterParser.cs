@@ -24,6 +24,7 @@ namespace GmicDrosteAnimate
         public dynamic MaxValue { get; set; }
         public List<string> Choices { get; set; }
         public List<dynamic> Values { get; set; } = new List<dynamic>(); // To store multiple values if needed
+        public Dictionary<string, object> Properties { get; set; } = new Dictionary<string, object>(); // Additional properties
     }
 
     internal class GmicFilterParser
@@ -162,6 +163,7 @@ namespace GmicDrosteAnimate
             if (type == "point")
             {
                 param.DefaultValue = args; // Set the entire argument string as DefaultValue
+                param.Properties["OriginalType"] = "point"; // Store the original complex type
             }
             else if (type == "choice" || type == "file" || type == "file_in" || type == "file_out")
             {
@@ -170,6 +172,11 @@ namespace GmicDrosteAnimate
             else
             {
                 param = HandleStandardType(param, args);
+                if (name.Contains("(%)"))
+                {
+                    param.Properties["IsPercentage"] = true; // Mark parameter as percentage
+                }
+                
             }
 
             // Add back tilde or underscore back to type if it was removed
@@ -334,41 +341,54 @@ namespace GmicDrosteAnimate
                 param.Values.Clear();
 
                 // Handling X and Y, which should be available in every point parameter as basics
-                if (count > 0) AddParameter(param, parameters, "_X", "float", values[0]);
-                if (count > 1) AddParameter(param, parameters, "_Y", "float", values[1]);
+                if (count > 0) AddSubParameter(param, parameters, "_X", "float", values[0]);
+                if (count > 1) AddSubParameter(param, parameters, "_Y", "float", values[1]);
 
                 // Optional parameters with safe checking for existence
-                if (count > 2) AddParameter(param, parameters, "_Removable", "int", values[2]);
-                if (count > 3) AddParameter(param, parameters, "_Burst", "bool", values[3]);
-                if (count > 4) AddParameter(param, parameters, "_Red", "int", values[4]);
-                if (count > 5) AddParameter(param, parameters, "_Green", "int", values[5]);
-                if (count > 6) AddParameter(param, parameters, "_Blue", "int", values[6]);
-                if (count > 7) AddParameter(param, parameters, "_Alpha", "int", values[7]);
-                if (count > 8) AddParameter(param, parameters, "_Radius", "float", values[8]);
+                if (count > 2) AddSubParameter(param, parameters, "_Removable", "int", values[2]);
+                if (count > 3) AddSubParameter(param, parameters, "_Burst", "int", values[3]);
+                if (count > 4) AddSubParameter(param, parameters, "_Red", "int", values[4]);
+                if (count > 5) AddSubParameter(param, parameters, "_Green", "int", values[5]);
+                if (count > 6) AddSubParameter(param, parameters, "_Blue", "int", values[6]);
+                if (count > 7) AddSubParameter(param, parameters, "_Alpha", "int", values[7]);
+                if (count > 8) AddSubParameter(param, parameters, "_Radius", "float", values[8]);
             }
+            // Store original type for later reference if needed
+            param.Properties["OriginalType"] = "point";
 
         }
 
-        private void AddParameter(Parameter parentParam, List<Parameter> parameters, string suffix, string type, string value)
+        private void AddSubParameter(Parameter parentParam, List<Parameter> parameters, string suffix, string type, string value)
         {
             var newParam = new Parameter
             {
                 Name = $"{parentParam.Name}{suffix}",
-                Type = type
+                Type = type,
             };
 
-            // Use invariant culture for parsing numbers
-            if (type == "int")
+            switch (type)
             {
-                newParam.DefaultValue = int.Parse(value, CultureInfo.InvariantCulture);
-            }
-            else if (type == "float")
-            {
-                newParam.DefaultValue = float.Parse(value, CultureInfo.InvariantCulture);
+                case "int":
+                    newParam.DefaultValue = Convert.ToInt32(value, CultureInfo.InvariantCulture);
+                    if (suffix == "_Removable" || suffix == "_Burst")
+                    {
+                        // Set 'Trinary' specific properties
+                        newParam.Properties.Add("TypeDetail", "Trinary");
+                        newParam.MinValue = -1;
+                        newParam.MaxValue = 1;
+                    }
+                    break;
+                case "float":
+                    newParam.DefaultValue = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+                    break;
+                default:
+                    newParam.DefaultValue = value;
+                    break;
             }
 
-            parentParam.Values.Add(newParam);
             parameters.Add(newParam);
+            parentParam.Values.Add(newParam);
         }
+
     }
 }
