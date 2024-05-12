@@ -341,24 +341,24 @@ namespace GmicDrosteAnimate
                 param.Values.Clear();
 
                 // Handling X and Y, which should be available in every point parameter as basics
-                if (count > 0) AddSubParameter(param, parameters, "_X", "float", values[0]);
-                if (count > 1) AddSubParameter(param, parameters, "_Y", "float", values[1]);
+                if (count > 0) AddSubParameter(param, parameters, "_X", "float", values[0], GUIOnly: false);
+                if (count > 1) AddSubParameter(param, parameters, "_Y", "float", values[1], GUIOnly: false);
 
-                // Optional parameters with safe checking for existence
-                if (count > 2) AddSubParameter(param, parameters, "_Removable", "int", values[2]);
-                if (count > 3) AddSubParameter(param, parameters, "_Burst", "int", values[3]);
-                if (count > 4) AddSubParameter(param, parameters, "_Red", "int", values[4]);
-                if (count > 5) AddSubParameter(param, parameters, "_Green", "int", values[5]);
-                if (count > 6) AddSubParameter(param, parameters, "_Blue", "int", values[6]);
-                if (count > 7) AddSubParameter(param, parameters, "_Alpha", "int", values[7]);
-                if (count > 8) AddSubParameter(param, parameters, "_Radius", "float", values[8]);
+                // Optional parameters with safe checking for existence - Need to check if these are only used by the GUI and should be left out
+                if (count > 2) AddSubParameter(param, parameters, "_Removable", "int", values[2], GUIOnly: true);
+                if (count > 3) AddSubParameter(param, parameters, "_Burst", "int", values[3], GUIOnly: true);
+                if (count > 4) AddSubParameter(param, parameters, "_Red", "int", values[4], GUIOnly: true);
+                if (count > 5) AddSubParameter(param, parameters, "_Green", "int", values[5], GUIOnly: true);
+                if (count > 6) AddSubParameter(param, parameters, "_Blue", "int", values[6], GUIOnly: true);
+                if (count > 7) AddSubParameter(param, parameters, "_Alpha", "int", values[7], GUIOnly: true);
+                if (count > 8) AddSubParameter(param, parameters, "_Radius", "float", values[8], GUIOnly: true);
             }
             // Store original type for later reference if needed
             param.Properties["OriginalType"] = "point";
 
         }
 
-        private void AddSubParameter(Parameter parentParam, List<Parameter> parameters, string suffix, string type, string value)
+        private void AddSubParameter(Parameter parentParam, List<Parameter> parameters, string suffix, string type, string value, bool GUIOnly)
         {
             var newParam = new Parameter
             {
@@ -386,8 +386,12 @@ namespace GmicDrosteAnimate
                     break;
             }
 
-            parameters.Add(newParam);
-            parentParam.Values.Add(newParam);
+            if (!GUIOnly)
+            {
+                parameters.Add(newParam);
+                parentParam.Values.Add(newParam);
+            }
+            
         }
 
     }

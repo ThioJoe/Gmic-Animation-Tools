@@ -464,7 +464,8 @@ namespace DrosteEffectApp
                 if (!string.IsNullOrEmpty(exponentArrayString))
                 {
                     // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there
-                    exponentArrayString = exponentArrayString.Replace("souphead_droste10", "").Trim();
+                    string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;
+                    exponentArrayString = exponentArrayString.Replace(stringToReplace, "").Replace(" ", "").Trim();
 
                     exponents = exponentArrayString.Split(',');
                     if (exponents.Length == filterParameterCount)
@@ -1252,8 +1253,8 @@ namespace DrosteEffectApp
                 gifFileName = $"{fileNameWithoutExtension}_combined_{i}.gif";
                 i++;
             }
-
-            string ffmpegCommand = $"ffmpeg -framerate 25 -i \"{outputDir}\\{fileNameWithoutExtension}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
+            // Huge long command is to preserve transparency from PNG sequence to gif
+            string ffmpegCommand = $"ffmpeg -framerate 25 -i \"{outputDir}\\{fileNameWithoutExtension}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse\" \"{outputDir}\\{gifFileName}\"";
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
@@ -1628,8 +1629,9 @@ namespace DrosteEffectApp
             {
                 string rawStartString = txtStartParams.Text;
                 string rawEndString = txtEndParams.Text;
-                rawStartString = rawStartString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
-                rawEndString = rawEndString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+                string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;
+                rawStartString = rawStartString.Replace(stringToReplace, "").Replace(" ", "").Trim();
+                rawEndString = rawEndString.Replace(stringToReplace, "").Replace(" ", "").Trim();
                 string[] startParamsArray = rawStartString.Split(',');
                 string[] endParamsArray = rawEndString.Split(',');
 
@@ -1722,8 +1724,9 @@ namespace DrosteEffectApp
                 // Remove souphead_droste10 and spaces from the strings
                 string rawsStartstring = txtStartParams.Text;
                 string rawEndString = txtEndParams.Text;
-                rawsStartstring = rawsStartstring.Replace("souphead_droste10", "").Replace(" ", "").Trim();
-                rawEndString = rawEndString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+                string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;
+                rawsStartstring = rawsStartstring.Replace(stringToReplace, "").Replace(" ", "").Trim();
+                rawEndString = rawEndString.Replace(stringToReplace, "").Replace(" ", "").Trim();
 
                 // Disable textChanged update and replace the text with the cleaned up version
                 txtStartParams.TextChanged -= txtStartParams_TextChanged;
@@ -1769,8 +1772,9 @@ namespace DrosteEffectApp
                 // Remove souphead_droste10 and spaces from the strings
                 string rawsStartstring = txtStartParams.Text;
                 string rawEndString = txtEndParams.Text;
-                rawsStartstring = rawsStartstring.Replace("souphead_droste10", "").Replace(" ", "").Trim();
-                rawEndString = rawEndString.Replace("souphead_droste10", "").Replace(" ", "").Trim();
+                string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;
+                rawsStartstring = rawsStartstring.Replace(stringToReplace, "").Replace(" ", "").Trim();
+                rawEndString = rawEndString.Replace(stringToReplace, "").Replace(" ", "").Trim();
 
                 // Disable textChanged update and replace the text with the cleaned up version
                 txtEndParams.TextChanged -= txtStartParams_TextChanged;
