@@ -253,7 +253,9 @@ namespace GmicDrosteAnimate
 
         private void SplitIfRequired(Parameter param, List<Parameter> parameters)
         {
-            if (param.Type == "color" || param.Type == "~color" || param.Type == "_color")
+            string cleanType = param.Type.TrimStart('~').TrimStart('_');
+
+            if (cleanType == "color")
             {
                 SplitColorHexToRGBA(param, parameters);
             }
@@ -296,7 +298,7 @@ namespace GmicDrosteAnimate
                     {
                         Parameter colorComponentParam = new Parameter
                         {
-                            Name = $"{param.Name} - {(i == 0 ? "Red" : i == 1 ? "Green" : i == 2 ? "Blue" : "Alpha")}",
+                            Name = $"{param.Name}_{(i == 0 ? "Red" : i == 1 ? "Green" : i == 2 ? "Blue" : "Alpha")}",
                             Type = originalType,
                             DefaultValue = rgbaValues[i],
                             MinValue = 0,
