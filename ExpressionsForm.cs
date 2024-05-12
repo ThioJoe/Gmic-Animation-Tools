@@ -213,6 +213,22 @@ namespace GmicDrosteAnimate
             dataGridViewExpressions.EditMode = DataGridViewEditMode.EditOnEnter;
         }
 
+        public void UpdateEntireWindowWithNewFilter()
+        {
+            // Get parameter names and other info from FilterParameters
+            paramNames = FilterParameters.GetParameterNamesList();
+            filterParameterCount = FilterParameters.GetParameterCount();
+
+            customExpressionStringFromMainWindow = FilterParameters.GetParameterValuesAsString("DefaultExponent");
+            masterParamExpressionStringFromMainWindow = FilterParameters.GetParameterValuesAsList("DefaultExponent")[masterParamIndexFromMainWindow].ToString();
+
+            // Use expressions list from FilterParameters and convert to list of strings, if not null
+            string[] expressionsList = string.IsNullOrEmpty(customExpressionStringFromMainWindow) ? null : customExpressionStringFromMainWindow.Split(',');
+
+            // Update the data grid view
+            UpdateExpressionsDataGridView(expressionsList, masterParamIndexFromMainWindow);
+        }
+
         private void UpdateExpressionsDataGridView(string[] expressions, int masterParamIndex)
         {
             // Get current expression values in the grid

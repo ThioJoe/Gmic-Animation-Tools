@@ -1753,8 +1753,9 @@ namespace DrosteEffectApp
                         // Return so the rest of the code is not executed, otherwise will disable the boxes again
                         return;
                     }
+                    RefreshGraph();
                 }
-                RefreshGraph();
+                
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
@@ -1799,8 +1800,9 @@ namespace DrosteEffectApp
                         // Return so the rest of the code is not executed, otherwise will disable the boxes again
                         return;
                     }
+                    RefreshGraph();
                 }
-                RefreshGraph();
+                
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
@@ -2293,12 +2295,23 @@ namespace DrosteEffectApp
             PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)defaultStartParams);
             PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)defaultEndParams);
 
+            // Clear the exponent and expression text boxes
+            txtExponentArray.Text = "";
+            txtMasterExponent.Text = "";
+
             // Reset the parameter info window
             if (Application.OpenForms["ParamNamesForm"] != null)
             {
                 ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
                 paramNamesForm.UpdateParamInfoWIndowNamesAndCount();
                 paramNamesForm.UpdateParamValues(ParseParamsToArray(txtStartParams.Text, silent: true), ParseParamsToArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+            }
+
+            // Reset the expressions window
+            if (Application.OpenForms["ExpressionsForm"] != null)
+            {
+                ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
+                expressionForm.UpdateEntireWindowWithNewFilter();
             }
 
             //if (listBoxFiltersMain.SelectedItem != null)
