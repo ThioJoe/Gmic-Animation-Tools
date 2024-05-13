@@ -942,6 +942,12 @@ namespace GmicDrosteAnimate
             //    checkBoxRecommendedRules.Checked = false;
             //}
         }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // If user edits cell, disable syncing
+            checkBoxSyncFromOtherWindow.Checked = false;
+        }
     }
 
 }
