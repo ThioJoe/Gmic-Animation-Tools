@@ -609,6 +609,12 @@ namespace DrosteEffectApp
                     }
                     return null;
                 }
+                // Check if the parameter variable index is of text type, if so set it to zero while stored internally
+                else if (FilterParameters.GetParameterType(i).ToLower() == "text")
+                {
+                    paramValuesArray[i] = 0;
+                    //FilterParameters.SetTextParameterValue(i, paramsArray[i]);
+                }
             }
 
             // Return the array of parameter values.
@@ -1787,22 +1793,25 @@ namespace DrosteEffectApp
                 // Check if both parameter strings are valid
                 if (startParamArray != null && endParamArray != null)
                 {
-                    //Check if the start and end parameters for master parameter are different
                     if (startParamArray[(int)nudMasterParamIndex.Value-1] != endParamArray[(int)nudMasterParamIndex.Value-1])
                     {
-                        // Enable the total frames and master increment boxes
-                        EnableFrameAndMasterParamBoxes();
-                        // Update total frames
-                        UpdateTotalFrames();
-
-                        // Update listview in other window
-                        if (Application.OpenForms["ParamNamesForm"] != null)
+                        // Also ensure the parameter type is not text
+                        if (!FilterParameters.ActiveFilter.Parameters[(int)nudMasterParamIndex.Value - 1].Type.ToLower().Equals("text"))
                         {
-                            ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
-                            paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                            // Enable the total frames and master increment boxes
+                            EnableFrameAndMasterParamBoxes();
+                            // Update total frames
+                            UpdateTotalFrames();
+
+                            // Update listview in other window
+                            if (Application.OpenForms["ParamNamesForm"] != null)
+                            {
+                                ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                                paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                            }
+                            // Return so the rest of the code is not executed, otherwise will disable the boxes again
+                            return;
                         }
-                        // Return so the rest of the code is not executed, otherwise will disable the boxes again
-                        return;
                     }
                     RefreshGraph();
                 }
@@ -1810,8 +1819,6 @@ namespace DrosteEffectApp
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
-
-            
         }
 
         public static class PlaceholderManager

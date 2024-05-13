@@ -26,16 +26,11 @@ namespace GmicDrosteAnimate
         //    "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
         //};
 
-        private static string[] paramNames = FilterParameters.GetParameterNamesList();
-
         private MainForm mainForm;
         private double[] startParamValuesFromMainWindow;
         private double[] endParamValuesFromMainWindow;
         private int masterParamIndexFromMainWindow;
         private static readonly Random random = new Random();
-
-        //Parameter count
-        private int filterParameterCount = FilterParameters.GetParameterCount();
 
         //Global checkbox for whether to sync with other window
         public bool syncWithOtherWindow = true;
@@ -85,8 +80,6 @@ namespace GmicDrosteAnimate
         // Add function setter to get latest parameter names and variable coun
         public void UpdateParamInfoWIndowNamesAndCount()
         {
-            paramNames = FilterParameters.GetParameterNamesList();
-            filterParameterCount = FilterParameters.GetParameterCount();
             // If the filter is not droste, then disable the recommended rules checkbox
             if (FilterParameters.ActiveFilter.GmicCommand != "souphead_droste10")
             {
@@ -135,21 +128,34 @@ namespace GmicDrosteAnimate
                 // Ensure the value changes are only processed for valid rows and specific columns
                 if (!String.IsNullOrEmpty((string)dataGridView1.Rows[e.RowIndex].Cells["Start"].Value) && !String.IsNullOrEmpty((string)dataGridView1.Rows[e.RowIndex].Cells["End"].Value))
                 {
-                    double start = Convert.ToDouble(dataGridView1.Rows[e.RowIndex].Cells["Start"].Value);
-                    double end = Convert.ToDouble(dataGridView1.Rows[e.RowIndex].Cells["End"].Value);
+                    string startString = dataGridView1.Rows[e.RowIndex].Cells["Start"].Value.ToString();
+                    string endString = dataGridView1.Rows[e.RowIndex].Cells["End"].Value.ToString();
+                    double start;
+                    double end;
+                    double difference;
 
-                    // Update the Difference cell
-                    double difference = end - start;
-                    // If the difference is a whole number, display without decimals
-                    if (difference % 1 == 0)
+                    // If it's text type, don't calculate difference
+                    if (FilterParameters.GetActiveFilterParameters()[e.RowIndex].Type.ToLower() == "text")
                     {
-                        dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = difference.ToString("F0");
+                        dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = "";
                     }
                     else
                     {
-                        dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = difference.ToString("F2");
-                    }
+                        start = Convert.ToDouble(startString);
+                        end = Convert.ToDouble(endString);
 
+                        // Update the Difference cell
+                        difference = end - start;
+                        // If the difference is a whole number, display without decimals
+                        if (difference % 1 == 0)
+                        {
+                            dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = difference.ToString("F0");
+                        }
+                        else
+                        {
+                            dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = difference.ToString("F2");
+                        }
+                    }
                     // Update the parameter strings in the text boxes
                     UpdateParameterStringsWithNewTableData();
                 }
@@ -162,28 +168,25 @@ namespace GmicDrosteAnimate
             double[] endParamValues = new double[dataGridView1.Rows.Count];
 
             // Ensure the grids have all the values
-            if (startParamValues.Length == filterParameterCount && endParamValues.Length == filterParameterCount)
+            if (startParamValues.Length == FilterParameters.GetParameterCount() && endParamValues.Length == FilterParameters.GetParameterCount())
             {
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (dataGridView1.Rows[i].Cells["Start"].Value != null)
+                    // If it's text
+                    if (FilterParameters.GetActiveFilterParameters()[i].Type.ToLower() == "text")
+                    {
+                        startParamValues[i] = 0;
+                        endParamValues[i] = 0;
+                    }
+                    else if (dataGridView1.Rows[i].Cells["Start"].Value != null)
                     {
                         startParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["Start"].Value);
                     }
-                    // 
-                    else
-                    {
-                        // Put something here?
-                    }
-                    if (dataGridView1.Rows[i].Cells["End"].Value != null)
+
+                    else if (dataGridView1.Rows[i].Cells["End"].Value != null)
                     {
                         endParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["End"].Value);
                     }
-                    else
-                    {
-                        // Put something here?
-                    }
-
                 }
             }
             // Set the text boxes to the new comma-separated strings of the start and end parameters
@@ -207,7 +210,8 @@ namespace GmicDrosteAnimate
                 endParamValues = FilterParameters.GetParameterValuesAsList("DefaultEnd");
             }
 
-            for (int i = 0; i < paramNames.Length; i++)
+            string[] currentFilterParamNames = FilterParameters.GetParameterNamesList();
+            for (int i = 0; i < currentFilterParamNames.Length; i++)
             {
                 int idx = dataGridView1.Rows.Add();
                 var row = dataGridView1.Rows[idx];
@@ -215,8 +219,14 @@ namespace GmicDrosteAnimate
                 // Set 'Start' value
                 if (startParamValues != null && i < startParamValues.Length)
                 {
+                    // If the variable type is a string, display that
+                    if (FilterParameters.GetActiveFilterParameters()[i].Type.ToLower() == "text")
+                    {
+                        string currentTextValue = FilterParameters.ActiveFilter.Parameters[i].Properties["CurrentTextValue"].ToString();
+                        row.Cells["Start"].Value = currentTextValue;
+                    }
                     // If the number is a whole number, display without decimals
-                    if (startParamValues[i] % 1 == 0)
+                    else if (startParamValues[i] % 1 == 0)
                     {
                         row.Cells["Start"].Value = startParamValues[i].ToString("F0");
                     }
@@ -233,8 +243,14 @@ namespace GmicDrosteAnimate
                 // Set 'End' value
                 if (endParamValues != null && i < endParamValues.Length)
                 {
-                    // If the number is a whole number, display without decimals
-                    if (endParamValues[i] % 1 == 0)
+                    // If the variable type is a string, display that
+                    if (FilterParameters.GetActiveFilterParameters()[i].Type.ToLower() == "text")
+                    {
+                        string currentTextValue = FilterParameters.ActiveFilter.Parameters[i].Properties["CurrentTextValue"].ToString();
+                        row.Cells["End"].Value = currentTextValue;
+                    }
+                        // If the number is a whole number, display without decimals
+                    else if (endParamValues[i] % 1 == 0)
                     {
                         row.Cells["End"].Value = endParamValues[i].ToString("F0");
                     }
@@ -249,15 +265,20 @@ namespace GmicDrosteAnimate
                 }
 
                 // Set 'Parameter Name'
-                row.Cells["ParameterName"].Value = paramNames[i];
+                row.Cells["ParameterName"].Value = FilterParameters.GetActiveFilterParameters()[i].Name;
 
                 if (i == masterParamIndex)
                 {
                     row.DefaultCellStyle.BackColor = Color.LightGreen; // Highlight the master parameter
                 }
 
+                // If row variable type is text, then don't display difference
+                if (FilterParameters.GetActiveFilterParameters()[i].Type.ToLower() == "text")
+                {
+                    row.Cells["Difference"].Value = "";
+                }
                 // Calculate and display difference
-                if (row.Cells["Start"].Value != DBNull.Value && row.Cells["End"].Value != DBNull.Value &&
+                else if (row.Cells["Start"].Value != DBNull.Value && row.Cells["End"].Value != DBNull.Value &&
                     !string.IsNullOrEmpty(row.Cells["Start"].Value.ToString()) && !string.IsNullOrEmpty(row.Cells["End"].Value.ToString()))
                 {
                     double start = double.Parse(row.Cells["Start"].Value.ToString());
@@ -296,15 +317,29 @@ namespace GmicDrosteAnimate
         {
             if (!String.IsNullOrEmpty(txtCurrentStartParamString.Text))
             {
-                txtCurrentStartParamString.Text = string.Join(",", currentParamString);
+                // To handle text variables, first convert array to strings
+                string[] tempStringArray = new string[currentParamString.Length];
+                for (int i = 0; i < currentParamString.Length; i++)
+                {
+                    // If the variable type is text, use that
+                    if (FilterParameters.GetActiveFilterParameters()[i].Type.ToLower() == "text")
+                    {
+                        string currentTextValue = FilterParameters.ActiveFilter.Parameters[i].Properties["CurrentTextValue"].ToString();
+                        tempStringArray[i] = currentTextValue;
+                    }
+                    else
+                    {
+                        tempStringArray[i] = currentParamString[i].ToString();
+                    }
+                }
+                txtCurrentStartParamString.Text = string.Join(",", tempStringArray);
             }
             // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
             else
             {
-                if (dataGridView1.Rows.Count == filterParameterCount)
+                if (dataGridView1.Rows.Count == FilterParameters.GetParameterCount())
                 {
-                    double[] startParamValuesFromGrid = ValuesFromDataTable(dataGridView1, "Start");
-                    txtCurrentStartParamString.Text = string.Join(",", startParamValuesFromGrid);
+                    txtCurrentStartParamString.Text = string.Join(",", stringValuesFromDataTable(dataGridView1, "Start"));
                 }
             }
             
@@ -314,19 +349,52 @@ namespace GmicDrosteAnimate
         {
             if (!String.IsNullOrEmpty(txtCurrentEndParamString.Text))
             {
-                txtCurrentEndParamString.Text = string.Join(",", currentParamString);
+                // To handle text variables, first convert array to strings
+                string[] tempStringArray = new string[currentParamString.Length];
+                for (int i = 0; i < currentParamString.Length; i++)
+                {
+                    // If the variable type is text, use that
+                    if (FilterParameters.GetActiveFilterParameters()[i].Type.ToLower() == "text")
+                    {
+                        string currentTextValue = FilterParameters.ActiveFilter.Parameters[i].Properties["CurrentTextValue"].ToString();
+                        tempStringArray[i] = currentTextValue;
+                    }
+                    else
+                    {
+                        tempStringArray[i] = currentParamString[i].ToString();
+                    }
+                }
+                txtCurrentEndParamString.Text = string.Join(",", tempStringArray);
             }
             // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
             else
             {
-                if (dataGridView1.Rows.Count == filterParameterCount)
+                if (dataGridView1.Rows.Count == FilterParameters.GetParameterCount())
                 {
-                    double[] endParamValuesFromGrid = ValuesFromDataTable(dataGridView1, "End");
-                    txtCurrentEndParamString.Text = string.Join(",", endParamValuesFromGrid);
+                    txtCurrentEndParamString.Text = string.Join(",", stringValuesFromDataTable(dataGridView1, "End"));
                 }
             }
         }
 
+        private string[] stringValuesFromDataTable(DataGridView dataGridView, string columnName)
+        {
+            string[] values = new string[dataGridView.Rows.Count];
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (!String.IsNullOrEmpty(dataGridView.Rows[i].Cells[columnName].Value.ToString()))
+                {
+                    values[i] = dataGridView.Rows[i].Cells[columnName].Value.ToString();
+                }
+                // Early return null if any of the values are null
+                else
+                {
+                    return null;
+                }
+            }
+            return values;
+        }
+
+        // Is this even necessary?
         private double[] ValuesFromDataTable(DataGridView dataGridView, string columnName)
         {
             double[] values = new double[dataGridView.Rows.Count];
@@ -350,9 +418,11 @@ namespace GmicDrosteAnimate
             // Create a new instance of the Random class to generate random numbers
             Random rnd = new Random();
 
+            // Get parameter names from the FilterParameters class
+            string[] activeFilterParameterNames = FilterParameters.GetParameterNamesList();
             // Arrays to store the new start and end values for each parameter
-            double[] newStartParamValues = new double[paramNames.Length];
-            double[] newEndParamValues = new double[paramNames.Length];
+            double[] newStartParamValues = new double[activeFilterParameterNames.Length];
+            double[] newEndParamValues = new double[activeFilterParameterNames.Length];
 
             // Store the original start and end parameter strings in arrays
             double[] originalStartParamValues = txtCurrentStartParamString.Text.Split(',').Select(double.Parse).ToArray();
@@ -525,7 +595,7 @@ namespace GmicDrosteAnimate
                         if (paramInfo.Name == "Outer Radius")
                         {
                             // Get the index of the inner radius parameter
-                            int innerRadiusIndex = Array.IndexOf(paramNames, "Inner Radius");
+                            int innerRadiusIndex = Array.IndexOf(activeFilterParameterNames, "Inner Radius");
                             // Get the current start and end values of the inner radius (from a previous parameter loop)
                             double tempInnerRadiusStart = newStartParamValues[innerRadiusIndex];
                             double tempInnerRadiusEnd = newEndParamValues[innerRadiusIndex];

@@ -97,6 +97,12 @@ public static class FilterParameters
         }
     }
 
+    // Create setter to set the CurrentTextValue property of a parameter for the active filter
+    public static void SetTextParameterValue(int paramIndex, string newTextValue)
+    {
+        ActiveFilter.Parameters[paramIndex].Properties["CurrentTextValue"] = newTextValue;
+    }
+
     public static string GetParameterValuesAsString(string propertyName)
     {
         switch (propertyName)
@@ -423,6 +429,7 @@ public static class FilterParameters
                 {
                     // Assign to properties dictionary
                     parameterInfo.Properties.Add("DefaultTextValue", textString.ToString());
+                    parameterInfo.Properties.Add("CurrentTextValue", textString.ToString());
                 }
             }
 
