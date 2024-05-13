@@ -941,7 +941,7 @@ namespace DrosteEffectApp
                     // If it's text type parameter, set it to the text value
                     if (FilterParameters.GetParameterType(j).ToLower() == "text")
                     {
-                        tempArray[j] = FilterParameters.ActiveFilter.Parameters[j].Type;
+                        tempArray[j] = (string)FilterParameters.ActiveFilter.Parameters[j].Properties["CurrentTextValue"];
                     }
                     else
                     {
