@@ -1,4 +1,4 @@
-﻿using DrosteEffectApp;
+﻿using GmicFilterAnimatorApp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,20 +12,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace GmicDrosteAnimate
+namespace GmicAnimate
 {
     public partial class ParamNamesForm : Form
     {
-        //private static string[] paramNames = {
-        //    "Inner Radius", "Outer Radius", "Periodicity", "Strands", "Zoom",
-        //    "Rotate", "X-Shift", "Y-Shift", "Center X-Shift", "Center Y-Shift",
-        //    "Starting Level", "Number of Levels", "Level Frequency", "Show Both Poles",
-        //    "Pole Rotation", "Pole Long", "Pole Lat", "Tile Poles", "Hyper Droste",
-        //    "Fractal Points", "Auto-Set Periodicity", "No Transparency", "External Transparency",
-        //    "Mirror Effect", "Untwist", "No Flatten Transparency", "Show Grid",
-        //    "Show Frame", "Antialiasing", "Edge Behavior X", "Edge Behavior Y"
-        //};
-
         private MainForm mainForm;
         private double[] startParamValuesFromMainWindow;
         private double[] endParamValuesFromMainWindow;

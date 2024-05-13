@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace DrosteEffectApp
+namespace GmicFilterAnimatorApp
 {
     static class Program
     {

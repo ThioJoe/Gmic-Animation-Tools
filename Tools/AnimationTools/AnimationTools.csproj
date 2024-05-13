@@ -7,7 +7,7 @@
     <ProjectGuid>{A033F85E-1F35-4719-B6D1-6AB7449ABD45}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>AnimationTools</RootNamespace>
-    <AssemblyName>AnimationTools</AssemblyName>
+    <AssemblyName>GmicAnimatorGifTools</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

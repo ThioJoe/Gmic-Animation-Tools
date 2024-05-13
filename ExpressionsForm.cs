@@ -1,4 +1,4 @@
-﻿using DrosteEffectApp;
+﻿using GmicFilterAnimatorApp;
 using MathNet.Symbolics;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms.VisualStyles;
 
-namespace GmicDrosteAnimate
+namespace GmicAnimate
 {
     public partial class ExpressionsForm : Form
     {

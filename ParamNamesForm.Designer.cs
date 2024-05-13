@@ -1,4 +1,4 @@
-﻿namespace GmicDrosteAnimate
+﻿namespace GmicAnimate
 {
     partial class ParamNamesForm
     {
@@ -44,8 +44,8 @@
             this.btnSendParmsToMain = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.checkBoxRecommendedRules = new System.Windows.Forms.CheckBox();
-            this.toggleRandomEnd = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
-            this.toggleRandomStart = new GmicDrosteAnimate.ParamNamesForm.CustomToggleCheckBox();
+            this.toggleRandomEnd = new GmicAnimate.ParamNamesForm.CustomToggleCheckBox();
+            this.toggleRandomStart = new GmicAnimate.ParamNamesForm.CustomToggleCheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.paramNamesTooltip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();

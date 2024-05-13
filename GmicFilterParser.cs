@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Globalization;
 
-namespace GmicDrosteAnimate
+namespace GmicAnimate
 {
     public class Filter
     {

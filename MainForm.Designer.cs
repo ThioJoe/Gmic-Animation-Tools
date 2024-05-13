@@ -1,4 +1,4 @@
-﻿namespace DrosteEffectApp
+﻿namespace GmicFilterAnimatorApp
 {
     partial class MainForm
     {
@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.nudTotalFrames = new DrosteEffectApp.MainForm.InvisibleNumericUpDown();
-            this.nudMasterParamIncrement = new DrosteEffectApp.MainForm.InvisibleNumericUpDown();
+            this.nudTotalFrames = new GmicFilterAnimatorApp.MainForm.InvisibleNumericUpDown();
+            this.nudMasterParamIncrement = new GmicFilterAnimatorApp.MainForm.InvisibleNumericUpDown();
             this.lblInputFile = new System.Windows.Forms.Label();
             this.txtInputFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectInputFile = new System.Windows.Forms.Button();
@@ -800,7 +800,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Droste Effect App";
+            this.Text = "G'MIC Animator";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).EndInit();

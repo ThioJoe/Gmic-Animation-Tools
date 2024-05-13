@@ -99,7 +99,6 @@ public static class FilterParameters
     static FilterParameters()
     {
         LoadDefaultParameters(customBuiltInDrosteName);
-        //SetActiveFilter("Continuous Droste");
     }
 
     public static List<string> GetListOfLoadedFilterCommands()

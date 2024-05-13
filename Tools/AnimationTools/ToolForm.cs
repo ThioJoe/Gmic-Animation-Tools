@@ -672,7 +672,7 @@ namespace AnimationTools
             MessageBox.Show("Requirements:\n\n" +
                             "• ffmpeg.exe is needed to combine the images into an animated gif.\n\n" +
                             "Instructions:\n\n" +
-                            "1. Select a folder containing png frames outputted by the main droste effect app.\n" +
+                            "1. Select a folder containing png frames outputted by the G'mic Animator app.\n" +
                             "2. Any optional steps (see below).\n" +
                             "3. To create an animated Gif using the files in the folder, choose a desired frame rate and click \"Create GIF From Folder\".\n\n" +
                             "Optional: If you want to add the frames from another animation folder onto those in the currently selected folder, click \"Import Folder\"" +

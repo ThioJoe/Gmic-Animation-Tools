@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GmicDrosteAnimate.Properties
+namespace GmicAnimate.Properties
 {
 
 

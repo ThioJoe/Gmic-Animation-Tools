@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
-using GmicDrosteAnimate;
+using GmicAnimate;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Globalization;
 
@@ -21,16 +21,16 @@ using FParsec;
 using System.Drawing.Text;
 using MathNet.Numerics.Integration;
 
-namespace DrosteEffectApp
+namespace GmicFilterAnimatorApp
 {
     public partial class MainForm : Form
     {
         // Variables to hold the state of the application and user input.
         // inputFilePath stores the path to the image file selected by the user.
         private string inputFilePath;
-        // startParams stores the initial parameters for the Droste effect.
+        // startParams stores the initial parameters for the filter.
         private string startParams;
-        // endParams stores the final parameters for the Droste effect to create a transition effect.
+        // endParams stores the final parameters for the filter to create a transition effect.
         private string endParams;
         // masterParamIndex indicates the index of the parameter that drives the transformation.
         //private int masterParamIndex;
@@ -458,7 +458,7 @@ namespace DrosteEffectApp
                 string exponentArrayString = txtExponentArray.Text;
                 if (!string.IsNullOrEmpty(exponentArrayString))
                 {
-                    // Remove GMIC GUI Produced filter extra string 'souphead_droste10' from the start of the string if there
+                    // Remove GMIC GUI Produced filter extra string with filter name from the start of the string if there
                     string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;
                     exponentArrayString = exponentArrayString.Replace(stringToReplace, "").Replace(" ", "").Trim();
 
@@ -944,8 +944,8 @@ namespace DrosteEffectApp
                     {
                         tempArray[j] = (string)FilterParameters.ActiveFilter.Parameters[j].Properties["CurrentTextValue"];
                     }
-                    // If it's a parameter type that must be a whole number, round
-                    else if (parameterType == "step" || parameterType == "binary" || parameterType == "trinary" || parameterType == "choice")
+                    // If it's a parameter type that must be a whole number, round -- Might need to add 'step' to this?
+                    else if (parameterType == "binary" || parameterType == "trinary" || parameterType == "choice")
                     {
                         tempArray[j] = RoundStepValues(interpolatedValuesPerFrameArray[i, j].ToString(), j);
                     }
@@ -1204,7 +1204,7 @@ namespace DrosteEffectApp
                             // Execute gmic.exe to process frame
                             ProcessStartInfo startInfo = new ProcessStartInfo();
                             startInfo.FileName = "gmic.exe";
-                            startInfo.Arguments = $"{verbosity} -input \"{inputFilePath}\" -command \"Droste.gmic\" -{commandToRun} {parameters} -output \"{outputFile}\"";
+                            startInfo.Arguments = $"{verbosity} -input \"{inputFilePath}\" -command \"CustomFilterFile.gmic\" -{commandToRun} {parameters} -output \"{outputFile}\"";
                             startInfo.UseShellExecute = false;
                             startInfo.CreateNoWindow = true;
                             startInfo.RedirectStandardOutput = true;  // Redirect standard output
@@ -1764,7 +1764,7 @@ namespace DrosteEffectApp
             // Check if both parameter strings exist
             if (!string.IsNullOrEmpty(txtEndParams.Text) && !string.IsNullOrEmpty(txtStartParams.Text))
             {
-                // Remove souphead_droste10 and spaces from the strings
+                // Remove filter name from start of string if it's there
                 string rawsStartstring = txtStartParams.Text;
                 string rawEndString = txtEndParams.Text;
                 string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;
@@ -1818,7 +1818,7 @@ namespace DrosteEffectApp
             // Silently check if both parameter strings exist
             if (!string.IsNullOrEmpty(txtEndParams.Text) && !string.IsNullOrEmpty(txtStartParams.Text))
             {
-                // Remove souphead_droste10 and spaces from the strings
+                // Remove filter name from start of string if it's there
                 string rawsStartstring = txtStartParams.Text;
                 string rawEndString = txtEndParams.Text;
                 string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;

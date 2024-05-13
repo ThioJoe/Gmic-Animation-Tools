@@ -1,4 +1,4 @@
-﻿namespace GmicDrosteAnimate
+﻿namespace GmicAnimate
 {
     partial class ExpressionsForm
     {
@@ -394,7 +394,7 @@
             this.Controls.Add(this.dataGridViewExpressions);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ExpressionsForm";
-            this.Text = "Expression Parameters";
+            this.Text = "Mathematical Expressions For Parameters";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExpressions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCurve)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGraphConstantFrameCount)).EndInit();

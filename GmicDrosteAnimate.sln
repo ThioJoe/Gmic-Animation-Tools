@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GmicDrosteAnimate", "GmicDrosteAnimate.csproj", "{A8875082-BE82-4DF8-ADEA-D2A71803AB74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GmicAnimator", "GmicAnimator.csproj", "{A8875082-BE82-4DF8-ADEA-D2A71803AB74}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationTools", "Tools\AnimationTools\AnimationTools.csproj", "{A033F85E-1F35-4719-B6D1-6AB7449ABD45}"
 EndProject
