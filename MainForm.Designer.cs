@@ -257,7 +257,6 @@
             this.lblMasterParamIncrement.TabIndex = 9;
             this.lblMasterParamIncrement.Text = ".................Master Increment:";
             this.lblMasterParamIncrement.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.lblMasterParamIncrement.Click += new System.EventHandler(this.lblMasterParamIncrement_Click);
             // 
             // rbNoExponents
             // 
@@ -490,7 +489,6 @@
             this.labelTotalFrames.Size = new System.Drawing.Size(54, 13);
             this.labelTotalFrames.TabIndex = 29;
             this.labelTotalFrames.Text = "# Frames:";
-            this.labelTotalFrames.Click += new System.EventHandler(this.label1_Click);
             // 
             // TextLabelNearStartButton
             // 

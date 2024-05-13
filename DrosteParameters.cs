@@ -102,6 +102,16 @@ public static class FilterParameters
         //SetActiveFilter("Continuous Droste");
     }
 
+    public static List<string> GetListOfLoadedFilterCommands()
+    {
+        List<string> filterCommandsList = new List<string>();
+        foreach (var filter in Filters)
+        {
+           filterCommandsList.Add(filter.GmicCommand);
+        }
+        return filterCommandsList;
+    }
+
 
     public static void LoadDefaultParameters(string filterFriendlyName)
     {
@@ -545,7 +555,7 @@ public static class FilterParameters
         }
     }
 
-    // Method to set the active filter by name
+    // Method to set the active filter by name. Technically it can find bo th by friendly name and G'MIC command, but ideally the friendly name should be used
     public static void SetActiveFilter(string filterFriendlyName)
     {
         // Need to use friendly name in case user has multiple custom filters with the same G'MIC command

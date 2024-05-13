@@ -1754,16 +1754,6 @@ namespace DrosteEffectApp
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblMasterParamIncrement_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
 
@@ -1778,8 +1768,15 @@ namespace DrosteEffectApp
                 string rawsStartstring = txtStartParams.Text;
                 string rawEndString = txtEndParams.Text;
                 string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;
-                rawsStartstring = rawsStartstring.Replace(stringToReplace, "").Replace(" ", "").Trim();
-                rawEndString = rawEndString.Replace(stringToReplace, "").Replace(" ", "").Trim();
+                rawsStartstring = rawsStartstring.Replace(stringToReplace, "").Trim();
+                rawEndString = rawEndString.Replace(stringToReplace, "").Trim();
+
+                //if (ParseAndMatchFilterNameFromParameterString(inputString: rawsStartstring, activateIfFound: true))
+                //{
+                //    LoadActiveFilterParameters();
+                //    txtStartParams.Text = rawsStartstring;
+                //    return;
+                //}
 
                 // Disable textChanged update and replace the text with the cleaned up version
                 txtStartParams.TextChanged -= txtStartParams_TextChanged;
@@ -1811,15 +1808,9 @@ namespace DrosteEffectApp
                     }
                     RefreshGraph();
                 }
-                
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
-        }
-
-        private void ParseParameterStringToStringAndUpdateActiveFilter(string parameterString)
-        {
-            // Figure out which parameters are text from the active filter, check the
         }
 
         private void txtEndParams_TextChanged(object sender, EventArgs e)
@@ -1831,8 +1822,15 @@ namespace DrosteEffectApp
                 string rawsStartstring = txtStartParams.Text;
                 string rawEndString = txtEndParams.Text;
                 string stringToReplace = FilterParameters.ActiveFilter.GmicCommand;
-                rawsStartstring = rawsStartstring.Replace(stringToReplace, "").Replace(" ", "").Trim();
-                rawEndString = rawEndString.Replace(stringToReplace, "").Replace(" ", "").Trim();
+                rawsStartstring = rawsStartstring.Replace(stringToReplace, "").Trim();
+                rawEndString = rawEndString.Replace(stringToReplace, "").Trim();
+
+                //if (ParseAndMatchFilterNameFromParameterString(inputString: rawEndString, activateIfFound: true))
+                //{
+                //    LoadActiveFilterParameters();
+                //    txtEndParams.Text = rawEndString;
+                //    return;
+                //}
 
                 // Disable textChanged update and replace the text with the cleaned up version
                 txtEndParams.TextChanged -= txtStartParams_TextChanged;
@@ -1871,6 +1869,27 @@ namespace DrosteEffectApp
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
+        }
+
+        // Function to parse out a filter name from the string with parameters in case it's there
+        private string ParseAndMatchFilterNameFromParameterString(string inputString, bool activateIfFound)
+        {
+            string filterName;
+            string[] splitString = inputString.Split(' ');
+            if (splitString.Length > 0)
+            {
+                filterName = splitString[0].Trim();
+                // Check against all filter names to see if it's a valid filter name
+                if (FilterParameters.GetListOfLoadedFilterCommands().Contains(filterName))
+                {
+                    if (activateIfFound)
+                    {
+                        ActivateFilter(filterName);
+                    }
+                    return filterName;
+                }
+            }
+            return null;
         }
 
         public static class PlaceholderManager
@@ -2283,12 +2302,35 @@ namespace DrosteEffectApp
         private void txtSearchBoxMain_TextChanged(object sender, EventArgs e)
         {
             string searchText = txtSearchBoxMain.Text.ToLower();
+            string foundFilterName = null;
+
+            // If there are commas in the search box, split them and search the first part
+            if (searchText.Contains(","))
+            {
+                string[] splitText = searchText.Split(',');
+                if (splitText.Length > 0)
+                {
+                    
+                    foundFilterName = ParseAndMatchFilterNameFromParameterString(inputString: splitText[0], activateIfFound: false);
+                    // Remove anything after the filter name
+                    if (foundFilterName != null)
+                    {
+                        //Disable the TextChanged event of txtSearchBoxMain so it doesn't create circular calls
+                        txtSearchBoxMain.TextChanged -= txtSearchBoxMain_TextChanged;
+                        txtSearchBoxMain.Text = foundFilterName;
+                        txtSearchBoxMain.TextChanged += txtSearchBoxMain_TextChanged;
+                        searchText = foundFilterName;
+                    }
+                }
+            }
+
             var filteredItems = FilterParameters.Filters
                 .Where(f => f.FriendlyName.ToLower().Contains(searchText) || f.GmicCommand.ToLower().Contains(searchText))
                 .Select(f => $"{f.FriendlyName} -- ({f.GmicCommand})");
 
             listBoxFiltersMain.Items.Clear();
             listBoxFiltersMain.Items.AddRange(filteredItems.ToArray());
+
         }
 
         private void ListBoxFiltersMain_DrawItem(object sender, DrawItemEventArgs e)
