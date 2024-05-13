@@ -317,7 +317,7 @@ public static class FilterParameters
 
             // Special handling of default value because it might be a hex string for colors, need to convert to decimal
             string defaultValueString = param["DefaultValue"]?.Value<string>();
-            double defaultValue = 0;
+            double defaultValue;
             if (defaultValueString != null && defaultValueString.StartsWith("#"))
             {
                 defaultValue = Convert.ToInt32(defaultValueString.Substring(1), 16);
@@ -327,7 +327,7 @@ public static class FilterParameters
                 // Try to parse to double
                 double.TryParse(defaultValueString, out defaultValue);
             }
-            // Otherwise set to 0
+            // Otherwise set to 0 if can't be parsed
             else
             {
                 defaultValue = 0;
@@ -341,6 +341,12 @@ public static class FilterParameters
                 choices = choicesNode.Values<string>().ToList();
             }
 
+            // Set defaults, will override with more specifics next
+            double tempDefaultEnd = maxValue ?? defaultValue;
+            double tempExtendedMin = (minValue * 2) ?? 0;
+            double tempExtendedMax = maxValue ?? defaultValue;
+            double tempMin = minValue ?? 0;
+            double tempMax = minValue ?? defaultValue;
             string tempType = (string)param["Type"];
 
             tempType = CleanType(tempType); // Removes any prefixes like ~ or _
@@ -366,19 +372,9 @@ public static class FilterParameters
                 tempType = "Text";
             }
 
-            double? tempExtendedMin = null;
-            double? tempExtendedMax = null;
-            double? tempMin = null;
-            double? tempMax = null;
-            // Get extended ranges by doubling original. Also convert regular min max to doubles
-            if (minValue.HasValue && maxValue.HasValue)
-            {
-                // This also means if the minimum is negative, the extended minimum will be negative as well
-                tempExtendedMin = minValue * 2;
-                tempExtendedMax = maxValue * 2;
-                tempMin = minValue;
-                tempMax = maxValue;
-            }
+            JObject properties = (JObject)param["Properties"];
+
+            
             // Depending on type, assign other default values if not assigned already via existing defaults
             if (tempType.ToLower() == "binary")
             {
@@ -386,6 +382,7 @@ public static class FilterParameters
                 tempMax = 1;
                 tempExtendedMin = 0;
                 tempExtendedMax = 1;
+                tempDefaultEnd = defaultValue;
             }
             else if (tempType.ToLower() == "step")
             {
@@ -393,6 +390,7 @@ public static class FilterParameters
                 tempMax = 100;
                 tempExtendedMin = 0;
                 tempExtendedMax = 200;
+                tempDefaultEnd = defaultValue;
             }
             else if (tempType.ToLower() == "choice")
             {
@@ -402,23 +400,15 @@ public static class FilterParameters
                 tempMax = choiceCount;
                 tempExtendedMin = 0;
                 tempExtendedMax = choiceCount;
+                tempDefaultEnd = defaultValue;
             }
             else if (tempType.ToLower() == "color")
             {
                 tempType = "Step";
                 tempExtendedMin = 0;
                 tempExtendedMax = 255;
+                tempDefaultEnd = defaultValue;
             }
-            else
-            {
-                tempMin = 0;
-                tempMax = 1;
-                tempExtendedMin = 0;
-                tempExtendedMax = 1;
-            }
-
-            //Check for TypeDetails or other extra info in Properties
-            JObject properties = (JObject)param["Properties"];
 
             // Safe access to 'IsPercentage' property
             if (properties.TryGetValue("IsPercentage", out JToken isPercentageToken))
@@ -431,6 +421,7 @@ public static class FilterParameters
                     tempMax = 100;
                     tempExtendedMin = 0;
                     tempExtendedMax = 100;
+                    tempDefaultEnd = defaultValue;
                 }
             }
 
@@ -443,25 +434,29 @@ public static class FilterParameters
                 // Check if the value indicates 'Trinary'
                 if (typeDetailValue == "Trinary")
                 {
+                    tempType = "Trinary";
                     tempMin = -1;
                     tempMax = 1;
                     tempExtendedMin = -1;
                     tempExtendedMax = 1;
+                    tempDefaultEnd = defaultValue;
                 }
             }
-                // Currently possible types: "Binary", "Trinary", "Step", "Continuous", "Choice", "Text"
-                var parameterInfo = new SingleParameterInfo(
-                paramIndex: GetActiveFilterParameters().Count,  // Index is dynamically set based on count. As each gets added the count and therefore the index increases
-                name: name,
-                defaultStart: defaultValue,  // Using null-coalescing operator if DefaultValue is nullable
-                defaultEnd: maxValue ?? 0,    // You might want to adjust this as per your logic
-                min: tempMin ?? 0,               // Assume defaults if null
-                max: tempMax ?? 100,             // Assume defaults if null
-                extendedMin: tempExtendedMin ?? 0,       // Same as min for extendedMin
-                extendedMax: tempExtendedMax ?? 100,    // Same as max for extendedMax
-                type: tempType,
-                decimals: DetermineDecimalsFromType((string)param["Type"]),  // A method to determine decimals
-                defaultExponent: 1.0                   // Default exponent
+
+
+            // Currently possible types: "Binary", "Trinary", "Step", "Continuous", "Choice", "Text"
+            var parameterInfo = new SingleParameterInfo(
+            paramIndex: GetActiveFilterParameters().Count,  // Index is dynamically set based on count. As each gets added the count and therefore the index increases
+            name: name,
+            defaultStart: defaultValue,  // Using null-coalescing operator if DefaultValue is nullable
+            defaultEnd: tempDefaultEnd,    // You might want to adjust this as per your logic
+            min: tempMin,               // Assume defaults if null
+            max: tempMax,             // Assume defaults if null
+            extendedMin: tempExtendedMin,       // Same as min for extendedMin
+            extendedMax: tempExtendedMax,    // Same as max for extendedMax
+            type: tempType,
+            decimals: DetermineDecimalsFromType((string)param["Type"]),  // A method to determine decimals
+            defaultExponent: 1.0                   // Default exponent
             );
             // If it's text get the string
             if (tempType.ToLower() == "text")
