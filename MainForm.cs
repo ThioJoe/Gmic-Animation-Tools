@@ -20,6 +20,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using FParsec;
 using System.Drawing.Text;
 using MathNet.Numerics.Integration;
+using System.Runtime.InteropServices;
 
 namespace GmicFilterAnimatorApp
 {
@@ -1189,6 +1190,8 @@ namespace GmicFilterAnimatorApp
             {
                 await Task.Run(() =>
                 {
+                    int processorCount = Environment.ProcessorCount; // Get the number of logical processors
+
                     Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = parallelJobs }, i =>
                     {
                         if (cancellationRequested)
@@ -1198,40 +1201,17 @@ namespace GmicFilterAnimatorApp
 
                         string outputFile = expectedFiles[i];
                         string parameters = interpolatedParams[i];
-                        
+
                         if (!File.Exists(outputFile))
                         {
-                            // Execute gmic.exe to process frame
-                            ProcessStartInfo startInfo = new ProcessStartInfo();
-                            startInfo.FileName = "gmic.exe";
-                            startInfo.Arguments = $"{verbosity} -input \"{inputFilePath}\" -command \"CustomFilterFile.gmic\" -{commandToRun} {parameters} -output \"{outputFile}\"";
-                            startInfo.UseShellExecute = false;
-                            startInfo.CreateNoWindow = true;
-                            startInfo.RedirectStandardOutput = true;  // Redirect standard output
-                            startInfo.RedirectStandardError = true;   // Redirect standard error
+                            // Prepare the arguments for gmic.exe
+                            string arguments = $"{verbosity} -input \"{inputFilePath}\" -command \"CustomFilterFile.gmic\" -{commandToRun} {parameters} -output \"{outputFile}\"";
 
-                            using (Process process = new Process())
-                            {
-                                process.StartInfo = startInfo;
-                                process.Start();
+                            // Calculate the affinity mask based on the current loop index
+                            IntPtr affinityMask = new IntPtr(1 << (i % processorCount)); // This rotates through available CPUs
 
-                                // Read the output - these are synchronous calls, consider async alternatives for UI applications
-                                string output = process.StandardOutput.ReadToEnd();
-                                string errors = process.StandardError.ReadToEnd();
-
-                                Console.WriteLine("Output:");
-                                Console.WriteLine(output);
-                                Console.WriteLine("Errors:");
-                                Console.WriteLine(errors);
-
-                                if (logFileName != null)
-                                {
-                                    // Write output to string to write to log file
-                                    logContents += $"Frame {i + 1}:\nArguments: {startInfo.Arguments}\n{output}\n{errors}\n\n";
-                                }
-
-                                process.WaitForExit();
-                            }
+                            // Call the method to start the process with specific CPU affinity
+                            StartProcessWithAffinity("gmic.exe", arguments, affinityMask, outputFile);
                         }
                     });
                 });
@@ -1280,6 +1260,119 @@ namespace GmicFilterAnimatorApp
                 btnCancel.Visible = false;
             }));
         }
+
+        public static class NativeMethods
+        {
+            [DllImport("kernel32.dll", SetLastError = true)]
+            public static extern bool SetProcessAffinityMask(IntPtr hProcess, IntPtr dwProcessAffinityMask);
+
+            [DllImport("kernel32.dll", SetLastError = true)]
+            public static extern bool ResumeThread(IntPtr hThread);
+
+            [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+            public static extern bool CreateProcess(
+                string lpApplicationName,
+                string lpCommandLine,
+                IntPtr lpProcessAttributes,
+                IntPtr lpThreadAttributes,
+                bool bInheritHandles,
+                uint dwCreationFlags,
+                IntPtr lpEnvironment,
+                string lpCurrentDirectory,
+                [In] ref STARTUPINFO lpStartupInfo,
+                out PROCESS_INFORMATION lpProcessInformation);
+
+            public struct STARTUPINFO
+            {
+                public int cb;
+                public string lpReserved;
+                public string lpDesktop;
+                public string lpTitle;
+                public int dwX;
+                public int dwY;
+                public int dwXSize;
+                public int dwYSize;
+                public int dwXCountChars;
+                public int dwYCountChars;
+                public int dwFillAttribute;
+                public int dwFlags;
+                public short wShowWindow;
+                public short cbReserved2;
+                public IntPtr lpReserved2;
+                public IntPtr hStdInput;
+                public IntPtr hStdOutput;
+                public IntPtr hStdError;
+            }
+
+            public struct PROCESS_INFORMATION
+            {
+                public IntPtr hProcess;
+                public IntPtr hThread;
+                public uint dwProcessId;
+                public uint dwThreadId;
+            }
+
+            [DllImport("kernel32.dll", SetLastError = true)]
+            public static extern bool CloseHandle(IntPtr hObject);
+
+            public const uint CREATE_SUSPENDED = 0x00000004;
+            public const int STARTF_USESHOWWINDOW = 0x00000001;  // Added constant for STARTF_USESHOWWINDOW
+            public const int SW_HIDE = 0;                        // Added constant for SW_HIDE
+        }
+
+        // Define a modified StartProcessWithAffinity to include process output handling
+        private void StartProcessWithAffinity(string exePath, string arguments, IntPtr affinityMask, string outputFile)
+        {
+            NativeMethods.STARTUPINFO si = new NativeMethods.STARTUPINFO();
+            NativeMethods.PROCESS_INFORMATION pi = new NativeMethods.PROCESS_INFORMATION();
+
+            si.cb = Marshal.SizeOf(si);
+            si.dwFlags = NativeMethods.STARTF_USESHOWWINDOW; // Use the constant from NativeMethods
+            si.wShowWindow = NativeMethods.SW_HIDE; // Use the constant from NativeMethods
+
+
+
+            bool result = NativeMethods.CreateProcess(
+                exePath,
+                arguments,
+                IntPtr.Zero,
+                IntPtr.Zero,
+                false,
+                NativeMethods.CREATE_SUSPENDED,
+                IntPtr.Zero,
+                null,
+                ref si,
+                out pi);
+
+            if (!result)
+                throw new System.ComponentModel.Win32Exception();
+
+            NativeMethods.SetProcessAffinityMask(pi.hProcess, affinityMask);
+            NativeMethods.ResumeThread(pi.hThread);
+
+            using (Process process = Process.GetProcessById((int)pi.dwProcessId))
+            {
+                process.WaitForExit();
+
+                //string output = process.StandardOutput.ReadToEnd();
+                //string errors = process.StandardError.ReadToEnd();
+
+                //Console.WriteLine("Output:");
+                //Console.WriteLine(output);
+                //Console.WriteLine("Errors:");
+                //Console.WriteLine(errors);
+
+                //if (logFileName != null)
+                //{
+                //    logContents += $"Frame {i + 1}:\nArguments: {arguments}\n{output}\n{errors}\n\n";
+                //}
+            }
+
+            NativeMethods.CloseHandle(pi.hProcess);
+            NativeMethods.CloseHandle(pi.hThread);
+        }
+
+        
 
         private void CreateGif(string outputDir)
         {
