@@ -62,6 +62,7 @@
             this.InfoIconCreateGif = new System.Windows.Forms.PictureBox();
             this.infoIconUseSameDirectory = new System.Windows.Forms.PictureBox();
             this.checkBoxAbsoluteModeMain = new System.Windows.Forms.CheckBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnShowParamNames = new System.Windows.Forms.Button();
             this.labelTotalFrames = new System.Windows.Forms.Label();
             this.TextLabelNearStartButton = new System.Windows.Forms.Label();
@@ -86,7 +87,8 @@
             this.labelCurrentlyLoadedFilter = new System.Windows.Forms.Label();
             this.dropdownDebugLog = new System.Windows.Forms.ComboBox();
             this.labelDebugLog = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.checkBoxSingleThreadMode = new System.Windows.Forms.CheckBox();
+            this.infoIconSingleThread = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIndex)).BeginInit();
@@ -98,8 +100,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoIconUseSameDirectory)).BeginInit();
-            this.groupBoxNormalizeRadios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBoxNormalizeRadios.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.infoIconSingleThread)).BeginInit();
             this.SuspendLayout();
             // 
             // nudTotalFrames
@@ -469,6 +472,17 @@
             this.checkBoxAbsoluteModeMain.UseVisualStyleBackColor = true;
             this.checkBoxAbsoluteModeMain.CheckedChanged += new System.EventHandler(this.checkBoxAbsoluteModeMain_CheckedChanged);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(188, 395);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 54;
+            this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
+            // 
             // btnShowParamNames
             // 
             this.btnShowParamNames.BackColor = System.Drawing.Color.SkyBlue;
@@ -730,22 +744,34 @@
             this.labelDebugLog.TabIndex = 53;
             this.labelDebugLog.Text = "Debug Log:";
             // 
-            // pictureBox1
+            // checkBoxSingleThreadMode
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(188, 395);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 54;
-            this.pictureBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
+            this.checkBoxSingleThreadMode.AutoSize = true;
+            this.checkBoxSingleThreadMode.Location = new System.Drawing.Point(260, 398);
+            this.checkBoxSingleThreadMode.Name = "checkBoxSingleThreadMode";
+            this.checkBoxSingleThreadMode.Size = new System.Drawing.Size(122, 17);
+            this.checkBoxSingleThreadMode.TabIndex = 55;
+            this.checkBoxSingleThreadMode.Text = "Single Thread Mode";
+            this.checkBoxSingleThreadMode.UseVisualStyleBackColor = true;
+            // 
+            // infoIconSingleThread
+            // 
+            this.infoIconSingleThread.Image = ((System.Drawing.Image)(resources.GetObject("infoIconSingleThread.Image")));
+            this.infoIconSingleThread.Location = new System.Drawing.Point(380, 398);
+            this.infoIconSingleThread.Name = "infoIconSingleThread";
+            this.infoIconSingleThread.Size = new System.Drawing.Size(16, 16);
+            this.infoIconSingleThread.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.infoIconSingleThread.TabIndex = 56;
+            this.infoIconSingleThread.TabStop = false;
+            this.toolTip1.SetToolTip(this.infoIconSingleThread, resources.GetString("infoIconSingleThread.ToolTip"));
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 653);
+            this.Controls.Add(this.infoIconSingleThread);
+            this.Controls.Add(this.checkBoxSingleThreadMode);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labelDebugLog);
             this.Controls.Add(this.dropdownDebugLog);
@@ -800,7 +826,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "G'MIC Animator";
+            this.Text = "G\'MIC Animator";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalFrames)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMasterParamIncrement)).EndInit();
@@ -813,9 +839,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconLinearInterpolation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InfoIconCreateGif)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoIconUseSameDirectory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBoxNormalizeRadios.ResumeLayout(false);
             this.groupBoxNormalizeRadios.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.infoIconSingleThread)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -882,5 +909,7 @@
         private System.Windows.Forms.ComboBox dropdownDebugLog;
         private System.Windows.Forms.Label labelDebugLog;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox checkBoxSingleThreadMode;
+        private System.Windows.Forms.PictureBox infoIconSingleThread;
     }
 }

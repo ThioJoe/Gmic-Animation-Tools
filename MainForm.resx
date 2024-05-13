@@ -368,4 +368,25 @@ Verbose 1 is the least detailed, and Debug is the most.
 
 </value>
   </data>
+  <data name="infoIconSingleThread.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="infoIconSingleThread.ToolTip" xml:space="preserve">
+    <value>If checked, each individual instance of gmic.exe will run single-threaded.
+
+Multiple frames will still be generated in parallel, but only the process
+generating each frame at any given time will only run on one core.
+
+This can be helpful if you have issues with frames not being generated.
+
+It might make generation time slower, but it could improve time in some
+situations because missed frames won't need to be re-attempted.</value>
+  </data>
 </root>

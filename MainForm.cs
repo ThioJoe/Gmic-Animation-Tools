@@ -1165,6 +1165,7 @@ namespace GmicFilterAnimatorApp
             string logFileName = "log.txt";
             StringBuilder logContents = new StringBuilder();  // Create a StringBuilder to accumulate log data
             string verbosity = ""; // Set it to the verbose setting for Gmic, such as '-verbose 3', '-debug' etc
+            bool useSingleThreadPerProcess = checkBoxSingleThreadMode.Checked;
 
             // Set verbosity based on dropdown combobox index, which is passed in via debugSetting because it can't be called from another thread
             if (debugSetting == 0)
@@ -1207,7 +1208,19 @@ namespace GmicFilterAnimatorApp
                         if (!File.Exists(outputFile))
                         {
                             string arguments = $"{verbosity} -input \"{inputFilePath}\" -command \"CustomFilterFile.gmic\" -{commandToRun} {parameters} -output \"{outputFile}\"";
-                            IntPtr affinityMask = new IntPtr(1 << (i % processorCount));
+
+                            // Determines whether to use single thread mode, and how many threads to use per process
+                            IntPtr affinityMask; // Declare the affinity mask variable
+                            if (useSingleThreadPerProcess)
+                            {
+                                // If single-threaded per process is enabled, restrict each process to a specific core
+                                affinityMask = new IntPtr(1 << (i % processorCount));
+                            }
+                            else
+                            {
+                                // If not, do not restrict the process (allow it to run on any core)
+                                affinityMask = new IntPtr(-1); // -1 for no affinity restriction
+                            }
 
                             var (output, errors) = StartProcessWithAffinity("gmic.exe", arguments, affinityMask, outputFile);
 
@@ -1221,6 +1234,7 @@ namespace GmicFilterAnimatorApp
                                 // Append to log contents
                                 logContents.AppendLine($"Frame {i + 1}:" +
                                     $"\nArguments: {arguments}" +
+                                    $"\nSingle Thread Mode: {useSingleThreadPerProcess}" +
                                     $"\n\nOutput:\n{errors}" +
                                     $"\n"); // GMIC only outputs as stderror, so using 'errors' as the regular output
                             }
