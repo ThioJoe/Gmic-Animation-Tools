@@ -29,7 +29,7 @@ namespace GmicDrosteAnimate
 
     internal class GmicFilterParser
     {
-        int currentLineNum = 0;
+        //int currentLineNum = 0; // Used in debugging
         private static readonly HashSet<string> ExcludedFilters = new HashSet<string>
         {
             "_none_", // For non-functional "filters"

@@ -508,16 +508,6 @@ public static class FilterParameters
         {
             return (Filters.Count, "");
         }
-
-        //foreach (var filter in Filters)
-        //{
-        //    Console.WriteLine($"Filter: {filter.FriendlyName}");
-        //    foreach (var param in filter.Parameters)
-        //    {
-        //        Console.WriteLine($"  Param: {param.Name}");
-        //    }
-        //}
-
     }
 
     private static int DetermineDecimalsFromType(string type)

@@ -987,8 +987,6 @@ namespace DrosteEffectApp
 
         public double[] NormalizeAndScaleValues(double[] values, double trueOriginalStartValue, double trueOriginalEndValue, int paramIndex)
         {
-            double scale = 1;
-
             double[] originalValues = values;
             double lowestValue;
             double highestValue;
@@ -1065,7 +1063,6 @@ namespace DrosteEffectApp
                     double normalized = (value - lowestValue) / range;
 
                     // Directly scale and map to the target range
-                    //normalizedValues[i] = startValue + normalized * (endValue - startValue);
                     normalizedValues[i] = midPoint + (normalized - 0.5) * 2 * halfTargetRange;
                 }
             }
@@ -2381,16 +2378,6 @@ namespace DrosteEffectApp
                 ExpressionsForm expressionForm = (ExpressionsForm)Application.OpenForms["ExpressionsForm"];
                 expressionForm.UpdateEntireWindowWithNewFilter();
             }
-
-            //if (listBoxFiltersMain.SelectedItem != null)
-            //{
-            //    var currentFilter = FilterParameters.GetActiveFilter();
-            //    if (currentFilter != null)
-            //    {
-            //        // Load all the parameters
-
-            //    }
-            //}
         }
 
 
