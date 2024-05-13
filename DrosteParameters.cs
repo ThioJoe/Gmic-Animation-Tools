@@ -64,6 +64,26 @@ public static class FilterParameters
         return ActiveFilter.Parameters;
     }
 
+    public static string ConvertParametersToString()
+    {
+        // Use List<string> to handle dynamic data size
+        List<string> tempList = new List<string>();
+
+        for (int i = 0; i < ActiveFilter.Parameters.Count; i++)
+        {
+            // If variable is text type, get the text value
+            if (ActiveFilter.Parameters[i].Type.ToLower() == "text")
+            {
+                tempList.Add(ActiveFilter.Parameters[i].Properties["CurrentTextValue"].ToString());
+            }
+            else
+            {
+                tempList.Add(ActiveFilter.Parameters[i].ToString());
+            }
+        }
+        return string.Join(",", tempList);
+    }
+
     public static string[] filtersToNotLoadFromFile = new string[] {
         // Put any names of filters here that should not be loaded from file
     };
@@ -108,27 +128,48 @@ public static class FilterParameters
         switch (propertyName)
         {
             case "DefaultStart":
-                return string.Join(",", GetActiveFilterParameters().Select(p => p.DefaultStart));
+                // Retrieve the list, perform necessary manipulation, and then convert to string
+                var startList = GetActiveFilterParameters().Select(p => p.DefaultStart.ToString()).ToList();
+                UpdateListForTextType(startList);
+                return string.Join(",", startList);
+
             case "DefaultEnd":
-                return string.Join(",", GetActiveFilterParameters().Select(p => p.DefaultEnd));
+                // Retrieve the list, perform necessary manipulation, and then convert to string
+                var endList = GetActiveFilterParameters().Select(p => p.DefaultEnd.ToString()).ToList();
+                UpdateListForTextType(endList);
+                return string.Join(",", endList);
+
             case "Min":
-                return string.Join(",", GetActiveFilterParameters().Select(p => p.Min));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.Min.ToString()));
             case "Max":
-                return string.Join(",", GetActiveFilterParameters().Select(p => p.Max));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.Max.ToString()));
             case "ExtendedMin":
-                return string.Join(",", GetActiveFilterParameters().Select(p => p.ExtendedMin));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.ExtendedMin.ToString()));
             case "ExtendedMax":
-                return string.Join(",", GetActiveFilterParameters().Select(p => p.ExtendedMax));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.ExtendedMax.ToString()));
             case "Type":
                 return string.Join(",", GetActiveFilterParameters().Select(p => p.Type));
             case "Decimals":
-                return string.Join(",", GetActiveFilterParameters().Select(p => p.Decimals));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.Decimals.ToString()));
             case "DefaultExponent":
-                return string.Join(",", GetActiveFilterParameters().Select(p => p.DefaultExponent));
+                return string.Join(",", GetActiveFilterParameters().Select(p => p.DefaultExponent.ToString()));
             default:
                 throw new ArgumentException("Property name not recognized", nameof(propertyName));
         }
+        // Local function to update list based on type
+        void UpdateListForTextType(List<string> list)
+        {
+            var parameters = GetActiveFilterParameters();  // Get the parameters once to avoid multiple calls
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (parameters[i].Type == "Text")
+                {
+                    list[i] = parameters[i].Properties["CurrentTextValue"].ToString();
+                }
+            }
+        }
     }
+
 
     // Put default values for each parameter into an array of doubels
     public static double[] GetParameterValuesAsList(string propertyName)
@@ -161,7 +202,7 @@ public static class FilterParameters
 
     public static string GetParameterType(int index)
     {
-        return GetActiveFilterParameters()[index].Type;
+        return ActiveFilter.Parameters[index].Type;
     }
 
     public static List<int> GetNonExponentableParamIndexes()

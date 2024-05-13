@@ -137,7 +137,9 @@ namespace GmicDrosteAnimate
                     // If it's text type, don't calculate difference
                     if (FilterParameters.GetActiveFilterParameters()[e.RowIndex].Type.ToLower() == "text")
                     {
+                        dataGridView1.CellValueChanged -= dataGridView1_CellValueChanged;
                         dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = "";
+                        dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
                     }
                     else
                     {
@@ -149,11 +151,16 @@ namespace GmicDrosteAnimate
                         // If the difference is a whole number, display without decimals
                         if (difference % 1 == 0)
                         {
+                            // Disable cell value change check
+                            dataGridView1.CellValueChanged -= dataGridView1_CellValueChanged;
                             dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = difference.ToString("F0");
+                            dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
                         }
                         else
                         {
+                            dataGridView1.CellValueChanged -= dataGridView1_CellValueChanged;
                             dataGridView1.Rows[e.RowIndex].Cells["Difference"].Value = difference.ToString("F2");
+                            dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
                         }
                     }
                     // Update the parameter strings in the text boxes
@@ -172,21 +179,30 @@ namespace GmicDrosteAnimate
             {
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
+                    string currentCellStartString = dataGridView1.Rows[i].Cells["Start"].Value.ToString();
+                    string currentCellEndString = dataGridView1.Rows[i].Cells["End"].Value.ToString();
+
                     // If it's text
                     if (FilterParameters.GetActiveFilterParameters()[i].Type.ToLower() == "text")
                     {
+                        // Update the active filter parameters with the text value
+                        FilterParameters.SetTextParameterValue(i, currentCellStartString);
                         startParamValues[i] = 0;
                         endParamValues[i] = 0;
                     }
-                    else if (dataGridView1.Rows[i].Cells["Start"].Value != null)
+                    else
                     {
-                        startParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["Start"].Value);
-                    }
+                        if (dataGridView1.Rows[i].Cells["Start"].Value != null)
+                        {
+                            startParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["Start"].Value);
+                        }
 
-                    else if (dataGridView1.Rows[i].Cells["End"].Value != null)
-                    {
-                        endParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["End"].Value);
+                        if (dataGridView1.Rows[i].Cells["End"].Value != null)
+                        {
+                            endParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["End"].Value);
+                        }
                     }
+                    
                 }
             }
             // Set the text boxes to the new comma-separated strings of the start and end parameters

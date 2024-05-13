@@ -60,9 +60,6 @@ namespace DrosteEffectApp
         private string defaultStartParams = FilterParameters.GetParameterValuesAsString("DefaultStart");
         private string defaultEndParams = FilterParameters.GetParameterValuesAsString("DefaultEnd");
 
-        // Parameter Count
-        private int filterParameterCount;
-
         //private decimal previousMasterIncrementNUDValue = 0;
 
         public MainForm()
@@ -116,9 +113,6 @@ namespace DrosteEffectApp
             masterExponent = 0;
             exponentArrayString = string.Empty;
             createGif = false;
-
-            // Parameter Count
-            filterParameterCount = FilterParameters.GetParameterCount();
 
             // Start with totalframes box and master increment box read only
             nudTotalFrames.Enabled = false;
@@ -468,11 +462,11 @@ namespace DrosteEffectApp
                     exponentArrayString = exponentArrayString.Replace(stringToReplace, "").Replace(" ", "").Trim();
 
                     exponents = exponentArrayString.Split(',');
-                    if (exponents.Length == filterParameterCount)
+                    if (exponents.Length == FilterParameters.GetParameterCount())
                     {
                         List<List<string>> invalidValues = new List<List<string>>();
                         // Check that all values are either valid numbers or valid math expressions. If not, alert the user to the position of the invalid value and the value itself.
-                        for (int i = 0; i < filterParameterCount; i++)
+                        for (int i = 0; i < FilterParameters.GetParameterCount(); i++)
                         {
                             // Track invalid values and alert user at end of all of them, if any
                             // Test expression with sample values 
@@ -498,7 +492,7 @@ namespace DrosteEffectApp
                     }
                     else
                     {
-                        MessageBox.Show($"Exponent array must contain {filterParameterCount} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Exponent array must contain {FilterParameters.GetParameterCount()} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -587,35 +581,53 @@ namespace DrosteEffectApp
             string[] paramsArray = paramsString.Split(',');
 
             // Ensure the parameter array has exactly 31 elements.
-            if (paramsArray.Length != filterParameterCount)
+            if (paramsArray.Length != FilterParameters.GetParameterCount())
             {
                 if (!silent)
                 {
-                    MessageBox.Show($"Parameter array must contain {filterParameterCount} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Parameter array must contain {FilterParameters.GetParameterCount()} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return null;
             }
 
             // Convert the parameter strings to double values and store them in an array.
-            double[] paramValuesArray = new double[filterParameterCount];
+            double[] paramValuesArray = new double[FilterParameters.GetParameterCount()];
 
-            for (int i = 0; i < filterParameterCount; i++)
+            for (int i = 0; i < FilterParameters.GetParameterCount(); i++)
             {
-                if (!double.TryParse(paramsArray[i], out paramValuesArray[i]))
+                // If not text type parameter
+                if (FilterParameters.GetParameterType(i).ToLower() != "text")
                 {
-                    if (!silent)
+                    // Check if the parameter value is a valid number, if not, alert the user and return null.
+                    if (!double.TryParse(paramsArray[i], out paramValuesArray[i]))
                     {
-                        MessageBox.Show("Invalid parameter value at position " + (i + 1) + ". Please enter valid numbers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        if (!silent)
+                        {
+                            MessageBox.Show("Invalid parameter value at position " + (i + 1) + ". Please enter valid numbers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        return null;
                     }
-                    return null;
                 }
                 // Check if the parameter variable index is of text type, if so set it to zero while stored internally
                 else if (FilterParameters.GetParameterType(i).ToLower() == "text")
                 {
+                    // Check if paramsArray value is 0, if so get the text parameter value from the active filter's default value
+                    if (paramsArray[i] == "0")
+                    {
+                        
+                    }
+                    else
+                    {
+
+                    }
+                    // Set the text parameter in active filter
+                    FilterParameters.SetTextParameterValue(i, paramsArray[i]);
                     paramValuesArray[i] = 0;
-                    //FilterParameters.SetTextParameterValue(i, paramsArray[i]);
                 }
             }
+
+            // Update the active filter with the parameter string. Doesn't matter if it's start or end because it shouldn't change
+            //ParseParameterStringToStringAndUpdateActiveFilter(parameterString: paramsString);
 
             // Return the array of parameter values.
             return paramValuesArray;
@@ -709,7 +721,7 @@ namespace DrosteEffectApp
             if (startValues == null || endValues == null)
             {
                 // Only go to one less than the filter because add the last one separately
-                for (int i = 0; i < (filterParameterCount-1); i++)
+                for (int i = 0; i < (FilterParameters.GetParameterCount()-1); i++)
                 {
                     startParams += "1,";
                     endParams += "100,";
@@ -748,16 +760,16 @@ namespace DrosteEffectApp
             // List to store all interpolated values for each frame.
             //List<string> interpolatedValuesPerFrameStrings = new List<string>();
             // List of 31 arrays of doubles to hold the interpolated values for each parameter.
-            double[,] interpolatedValuesPerFrameArray = new double[totalFrames, filterParameterCount];
+            double[,] interpolatedValuesPerFrameArray = new double[totalFrames, FilterParameters.GetParameterCount()];
 
             // Loop through each frame to calculate parameter values.
             for (int frame = 0; frame < totalFrames; frame++)
             {
                 // Array to hold the current set of interpolated parameters.
-                double[] currentValues = new double[filterParameterCount];
+                double[] currentValues = new double[FilterParameters.GetParameterCount()];
 
                 // Loop through each parameter to interpolate its value.
-                for (int i = 0; i < filterParameterCount; i++)
+                for (int i = 0; i < FilterParameters.GetParameterCount(); i++)
                 {
                     if (masterParamOnly && i != masterIndex)
                     {
@@ -873,9 +885,9 @@ namespace DrosteEffectApp
             // If an exponent mode is being used, normalize and scale the interpolated values for each frame.
             if ((exponentMode == "custom-array" || exponentMode == "custom-master") && !absoluteMode)
             {
-                double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, filterParameterCount];
+                double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, FilterParameters.GetParameterCount()];
                 // Normalize and scale the interpolated values for each frame.
-                for (int i = 0; i < filterParameterCount; i++)
+                for (int i = 0; i < FilterParameters.GetParameterCount(); i++)
                 {
                     // Skip if only master parameter is being interpolated and this is not the master parameter
                     if (masterParamOnly && i != masterIndex)
@@ -906,7 +918,7 @@ namespace DrosteEffectApp
                 for (int frame = 0; frame < totalFrames; frame++)
                 {
                     //double[] tempArray = new double[31];
-                    for (int index = 0; index < filterParameterCount; index++)
+                    for (int index = 0; index < FilterParameters.GetParameterCount(); index++)
                     {
                         // Check if index is in list of indexes using expressions
                         if (exponentsUsingExpressions.Contains(index))
@@ -923,10 +935,18 @@ namespace DrosteEffectApp
             List<string> interpolatedValuesPerFrameStrings = new List<string>();
             for (int i = 0; i < totalFrames; i++)
             {
-                double[] tempArray = new double[filterParameterCount];
-                for (int j = 0; j < filterParameterCount; j++)
+                string[] tempArray = new string[FilterParameters.GetParameterCount()];
+                for (int j = 0; j < FilterParameters.GetParameterCount(); j++)
                 {
-                    tempArray[j] = interpolatedValuesPerFrameArray[i, j];
+                    // If it's text type parameter, set it to the text value
+                    if (FilterParameters.GetParameterType(j).ToLower() == "text")
+                    {
+                        tempArray[j] = FilterParameters.ActiveFilter.Parameters[j].Type;
+                    }
+                    else
+                    {
+                        tempArray[j] = interpolatedValuesPerFrameArray[i, j].ToString();
+                    }
                 }
                 interpolatedValuesPerFrameStrings.Add(string.Join(",", tempArray));
             }
@@ -1151,7 +1171,7 @@ namespace DrosteEffectApp
 
                         string outputFile = expectedFiles[i];
                         string parameters = interpolatedParams[i];
-
+                        
                         if (!File.Exists(outputFile))
                         {
                             // Execute gmic.exe to process frame
@@ -1641,7 +1661,7 @@ namespace DrosteEffectApp
                 string[] startParamsArray = rawStartString.Split(',');
                 string[] endParamsArray = rawEndString.Split(',');
 
-                if (startParamsArray.Length == filterParameterCount && endParamsArray.Length == filterParameterCount)
+                if (startParamsArray.Length == FilterParameters.GetParameterCount() && endParamsArray.Length == FilterParameters.GetParameterCount())
                 {
                     double startValue = double.Parse(startParamsArray[(int)nudMasterParamIndex.Value - 1]);
                     double endValue = double.Parse(endParamsArray[(int)nudMasterParamIndex.Value - 1]);
@@ -1768,6 +1788,11 @@ namespace DrosteEffectApp
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
+        }
+
+        private void ParseParameterStringToStringAndUpdateActiveFilter(string parameterString)
+        {
+            // Figure out which parameters are text from the active filter, check the
         }
 
         private void txtEndParams_TextChanged(object sender, EventArgs e)
@@ -1916,7 +1941,7 @@ namespace DrosteEffectApp
         {
             // Update label to show current name corresponding to the index
             string labelTextStr = "= ";
-            if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= filterParameterCount)
+            if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= FilterParameters.GetParameterCount())
             {
                 labelTextStr += FilterParameters.GetActiveFilterParameters()[(int)nudMasterParamIndex.Value - 1].Name;
             }
@@ -2301,7 +2326,6 @@ namespace DrosteEffectApp
             defaultStartParams = FilterParameters.GetParameterValuesAsString("DefaultStart");
             defaultEndParams = FilterParameters.GetParameterValuesAsString("DefaultEnd");
             defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultExponent");
-            filterParameterCount = currentFilter.Parameters.Count;
 
             PlaceholderManager.SetPlaceholder(this.txtStartParams as System.Windows.Forms.TextBox, (string)defaultStartParams);
             PlaceholderManager.SetPlaceholder(this.txtEndParams as System.Windows.Forms.TextBox, (string)defaultEndParams);
@@ -2573,6 +2597,9 @@ namespace DrosteEffectApp
             try
             {
                 FilterParameters.SetActiveFilter(filterFriendlyName);
+                // Set master parameter index 1 to ensure it's within the new filter's range
+                nudMasterParamIndex.Value = 1;
+
                 UpdateParameterUI();  // Refresh UI with the new active filter's parameters
             }
             catch (ArgumentException ex)
