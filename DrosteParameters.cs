@@ -449,7 +449,7 @@ public static class FilterParameters
                     tempExtendedMax = 1;
                 }
             }
-                // Currently possible types: "Binary", "Trinary", "Step", "Continuous", "Choice", "Text
+                // Currently possible types: "Binary", "Trinary", "Step", "Continuous", "Choice", "Text"
                 var parameterInfo = new SingleParameterInfo(
                 paramIndex: GetActiveFilterParameters().Count,  // Index is dynamically set based on count. As each gets added the count and therefore the index increases
                 name: name,

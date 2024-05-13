@@ -19,6 +19,7 @@ using Expr = MathNet.Symbolics.SymbolicExpression;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using FParsec;
 using System.Drawing.Text;
+using MathNet.Numerics.Integration;
 
 namespace DrosteEffectApp
 {
@@ -926,22 +927,27 @@ namespace DrosteEffectApp
                             interpolatedValuesPerFrameArray[frame, index] = normalizedInterpolatedValuesPerFrameArray[frame, index];
                         }
                     }
-
                 }
-
             }
 
             // Create list of strings to hold the interpolated values for each frame to return outside of the function
+            // Do any final processing
             List<string> interpolatedValuesPerFrameStrings = new List<string>();
             for (int i = 0; i < totalFrames; i++)
             {
                 string[] tempArray = new string[FilterParameters.GetParameterCount()];
                 for (int j = 0; j < FilterParameters.GetParameterCount(); j++)
                 {
+                    string parameterType = FilterParameters.GetParameterType(j).ToLower();
                     // If it's text type parameter, set it to the text value
-                    if (FilterParameters.GetParameterType(j).ToLower() == "text")
+                    if (parameterType == "text")
                     {
                         tempArray[j] = (string)FilterParameters.ActiveFilter.Parameters[j].Properties["CurrentTextValue"];
+                    }
+                    // If it's a parameter type that must be a whole number, round
+                    else if (parameterType == "step" || parameterType == "binary" || parameterType == "trinary" || parameterType == "choice")
+                    {
+                        tempArray[j] = RoundStepValues(interpolatedValuesPerFrameArray[i, j].ToString(), j);
                     }
                     else
                     {
@@ -953,6 +959,30 @@ namespace DrosteEffectApp
 
             // Return the list of interpolated values for all frames.
             return interpolatedValuesPerFrameStrings;
+        }
+
+        private string RoundStepValues(string value, int parameterIndex)
+        {
+            
+            // Get the min and max values
+            double min = FilterParameters.GetParameterValuesAsList("Min")[parameterIndex];
+            double max = FilterParameters.GetParameterValuesAsList("Max")[parameterIndex];
+
+            // Convert to double
+            double valueDouble = double.Parse(value);
+
+            // Round to nearest whole number within the min and max
+            if (valueDouble < min)
+            {
+                valueDouble = min;
+            }
+            else if (valueDouble > max)
+            {
+                valueDouble = max;
+            }
+            // Return as whole number string with no decimals. N0 ensures no decimals
+            return Math.Round(valueDouble).ToString("N0");
+
         }
 
         public double[] NormalizeAndScaleValues(double[] values, double trueOriginalStartValue, double trueOriginalEndValue, int paramIndex)
