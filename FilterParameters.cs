@@ -67,6 +67,21 @@ public static class FilterParameters
         return ActiveFilter.Parameters;
     }
 
+    // Gets the parameters for a specific filter by name, or returns empty list if a null return is received
+    public static List<SingleParameterInfo> GetSpecificFilterParameters(string filterName)
+    {
+        string checkedFilterName = FilterExists(filterName);
+        if (checkedFilterName != null)
+        {
+            var filter = Filters.FirstOrDefault(f => f.FriendlyName == checkedFilterName);
+            return filter?.Parameters ?? new List<SingleParameterInfo>();
+        }
+        else
+        {
+            return new List<SingleParameterInfo>();
+        }
+    }
+
     public static string ConvertParametersToString()
     {
         // Use List<string> to handle dynamic data size
@@ -231,7 +246,7 @@ public static class FilterParameters
         return nonExponentableIndexes;
     }
 
-    public static int GetParameterCount()
+    public static int GetActiveParameterCount()
     {
         return GetActiveFilterParameters().Count;
     }
@@ -557,9 +572,53 @@ public static class FilterParameters
         }
     }
 
-    // Method to set the active filter by name. Technically it can find bo th by friendly name and G'MIC command, but ideally the friendly name should be used
+    // Find if filter exists
+    public static string FilterExists(string filterFriendlyName)
+    {
+        var selectedFilter = SearchExactFilterName(filterFriendlyName);
+        if (selectedFilter != null)
+        {
+            return selectedFilter.ToString();
+        }
+        else if (filterFriendlyName.StartsWith("*") && SearchExactFilterName(filterFriendlyName.Substring(1)) != null)
+        {
+            // If it's a custom filter, remove the asterisk and check again
+            selectedFilter = SearchExactFilterName(filterFriendlyName.Substring(1));
+            return selectedFilter;
+        }
+        // Try adding asterisk to the searched name in case it's a custom filter
+        else if (SearchExactFilterName("*" + filterFriendlyName) != null)
+        {
+            selectedFilter = SearchExactFilterName("*" + filterFriendlyName);
+            return selectedFilter;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private static string SearchExactFilterName(string filterName)
+    {
+        var foundFilter = Filters.FirstOrDefault(f => f.FriendlyName.Equals(filterName, StringComparison.OrdinalIgnoreCase) || f.GmicCommand.Equals(filterName, StringComparison.OrdinalIgnoreCase));
+        if (foundFilter != null)
+        {
+            return foundFilter.FriendlyName.ToString();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    // Method to set the active filter by name. Technically it can find both by friendly name and G'MIC command, but ideally the friendly name should be used
     public static void SetActiveFilter(string filterFriendlyName)
     {
+        // Get the true filter name
+        string matchedFilterName = FilterExists(filterFriendlyName);
+
+        if (matchedFilterName != null) { filterFriendlyName = matchedFilterName;}
+
         // Need to use friendly name in case user has multiple custom filters with the same G'MIC command
         var filter = Filters.FirstOrDefault(f => f.FriendlyName == filterFriendlyName || f.GmicCommand == filterFriendlyName);
         if (filter != null)

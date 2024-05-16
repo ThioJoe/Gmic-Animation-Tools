@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 [SupportedOSPlatform("windows")]
-public class FileManager
+public class FileGenerationManager
 {
     // Method to get the number format based on the number of digits
     private string GetNumberFormat(int numDigits) => new string('0', numDigits);

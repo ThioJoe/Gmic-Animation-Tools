@@ -68,6 +68,7 @@
     <PackageReference Include="MathNet.Numerics.FSharp" Version="6.0.0-beta1" />
     <PackageReference Include="MathNet.Symbolics" Version="0.25.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="8.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />

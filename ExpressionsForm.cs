@@ -26,7 +26,7 @@ namespace GmicAnimate
         private string[] paramNames = FilterParameters.GetParameterNamesList();
 
         //Parameter count
-        private int filterParameterCount = FilterParameters.GetParameterCount();
+        private int filterParameterCount = FilterParameters.GetActiveParameterCount();
 
         public ExpressionsForm(MainForm mainform, string incomingExpressionParamString, int incomingMasterParamIndex, string incomingMasterParamExpression)
         {
@@ -214,7 +214,7 @@ namespace GmicAnimate
         {
             // Get parameter names and other info from FilterParameters
             paramNames = FilterParameters.GetParameterNamesList();
-            filterParameterCount = FilterParameters.GetParameterCount();
+            filterParameterCount = FilterParameters.GetActiveParameterCount();
 
             customExpressionStringFromMainWindow = FilterParameters.GetParameterValuesAsString("DefaultExponent");
             masterParamExpressionStringFromMainWindow = FilterParameters.GetParameterValuesAsList("DefaultExponent")[masterParamIndexFromMainWindow].ToString();

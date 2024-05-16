@@ -9,7 +9,7 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 //using System.Runtime.Remoting.Messaging;
-using static FileManager;
+using static FileGenerationManager;
 
 namespace AnimationTools
 {
@@ -484,7 +484,7 @@ namespace AnimationTools
                 return;
             }
 
-            FileManager fileManager = new FileManager();
+            FileGenerationManager fileManager = new FileGenerationManager();
             fileManager.ImportAndMergeFolders(existingFolderPath: outputDirToMergeInto, importFolderPath: folderToImportPath);
             UpdateFolderDetails();
 
@@ -492,7 +492,7 @@ namespace AnimationTools
 
         private void buttonFixFileSequence_Click(object sender, EventArgs e)
         {
-            // Use FileManager's Update Zero Padding method to fix the file sequence if necessary in current folder
+            // Use FileGenerationManager's Update Zero Padding method to fix the file sequence if necessary in current folder
             string folderPath = txtFramesFolderPath.Text;
             if (string.IsNullOrEmpty(folderPath))
             {
@@ -501,7 +501,7 @@ namespace AnimationTools
                 return;
             }
 
-            FileManager fileManager = new FileManager();
+            FileGenerationManager fileManager = new FileGenerationManager();
             string baseFileName = fileManager.GetBaseFileNameWithinFolder(folderPath);
 
             SequenceFixResult sequenceFixResult = fileManager.FixDiscontinuousSequence(folderPath, baseFileName);
@@ -553,7 +553,7 @@ namespace AnimationTools
             // Check if ffmpeg.exe exists, will display message if not						 
             CheckIfFileInSystemPathOrDirectory(fileNameToCheck: "ffmpeg.exe", silent: false);
 
-            FileManager fileManager = new FileManager();
+            FileGenerationManager fileManager = new FileGenerationManager();
             string baseFileName = fileManager.GetBaseFileNameWithinFolder(outputDir, "*.png");
 
             // Execute ffmpeg.exe to create GIF								   

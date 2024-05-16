@@ -162,7 +162,7 @@ namespace GmicAnimate
             double[] endParamValues = new double[dataGridView1.Rows.Count];
 
             // Ensure the grids have all the values
-            if (startParamValues.Length == FilterParameters.GetParameterCount() && endParamValues.Length == FilterParameters.GetParameterCount())
+            if (startParamValues.Length == FilterParameters.GetActiveParameterCount() && endParamValues.Length == FilterParameters.GetActiveParameterCount())
             {
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
@@ -340,7 +340,7 @@ namespace GmicAnimate
             // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
             else
             {
-                if (dataGridView1.Rows.Count == FilterParameters.GetParameterCount())
+                if (dataGridView1.Rows.Count == FilterParameters.GetActiveParameterCount())
                 {
                     txtCurrentStartParamString.Text = string.Join(",", stringValuesFromDataTable(dataGridView1, "Start"));
                 }
@@ -372,7 +372,7 @@ namespace GmicAnimate
             // If the current parameter string is empty, check if the data table has full set of values, and if so take from there
             else
             {
-                if (dataGridView1.Rows.Count == FilterParameters.GetParameterCount())
+                if (dataGridView1.Rows.Count == FilterParameters.GetActiveParameterCount())
                 {
                     txtCurrentEndParamString.Text = string.Join(",", stringValuesFromDataTable(dataGridView1, "End"));
                 }

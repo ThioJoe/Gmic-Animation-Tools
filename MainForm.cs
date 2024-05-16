@@ -1,4 +1,6 @@
 ﻿using GmicAnimate;
+using GmicDrosteAnimate;
+
 // Third party libraries for symbolic math and expression evaluation.
 using MathNet.Symbolics;
 using System;
@@ -65,7 +67,7 @@ namespace GmicFilterAnimatorApp
             InitializeComponent();
             InitializeDefaults();
 
-            // Create mouse scroll handler to properly scroll increment on master increment numeric updown
+             // Create mouse scroll handler to properly scroll increment on master increment numeric updown
             nudMasterParamIndex.MouseWheel += new MouseEventHandler(this.ScrollHandlerFunction);
 
             // Check if ffmpeg is in the same folder as the application, if not disable the GIF creation checkbox and display message
@@ -97,6 +99,34 @@ namespace GmicFilterAnimatorApp
 
             UpdateParameterUI();
             Console.WriteLine("Finished Loading Main Form.");
+
+            Program.Config.RefreshConfiguration();
+
+            // Apply config preferences from Program.Config
+            txtInputFilePath.Text = Program.Config.InputFilePath;
+
+            checkBoxSingleThreadMode.Checked = Program.Config.SingleThreadMode;
+            chkCreateGif.Checked = Program.Config.CreateGIF;
+            checkBoxLogOnly.Checked = Program.Config.DontCreateImages;
+            checkBoxUseSameOutputDir.Checked = Program.Config.UseSameOutputDirectory;
+
+            dropdownDebugLog.SelectedIndex = Program.Config.DebugLogLevel;
+
+            ActivateFilter(Program.Config.DefaultFilter);
+
+            // Need to check these because otherwise it will mess with the placeholders
+            if (!String.IsNullOrEmpty(Program.Config.DefaultFilterStartParams))
+            {
+                StartParamsTextBoxChangeSetter = Program.Config.DefaultFilterStartParams;
+            }
+            if (!String.IsNullOrEmpty(Program.Config.DefaultFilterEndParams))
+            {
+                EndParamsTextTextBoxChangeSetter = Program.Config.DefaultFilterEndParams;
+            }
+
+            // This has to go after the parameter strings are loaded or else it won't be able to tell if it's a valid parameter
+            nudMasterParamIndex.Value = Program.Config.DefaultMasterParameterIndex;
+
         }
 
         private void InitializeDefaults()
@@ -460,11 +490,11 @@ namespace GmicFilterAnimatorApp
                     exponentArrayString = exponentArrayString.Replace(stringToReplace, "").Replace(" ", "").Trim();
 
                     exponents = exponentArrayString.Split(',');
-                    if (exponents.Length == FilterParameters.GetParameterCount())
+                    if (exponents.Length == FilterParameters.GetActiveParameterCount())
                     {
                         List<List<string>> invalidValues = new List<List<string>>();
                         // Check that all values are either valid numbers or valid math expressions. If not, alert the user to the position of the invalid value and the value itself.
-                        for (int i = 0; i < FilterParameters.GetParameterCount(); i++)
+                        for (int i = 0; i < FilterParameters.GetActiveParameterCount(); i++)
                         {
                             // Track invalid values and alert user at end of all of them, if any
                             // Test expression with sample values 
@@ -490,7 +520,7 @@ namespace GmicFilterAnimatorApp
                     }
                     else
                     {
-                        MessageBox.Show($"Exponent array must contain {FilterParameters.GetParameterCount()} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Exponent array must contain {FilterParameters.GetActiveParameterCount()} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -579,19 +609,19 @@ namespace GmicFilterAnimatorApp
             string[] paramsArray = paramsString.Split(',');
 
             // Ensure the parameter array has exactly 31 elements.
-            if (paramsArray.Length != FilterParameters.GetParameterCount())
+            if (paramsArray.Length != FilterParameters.GetActiveParameterCount())
             {
                 if (!silent)
                 {
-                    MessageBox.Show($"Parameter array must contain {FilterParameters.GetParameterCount()} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Parameter array must contain {FilterParameters.GetActiveParameterCount()} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return null;
             }
 
             // Convert the parameter strings to double values and store them in an array.
-            double[] paramValuesArray = new double[FilterParameters.GetParameterCount()];
+            double[] paramValuesArray = new double[FilterParameters.GetActiveParameterCount()];
 
-            for (int i = 0; i < FilterParameters.GetParameterCount(); i++)
+            for (int i = 0; i < FilterParameters.GetActiveParameterCount(); i++)
             {
                 // If not text type parameter
                 if (FilterParameters.GetParameterType(i).ToLower() != "text")
@@ -720,7 +750,7 @@ namespace GmicFilterAnimatorApp
             if (startValues == null || endValues == null)
             {
                 // Only go to one less than the filter because add the last one separately
-                for (int i = 0; i < (FilterParameters.GetParameterCount() - 1); i++)
+                for (int i = 0; i < (FilterParameters.GetActiveParameterCount() - 1); i++)
                 {
                     startParams += "1,";
                     endParams += "100,";
@@ -759,16 +789,16 @@ namespace GmicFilterAnimatorApp
             // List to store all interpolated values for each frame.
             //List<string> interpolatedValuesPerFrameStrings = new List<string>();
             // List of 31 arrays of doubles to hold the interpolated values for each parameter.
-            double[,] interpolatedValuesPerFrameArray = new double[totalFrames, FilterParameters.GetParameterCount()];
+            double[,] interpolatedValuesPerFrameArray = new double[totalFrames, FilterParameters.GetActiveParameterCount()];
 
             // Loop through each frame to calculate parameter values.
             for (int frame = 0; frame < totalFrames; frame++)
             {
                 // Array to hold the current set of interpolated parameters.
-                double[] currentValues = new double[FilterParameters.GetParameterCount()];
+                double[] currentValues = new double[FilterParameters.GetActiveParameterCount()];
 
                 // Loop through each parameter to interpolate its value.
-                for (int i = 0; i < FilterParameters.GetParameterCount(); i++)
+                for (int i = 0; i < FilterParameters.GetActiveParameterCount(); i++)
                 {
                     if (masterParamOnly && i != masterIndex)
                     {
@@ -884,9 +914,9 @@ namespace GmicFilterAnimatorApp
             // If an exponent mode is being used, normalize and scale the interpolated values for each frame.
             if ((exponentMode == "custom-array" || exponentMode == "custom-master") && !absoluteMode)
             {
-                double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, FilterParameters.GetParameterCount()];
+                double[,] normalizedInterpolatedValuesPerFrameArray = new double[totalFrames, FilterParameters.GetActiveParameterCount()];
                 // Normalize and scale the interpolated values for each frame.
-                for (int i = 0; i < FilterParameters.GetParameterCount(); i++)
+                for (int i = 0; i < FilterParameters.GetActiveParameterCount(); i++)
                 {
                     // Skip if only master parameter is being interpolated and this is not the master parameter
                     if (masterParamOnly && i != masterIndex)
@@ -917,7 +947,7 @@ namespace GmicFilterAnimatorApp
                 for (int frame = 0; frame < totalFrames; frame++)
                 {
                     //double[] tempArray = new double[31];
-                    for (int index = 0; index < FilterParameters.GetParameterCount(); index++)
+                    for (int index = 0; index < FilterParameters.GetActiveParameterCount(); index++)
                     {
                         // Check if index is in list of indexes using expressions
                         if (exponentsUsingExpressions.Contains(index))
@@ -933,8 +963,8 @@ namespace GmicFilterAnimatorApp
             List<string> interpolatedValuesPerFrameStrings = new List<string>();
             for (int i = 0; i < totalFrames; i++)
             {
-                string[] tempArray = new string[FilterParameters.GetParameterCount()];
-                for (int j = 0; j < FilterParameters.GetParameterCount(); j++)
+                string[] tempArray = new string[FilterParameters.GetActiveParameterCount()];
+                for (int j = 0; j < FilterParameters.GetActiveParameterCount(); j++)
                 {
                     string parameterType = FilterParameters.GetParameterType(j).ToLower();
                     // If it's text type parameter, set it to the text value
@@ -1848,7 +1878,7 @@ namespace GmicFilterAnimatorApp
                 string[] startParamsArray = rawStartString.Split(',');
                 string[] endParamsArray = rawEndString.Split(',');
 
-                if (startParamsArray.Length == FilterParameters.GetParameterCount() && endParamsArray.Length == FilterParameters.GetParameterCount())
+                if (startParamsArray.Length == FilterParameters.GetActiveParameterCount() && endParamsArray.Length == FilterParameters.GetActiveParameterCount())
                 {
                     double startValue = double.Parse(startParamsArray[(int)nudMasterParamIndex.Value - 1]);
                     double endValue = double.Parse(endParamsArray[(int)nudMasterParamIndex.Value - 1]);
@@ -2147,7 +2177,7 @@ namespace GmicFilterAnimatorApp
         {
             // Update label to show current name corresponding to the index
             string labelTextStr = "= ";
-            if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= FilterParameters.GetParameterCount())
+            if (nudMasterParamIndex.Value > 0 && nudMasterParamIndex.Value <= FilterParameters.GetActiveParameterCount())
             {
                 labelTextStr += FilterParameters.GetActiveFilterParameters()[(int)nudMasterParamIndex.Value - 1].Name;
             }
