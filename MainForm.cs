@@ -1,28 +1,20 @@
-﻿using System;
+﻿using GmicAnimate;
+// Third party libraries for symbolic math and expression evaluation.
+using MathNet.Symbolics;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-using GmicAnimate;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Globalization;
-
-// Third party libraries for symbolic math and expression evaluation.
-using MathNet.Symbolics;
-using Expr = MathNet.Symbolics.SymbolicExpression;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-using FParsec;
-using System.Drawing.Text;
-using MathNet.Numerics.Integration;
-using System.Runtime.InteropServices;
 using static GmicFilterAnimatorApp.MainForm.NativeMethods;
-using System.Security.Permissions;
 
 namespace GmicFilterAnimatorApp
 {
@@ -132,7 +124,7 @@ namespace GmicFilterAnimatorApp
             //#endif
 
 
-            #if DEBUG
+#if DEBUG
             // Set default value text in parameter value textboxes
             txtInputFilePath.Text = "think.png";
             //txtStartParams.Text = startParams;
@@ -140,7 +132,7 @@ namespace GmicFilterAnimatorApp
             inputFilePath = txtInputFilePath.Text;
             //Enable test button for debugging only
             //TestButton1.Visible = true;
-            #endif
+#endif
 
             // Set default values for the new controls
             //chkExponentialIncrements.Checked = false;
@@ -185,7 +177,7 @@ namespace GmicFilterAnimatorApp
                 }
                 RefreshGraph();
                 txtStartParams_TextChanged(null, null);
-            } 
+            }
         }
 
         public string EndParamsTextTextBoxChangeSetter
@@ -309,7 +301,7 @@ namespace GmicFilterAnimatorApp
                     radioNormalizeMaxRanges.Checked = true;
                     radioNormalizeMaxRanges_CheckedChanged(null, null);
                 }
-                else if(value == "NormalizeExtendedRanges")
+                else if (value == "NormalizeExtendedRanges")
                 {
                     radioNormalizeExtendedRanges.Checked = true;
                     radioNormalizeExtendedRanges_CheckedChanged(null, null);
@@ -477,7 +469,7 @@ namespace GmicFilterAnimatorApp
                             var (isValid, reason) = IsValidMathExpression(exponents[i], absoluteMode: checkBoxAbsoluteModeMain.Checked);
                             if (!double.TryParse(exponents[i], out _) && !isValid)
                             {
-                                invalidValues.Add(new List<string> { (i + 1).ToString(), exponents[i], $"Reason: {reason}"});
+                                invalidValues.Add(new List<string> { (i + 1).ToString(), exponents[i], $"Reason: {reason}" });
                             }
                         }
                         if (invalidValues.Count > 0)
@@ -523,15 +515,15 @@ namespace GmicFilterAnimatorApp
                 frameNumberStart = CountExistingFiles(outputDir) + 1;
             }
             // Create the log file with metadata and interpolated parameters
-            CreateLogFile(outputDir: outputDir, 
-                interpolatedParams: interpolatedParams, 
-                exponentMode: exponentMode, 
-                defaultExponents: defaultExponents, 
-                masterExponentString: masterExponentStr, 
-                frameStartNumber: frameNumberStart, 
-                masterParamIndex: masterParamIndexAtTimeOfClick, 
-                masterParamIncrement: masterParamIncrementAtTimeOfClick, 
-                totalFrames: totalFrames, 
+            CreateLogFile(outputDir: outputDir,
+                interpolatedParams: interpolatedParams,
+                exponentMode: exponentMode,
+                defaultExponents: defaultExponents,
+                masterExponentString: masterExponentStr,
+                frameStartNumber: frameNumberStart,
+                masterParamIndex: masterParamIndexAtTimeOfClick,
+                masterParamIncrement: masterParamIncrementAtTimeOfClick,
+                totalFrames: totalFrames,
                 exponentStringArray: exponents
                 );
 
@@ -618,7 +610,7 @@ namespace GmicFilterAnimatorApp
                     // Check if paramsArray value is 0, if so get the text parameter value from the active filter's default value
                     if (paramsArray[i] == "0")
                     {
-                        
+
                     }
                     else
                     {
@@ -646,11 +638,12 @@ namespace GmicFilterAnimatorApp
             {
                 outputDir = GetLatestDirectory(inputFilePath, false);
             }
-            else { 
+            else
+            {
                 outputDir = GetLatestDirectory(inputFilePath, true);
                 Directory.CreateDirectory(outputDir);
             }
-            
+
             return outputDir;
         }
 
@@ -664,7 +657,7 @@ namespace GmicFilterAnimatorApp
                 logFilePath = Path.Combine(directoryName, $"{directoryName}_log_{logFileNumber}.txt");
                 logFileNumber++;
             }
-                        
+
             return logFilePath;
         }
 
@@ -725,7 +718,7 @@ namespace GmicFilterAnimatorApp
             if (startValues == null || endValues == null)
             {
                 // Only go to one less than the filter because add the last one separately
-                for (int i = 0; i < (FilterParameters.GetParameterCount()-1); i++)
+                for (int i = 0; i < (FilterParameters.GetParameterCount() - 1); i++)
                 {
                     startParams += "1,";
                     endParams += "100,";
@@ -746,7 +739,7 @@ namespace GmicFilterAnimatorApp
             {
                 totalFrames = frameCount;
             }
-            
+
             // Always use custom-master mode for this function because the calling function will send in a full array with only the master parameter expression set
             string exponentMode = "custom-master";
 
@@ -755,7 +748,7 @@ namespace GmicFilterAnimatorApp
 
         // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.
         // Returns a list of strings representing the interpolated parameter values for each frame.
-        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode,bool masterParamOnly = false, bool absoluteMode = false)
+        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode, bool masterParamOnly = false, bool absoluteMode = false)
         {
             double[] originalStartValues = startValues;
             double[] originalEndValues = endValues;
@@ -792,7 +785,7 @@ namespace GmicFilterAnimatorApp
                     // If absolute mode is enabled but exponent mode is not custom array or custom master, set change it to custom array
                     // This would only be if the graph is calling it so it doesn't really matter exponent mode is set
                     if (absoluteMode)
-                    { 
+                    {
                         if (exponentMode != "custom-array" && exponentMode != "custom-master")
                         {
                             exponentMode = "custom-array";
@@ -902,7 +895,7 @@ namespace GmicFilterAnimatorApp
                     double[] allFrameValuesForSingleParam = new double[totalFrames];
                     for (int j = 0; j < totalFrames; j++)
                     {
-                        allFrameValuesForSingleParam[j] = interpolatedValuesPerFrameArray[j,i];
+                        allFrameValuesForSingleParam[j] = interpolatedValuesPerFrameArray[j, i];
                     }
                     // Assuming a NormalizeAndScale method that takes a double array and does something to it
                     allFrameValuesForSingleParam = NormalizeAndScaleValues(values: allFrameValuesForSingleParam, trueOriginalStartValue: originalStartValues[i], trueOriginalEndValue: originalEndValues[i], paramIndex: i);
@@ -966,7 +959,7 @@ namespace GmicFilterAnimatorApp
 
         private string RoundStepValues(string value, int parameterIndex)
         {
-            
+
             // Get the min and max values
             double min = FilterParameters.GetParameterValuesAsList("Min")[parameterIndex];
             double max = FilterParameters.GetParameterValuesAsList("Max")[parameterIndex];
@@ -1080,7 +1073,7 @@ namespace GmicFilterAnimatorApp
             // Add more constants as needed
         };
 
-        public (double interpolatedValue, string errorString) EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue, bool normalize = true, bool testing=false, bool absoluteMode = false, int frameNum = 0)
+        public (double interpolatedValue, string errorString) EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue, bool normalize = true, bool testing = false, bool absoluteMode = false, int frameNum = 0)
         {
             try
             {
@@ -1125,7 +1118,7 @@ namespace GmicFilterAnimatorApp
 
 
 
-        public (bool IsValid, string Reason) IsValidMathExpression(string input, double testStart=1, double testEnd=10, double testTime = 0.50, int testFrameNum = 10, bool absoluteMode = false)
+        public (bool IsValid, string Reason) IsValidMathExpression(string input, double testStart = 1, double testEnd = 10, double testTime = 0.50, int testFrameNum = 10, bool absoluteMode = false)
         {
             // Check via MathNet.Symbolics if the input string is a valid mathematical expression
             (double _, string errorString) = EvaluateFormulaWithSymbolics(formula: input, t: testTime, startValue: testStart, endValue: testEnd, testing: true, frameNum: testFrameNum, absoluteMode: absoluteMode);
@@ -1522,7 +1515,7 @@ namespace GmicFilterAnimatorApp
             }
         }
 
-        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, string masterExponentString, int frameStartNumber, int masterParamIndex, double masterParamIncrement, int totalFrames, string[]exponentStringArray)
+        private void CreateLogFile(string outputDir, List<string> interpolatedParams, string exponentMode, double[] defaultExponents, string masterExponentString, int frameStartNumber, int masterParamIndex, double masterParamIncrement, int totalFrames, string[] exponentStringArray)
         {
             //string logFilePath = Path.Combine(outputDir, $"{outputDir}_log.txt");
             string logFilePath = DecideLogFilePath(outputDir);
@@ -1562,7 +1555,9 @@ namespace GmicFilterAnimatorApp
                     exponentModeString = "Master Parameter Only (From Default Array)";
                 }
                 // If exponent mode is not set (exponentialIncrements is false), set all values to N/A. They won't be used anyway.
-            } else {
+            }
+            else
+            {
                 masterExponentString = "N/A";
                 exponentArrayString = "N/A";
                 exponentModeString = "N/A";
@@ -1579,7 +1574,7 @@ namespace GmicFilterAnimatorApp
                 writer.WriteLine($"\n\tStart Parameters: {startParams}");
                 writer.WriteLine($"\tEnd Parameters: {endParams}");
                 writer.WriteLine($"\tMaster Parameter: {FilterParameters.ActiveFilter.Parameters[masterParamIndex].Name}");
-                writer.WriteLine($"\tMaster Parameter Index: {masterParamIndex+1}");
+                writer.WriteLine($"\tMaster Parameter Index: {masterParamIndex + 1}");
                 writer.WriteLine($"\tMaster Parameter Increment: {masterParamIncrement}");
                 writer.WriteLine($"\tExponential Increments: {exponentialIncrements}");
 
@@ -1830,17 +1825,17 @@ namespace GmicFilterAnimatorApp
             {
                 return (int)nudTotalFrames.Value;
             }
-            else 
+            else
             {
                 int totalFrames = (int)Math.Ceiling((Math.Abs(masterStartValue - masterEndValue)) / masterIncrement) + 1;
                 //nudTotalFrames.Value = totalFrames;
                 return totalFrames;
             }
-            
+
         }
 
         private void UpdateTotalFrames()
-        {       
+        {
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
                 string rawStartString = txtStartParams.Text;
@@ -1875,7 +1870,7 @@ namespace GmicFilterAnimatorApp
                             //Re-enable the ValueChanged event of nudMasterParamIncrement
                             nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
                         }
-                        
+
                     }
 
                     // Disable the ValueChanged event of nudTotalFrames so it doesn't create circular calls
@@ -1891,8 +1886,8 @@ namespace GmicFilterAnimatorApp
         {
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
-                double startValue = ParseParamsToDoublesArray(txtStartParams.Text, silent:true)[(int)nudMasterParamIndex.Value - 1];
-                double endValue = ParseParamsToDoublesArray(txtEndParams.Text, silent:true)[(int)nudMasterParamIndex.Value - 1];
+                double startValue = ParseParamsToDoublesArray(txtStartParams.Text, silent: true)[(int)nudMasterParamIndex.Value - 1];
+                double endValue = ParseParamsToDoublesArray(txtEndParams.Text, silent: true)[(int)nudMasterParamIndex.Value - 1];
 
                 int totalFrames = (int)nudTotalFrames.Value;
                 double increment = Math.Abs(endValue - startValue) / (totalFrames - 1);
@@ -2006,7 +2001,7 @@ namespace GmicFilterAnimatorApp
                 // Check if both parameter strings are valid
                 if (startParamArray != null && endParamArray != null)
                 {
-                    if (startParamArray[(int)nudMasterParamIndex.Value-1] != endParamArray[(int)nudMasterParamIndex.Value-1])
+                    if (startParamArray[(int)nudMasterParamIndex.Value - 1] != endParamArray[(int)nudMasterParamIndex.Value - 1])
                     {
                         // Also ensure the parameter type is not text
                         if (!FilterParameters.ActiveFilter.Parameters[(int)nudMasterParamIndex.Value - 1].Type.ToLower().Equals("text"))
@@ -2028,7 +2023,7 @@ namespace GmicFilterAnimatorApp
                     }
                     RefreshGraph();
                 }
-                
+
             }
             // If proper start params are not set, disable the total frames and master increment boxes
             DisableFrameAndMasterParamBoxes();
@@ -2168,7 +2163,7 @@ namespace GmicFilterAnimatorApp
             }
 
             protected override void UpdateEditText()
-            {   
+            {
                 if (!this.Enabled)
                 {
                     // Clear the text area only
@@ -2176,13 +2171,13 @@ namespace GmicFilterAnimatorApp
                     this.Text = "";
                 }
                 else
-                {   
+                {
                     // This needs to go before the base.UpdateEditText() call or else stack overflow exception
                     this.Text = this.Value.ToString();
                     base.UpdateEditText();
-                    
+
                 }
-                
+
                 //Examples
                 //this.Text = this.Value + " uA";
                 //this.Text = "";
@@ -2356,7 +2351,7 @@ namespace GmicFilterAnimatorApp
                     expressionForm.NormalizersChangeSetterExpressionsForm = "NormalizeStartEnd";
                 }
             }
-            
+
             RefreshGraph();
         }
 
@@ -2399,7 +2394,7 @@ namespace GmicFilterAnimatorApp
                 {
                     expressionForm.NormalizersChangeSetterExpressionsForm = "NoNormalize";
                 }
-                
+
             }
             RefreshGraph();
         }
@@ -2438,7 +2433,7 @@ namespace GmicFilterAnimatorApp
             }
 
             RefreshGraph();
-        
+
         }
 
         private void btnParseTest_Click(object sender, EventArgs e)
@@ -2473,7 +2468,7 @@ namespace GmicFilterAnimatorApp
                 string[] splitText = searchText.Split(',');
                 if (splitText.Length > 0)
                 {
-                    
+
                     foundFilterName = ParseAndMatchFilterNameFromParameterString(inputString: splitText[0], activateIfFound: false);
                     // Remove anything after the filter name
                     if (foundFilterName != null)
@@ -2587,14 +2582,14 @@ namespace GmicFilterAnimatorApp
 
 
         // Load and parse filter files using gmic
-        private async void LoadFiltersFile(string filterJsonfileName="FiltersParameterList.json", string customFilterJsonFileName = "FiltersParameterListCustom.json", bool silent = false)
+        private async void LoadFiltersFile(string filterJsonfileName = "FiltersParameterList.json", string customFilterJsonFileName = "FiltersParameterListCustom.json", bool silent = false)
         {
             string gmicFilterFilePath;
             string jsonData;
 
             // First check if the custom filter file exists, if so get the data, otherwise set to null
             string customJsonData = LoadJSONFromCustomFilterFile(customFilterJsonFileName);
-            
+
             // First check if the file exists, and if not then try to run "gmic update" to download the latest filters
             if (!File.Exists(filterJsonfileName))
             {
@@ -2737,10 +2732,10 @@ namespace GmicFilterAnimatorApp
                     "\n# You can have multiple custom versions of a filter, but make sure they have unique names." +
                     "\n[\n\n]";
                 File.WriteAllText(customFilterFileName, emptyJson);
-                
+
                 // Tell user the file was created
                 MessageBox.Show($"A file for custom filter parameters has been created if you want to use it." +
-                    $"\n\nIt will be called {customFilterFileName}" + 
+                    $"\n\nIt will be called {customFilterFileName}" +
                     "\n\nYou can copy the parameters for a filter from the regular filter parameters json file and paste it into" +
                     "the custom file, then edit things like default minimum and maximum ranges, default starting values, etc." +
                     "\n\nCustom filters will appear in the list with a * in front at the top. You can also rename them in the custom json file." +
@@ -2854,5 +2849,5 @@ namespace GmicFilterAnimatorApp
             //}
         }
     }
-    
+
 }

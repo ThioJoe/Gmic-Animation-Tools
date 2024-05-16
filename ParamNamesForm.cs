@@ -1,14 +1,9 @@
 ﻿using GmicFilterAnimatorApp;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -60,11 +55,11 @@ namespace GmicAnimate
                 //UpdateListView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
                 UpdateDataGridView(startParamValuesFromMainWindow, endParamValuesFromMainWindow, masterParamIndexFromMainWindow);
             }
-           
+
             // Set the values for the current start and end param strings
             SetCurrentEndParamString(endParamValuesFromMainWindow);
             SetCurrentStartParamString(startParamValuesFromMainWindow);
-            
+
         }
 
         // Add function setter to get latest parameter names and variable coun
@@ -158,7 +153,7 @@ namespace GmicAnimate
                 }
             }
         }
-        
+
         private void UpdateParameterStringsWithNewTableData()
         {
             double[] startParamValues = new double[dataGridView1.Rows.Count];
@@ -192,7 +187,7 @@ namespace GmicAnimate
                             endParamValues[i] = Convert.ToDouble(dataGridView1.Rows[i].Cells["End"].Value);
                         }
                     }
-                    
+
                 }
             }
             // Set the text boxes to the new comma-separated strings of the start and end parameters
@@ -255,7 +250,7 @@ namespace GmicAnimate
                         string currentTextValue = FilterParameters.ActiveFilter.Parameters[i].Properties["CurrentTextValue"].ToString();
                         row.Cells["End"].Value = currentTextValue;
                     }
-                        // If the number is a whole number, display without decimals
+                    // If the number is a whole number, display without decimals
                     else if (endParamValues[i] % 1 == 0)
                     {
                         row.Cells["End"].Value = endParamValues[i].ToString("F0");
@@ -303,7 +298,7 @@ namespace GmicAnimate
         }
 
         public void UpdateParamValues(double[] startParamValues, double[] endParamValues, int masterParamIndex)
-        {   
+        {
             //Update sync option from checkbox
             syncWithOtherWindow = checkBoxSyncFromOtherWindow.Checked;
 
@@ -313,7 +308,7 @@ namespace GmicAnimate
             masterParamIndexFromMainWindow = masterParamIndex;
 
             if (syncWithOtherWindow)
-            {   
+            {
                 UpdateDataGridView(startParamValues, endParamValues, masterParamIndex);
             }
         }
@@ -348,7 +343,7 @@ namespace GmicAnimate
                     txtCurrentStartParamString.Text = string.Join(",", stringValuesFromDataTable(dataGridView1, "Start"));
                 }
             }
-            
+
         }
         // Function to set current end param string from array
         public void SetCurrentEndParamString(double[] currentParamString)
@@ -443,7 +438,7 @@ namespace GmicAnimate
                 // Get original start and end values for the row - These start empty and get set at the end of each iteration of the big loop for each parameter
                 double rowOriginalStart = originalStartParamValues[rowIndex];
                 double rowOriginalEnd = originalEndParamValues[rowIndex];
-                
+
 
                 // Check if the row is selected for randomization
                 // ----------------------------------  Big loop to set each parameter start/end values per row if checked ----------------------------------
@@ -486,8 +481,8 @@ namespace GmicAnimate
                     else if (paramInfo.Type == "Step")
                     {
                         // Generate random values for start and end within the range of min and max, but as whole numbers
-                        start = rnd.Next((int)min, (int)max+1); // Add 1 because double to int truncates
-                        end = rnd.Next((int)min, (int)max+1);
+                        start = rnd.Next((int)min, (int)max + 1); // Add 1 because double to int truncates
+                        end = rnd.Next((int)min, (int)max + 1);
                     }
                     else
                     {
@@ -668,13 +663,13 @@ namespace GmicAnimate
                     // Set the generated values to the appropriate cells in the DataGridView, formatting them to 2 decimal places
                     //if (toggleRandomStart.Checked) 
                     //{
-                        row.Cells["Start"].Value = start.ToString();
+                    row.Cells["Start"].Value = start.ToString();
                     //}
                     //if (toggleRandomEnd.Checked)
                     //{
-                        row.Cells["End"].Value = end.ToString();
+                    row.Cells["End"].Value = end.ToString();
                     //}
-                    
+
                     // Calculate the difference between the end and start values
                     double diff = end - start;
                     // Set the difference in the respective DataGridView cell. Number of decimals depends on result
@@ -683,8 +678,8 @@ namespace GmicAnimate
                         row.Cells["Difference"].Value = diff.ToString("F0");
                     }
                     else
-                    { 
-                    row.Cells["Difference"].Value = diff.ToString("F2");
+                    {
+                        row.Cells["Difference"].Value = diff.ToString("F2");
                     }
 
                     // Store the new start and end values in the arrays
@@ -719,7 +714,7 @@ namespace GmicAnimate
             // Update the text boxes to reflect the newly generated start and end parameter strings
             SetCurrentStartParamString(newStartParamValues);
             SetCurrentEndParamString(newEndParamValues);
-            
+
             // Uncheck the checkbox for syncing with the main window and disable synchronization
             checkBoxSyncFromOtherWindow.Checked = false;
             syncWithOtherWindow = false;
@@ -754,7 +749,7 @@ namespace GmicAnimate
                     periodicityMax = 2;
                 }
             }
-            
+
 
             double start;
             double end;

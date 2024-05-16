@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.IO;
-using System.Globalization;
 
 namespace GmicAnimate
 {
@@ -180,7 +180,7 @@ namespace GmicAnimate
                 {
                     param.Properties["IsPercentage"] = true; // Mark parameter as percentage
                 }
-                
+
             }
 
             // Add back tilde or underscore back to type if it was removed
@@ -284,7 +284,7 @@ namespace GmicAnimate
             {
                 parameters.Add(param);
             }
-            
+
         }
 
         private void SplitColorHexToRGBA(Parameter param, List<Parameter> parameters)
@@ -293,7 +293,7 @@ namespace GmicAnimate
             {
                 // Check hexColor length to determine if it's RGB (#RRGGBB) or RGBA (#RRGGBBAA)
                 if (hexColor.StartsWith("#")) hexColor = hexColor.Substring(1); // Remove the # if present
-                
+
                 string originalType = param.Type;
 
                 if (hexColor.Length == 6 || hexColor.Length == 8)
@@ -395,7 +395,7 @@ namespace GmicAnimate
                 parameters.Add(newParam);
                 parentParam.Values.Add(newParam);
             }
-            
+
         }
 
     }

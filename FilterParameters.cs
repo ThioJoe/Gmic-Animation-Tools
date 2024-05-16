@@ -53,7 +53,7 @@ public class SingleParameterInfo
 
 public static class FilterParameters
 {
-    
+
     public static List<Filter> Filters { get; private set; } = new List<Filter>();
     public static Filter ActiveFilter { get; private set; } // Property to store the currently active filter
 
@@ -106,7 +106,7 @@ public static class FilterParameters
         List<string> filterCommandsList = new List<string>();
         foreach (var filter in Filters)
         {
-           filterCommandsList.Add(filter.GmicCommand);
+            filterCommandsList.Add(filter.GmicCommand);
         }
         return filterCommandsList;
     }
@@ -244,11 +244,11 @@ public static class FilterParameters
             //Create copy of custom droste10 filter to add back in after clearing
             var tempDroste = Filters.FirstOrDefault(f => f.FriendlyName == customBuiltInDrosteName);
             // Clear existing filters if re-loading. Don't clear if adding to existing filters like custom filters
-            Filters.Clear(); 
+            Filters.Clear();
             // Add custom built in souphead droste10 filter when refreshing filters
             Filters.Add(tempDroste);
         }
-        
+
         if (!String.IsNullOrEmpty(jsonText))
         {
             // First take out any lines at the beginning that start with a #, as these are comments
@@ -287,7 +287,7 @@ public static class FilterParameters
                     MessageBoxIcon.Error);
                 return;
             }
-            
+
 
             foreach (JObject filterObj in filtersArray)
             {
@@ -383,7 +383,7 @@ public static class FilterParameters
 
             JObject properties = (JObject)param["Properties"];
 
-            
+
             // Depending on type, assign other default values if not assigned already via existing defaults
             if (tempType.ToLower() == "binary")
             {
@@ -494,7 +494,7 @@ public static class FilterParameters
             typeString = typeString.Trim('~');
             typeString = typeString.Trim('_');
         }
-        
+
         return typeString;
     }
 

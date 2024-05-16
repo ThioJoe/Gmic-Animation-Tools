@@ -2,15 +2,10 @@
 using MathNet.Symbolics;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.Windows.Forms.VisualStyles;
 
 namespace GmicAnimate
 {
@@ -57,7 +52,7 @@ namespace GmicAnimate
             }
             else
             {
-                incomingMasterParamExpression= FilterParameters.GetParameterValuesAsList("DefaultExponent")[incomingMasterParamIndex].ToString();
+                incomingMasterParamExpression = FilterParameters.GetParameterValuesAsList("DefaultExponent")[incomingMasterParamIndex].ToString();
                 masterParamExpressionStringFromMainWindow = incomingMasterParamExpression;
             }
 
@@ -95,7 +90,7 @@ namespace GmicAnimate
         {
             get { return checkBoxAutoUpdateGraph.Checked; }
             set
-            { 
+            {
                 if (checkBoxAutoUpdateGraph.Checked)
                 {
                     PlotGraph();
@@ -334,7 +329,7 @@ namespace GmicAnimate
             ClearDataGridViewStyles();
             for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
             {
-                
+
                 // If the row is the master parameter row
                 if (i == masterParamIndex)
                 {
@@ -501,14 +496,14 @@ namespace GmicAnimate
                 //double t = 0.0;  
 
                 var variables = MathConstants.ToDictionary(kvp => kvp.Key, kvp => (FloatingPoint)kvp.Value);
-                  // This will add 't' or update its value if 't' is somehow already in the dictionary
+                // This will add 't' or update its value if 't' is somehow already in the dictionary
 
                 string formula = "t";
 
                 // Parse the formula as a symbolic expression
                 var expression = SymbolicExpression.Parse(formula);
 
-                
+
                 Series series = chartCurve.Series["ValueSeries"];
                 series.Points.Clear();
 
@@ -530,7 +525,7 @@ namespace GmicAnimate
 
         private void btnChartValues_Click(object sender, EventArgs e)
         {
-            PlotGraph(silent:false);
+            PlotGraph(silent: false);
         }
 
         // Function to plot graph from button or otherwise
@@ -610,9 +605,9 @@ namespace GmicAnimate
                     {
                         MessageBox.Show(
                             "The expression string must either be only a number, or an expression that use at least the variable 't'. " +
-                            "Where t is normalized for time between 0 and 1." + 
+                            "Where t is normalized for time between 0 and 1." +
                             "\n\nExpressions can also contain the variable 'x' (which equals to the frame number), but only in absolute mode can an expression use only 'x' without 't'." +
-                            "\n\nConstants like pi are allowed too.", 
+                            "\n\nConstants like pi are allowed too.",
                             "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     labelErrorWhileGraphing.Visible = true;
@@ -635,7 +630,7 @@ namespace GmicAnimate
                 labelErrorWhileGraphing.Visible = true;
                 return;
             }
-            
+
 
             // Plot
             try
@@ -675,7 +670,7 @@ namespace GmicAnimate
                         chartCurve.ChartAreas[0].AxisY.StripLines.Clear();
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -724,7 +719,7 @@ namespace GmicAnimate
                     allFrameValuesForMasterParameter[i] = interpolatedValue;
                 }
                 return allFrameValuesForMasterParameter;
-                
+
             }
             return null;
         }
@@ -767,17 +762,17 @@ namespace GmicAnimate
         {
             MessageBox.Show(
                 "Not satisfied with simply animating directly between two values? This window is for you!\n\n" +
-                "This form makes it easier to visualize modifying the distribution of parameter values using exponents or expressions. " + 
+                "This form makes it easier to visualize modifying the distribution of parameter values using exponents or expressions. " +
                 "\n\nYou can enter a mathematical expression for any of the parameters using the variable 't' for time." +
                 "For example, setting an expression to t^2 (t squared) will make the values change slowly at first and then rapidly, just like when plotting a xy graph. " +
-                "\n\nYou can also use the variable 'x' for the frame number in addition to 't', but t must at least be used. (Unless in absolute mode)" + 
+                "\n\nYou can also use the variable 'x' for the frame number in addition to 't', but t must at least be used. (Unless in absolute mode)" +
                 "\n\nFor simple exponential expressions such as t^2 or t^0.5, you can simply enter that exponent ('5' or '0.5') instead of a full expression. " +
                 "\n\nNote that the expression technically applies to the weighting of the parameter values, not the values themselves. " +
                     "Behind the scenes, the value 't' goes from 0 to 1 depending on which frame out of the total you're on. " +
                     "The graph does show the actual values that will be used in the final image though. " +
                 "\n\nOn the other hand, in 'absolute mode', variable values directly instead of using entered start/end values. In absolute mode, 'x' can be used without 't'." +
                 "\nWhen in absolute mode, you can still have a parameter's values calculated normally and linearly by setting its expression/exponent to '1'. " +
-                "You can also still calcualte exclusively with 't'. Setting the expression to 1 effectively makes the expression t^1 for example., which is why it calculates linearly in that case." + 
+                "You can also still calcualte exclusively with 't'. Setting the expression to 1 effectively makes the expression t^1 for example., which is why it calculates linearly in that case." +
                 "\n\nTry some more complicated expressions including sin(t), cos(t), e^t + 2t, etc. Also try the various normalization options on the main window." +
                 "\n\nYou can even use mathematical constants such as pi and e in your expressions, such as sin(t*2*pi)" +
                 "\n\nThe master parameter is highlighted in green and is the one that is graphed." +
@@ -808,7 +803,7 @@ namespace GmicAnimate
                 mainForm.NormalizersChangeSetterMainForm = "NormalizeStartEndClone";
                 checkBoxAbsoluteMode.Checked = false;
             }
-            
+
             PlotGraph();
         }
 
@@ -820,7 +815,7 @@ namespace GmicAnimate
                 mainForm.NormalizersChangeSetterMainForm = "NormalizeMaxRanges";
                 checkBoxAbsoluteMode.Checked = false;
             }
-            
+
             PlotGraph();
         }
 
@@ -832,7 +827,7 @@ namespace GmicAnimate
                 mainForm.NormalizersChangeSetterMainForm = "NormalizeExtendedRanges";
                 checkBoxAbsoluteMode.Checked = false;
             }
-            
+
             PlotGraph();
         }
 
@@ -864,7 +859,7 @@ namespace GmicAnimate
             {
                 mainForm.TotalFramesNUDChangeSetter = nudGraphConstantFrameCount.Value;
             }
-            
+
             PlotGraph();
         }
     } //End form class

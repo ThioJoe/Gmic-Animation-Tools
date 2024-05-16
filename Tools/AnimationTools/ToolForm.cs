@@ -1,16 +1,14 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 //using System.Runtime.Remoting.Messaging;
 using static FileManager;
-using System.Diagnostics;
 
 namespace AnimationTools
 {
@@ -169,7 +167,7 @@ namespace AnimationTools
         }
 
         private void ApplyCrossfadeEffect(string inputFilePath, double fadeDurationSeconds)
-        {   
+        {
             double fadeDurationHalf = fadeDurationSeconds / 2;
             double totalGifDuration = FFProbeGetGifDurationInSeconds(inputFilePath);
             double totalMinusTwoDuration = totalGifDuration - (2 * fadeDurationHalf); // Used to calculate the overlay start time
@@ -478,7 +476,7 @@ namespace AnimationTools
                 return;
             }
 
-            string folderToImportPath = FolderSelector(tryLastSelection: true);            
+            string folderToImportPath = FolderSelector(tryLastSelection: true);
             if (string.IsNullOrEmpty(folderToImportPath))
             {
                 return;
@@ -635,7 +633,7 @@ namespace AnimationTools
             {
                 labelCalcGifDuration.Text = "Total Duration: N/A";
             }
-        }   
+        }
 
         private void nudFrameRateSelect_ValueChanged(object sender, EventArgs e)
         {
@@ -663,7 +661,7 @@ namespace AnimationTools
 
         private void nudFadeDurationSeconds_ValueChanged(object sender, EventArgs e)
         {
-            labelCrossfadeStatus.Visible= false;
+            labelCrossfadeStatus.Visible = false;
         }
 
         private void buttonCreationHelp_Click(object sender, EventArgs e)
@@ -679,9 +677,9 @@ namespace AnimationTools
                                 " and select the folder with the new frames to add. It will automatically rename the files as necessary and make the file names all one sequence.\n\n" +
                             "Optional: If you are having issues when generating a gif because you deleted some frames in the middle, or " +
                             "because the filename numbers have inconsistent sequence formats (01 vs 001 for example), then click \"Fix File Sequence\" to rename them in a continuous sequence.\n\n" +
-                            "The GIF will be created in the same folder as the PNG frames - They will be automatically named to not overwrite each other.", 
+                            "The GIF will be created in the same folder as the PNG frames - They will be automatically named to not overwrite each other.",
                             "GIF Creation Help",
-                            MessageBoxButtons.OK, 
+                            MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
         }
 
@@ -695,7 +693,7 @@ namespace AnimationTools
                             "1. Select an animated Gif file - The box will display some information about it.\n" +
                             "2. Select the duration of the crossfade. You'll want to experiment with this to see what looks best for each animation.\n" +
                             "3. To apply a cross-fade effect at the loop point of the Gif, click \"Add Loop Crossfade\".\n\n" +
-                            "The new gif will be created alongside the current one - They will be automatically named to not overwrite each other.", 
+                            "The new gif will be created alongside the current one - They will be automatically named to not overwrite each other.",
                             "GIF Edit Help",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
