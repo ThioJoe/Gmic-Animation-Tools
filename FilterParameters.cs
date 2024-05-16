@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
+[SupportedOSPlatform("windows")]
 public class Filter
 {
     public string FriendlyName { get; set; }
@@ -18,7 +20,7 @@ public class Filter
     }
 }
 
-
+[SupportedOSPlatform("windows")]
 public class SingleParameterInfo
 {
     public int ParamIndex { get; set; }
@@ -51,6 +53,7 @@ public class SingleParameterInfo
     }
 }
 
+[SupportedOSPlatform("windows")]
 public static class FilterParameters
 {
 

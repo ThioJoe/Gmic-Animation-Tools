@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace AnimationTools
 {
+    [SupportedOSPlatform("windows")]
     internal static class Program
     {
         /// <summary>

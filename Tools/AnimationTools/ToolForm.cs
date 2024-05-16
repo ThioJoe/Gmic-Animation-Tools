@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 //using System.Runtime.Remoting.Messaging;
@@ -12,6 +13,7 @@ using static FileManager;
 
 namespace AnimationTools
 {
+    [SupportedOSPlatform("windows")]
     public partial class ToolForm : Form
     {
         public ToolForm()

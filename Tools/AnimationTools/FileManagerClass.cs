@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
+[SupportedOSPlatform("windows")]
 public class FileManager
 {
     // Method to get the number format based on the number of digits

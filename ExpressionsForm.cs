@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GmicAnimate
 {
+    [SupportedOSPlatform("windows")]
     public partial class ExpressionsForm : Form
     {
         private MainForm mainForm;

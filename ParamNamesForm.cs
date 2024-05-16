@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace GmicAnimate
 {
+    [SupportedOSPlatform("windows")]
     public partial class ParamNamesForm : Form
     {
         private MainForm mainForm;

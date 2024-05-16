@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,6 +19,7 @@ using static GmicFilterAnimatorApp.MainForm.NativeMethods;
 
 namespace GmicFilterAnimatorApp
 {
+    [SupportedOSPlatform("windows")]
     public partial class MainForm : Form
     {
         // Variables to hold the state of the application and user input.
@@ -34,7 +36,7 @@ namespace GmicFilterAnimatorApp
         // exponentialIncrements indicates whether exponential interpolation is used.
         private bool exponentialIncrements;
         // masterExponent specifies the exponent used if exponential interpolation is enabled.
-        private double masterExponent;
+        //private double masterExponent;
         // exponentArray can contain a custom or default set of exponents for all parameters.
         private string exponentArrayString;
         // createGif determines whether a GIF should be created from the resulting images.
@@ -106,7 +108,7 @@ namespace GmicFilterAnimatorApp
             //masterParamIndex = 1;
             masterParamIncrement = 1;
             exponentialIncrements = false;
-            masterExponent = 0;
+            //masterExponent = 0;
             exponentArrayString = string.Empty;
             createGif = false;
 
