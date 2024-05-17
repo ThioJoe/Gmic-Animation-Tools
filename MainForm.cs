@@ -381,10 +381,14 @@ namespace GmicFilterAnimatorApp
             progressBarGeneration.Value = 0;
 
             // Validate that an input file has been selected.
-            if (string.IsNullOrEmpty(inputFilePath))
+            if (string.IsNullOrEmpty(txtInputFilePath.Text) || !File.Exists(txtInputFilePath.Text))
             {
                 MessageBox.Show("Please select an input image file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+            else
+            {
+                inputFilePath = txtInputFilePath.Text;
             }
 
             // Retrieve and store user inputs from the form controls.
@@ -1238,6 +1242,7 @@ namespace GmicFilterAnimatorApp
                     {
                         if (cancellationRequested)
                         {
+                            progressBarGeneration.Value = 0;
                             return;
                         }
 
