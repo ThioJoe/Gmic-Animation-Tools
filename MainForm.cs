@@ -376,8 +376,9 @@ namespace GmicFilterAnimatorApp
 
         private async void btnStart_Click(object sender, EventArgs e)
         {
-            //Set label to invisible until the process is done
+            //Set label to invisible until the process is done, and start with progress bar at 0
             TextLabelNearStartButton.Visible = false;
+            progressBarGeneration.Value = 0;
 
             // Validate that an input file has been selected.
             if (string.IsNullOrEmpty(inputFilePath))
@@ -1331,7 +1332,7 @@ namespace GmicFilterAnimatorApp
                     //Set label next to start button with success message in green
                     TextLabelNearStartButton.Visible = true;
                     TextLabelNearStartButton.ForeColor = Color.Green;
-                    TextLabelNearStartButton.Text = $"Done!\n{totalFrames} frames created in {outputDir}.";
+                    TextLabelNearStartButton.Text = $"Done!\n{totalFrames} frames created in:\n{outputDir}.";
 
                 }));
             }
