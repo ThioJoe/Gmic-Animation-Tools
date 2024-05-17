@@ -1517,7 +1517,10 @@ namespace GmicFilterAnimatorApp
             // Check if ffmpeg.exe exists, will display message if not						 
             CheckForFFmpeg(silent: false);
 
-            // Execute ffmpeg.exe to create GIF								   
+            // Get folder name from outputdir. It will include any incremented numbering basd on the original file
+            string folderName = Path.GetFileName(outputDir);
+
+            // Execute ffmpeg.exe to create GIF
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
             int totalFrames = Directory.GetFiles(outputDir, "*.png").Length;
             int digitCount = (int)Math.Floor(Math.Log10(totalFrames)) + 1;
@@ -1531,10 +1534,10 @@ namespace GmicFilterAnimatorApp
 
             // Decide on name for file to not overwrite gif file
             int i = 2;
-            string gifFileName = $"{fileNameWithoutExtension}_combined.gif";
+            string gifFileName = $"{folderName}_combined.gif";
             while (File.Exists(Path.Combine(outputDir, gifFileName)))
             {
-                gifFileName = $"{fileNameWithoutExtension}_combined_{i}.gif";
+                gifFileName = $"{folderName}_combined_{i}.gif";
                 i++;
             }
             // Huge long command is to preserve transparency from PNG sequence to gif
