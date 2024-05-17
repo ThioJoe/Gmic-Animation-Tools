@@ -67,7 +67,7 @@ namespace GmicFilterAnimatorApp
             InitializeComponent();
             InitializeDefaults();
 
-             // Create mouse scroll handler to properly scroll increment on master increment numeric updown
+            // Create mouse scroll handler to properly scroll increment on master increment numeric updown
             nudMasterParamIndex.MouseWheel += new MouseEventHandler(this.ScrollHandlerFunction);
 
             // Check if ffmpeg is in the same folder as the application, if not disable the GIF creation checkbox and display message
@@ -1283,7 +1283,7 @@ namespace GmicFilterAnimatorApp
                                     {
                                         progressBarGeneration.Value = (int)Math.Round(progressBarGeneration.Value + progressIncrement);
                                     }
-                                    
+
                                 }));
                             }
                         }
@@ -2902,6 +2902,40 @@ namespace GmicFilterAnimatorApp
             //    parametersPanel.Controls.Add(label);
             //    parametersPanel.Controls.Add(textBox);
             //}
+        }
+
+        private void btnGifTools_Click(object sender, EventArgs e)
+        {
+            ToolForm toolForm = Application.OpenForms["ToolForm"] as ToolForm;
+
+            if (toolForm == null)
+            {
+                // First set exponent mode to custom array
+                rbCustomExponents.Checked = true;
+                rbCustomExponents_CheckedChanged(null, null);
+
+                // Form is not open, create and show it
+                toolForm = new ToolForm(
+                    mainform: this
+                    );
+
+                // Set the start position of the form manually
+                toolForm.StartPosition = FormStartPosition.Manual;
+
+                // Set the location relative to the main form (e.g., offsetting by 60 pixels to the right and down)
+                toolForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+
+                // Show the new form
+                toolForm.Show();
+            }
+            else
+            {
+                // Form is already open, just move it to the specified location
+                toolForm.Location = new Point(this.Location.X + 60, this.Location.Y + 60);
+
+                // Bring the existing form to the front
+                toolForm.BringToFront();
+            }
         }
     }
 

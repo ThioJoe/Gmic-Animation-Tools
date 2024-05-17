@@ -1,4 +1,4 @@
-﻿namespace AnimationTools
+﻿namespace GmicAnimate
 {
     partial class ToolForm
     {

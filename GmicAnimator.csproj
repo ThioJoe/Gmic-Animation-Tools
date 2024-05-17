@@ -76,16 +76,8 @@
     <PackageReference Include="System.Windows.Forms.DataVisualization" Version="1.0.0-prerelease.20110.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Tools\AnimationTools\FileManagerClass.cs" />
-    <Compile Remove="Tools\AnimationTools\obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
-    <Compile Remove="Tools\AnimationTools\OpenFolderDialogueClass.cs" />
-    <Compile Remove="Tools\AnimationTools\Program.cs" />
-    <Compile Remove="Tools\AnimationTools\Properties\AssemblyInfo.cs" />
-    <Compile Remove="Tools\AnimationTools\Properties\Resources.Designer.cs" />
-    <Compile Remove="Tools\AnimationTools\Properties\Settings.Designer.cs" />
-    <Compile Remove="Tools\AnimationTools\ToolForm.cs" />
-    <Compile Remove="Tools\AnimationTools\ToolForm.Designer.cs" />
-    <EmbeddedResource Remove="Tools\AnimationTools\Properties\Resources.resx" />
-    <EmbeddedResource Remove="Tools\AnimationTools\ToolForm.resx" />
+    <Compile Update="GifToolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

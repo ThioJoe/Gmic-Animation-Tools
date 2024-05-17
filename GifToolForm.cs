@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GmicFilterAnimatorApp;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -9,14 +10,15 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 //using System.Runtime.Remoting.Messaging;
-using static FileGenerationManager;
+using static FileManager;
 
-namespace AnimationTools
+namespace GmicAnimate
 {
     [SupportedOSPlatform("windows")]
     public partial class ToolForm : Form
     {
-        public ToolForm()
+        private MainForm mainForm;
+        public ToolForm(MainForm mainform)
         {
             InitializeComponent();
         }
@@ -484,7 +486,7 @@ namespace AnimationTools
                 return;
             }
 
-            FileGenerationManager fileManager = new FileGenerationManager();
+            FileManager fileManager = new FileManager();
             fileManager.ImportAndMergeFolders(existingFolderPath: outputDirToMergeInto, importFolderPath: folderToImportPath);
             UpdateFolderDetails();
 
@@ -492,7 +494,7 @@ namespace AnimationTools
 
         private void buttonFixFileSequence_Click(object sender, EventArgs e)
         {
-            // Use FileGenerationManager's Update Zero Padding method to fix the file sequence if necessary in current folder
+            // Use FileManager's Update Zero Padding method to fix the file sequence if necessary in current folder
             string folderPath = txtFramesFolderPath.Text;
             if (string.IsNullOrEmpty(folderPath))
             {
@@ -501,7 +503,7 @@ namespace AnimationTools
                 return;
             }
 
-            FileGenerationManager fileManager = new FileGenerationManager();
+            FileManager fileManager = new FileManager();
             string baseFileName = fileManager.GetBaseFileNameWithinFolder(folderPath);
 
             SequenceFixResult sequenceFixResult = fileManager.FixDiscontinuousSequence(folderPath, baseFileName);
@@ -553,7 +555,7 @@ namespace AnimationTools
             // Check if ffmpeg.exe exists, will display message if not						 
             CheckIfFileInSystemPathOrDirectory(fileNameToCheck: "ffmpeg.exe", silent: false);
 
-            FileGenerationManager fileManager = new FileGenerationManager();
+            FileManager fileManager = new FileManager();
             string baseFileName = fileManager.GetBaseFileNameWithinFolder(outputDir, "*.png");
 
             // Execute ffmpeg.exe to create GIF								   

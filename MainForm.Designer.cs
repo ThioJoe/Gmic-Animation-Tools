@@ -89,6 +89,7 @@
             toolStripActiveFilterLabel = new System.Windows.Forms.ToolStripStatusLabel();
             statusStrip1 = new System.Windows.Forms.StatusStrip();
             progressBarGeneration = new System.Windows.Forms.ProgressBar();
+            btnGifTools = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)nudTotalFrames).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIncrement).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndex).BeginInit();
@@ -326,7 +327,7 @@
             btnStart.Location = new System.Drawing.Point(18, 487);
             btnStart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnStart.Name = "btnStart";
-            btnStart.Size = new System.Drawing.Size(131, 35);
+            btnStart.Size = new System.Drawing.Size(140, 35);
             btnStart.TabIndex = 17;
             btnStart.Text = "Start";
             btnStart.UseVisualStyleBackColor = true;
@@ -334,10 +335,10 @@
             // 
             // btnViewOutputDirectory
             // 
-            btnViewOutputDirectory.Location = new System.Drawing.Point(303, 548);
+            btnViewOutputDirectory.Location = new System.Drawing.Point(18, 555);
             btnViewOutputDirectory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnViewOutputDirectory.Name = "btnViewOutputDirectory";
-            btnViewOutputDirectory.Size = new System.Drawing.Size(149, 35);
+            btnViewOutputDirectory.Size = new System.Drawing.Size(140, 35);
             btnViewOutputDirectory.TabIndex = 18;
             btnViewOutputDirectory.Text = "View Output Directory";
             btnViewOutputDirectory.UseVisualStyleBackColor = true;
@@ -492,10 +493,10 @@
             // 
             btnShowParamNames.BackColor = System.Drawing.Color.SkyBlue;
             btnShowParamNames.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnShowParamNames.Location = new System.Drawing.Point(303, 487);
+            btnShowParamNames.Location = new System.Drawing.Point(295, 482);
             btnShowParamNames.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnShowParamNames.Name = "btnShowParamNames";
-            btnShowParamNames.Size = new System.Drawing.Size(152, 25);
+            btnShowParamNames.Size = new System.Drawing.Size(160, 25);
             btnShowParamNames.TabIndex = 27;
             btnShowParamNames.Text = "Parameters";
             btnShowParamNames.UseVisualStyleBackColor = false;
@@ -514,7 +515,7 @@
             // TextLabelNearStartButton
             // 
             TextLabelNearStartButton.AutoSize = true;
-            TextLabelNearStartButton.Location = new System.Drawing.Point(152, 487);
+            TextLabelNearStartButton.Location = new System.Drawing.Point(166, 487);
             TextLabelNearStartButton.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             TextLabelNearStartButton.Name = "TextLabelNearStartButton";
             TextLabelNearStartButton.Size = new System.Drawing.Size(39, 15);
@@ -570,7 +571,7 @@
             // 
             labelFFmpegNotFound.AutoSize = true;
             labelFFmpegNotFound.ForeColor = System.Drawing.Color.Red;
-            labelFFmpegNotFound.Location = new System.Drawing.Point(126, 414);
+            labelFFmpegNotFound.Location = new System.Drawing.Point(129, 411);
             labelFFmpegNotFound.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelFFmpegNotFound.Name = "labelFFmpegNotFound";
             labelFFmpegNotFound.Size = new System.Drawing.Size(177, 15);
@@ -662,10 +663,10 @@
             // 
             btnShowExpressionForm.BackColor = System.Drawing.Color.LightCoral;
             btnShowExpressionForm.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnShowExpressionForm.Location = new System.Drawing.Point(303, 515);
+            btnShowExpressionForm.Location = new System.Drawing.Point(295, 510);
             btnShowExpressionForm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnShowExpressionForm.Name = "btnShowExpressionForm";
-            btnShowExpressionForm.Size = new System.Drawing.Size(152, 27);
+            btnShowExpressionForm.Size = new System.Drawing.Size(160, 27);
             btnShowExpressionForm.TabIndex = 45;
             btnShowExpressionForm.Text = "Expressions";
             btnShowExpressionForm.UseVisualStyleBackColor = false;
@@ -673,10 +674,10 @@
             // 
             // btnLoadFilters
             // 
-            btnLoadFilters.Location = new System.Drawing.Point(17, 556);
+            btnLoadFilters.Location = new System.Drawing.Point(377, 550);
             btnLoadFilters.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnLoadFilters.Name = "btnLoadFilters";
-            btnLoadFilters.Size = new System.Drawing.Size(132, 27);
+            btnLoadFilters.Size = new System.Drawing.Size(75, 40);
             btnLoadFilters.TabIndex = 47;
             btnLoadFilters.Text = "Reload Filters";
             btnLoadFilters.UseVisualStyleBackColor = true;
@@ -765,14 +766,25 @@
             // 
             progressBarGeneration.Location = new System.Drawing.Point(18, 528);
             progressBarGeneration.Name = "progressBarGeneration";
-            progressBarGeneration.Size = new System.Drawing.Size(131, 14);
+            progressBarGeneration.Size = new System.Drawing.Size(140, 14);
             progressBarGeneration.TabIndex = 58;
+            // 
+            // btnGifTools
+            // 
+            btnGifTools.Location = new System.Drawing.Point(295, 550);
+            btnGifTools.Name = "btnGifTools";
+            btnGifTools.Size = new System.Drawing.Size(75, 40);
+            btnGifTools.TabIndex = 59;
+            btnGifTools.Text = "GIF Tools";
+            btnGifTools.UseVisualStyleBackColor = true;
+            btnGifTools.Click += btnGifTools_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(478, 770);
+            Controls.Add(btnGifTools);
             Controls.Add(progressBarGeneration);
             Controls.Add(statusStrip1);
             Controls.Add(infoIconSingleThread);
@@ -915,5 +927,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripActiveFilterLabel;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ProgressBar progressBarGeneration;
+        private System.Windows.Forms.Button btnGifTools;
     }
 }
