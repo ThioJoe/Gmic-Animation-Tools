@@ -27,6 +27,7 @@
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 	<PlatformTarget>AnyCPU</PlatformTarget>
+	<ApplicationIcon>GmicAnimateIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>
@@ -38,6 +39,12 @@
     <LangVersion>7.3</LangVersion>
     <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
     <LangVersion>12.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin.bak\**" />
@@ -61,6 +68,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GmicAnimateIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FParsec" Version="2.0.0-beta2" />
