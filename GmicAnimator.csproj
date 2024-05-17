@@ -30,10 +30,16 @@
 	<ApplicationIcon>GmicAnimateIcon.ico</ApplicationIcon>
 	
 	<!-- Standard Versioning Properties -->
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <InformationalVersion>1.0.0</InformationalVersion>
+	<Version>1.0.0</Version>
+	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<FileVersion>1.0.0.0</FileVersion>
+	<InformationalVersion>1.0.0</InformationalVersion>
+	<!-- Additional Metadata -->
+	<Authors>ThioJoe</Authors>
+	<Product>G'MIC Animator</Product>
+	<!-- <Copyright>Copyright © Your Company 2024</Copyright>-->
+	<Description>Animate G'MIC filters</Description>
+	<PackageProjectUrl>https://github.com/ThioJoe/Gmic-Animation-Tools</PackageProjectUrl>
 	
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
