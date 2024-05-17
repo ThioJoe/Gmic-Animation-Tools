@@ -34,9 +34,6 @@
             buttonFixFileSequence = new System.Windows.Forms.Button();
             buttonCreateGifFromFolder = new System.Windows.Forms.Button();
             labelGifCreateStatus = new System.Windows.Forms.Label();
-            nudFrameRateSelect = new System.Windows.Forms.NumericUpDown();
-            labelFrameRateSelect = new System.Windows.Forms.Label();
-            labelCalcGifDuration = new System.Windows.Forms.Label();
             buttonAddCrossfade = new System.Windows.Forms.Button();
             nudFadeDurationSeconds = new System.Windows.Forms.NumericUpDown();
             labelFadeDuration = new System.Windows.Forms.Label();
@@ -48,9 +45,13 @@
             dropdownFFmpegMode = new System.Windows.Forms.ComboBox();
             infoIconFFmpegMode = new System.Windows.Forms.PictureBox();
             toolTip1 = new System.Windows.Forms.ToolTip(components);
-            ((System.ComponentModel.ISupportInitialize)nudFrameRateSelect).BeginInit();
+            labelCalcGifDuration = new System.Windows.Forms.Label();
+            nudFrameRateSelect = new System.Windows.Forms.NumericUpDown();
+            labelFrameRateSelect = new System.Windows.Forms.Label();
+            btnViewOutputDirectory = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)nudFadeDurationSeconds).BeginInit();
             ((System.ComponentModel.ISupportInitialize)infoIconFFmpegMode).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudFrameRateSelect).BeginInit();
             SuspendLayout();
             // 
             // buttonOpenFile
@@ -246,38 +247,6 @@
             labelGifCreateStatus.Text = "Status";
             labelGifCreateStatus.Visible = false;
             // 
-            // nudFrameRateSelect
-            // 
-            nudFrameRateSelect.Location = new System.Drawing.Point(528, 340);
-            nudFrameRateSelect.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            nudFrameRateSelect.Maximum = new decimal(new int[] { 120, 0, 0, 0 });
-            nudFrameRateSelect.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            nudFrameRateSelect.Name = "nudFrameRateSelect";
-            nudFrameRateSelect.Size = new System.Drawing.Size(64, 23);
-            nudFrameRateSelect.TabIndex = 18;
-            nudFrameRateSelect.Value = new decimal(new int[] { 25, 0, 0, 0 });
-            nudFrameRateSelect.ValueChanged += nudFrameRateSelect_ValueChanged;
-            // 
-            // labelFrameRateSelect
-            // 
-            labelFrameRateSelect.AutoSize = true;
-            labelFrameRateSelect.Location = new System.Drawing.Point(404, 345);
-            labelFrameRateSelect.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            labelFrameRateSelect.Name = "labelFrameRateSelect";
-            labelFrameRateSelect.Size = new System.Drawing.Size(110, 15);
-            labelFrameRateSelect.TabIndex = 19;
-            labelFrameRateSelect.Text = "Frames Per Second:";
-            // 
-            // labelCalcGifDuration
-            // 
-            labelCalcGifDuration.AutoSize = true;
-            labelCalcGifDuration.Location = new System.Drawing.Point(600, 345);
-            labelCalcGifDuration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            labelCalcGifDuration.Name = "labelCalcGifDuration";
-            labelCalcGifDuration.Size = new System.Drawing.Size(109, 15);
-            labelCalcGifDuration.TabIndex = 20;
-            labelCalcGifDuration.Text = "Total Duration: N/A";
-            // 
             // buttonAddCrossfade
             // 
             buttonAddCrossfade.Location = new System.Drawing.Point(33, 291);
@@ -387,11 +356,55 @@
             infoIconFFmpegMode.TabStop = false;
             toolTip1.SetToolTip(infoIconFFmpegMode, resources.GetString("infoIconFFmpegMode.ToolTip"));
             // 
+            // labelCalcGifDuration
+            // 
+            labelCalcGifDuration.AutoSize = true;
+            labelCalcGifDuration.Location = new System.Drawing.Point(604, 351);
+            labelCalcGifDuration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            labelCalcGifDuration.Name = "labelCalcGifDuration";
+            labelCalcGifDuration.Size = new System.Drawing.Size(109, 15);
+            labelCalcGifDuration.TabIndex = 20;
+            labelCalcGifDuration.Text = "Total Duration: N/A";
+            // 
+            // nudFrameRateSelect
+            // 
+            nudFrameRateSelect.Location = new System.Drawing.Point(532, 346);
+            nudFrameRateSelect.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            nudFrameRateSelect.Maximum = new decimal(new int[] { 120, 0, 0, 0 });
+            nudFrameRateSelect.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            nudFrameRateSelect.Name = "nudFrameRateSelect";
+            nudFrameRateSelect.Size = new System.Drawing.Size(64, 23);
+            nudFrameRateSelect.TabIndex = 18;
+            nudFrameRateSelect.Value = new decimal(new int[] { 25, 0, 0, 0 });
+            nudFrameRateSelect.ValueChanged += nudFrameRateSelect_ValueChanged;
+            // 
+            // labelFrameRateSelect
+            // 
+            labelFrameRateSelect.AutoSize = true;
+            labelFrameRateSelect.Location = new System.Drawing.Point(408, 351);
+            labelFrameRateSelect.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            labelFrameRateSelect.Name = "labelFrameRateSelect";
+            labelFrameRateSelect.Size = new System.Drawing.Size(110, 15);
+            labelFrameRateSelect.TabIndex = 19;
+            labelFrameRateSelect.Text = "Frames Per Second:";
+            // 
+            // btnViewOutputDirectory
+            // 
+            btnViewOutputDirectory.Enabled = false;
+            btnViewOutputDirectory.Location = new System.Drawing.Point(586, 124);
+            btnViewOutputDirectory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnViewOutputDirectory.Name = "btnViewOutputDirectory";
+            btnViewOutputDirectory.Size = new System.Drawing.Size(136, 22);
+            btnViewOutputDirectory.TabIndex = 39;
+            btnViewOutputDirectory.Text = "View Output Directory";
+            btnViewOutputDirectory.UseVisualStyleBackColor = true;
+            // 
             // ToolForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(749, 484);
+            Controls.Add(btnViewOutputDirectory);
             Controls.Add(infoIconFFmpegMode);
             Controls.Add(dropdownFFmpegMode);
             Controls.Add(buttonEditHelp);
@@ -426,9 +439,9 @@
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "ToolForm";
             Text = "GIF Tools";
-            ((System.ComponentModel.ISupportInitialize)nudFrameRateSelect).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudFadeDurationSeconds).EndInit();
             ((System.ComponentModel.ISupportInitialize)infoIconFFmpegMode).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudFrameRateSelect).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -451,9 +464,6 @@
         private System.Windows.Forms.Button buttonFixFileSequence;
         private System.Windows.Forms.Button buttonCreateGifFromFolder;
         private System.Windows.Forms.Label labelGifCreateStatus;
-        private System.Windows.Forms.NumericUpDown nudFrameRateSelect;
-        private System.Windows.Forms.Label labelFrameRateSelect;
-        private System.Windows.Forms.Label labelCalcGifDuration;
         private System.Windows.Forms.Button buttonAddCrossfade;
         private System.Windows.Forms.NumericUpDown nudFadeDurationSeconds;
         private System.Windows.Forms.Label labelFadeDuration;
@@ -465,6 +475,10 @@
         private System.Windows.Forms.ComboBox dropdownFFmpegMode;
         private System.Windows.Forms.PictureBox infoIconFFmpegMode;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label labelCalcGifDuration;
+        private System.Windows.Forms.NumericUpDown nudFrameRateSelect;
+        private System.Windows.Forms.Label labelFrameRateSelect;
+        private System.Windows.Forms.Button btnViewOutputDirectory;
     }
 }
 

@@ -445,7 +445,12 @@ namespace GmicAnimate
             if (!Directory.Exists(txtFramesFolderPath.Text))
             {
                 txtFramesFolderDetails.Text = "Invalid folder path";
+                btnViewOutputDirectory.Enabled = false;
                 return;
+            }
+            else
+            {
+                btnViewOutputDirectory.Enabled = true;
             }
 
             UpdateFolderDetails();
