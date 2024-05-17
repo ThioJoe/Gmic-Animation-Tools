@@ -31,6 +31,7 @@ namespace GmicAnimate
         public ExpressionsForm(MainForm mainform, string incomingExpressionParamString, int incomingMasterParamIndex, string incomingMasterParamExpression)
         {
             InitializeComponent();
+            InitalizatManualComponents();
             InitializeDataGridView(); // Setup your DataGridView here
 
             // Create mouse scroll handler to properly scroll increment on master increment numeric updown
