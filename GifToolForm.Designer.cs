@@ -436,6 +436,7 @@
             Controls.Add(buttonOpenFile);
             Controls.Add(LeftBorder);
             Controls.Add(RightBorder);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "ToolForm";
             Text = "GIF Tools";

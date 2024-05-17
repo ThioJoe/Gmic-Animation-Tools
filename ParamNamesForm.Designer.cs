@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ParamNamesForm));
             btnRandom = new System.Windows.Forms.Button();
             txtCurrentStartParamString = new System.Windows.Forms.TextBox();
             labelCurrentStartParamString = new System.Windows.Forms.Label();
@@ -280,6 +281,7 @@
             Controls.Add(btnRandom);
             Controls.Add(toggleRandomStart);
             Controls.Add(toggleRandomEnd);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "ParamNamesForm";
             Text = "Advanced Parameter Control";
