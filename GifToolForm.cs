@@ -17,10 +17,14 @@ namespace GmicAnimate
     [SupportedOSPlatform("windows")]
     public partial class ToolForm : Form
     {
-        private MainForm mainForm;
+        private MainForm mainForm; // In case we need to reference the main form
         public ToolForm(MainForm mainform)
         {
             InitializeComponent();
+
+            // Set dropdown to show the first filter and not be editable
+            dropdownFFmpegMode.SelectedIndex = 0;
+            dropdownFFmpegMode.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         // Static variable to store the last selected folder path
@@ -572,7 +576,17 @@ namespace GmicAnimate
                 i++;
             }
 
-            string ffmpegCommand = $"ffmpeg -framerate {frameRate} -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
+            // Determine which command to run based on dropdown selection
+            string ffmpegCommand = "";
+            if (dropdownFFmpegMode.SelectedIndex == 0)
+            {
+                ffmpegCommand = $"ffmpeg -framerate {frameRate} -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse\" \"{outputDir}\\{gifFileName}\"";
+            } 
+            else if (dropdownFFmpegMode.SelectedIndex == 1)
+            {
+                ffmpegCommand = $"ffmpeg -framerate {frameRate} -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
+            }
+            
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";

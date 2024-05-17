@@ -443,7 +443,7 @@
             // infoIconUseSameDirectory
             // 
             infoIconUseSameDirectory.Image = (System.Drawing.Image)resources.GetObject("infoIconUseSameDirectory.Image");
-            infoIconUseSameDirectory.Location = new System.Drawing.Point(194, 364);
+            infoIconUseSameDirectory.Location = new System.Drawing.Point(185, 364);
             infoIconUseSameDirectory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             infoIconUseSameDirectory.Name = "infoIconUseSameDirectory";
             infoIconUseSameDirectory.Size = new System.Drawing.Size(16, 16);
