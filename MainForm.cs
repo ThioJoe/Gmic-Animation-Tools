@@ -176,6 +176,12 @@ namespace GmicFilterAnimatorApp
             if (!File.Exists(gmicPath))
             {
                 MessageBox.Show("This tool uses the G'MIC image processor program, but it was not found.\n\ngmic.exe is required for this application to function at all. Please make sure it is located in the same folder as this application.\n\nYou can find it at:\nhttps://gmic.eu/download.html\n\nLook for where it says 'G'MIC for Windows - Other interfaces', then the zip download for 'Command-line interface (CLI)' ", "gmic.exe Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // Disable start button if gmic.exe is not found and display label message
+                btnStart.Enabled = false;
+                TextLabelNearStartButton.Visible = true;
+                //Color it red
+                TextLabelNearStartButton.ForeColor = Color.Red;
+                TextLabelNearStartButton.Text = "gmic.exe not found.";
             }
         }
 
