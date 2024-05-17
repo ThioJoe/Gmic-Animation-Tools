@@ -1309,19 +1309,24 @@ namespace GmicFilterAnimatorApp
                 attempt++;
             }
 
-            // Write log file if logFileName is not null
-            if (debugSetting != 0)
+            // Determine if any files are still missing after the final attempt
+            List<string> missingFilesAfterRerun = expectedFiles.Where(file => !File.Exists(file)).ToList();
+
+            // Write log file if the user has a debug setting chosen, or if any frames were missing
+            if (debugSetting != 0 || missingFilesAfterRerun.Count > 0)
             {
                 string logFilePath = Path.Combine(outputDir, logFileName);
                 File.WriteAllText(logFilePath, logContents.ToString());
             }
 
-            List<string> missingFilesAfterRerun = expectedFiles.Where(file => !File.Exists(file)).ToList();
             if (missingFilesAfterRerun.Count > 0)
             {
                 BeginInvoke((MethodInvoker)(() =>
                 {
-                    MessageBox.Show($"Warning: Not all of the {totalFrames} frames have been generated. Missing files:\n{string.Join("\n", missingFilesAfterRerun)}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Warning: Not all of the {totalFrames} frames have been generated." +
+                        $"\nA log file called log.txt has been created. You can also use a higher debug level for more logged details next time." +
+                        $"\n\nMissing files:\n{string.Join("\n", missingFilesAfterRerun)}",
+                        "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }));
             }
             else
