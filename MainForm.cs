@@ -566,6 +566,8 @@ namespace GmicFilterAnimatorApp
             if (!checkBoxLogOnly.Checked)
             {
                 int debugSetting = dropdownDebugLog.SelectedIndex;
+                double progressIncrement = 100.0 / totalFrames;
+                double progressPercent = 0;
 
                 // Process each frame using the specified parameters and gmic.exe.
                 await Task.Run(() => ProcessFrames(outputDir, interpolatedParams, frameNumberStart, debugSetting));
@@ -1192,6 +1194,9 @@ namespace GmicFilterAnimatorApp
             string verbosity = ""; // Set it to the verbose setting for Gmic, such as '-verbose 3', '-debug' etc
             bool useSingleThreadPerProcess = checkBoxSingleThreadMode.Checked;
 
+            double progressIncrement = 100.0 / totalFrames;
+            double progressPercent = 0;
+
             // Set verbosity based on dropdown combobox index, which is passed in via debugSetting because it can't be called from another thread
             if (debugSetting == 0)
             {
@@ -1262,6 +1267,24 @@ namespace GmicFilterAnimatorApp
                                     $"\nSingle Thread Mode: {useSingleThreadPerProcess}" +
                                     $"\n\nOutput:\n{errors}" +
                                     $"\n"); // GMIC only outputs as stderror, so using 'errors' as the regular output
+                            }
+
+                            // If the file exists add to progress
+                            if (File.Exists(outputFile))
+                            {
+                                BeginInvoke((MethodInvoker)(() =>
+                                {
+                                    // Update progress bar
+                                    if (progressBarGeneration.Value + progressIncrement > 100)
+                                    {
+                                        progressBarGeneration.Value = 100;
+                                    }
+                                    else
+                                    {
+                                        progressBarGeneration.Value = (int)Math.Round(progressBarGeneration.Value + progressIncrement);
+                                    }
+                                    
+                                }));
                             }
                         }
                     });
@@ -2863,7 +2886,7 @@ namespace GmicFilterAnimatorApp
             if (activeFilter != null)
             {
                 //MessageBox.Show($"Active Filter: {activeFilter.FriendlyName}\nCommand: {activeFilter.GmicCommand}");
-                labelCurrentlyLoadedFilter.Text = $"Currently loaded filter: {activeFilter.FriendlyName}";
+                toolStripActiveFilterLabel.Text = $"Current Filter:   {activeFilter.FriendlyName}";
             }
             else
             {
