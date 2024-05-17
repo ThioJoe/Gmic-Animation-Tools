@@ -59,7 +59,28 @@ This C# Windows Forms application leverages the G'MIC image processing engine to
 4. Click "Start" to generate the animation.
 5. Optionally, create a GIF from the generated frames.
 
-### HIGHLY Recommended: Use in Combination with G'MIC GUI
+### Tip / Recommendation: Use in Combination with G'MIC GUI
 - G'MIC has a standalone GUI version which can also be found on the [download page](https://gmic.eu/download.html), right above the CLI version download
 - You can use the G'MIC GUI version to preview the effect settings you want to use for the starting and ending parameters, then copy them right over to the animator
 - Note you'll still need to download the CLI version, this is in addition to that
+
+## Screenshots
+
+### Main Window & Parameter Editing Window
+<table>
+  <tr>
+    <td align="center">
+      <img width="400" alt="Main Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/1032a66d-b20e-4174-b6e8-c7c400a69495">
+    </td>
+    <td align="center">
+      <img width="400" alt="Parameter Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/27eea291-f4a8-4b56-9a86-33b2ba8c065c">
+    </td>
+  </tr>
+</table>
+
+### Mathematical Expressions Window
+<img width="650" alt="Expressions Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/8722d187-91d4-4fa6-baa7-63c8648e24b7">
+
+### GIF Tools Window
+<img width="570" alt="Gif Tools Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/3592a334-772e-4641-aca9-1f953fc0e206">
+
