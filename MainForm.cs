@@ -60,7 +60,8 @@ namespace GmicFilterAnimatorApp
         private string defaultStartParams = FilterParameters.GetParameterValuesAsString("DefaultStart");
         private string defaultEndParams = FilterParameters.GetParameterValuesAsString("DefaultEnd");
 
-        //private decimal previousMasterIncrementNUDValue = 0;
+        // Add lock object for thread safety when logging console outputs
+        private readonly object logLock = new object();
 
         public MainForm()
         {
@@ -1199,6 +1200,7 @@ namespace GmicFilterAnimatorApp
             StringBuilder logContents = new StringBuilder();  // Create a StringBuilder to accumulate log data
             string verbosity = ""; // Set it to the verbose setting for Gmic, such as '-verbose 3', '-debug' etc
             bool useSingleThreadPerProcess = checkBoxSingleThreadMode.Checked;
+            
 
             double progressIncrement = 100.0 / totalFrames;
             double progressPercent = 0;
@@ -1260,19 +1262,20 @@ namespace GmicFilterAnimatorApp
 
                             var (output, errors) = StartProcessWithAffinity("gmic.exe", arguments, affinityMask, outputFile);
 
-                            //Console.WriteLine("Output:");
-                            //Console.WriteLine(output);
                             Console.WriteLine("Output:"); // GMIC only outputs as stderror, so using 'errors' as the regular output
                             Console.WriteLine(errors);
 
                             if (logFileName != null)
                             {
-                                // Append to log contents
-                                logContents.AppendLine($"Frame {i + 1}:" +
-                                    $"\nArguments: {arguments}" +
-                                    $"\nSingle Thread Mode: {useSingleThreadPerProcess}" +
-                                    $"\n\nOutput:\n{errors}" +
-                                    $"\n"); // GMIC only outputs as stderror, so using 'errors' as the regular output
+                                lock (logLock)
+                                {
+                                    // Append to log contents
+                                    logContents.AppendLine($"Frame {i + 1}:" +
+                                        $"\nArguments: {arguments}" +
+                                        $"\nSingle Thread Mode: {useSingleThreadPerProcess}" +
+                                        $"\n\nOutput:\n{errors}" +
+                                        $"\n"); // GMIC only outputs as stderror, so using 'errors' as the regular output
+                                }
                             }
 
                             // If the file exists add to progress
