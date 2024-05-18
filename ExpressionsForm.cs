@@ -790,12 +790,14 @@ namespace GmicAnimate
         private void btnExampleSin_Click(object sender, EventArgs e)
         {
             // Set the master parameter to a sine wave
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "sin(2*pi*t)";
+            //dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "sin(2*pi*t)";
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleSine.Text;
         }
 
         private void btnExampleCosine_Click(object sender, EventArgs e)
         {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "cos(4*pi*t)";
+            //dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "cos(4*pi*t)";
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleCosine.Text;
         }
 
         private void radioNormalizeStartEndClone_CheckedChanged(object sender, EventArgs e)
@@ -953,6 +955,36 @@ namespace GmicAnimate
                     row.Cells["CheckBox"].Value = true;
                 }
             }
+        }
+
+        private void btnExampleExpSin_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleExpSin.Text;
+        }
+
+        private void btnExample4_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample4.Text;
+        }
+
+        private void btnExample5_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample5.Text;
+        }
+
+        private void btnExample6_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample6.Text;
+        }
+
+        private void btnExample7_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample7.Text;
+        }
+
+        private void btnExample8_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample8.Text;
         }
     } //End form class
 } // End namespace

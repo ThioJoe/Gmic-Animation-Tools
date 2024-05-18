@@ -53,7 +53,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -85,6 +85,12 @@
             btnUncheckAll = new System.Windows.Forms.Button();
             btnResetExpressions = new System.Windows.Forms.Button();
             btnCheckAll = new System.Windows.Forms.Button();
+            btnExampleExpSin = new System.Windows.Forms.Button();
+            btnExample4 = new System.Windows.Forms.Button();
+            btnExample5 = new System.Windows.Forms.Button();
+            btnExample6 = new System.Windows.Forms.Button();
+            btnExample7 = new System.Windows.Forms.Button();
+            btnExample8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -98,14 +104,14 @@
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewExpressions.Location = new System.Drawing.Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -259,10 +265,10 @@
             // btnExampleSine
             // 
             btnExampleSine.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleSine.Location = new System.Drawing.Point(674, 621);
+            btnExampleSine.Location = new System.Drawing.Point(644, 577);
             btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleSine.Name = "btnExampleSine";
-            btnExampleSine.Size = new System.Drawing.Size(150, 44);
+            btnExampleSine.Size = new System.Drawing.Size(174, 44);
             btnExampleSine.TabIndex = 17;
             btnExampleSine.Text = "sin(2*pi*t)";
             btnExampleSine.UseVisualStyleBackColor = true;
@@ -272,7 +278,7 @@
             // 
             labelExampleExpressionButtons.AutoSize = true;
             labelExampleExpressionButtons.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            labelExampleExpressionButtons.Location = new System.Drawing.Point(720, 572);
+            labelExampleExpressionButtons.Location = new System.Drawing.Point(712, 549);
             labelExampleExpressionButtons.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelExampleExpressionButtons.Name = "labelExampleExpressionButtons";
             labelExampleExpressionButtons.Size = new System.Drawing.Size(216, 24);
@@ -282,10 +288,10 @@
             // btnExampleCosine
             // 
             btnExampleCosine.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleCosine.Location = new System.Drawing.Point(854, 621);
+            btnExampleCosine.Location = new System.Drawing.Point(826, 577);
             btnExampleCosine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleCosine.Name = "btnExampleCosine";
-            btnExampleCosine.Size = new System.Drawing.Size(150, 44);
+            btnExampleCosine.Size = new System.Drawing.Size(174, 44);
             btnExampleCosine.TabIndex = 19;
             btnExampleCosine.Text = "cos(4*pi*t)";
             btnExampleCosine.UseVisualStyleBackColor = true;
@@ -445,11 +451,89 @@
             btnCheckAll.UseVisualStyleBackColor = true;
             btnCheckAll.Click += btnCheckAll_Click;
             // 
+            // btnExampleExpSin
+            // 
+            btnExampleExpSin.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExampleExpSin.Location = new System.Drawing.Point(644, 628);
+            btnExampleExpSin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExampleExpSin.Name = "btnExampleExpSin";
+            btnExampleExpSin.Size = new System.Drawing.Size(174, 44);
+            btnExampleExpSin.TabIndex = 56;
+            btnExampleExpSin.Text = "exp(sin(2*pi*t))";
+            btnExampleExpSin.UseVisualStyleBackColor = true;
+            btnExampleExpSin.Click += btnExampleExpSin_Click;
+            // 
+            // btnExample4
+            // 
+            btnExample4.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExample4.Location = new System.Drawing.Point(826, 629);
+            btnExample4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExample4.Name = "btnExample4";
+            btnExample4.Size = new System.Drawing.Size(174, 44);
+            btnExample4.TabIndex = 57;
+            btnExample4.Text = "sin(4*pi*t)*exp(-t)";
+            btnExample4.UseVisualStyleBackColor = true;
+            btnExample4.Click += btnExample4_Click;
+            // 
+            // btnExample5
+            // 
+            btnExample5.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExample5.Location = new System.Drawing.Point(644, 678);
+            btnExample5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExample5.Name = "btnExample5";
+            btnExample5.Size = new System.Drawing.Size(174, 44);
+            btnExample5.TabIndex = 58;
+            btnExample5.Text = "tanh(cos(2*pi*t))";
+            btnExample5.UseVisualStyleBackColor = true;
+            btnExample5.Click += btnExample5_Click;
+            // 
+            // btnExample6
+            // 
+            btnExample6.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExample6.Location = new System.Drawing.Point(826, 679);
+            btnExample6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExample6.Name = "btnExample6";
+            btnExample6.Size = new System.Drawing.Size(174, 44);
+            btnExample6.TabIndex = 59;
+            btnExample6.Text = "sin(2*pi*sin(2*pi*t))";
+            btnExample6.UseVisualStyleBackColor = true;
+            btnExample6.Click += btnExample6_Click;
+            // 
+            // btnExample7
+            // 
+            btnExample7.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExample7.Location = new System.Drawing.Point(644, 732);
+            btnExample7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExample7.Name = "btnExample7";
+            btnExample7.Size = new System.Drawing.Size(174, 44);
+            btnExample7.TabIndex = 60;
+            btnExample7.Text = "cos(2*pi*cos(2*pi*t))";
+            btnExample7.UseVisualStyleBackColor = true;
+            btnExample7.Click += btnExample7_Click;
+            // 
+            // btnExample8
+            // 
+            btnExample8.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExample8.Location = new System.Drawing.Point(826, 729);
+            btnExample8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExample8.Name = "btnExample8";
+            btnExample8.Size = new System.Drawing.Size(174, 44);
+            btnExample8.TabIndex = 61;
+            btnExample8.Text = "sin(2*pi*t)*exp(-sin(2*pi*t))";
+            btnExample8.UseVisualStyleBackColor = true;
+            btnExample8.Click += btnExample8_Click;
+            // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1045, 859);
+            Controls.Add(btnExample8);
+            Controls.Add(btnExample7);
+            Controls.Add(btnExample6);
+            Controls.Add(btnExample5);
+            Controls.Add(btnExample4);
+            Controls.Add(btnExampleExpSin);
             Controls.Add(infoIconCopyAnimated);
             Controls.Add(btnCheckAll);
             Controls.Add(btnResetExpressions);
@@ -521,5 +605,11 @@
         private System.Windows.Forms.Button btnResetExpressions;
         private System.Windows.Forms.Button btnCheckAll;
         private System.Windows.Forms.PictureBox infoIconCopyAnimated;
+        private System.Windows.Forms.Button btnExampleExpSin;
+        private System.Windows.Forms.Button btnExample4;
+        private System.Windows.Forms.Button btnExample5;
+        private System.Windows.Forms.Button btnExample6;
+        private System.Windows.Forms.Button btnExample7;
+        private System.Windows.Forms.Button btnExample8;
     }
 }
