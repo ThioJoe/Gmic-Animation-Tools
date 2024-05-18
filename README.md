@@ -100,7 +100,7 @@ This C# Windows Forms application leverages the G'MIC image processing engine to
 </table>
 
 ### Mathematical Expressions Window
-<img width="650" alt="Expressions Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/8722d187-91d4-4fa6-baa7-63c8648e24b7">
+<img width="650" alt="Expressions Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/0b279fb7-1a07-4062-a93a-79c9218d302d">
 
 ### GIF Tools Window
 <img width="570" alt="Gif Tools Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/3592a334-772e-4641-aca9-1f953fc0e206">
