@@ -53,7 +53,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -91,6 +91,8 @@
             btnExample6 = new System.Windows.Forms.Button();
             btnExample7 = new System.Windows.Forms.Button();
             btnExample8 = new System.Windows.Forms.Button();
+            btnExample9 = new System.Windows.Forms.Button();
+            btnExample10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -104,14 +106,14 @@
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle4;
             dataGridViewExpressions.Location = new System.Drawing.Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -253,7 +255,7 @@
             // 
             // btnHelpExpressionsForm
             // 
-            btnHelpExpressionsForm.Location = new System.Drawing.Point(917, 815);
+            btnHelpExpressionsForm.Location = new System.Drawing.Point(926, 827);
             btnHelpExpressionsForm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnHelpExpressionsForm.Name = "btnHelpExpressionsForm";
             btnHelpExpressionsForm.Size = new System.Drawing.Size(106, 32);
@@ -264,11 +266,11 @@
             // 
             // btnExampleSine
             // 
-            btnExampleSine.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleSine.Location = new System.Drawing.Point(644, 577);
+            btnExampleSine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExampleSine.Location = new System.Drawing.Point(644, 575);
             btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleSine.Name = "btnExampleSine";
-            btnExampleSine.Size = new System.Drawing.Size(174, 44);
+            btnExampleSine.Size = new System.Drawing.Size(185, 45);
             btnExampleSine.TabIndex = 17;
             btnExampleSine.Text = "sin(2*pi*t)";
             btnExampleSine.UseVisualStyleBackColor = true;
@@ -287,11 +289,11 @@
             // 
             // btnExampleCosine
             // 
-            btnExampleCosine.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleCosine.Location = new System.Drawing.Point(826, 577);
+            btnExampleCosine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExampleCosine.Location = new System.Drawing.Point(837, 575);
             btnExampleCosine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleCosine.Name = "btnExampleCosine";
-            btnExampleCosine.Size = new System.Drawing.Size(174, 44);
+            btnExampleCosine.Size = new System.Drawing.Size(185, 45);
             btnExampleCosine.TabIndex = 19;
             btnExampleCosine.Text = "cos(4*pi*t)";
             btnExampleCosine.UseVisualStyleBackColor = true;
@@ -317,11 +319,11 @@
             groupBoxNormalizeRadiosClone.Controls.Add(radioNormalizeMaxRangesClone);
             groupBoxNormalizeRadiosClone.Controls.Add(radioNormalizeExtendedRangesClone);
             groupBoxNormalizeRadiosClone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            groupBoxNormalizeRadiosClone.Location = new System.Drawing.Point(433, 588);
+            groupBoxNormalizeRadiosClone.Location = new System.Drawing.Point(429, 590);
             groupBoxNormalizeRadiosClone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupBoxNormalizeRadiosClone.Name = "groupBoxNormalizeRadiosClone";
             groupBoxNormalizeRadiosClone.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            groupBoxNormalizeRadiosClone.Size = new System.Drawing.Size(204, 91);
+            groupBoxNormalizeRadiosClone.Size = new System.Drawing.Size(191, 91);
             groupBoxNormalizeRadiosClone.TabIndex = 45;
             groupBoxNormalizeRadiosClone.TabStop = false;
             // 
@@ -453,11 +455,11 @@
             // 
             // btnExampleExpSin
             // 
-            btnExampleExpSin.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleExpSin.Location = new System.Drawing.Point(644, 628);
+            btnExampleExpSin.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExampleExpSin.Location = new System.Drawing.Point(644, 625);
             btnExampleExpSin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleExpSin.Name = "btnExampleExpSin";
-            btnExampleExpSin.Size = new System.Drawing.Size(174, 44);
+            btnExampleExpSin.Size = new System.Drawing.Size(185, 45);
             btnExampleExpSin.TabIndex = 56;
             btnExampleExpSin.Text = "exp(sin(2*pi*t))";
             btnExampleExpSin.UseVisualStyleBackColor = true;
@@ -465,11 +467,11 @@
             // 
             // btnExample4
             // 
-            btnExample4.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExample4.Location = new System.Drawing.Point(826, 629);
+            btnExample4.Font = new System.Drawing.Font("Cascadia Code", 10F);
+            btnExample4.Location = new System.Drawing.Point(837, 625);
             btnExample4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample4.Name = "btnExample4";
-            btnExample4.Size = new System.Drawing.Size(174, 44);
+            btnExample4.Size = new System.Drawing.Size(185, 45);
             btnExample4.TabIndex = 57;
             btnExample4.Text = "sin(4*pi*t)*exp(-t)";
             btnExample4.UseVisualStyleBackColor = true;
@@ -477,11 +479,11 @@
             // 
             // btnExample5
             // 
-            btnExample5.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExample5.Location = new System.Drawing.Point(644, 678);
+            btnExample5.Font = new System.Drawing.Font("Cascadia Code", 10F);
+            btnExample5.Location = new System.Drawing.Point(644, 675);
             btnExample5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample5.Name = "btnExample5";
-            btnExample5.Size = new System.Drawing.Size(174, 44);
+            btnExample5.Size = new System.Drawing.Size(185, 45);
             btnExample5.TabIndex = 58;
             btnExample5.Text = "tanh(cos(2*pi*t))";
             btnExample5.UseVisualStyleBackColor = true;
@@ -489,11 +491,11 @@
             // 
             // btnExample6
             // 
-            btnExample6.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExample6.Location = new System.Drawing.Point(826, 679);
+            btnExample6.Font = new System.Drawing.Font("Cascadia Code", 10F);
+            btnExample6.Location = new System.Drawing.Point(837, 675);
             btnExample6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample6.Name = "btnExample6";
-            btnExample6.Size = new System.Drawing.Size(174, 44);
+            btnExample6.Size = new System.Drawing.Size(185, 45);
             btnExample6.TabIndex = 59;
             btnExample6.Text = "sin(2*pi*sin(2*pi*t))";
             btnExample6.UseVisualStyleBackColor = true;
@@ -501,11 +503,11 @@
             // 
             // btnExample7
             // 
-            btnExample7.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExample7.Location = new System.Drawing.Point(644, 732);
+            btnExample7.Font = new System.Drawing.Font("Cascadia Code", 10F);
+            btnExample7.Location = new System.Drawing.Point(644, 725);
             btnExample7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample7.Name = "btnExample7";
-            btnExample7.Size = new System.Drawing.Size(174, 44);
+            btnExample7.Size = new System.Drawing.Size(185, 45);
             btnExample7.TabIndex = 60;
             btnExample7.Text = "cos(2*pi*cos(2*pi*t))";
             btnExample7.UseVisualStyleBackColor = true;
@@ -513,21 +515,47 @@
             // 
             // btnExample8
             // 
-            btnExample8.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExample8.Location = new System.Drawing.Point(826, 729);
+            btnExample8.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExample8.Location = new System.Drawing.Point(837, 725);
             btnExample8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample8.Name = "btnExample8";
-            btnExample8.Size = new System.Drawing.Size(174, 44);
+            btnExample8.Size = new System.Drawing.Size(185, 45);
             btnExample8.TabIndex = 61;
-            btnExample8.Text = "sin(2*pi*t)*exp(-sin(2*pi*t))";
+            btnExample8.Text = "sin(2*pi*t)*\r\nexp(-sin(2*pi*t))";
             btnExample8.UseVisualStyleBackColor = true;
             btnExample8.Click += btnExample8_Click;
+            // 
+            // btnExample9
+            // 
+            btnExample9.Font = new System.Drawing.Font("Cascadia Code", 10F);
+            btnExample9.Location = new System.Drawing.Point(644, 775);
+            btnExample9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExample9.Name = "btnExample9";
+            btnExample9.Size = new System.Drawing.Size(185, 45);
+            btnExample9.TabIndex = 62;
+            btnExample9.Text = "(sin(2*pi*t))^3";
+            btnExample9.UseVisualStyleBackColor = true;
+            btnExample9.Click += btnExample9_Click;
+            // 
+            // btnExample10
+            // 
+            btnExample10.Font = new System.Drawing.Font("Cascadia Code", 10F);
+            btnExample10.Location = new System.Drawing.Point(837, 775);
+            btnExample10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExample10.Name = "btnExample10";
+            btnExample10.Size = new System.Drawing.Size(185, 45);
+            btnExample10.TabIndex = 63;
+            btnExample10.Text = "cos(2*pi*cos(4*pi*t))";
+            btnExample10.UseVisualStyleBackColor = true;
+            btnExample10.Click += btnExample10_Click;
             // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1045, 859);
+            ClientSize = new System.Drawing.Size(1045, 871);
+            Controls.Add(btnExample10);
+            Controls.Add(btnExample9);
             Controls.Add(btnExample8);
             Controls.Add(btnExample7);
             Controls.Add(btnExample6);
@@ -611,5 +639,7 @@
         private System.Windows.Forms.Button btnExample6;
         private System.Windows.Forms.Button btnExample7;
         private System.Windows.Forms.Button btnExample8;
+        private System.Windows.Forms.Button btnExample9;
+        private System.Windows.Forms.Button btnExample10;
     }
 }

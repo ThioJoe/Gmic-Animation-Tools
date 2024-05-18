@@ -986,5 +986,15 @@ namespace GmicAnimate
         {
             dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample8.Text;
         }
+
+        private void btnExample9_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample9.Text;
+        }
+
+        private void btnExample10_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample10.Text;
+        }
     } //End form class
 } // End namespace
