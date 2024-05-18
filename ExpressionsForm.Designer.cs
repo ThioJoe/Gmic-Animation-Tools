@@ -53,7 +53,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -79,6 +79,7 @@
             radioNormalizeExtendedRangesClone = new System.Windows.Forms.RadioButton();
             checkBoxAbsoluteMode = new System.Windows.Forms.CheckBox();
             toolTipExpressionsForm = new System.Windows.Forms.ToolTip(components);
+            infoIconCopyAnimated = new System.Windows.Forms.PictureBox();
             btnApplyToChecked = new System.Windows.Forms.Button();
             btnApplyToAnimated = new System.Windows.Forms.Button();
             btnUncheckAll = new System.Windows.Forms.Button();
@@ -88,6 +89,7 @@
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
             groupBoxNormalizeRadiosClone.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)infoIconCopyAnimated).BeginInit();
             SuspendLayout();
             // 
             // dataGridViewExpressions
@@ -96,14 +98,14 @@
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridViewExpressions.Location = new System.Drawing.Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -135,7 +137,7 @@
             // btnSendExpressionsStringToMainWindow
             // 
             btnSendExpressionsStringToMainWindow.BackColor = System.Drawing.Color.LightGreen;
-            btnSendExpressionsStringToMainWindow.Location = new System.Drawing.Point(14, 776);
+            btnSendExpressionsStringToMainWindow.Location = new System.Drawing.Point(14, 785);
             btnSendExpressionsStringToMainWindow.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnSendExpressionsStringToMainWindow.Name = "btnSendExpressionsStringToMainWindow";
             btnSendExpressionsStringToMainWindow.Size = new System.Drawing.Size(127, 27);
@@ -245,7 +247,7 @@
             // 
             // btnHelpExpressionsForm
             // 
-            btnHelpExpressionsForm.Location = new System.Drawing.Point(926, 813);
+            btnHelpExpressionsForm.Location = new System.Drawing.Point(917, 815);
             btnHelpExpressionsForm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnHelpExpressionsForm.Name = "btnHelpExpressionsForm";
             btnHelpExpressionsForm.Size = new System.Drawing.Size(106, 32);
@@ -381,6 +383,18 @@
             checkBoxAbsoluteMode.UseVisualStyleBackColor = true;
             checkBoxAbsoluteMode.CheckedChanged += checkBoxAbsoluteMode_CheckedChanged;
             // 
+            // infoIconCopyAnimated
+            // 
+            infoIconCopyAnimated.Image = (System.Drawing.Image)resources.GetObject("infoIconCopyAnimated.Image");
+            infoIconCopyAnimated.Location = new System.Drawing.Point(300, 820);
+            infoIconCopyAnimated.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            infoIconCopyAnimated.Name = "infoIconCopyAnimated";
+            infoIconCopyAnimated.Size = new System.Drawing.Size(16, 16);
+            infoIconCopyAnimated.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            infoIconCopyAnimated.TabIndex = 55;
+            infoIconCopyAnimated.TabStop = false;
+            toolTipExpressionsForm.SetToolTip(infoIconCopyAnimated, resources.GetString("infoIconCopyAnimated.ToolTip"));
+            // 
             // btnApplyToChecked
             // 
             btnApplyToChecked.Location = new System.Drawing.Point(176, 785);
@@ -435,7 +449,8 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1045, 858);
+            ClientSize = new System.Drawing.Size(1045, 859);
+            Controls.Add(infoIconCopyAnimated);
             Controls.Add(btnCheckAll);
             Controls.Add(btnResetExpressions);
             Controls.Add(btnUncheckAll);
@@ -468,6 +483,7 @@
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).EndInit();
             groupBoxNormalizeRadiosClone.ResumeLayout(false);
             groupBoxNormalizeRadiosClone.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)infoIconCopyAnimated).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -504,5 +520,6 @@
         private System.Windows.Forms.Button btnUncheckAll;
         private System.Windows.Forms.Button btnResetExpressions;
         private System.Windows.Forms.Button btnCheckAll;
+        private System.Windows.Forms.PictureBox infoIconCopyAnimated;
     }
 }
