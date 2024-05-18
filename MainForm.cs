@@ -620,6 +620,9 @@ namespace GmicFilterAnimatorApp
                     CreateGif(outputDir);
                 }
 
+                // Reset progress bar
+                progressBarGeneration.Value = 0;
+
                 // Open the output directory in Windows Explorer for user review.
                 //Process.Start("explorer.exe", outputDir);
             }
@@ -1272,7 +1275,6 @@ namespace GmicFilterAnimatorApp
                     {
                         if (cancellationRequested)
                         {
-                            progressBarGeneration.Value = 0;
                             return;
                         }
 
@@ -1320,13 +1322,14 @@ namespace GmicFilterAnimatorApp
                                 BeginInvoke((MethodInvoker)(() =>
                                 {
                                     // Update progress bar
-                                    if (progressBarGeneration.Value + progressIncrement > 100)
+                                    if (progressPercent + progressIncrement > 100)
                                     {
                                         progressBarGeneration.Value = 100;
                                     }
                                     else
                                     {
-                                        progressBarGeneration.Value = (int)Math.Round(progressBarGeneration.Value + progressIncrement);
+                                        progressPercent += progressIncrement;
+                                        progressBarGeneration.Value = (int)Math.Round(progressPercent);
                                     }
 
                                 }));
