@@ -79,7 +79,11 @@
             radioNormalizeExtendedRangesClone = new System.Windows.Forms.RadioButton();
             checkBoxAbsoluteMode = new System.Windows.Forms.CheckBox();
             toolTipExpressionsForm = new System.Windows.Forms.ToolTip(components);
-            btnApplyToAll = new System.Windows.Forms.Button();
+            btnApplyToChecked = new System.Windows.Forms.Button();
+            btnApplyToAnimated = new System.Windows.Forms.Button();
+            btnUncheckAll = new System.Windows.Forms.Button();
+            btnResetExpressions = new System.Windows.Forms.Button();
+            btnCheckAll = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -130,13 +134,14 @@
             // 
             // btnSendExpressionsStringToMainWindow
             // 
-            btnSendExpressionsStringToMainWindow.Location = new System.Drawing.Point(18, 789);
+            btnSendExpressionsStringToMainWindow.BackColor = System.Drawing.Color.LightGreen;
+            btnSendExpressionsStringToMainWindow.Location = new System.Drawing.Point(14, 776);
             btnSendExpressionsStringToMainWindow.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnSendExpressionsStringToMainWindow.Name = "btnSendExpressionsStringToMainWindow";
             btnSendExpressionsStringToMainWindow.Size = new System.Drawing.Size(127, 27);
             btnSendExpressionsStringToMainWindow.TabIndex = 6;
             btnSendExpressionsStringToMainWindow.Text = "Use Above Values";
-            btnSendExpressionsStringToMainWindow.UseVisualStyleBackColor = true;
+            btnSendExpressionsStringToMainWindow.UseVisualStyleBackColor = false;
             btnSendExpressionsStringToMainWindow.Click += btnSendExpressionsStringToMainWindow_Click;
             // 
             // btnTestChart
@@ -240,7 +245,7 @@
             // 
             // btnHelpExpressionsForm
             // 
-            btnHelpExpressionsForm.Location = new System.Drawing.Point(309, 789);
+            btnHelpExpressionsForm.Location = new System.Drawing.Point(926, 813);
             btnHelpExpressionsForm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnHelpExpressionsForm.Name = "btnHelpExpressionsForm";
             btnHelpExpressionsForm.Size = new System.Drawing.Size(106, 32);
@@ -376,21 +381,66 @@
             checkBoxAbsoluteMode.UseVisualStyleBackColor = true;
             checkBoxAbsoluteMode.CheckedChanged += checkBoxAbsoluteMode_CheckedChanged;
             // 
-            // btnApplyToAll
+            // btnApplyToChecked
             // 
-            btnApplyToAll.Location = new System.Drawing.Point(189, 789);
-            btnApplyToAll.Name = "btnApplyToAll";
-            btnApplyToAll.Size = new System.Drawing.Size(105, 23);
-            btnApplyToAll.TabIndex = 47;
-            btnApplyToAll.Text = "Apply To All";
-            btnApplyToAll.UseVisualStyleBackColor = true;
+            btnApplyToChecked.Location = new System.Drawing.Point(176, 785);
+            btnApplyToChecked.Name = "btnApplyToChecked";
+            btnApplyToChecked.Size = new System.Drawing.Size(122, 27);
+            btnApplyToChecked.TabIndex = 47;
+            btnApplyToChecked.Text = "Copy To Checked";
+            btnApplyToChecked.UseVisualStyleBackColor = true;
+            btnApplyToChecked.Click += btnApplyToChecked_Click;
+            // 
+            // btnApplyToAnimated
+            // 
+            btnApplyToAnimated.Location = new System.Drawing.Point(176, 815);
+            btnApplyToAnimated.Name = "btnApplyToAnimated";
+            btnApplyToAnimated.Size = new System.Drawing.Size(122, 27);
+            btnApplyToAnimated.TabIndex = 48;
+            btnApplyToAnimated.Text = "Copy To Animated";
+            btnApplyToAnimated.UseVisualStyleBackColor = true;
+            btnApplyToAnimated.Click += btnApplyToAnimated_Click;
+            // 
+            // btnUncheckAll
+            // 
+            btnUncheckAll.Location = new System.Drawing.Point(332, 815);
+            btnUncheckAll.Name = "btnUncheckAll";
+            btnUncheckAll.Size = new System.Drawing.Size(88, 27);
+            btnUncheckAll.TabIndex = 49;
+            btnUncheckAll.Text = "Uncheck All";
+            btnUncheckAll.UseVisualStyleBackColor = true;
+            btnUncheckAll.Click += btnUncheckAll_Click;
+            // 
+            // btnResetExpressions
+            // 
+            btnResetExpressions.Location = new System.Drawing.Point(332, 718);
+            btnResetExpressions.Name = "btnResetExpressions";
+            btnResetExpressions.Size = new System.Drawing.Size(83, 23);
+            btnResetExpressions.TabIndex = 50;
+            btnResetExpressions.Text = "Reset All";
+            btnResetExpressions.UseVisualStyleBackColor = true;
+            btnResetExpressions.Click += btnResetExpressions_Click;
+            // 
+            // btnCheckAll
+            // 
+            btnCheckAll.Location = new System.Drawing.Point(332, 785);
+            btnCheckAll.Name = "btnCheckAll";
+            btnCheckAll.Size = new System.Drawing.Size(88, 27);
+            btnCheckAll.TabIndex = 51;
+            btnCheckAll.Text = "Check All";
+            btnCheckAll.UseVisualStyleBackColor = true;
+            btnCheckAll.Click += btnCheckAll_Click;
             // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1045, 858);
-            Controls.Add(btnApplyToAll);
+            Controls.Add(btnCheckAll);
+            Controls.Add(btnResetExpressions);
+            Controls.Add(btnUncheckAll);
+            Controls.Add(btnApplyToAnimated);
+            Controls.Add(btnApplyToChecked);
             Controls.Add(checkBoxAbsoluteMode);
             Controls.Add(groupBoxNormalizeRadiosClone);
             Controls.Add(labelErrorWhileGraphing);
@@ -449,6 +499,10 @@
         private System.Windows.Forms.RadioButton radioNormalizeExtendedRangesClone;
         private System.Windows.Forms.CheckBox checkBoxAbsoluteMode;
         private System.Windows.Forms.ToolTip toolTipExpressionsForm;
-        private System.Windows.Forms.Button btnApplyToAll;
+        private System.Windows.Forms.Button btnApplyToChecked;
+        private System.Windows.Forms.Button btnApplyToAnimated;
+        private System.Windows.Forms.Button btnUncheckAll;
+        private System.Windows.Forms.Button btnResetExpressions;
+        private System.Windows.Forms.Button btnCheckAll;
     }
 }

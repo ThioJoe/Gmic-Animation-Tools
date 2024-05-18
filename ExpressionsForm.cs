@@ -38,7 +38,7 @@ namespace GmicAnimate
             nudMasterParamIndexClone.MouseWheel += new MouseEventHandler(this.ScrollHandlerFunction);
 
             string[] expressions = null;
-            if (!String.IsNullOrEmpty(incomingExpressionParamString))
+            if (!string.IsNullOrEmpty(incomingExpressionParamString))
             {
                 customExpressionStringFromMainWindow = incomingExpressionParamString;
             }
@@ -173,22 +173,22 @@ namespace GmicAnimate
 
 
 
-            // Add a checkbox column
-            //DataGridViewCheckBoxColumn chkBoxColumn = new DataGridViewCheckBoxColumn();
-            //chkBoxColumn.HeaderText = "";
-            //chkBoxColumn.Width = 0;
-            //chkBoxColumn.Name = "CheckBox";
-            //chkBoxColumn.TrueValue = true;
-            //chkBoxColumn.FalseValue = false;
-            //dataGridViewExpressions.Columns.Add(chkBoxColumn);
+            //Add a checkbox column
+            DataGridViewCheckBoxColumn chkBoxColumn = new DataGridViewCheckBoxColumn();
+            chkBoxColumn.HeaderText = "";
+            chkBoxColumn.Width = 25;
+            chkBoxColumn.Name = "CheckBox";
+            chkBoxColumn.TrueValue = true;
+            chkBoxColumn.FalseValue = false;
+            dataGridViewExpressions.Columns.Add(chkBoxColumn);
 
-            // Add column for parameter names
-            DataGridViewTextBoxColumn dummyColumn = new DataGridViewTextBoxColumn();
-            dummyColumn.HeaderText = "";
-            dummyColumn.Name = "Dummy";
-            dummyColumn.Width = 0;
-            dummyColumn.ReadOnly = true;
-            dataGridViewExpressions.Columns.Add(dummyColumn);
+            // Add dummy column to be first column so I can hide it
+            //DataGridViewTextBoxColumn dummyColumn = new DataGridViewTextBoxColumn();
+            //dummyColumn.HeaderText = "";
+            //dummyColumn.Name = "Dummy";
+            //dummyColumn.Width = 0;
+            //dummyColumn.ReadOnly = true;
+            //dataGridViewExpressions.Columns.Add(dummyColumn);
 
             // Add column for parameter names
             DataGridViewTextBoxColumn paramNameColumn = new DataGridViewTextBoxColumn();
@@ -366,7 +366,7 @@ namespace GmicAnimate
         // Function to set current start param string from array
         public void SetCurrenExpressionParamString(string[] currentParamString)
         {
-            if (!String.IsNullOrEmpty(txtCurrentExpressionParamString.Text))
+            if (!string.IsNullOrEmpty(txtCurrentExpressionParamString.Text))
             {
                 txtCurrentExpressionParamString.Text = string.Join(",", currentParamString);
             }
@@ -396,7 +396,7 @@ namespace GmicAnimate
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
                 string cellExpression = dataGridView.Rows[i].Cells[columnName].Value.ToString();
-                if (!String.IsNullOrEmpty(cellExpression))
+                if (!string.IsNullOrEmpty(cellExpression))
                 {
                     values[i] = cellExpression;
                 }
@@ -415,7 +415,7 @@ namespace GmicAnimate
             if (e.RowIndex >= 0 && (e.ColumnIndex == dataGridViewExpressions.Columns["Expression"].Index))
             {
                 // Don't do anything if the start or end values are empty
-                if (!String.IsNullOrEmpty((string)dataGridViewExpressions.Rows[e.RowIndex].Cells["Expression"].Value))
+                if (!string.IsNullOrEmpty((string)dataGridViewExpressions.Rows[e.RowIndex].Cells["Expression"].Value))
                 {
                     UpdateParameterStringsWithNewTableData();
                 }
@@ -450,7 +450,7 @@ namespace GmicAnimate
             {
                 for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
                 {
-                    if (!String.IsNullOrEmpty((string)dataGridViewExpressions.Rows[i].Cells["Expression"].Value))
+                    if (!string.IsNullOrEmpty((string)dataGridViewExpressions.Rows[i].Cells["Expression"].Value))
                     {
                         expressions[i] = (string)dataGridViewExpressions.Rows[i].Cells["Expression"].Value;
                     }
@@ -864,6 +864,95 @@ namespace GmicAnimate
             }
 
             PlotGraph();
+        }
+
+        // Copy the expression in the current master parameter row to any rows for which the parameters change, as long as they are not disabled
+        private void btnApplyToAnimated_Click(object sender, EventArgs e)
+        {
+            // First get the parameter values from the main form
+            double[] startValues;
+            double[] endValues;
+            (startValues, endValues) = mainForm.CurrentParameterValuesGetter();
+
+            // Get a list of the parameter indexes that have different start and end values
+            List<int> animatedParamIndexes = new List<int>();
+            for (int i = 0; i < startValues.Length; i++)
+            {
+                if (startValues[i] != endValues[i])
+                {
+                    animatedParamIndexes.Add(i);
+                }
+            }
+
+            // Copy the expression to the rows that have different start and end values and are not disabled
+            string expressionToCopy = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+            for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
+            {
+                if (animatedParamIndexes.Contains(i) && dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor != disabledForeColor)
+                {
+                    dataGridViewExpressions.Rows[i].Cells["Expression"].Value = expressionToCopy;
+                }
+            }
+        }
+
+        private void btnApplyToChecked_Click(object sender, EventArgs e)
+        {
+            // Copy the expression in the current master parameter row to all rows that are checked, as long as they are not disabled
+            string expressionToCopy = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+            for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
+            {
+                if (dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor != disabledForeColor)
+                {
+                    bool isChecked = Convert.ToBoolean(dataGridViewExpressions.Rows[i].Cells["CheckBox"].Value);
+                    if (isChecked)
+                    {
+                        dataGridViewExpressions.Rows[i].Cells["Expression"].Value = expressionToCopy;
+                    }
+                }
+            }
+        }
+
+        private void btnUncheckAll_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridViewExpressions.Rows)
+            {
+                row.Cells["CheckBox"].Value = false;
+            }
+        }
+
+        private void btnResetExpressions_Click(object sender, EventArgs e)
+        {
+            // Split the string into an array of strings
+            string[] expressions = customExpressionStringFromMainWindow.Split(',');
+
+            // Reset the expressions to the default values, only update enabled rows
+            for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
+            {
+                if (dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor != disabledForeColor)
+                {
+                    if (expressions[i] != null)
+                    {
+                        dataGridViewExpressions.Rows[i].Cells["Expression"].Value = expressions[i];
+                    }
+                    else
+                    {
+                        dataGridViewExpressions.Rows[i].Cells["Expression"].Value = "";
+                    }
+
+                }
+            }
+        }
+
+        private void btnCheckAll_Click(object sender, EventArgs e)
+        {
+            // Check all non-disabled rows
+            foreach (DataGridViewRow row in dataGridViewExpressions.Rows)
+            {
+                if (row.DefaultCellStyle.ForeColor != disabledForeColor)
+                {
+                    row.Cells["CheckBox"].Value = true;
+                }
+            }
         }
     } //End form class
 } // End namespace

@@ -353,6 +353,36 @@ namespace GmicFilterAnimatorApp
             }
         }
 
+        public (double[], double[]) CurrentParameterValuesGetter(bool returnDefaultsForFailedParse = false)
+        {
+            // Gets an array of the current parameter values start and end
+            // First get strings
+            string startParamsString = txtStartParams.Text;
+            string endParamsString = txtEndParams.Text;
+
+            // Try to split the parameters into arrays if they aren't empty. use ParseParamsToDoubleArray function, which will return null if it fails
+            double[] startValues = ParseParamsToDoublesArray(startParamsString, silent: true);
+            double[] endValues = ParseParamsToDoublesArray(endParamsString, silent: true);
+
+            if (startValues == null || endValues == null)
+            {
+                if (returnDefaultsForFailedParse)
+                {
+                    // If the values are null, return the default values
+                    return (ParseParamsToDoublesArray(defaultStartParams, silent: true), ParseParamsToDoublesArray(defaultEndParams, silent: true));
+                }
+                else
+                {
+                    // One or both might be null here
+                    return (startValues, endValues);
+                }
+            }
+            else
+            {
+                return (startValues, endValues);
+            }
+            
+        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
