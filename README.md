@@ -7,18 +7,18 @@ This C# Windows Forms application leverages the G'MIC image processing engine to
 <table>
   <tr>
     <td align="center">
-      <img width="400" alt="Image 1" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/6eee1959-4820-4634-8ec9-1fc61e073a55">
+      <img width="300" alt="Image 1" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/6eee1959-4820-4634-8ec9-1fc61e073a55">
     </td>
     <td align="center">
-      <img width="400" alt="Image 2" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/0310f235-2b27-4b5c-873e-ea45568c71e0">
+      <img width="300" alt="Image 2" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/0310f235-2b27-4b5c-873e-ea45568c71e0">
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img width="400" alt="Image 3" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/72802e6e-a98b-46e8-9a9e-73173933f8cc">
+      <img width="300" alt="Image 3" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/72802e6e-a98b-46e8-9a9e-73173933f8cc">
     </td>
     <td align="center">
-      <img width="400" alt="Image 4" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/6c1fbc67-32cb-44b6-8da3-b89097f0c96a">
+      <img width="300" alt="Image 4" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/6c1fbc67-32cb-44b6-8da3-b89097f0c96a">
     </td>
   </tr>
 </table>
