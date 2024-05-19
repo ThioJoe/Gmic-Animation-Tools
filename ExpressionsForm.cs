@@ -648,11 +648,6 @@ namespace GmicAnimate
                 {
                     series.Points.AddXY(i, valuesToGraph[i]);
                 }
-                // Set chart info - title, min axis, etc
-                // Set minimum axis values
-                chartCurve.ChartAreas[0].AxisX.Minimum = 0;
-                chartCurve.ChartAreas[0].AxisX.Title = "Frame Number";
-                chartCurve.ChartAreas[0].AxisY.Title = "Value";
 
                 // If any values are negative, create zero line strip
                 if (valuesToGraph.Min() < 0)

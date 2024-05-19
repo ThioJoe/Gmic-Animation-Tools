@@ -26,11 +26,11 @@
             // 
             // chartCurve
             // 
-            chartArea1.AxisX.TitleFont = new System.Drawing.Font("Arial", 10F);
-            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Arial", 10F);
+            chartArea1.AxisX.TitleFont = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Regular);
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Regular);
             chartArea1.Name = "ChartArea1";
             this.chartCurve.ChartAreas.Add(chartArea1);
-            this.chartCurve.Location = new System.Drawing.Point(371, 78);
+            this.chartCurve.Location = new System.Drawing.Point(425, 78);
             this.chartCurve.Name = "chartCurve";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
@@ -38,9 +38,14 @@
             series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series1.Name = "ValueSeries";
             this.chartCurve.Series.Add(series1);
-            this.chartCurve.Size = new System.Drawing.Size(513, 300);
+            this.chartCurve.Size = new System.Drawing.Size(600, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
+
+            // Set chart info - title, min axis, etc
+            chartCurve.ChartAreas[0].AxisX.Minimum = 0;
+            chartCurve.ChartAreas[0].AxisX.Title = "Frame Numbers";
+            chartCurve.ChartAreas[0].AxisY.Title = "Interpolated Parameter Values";
 
             Controls.Add(chartCurve);
 
@@ -53,7 +58,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -68,7 +73,6 @@
             labelMasterIndexClone = new System.Windows.Forms.Label();
             labelNoGraphToggleParam = new System.Windows.Forms.Label();
             btnHelpExpressionsForm = new System.Windows.Forms.Button();
-            btnExampleSine = new System.Windows.Forms.Button();
             labelExampleExpressionButtons = new System.Windows.Forms.Label();
             btnExampleCosine = new System.Windows.Forms.Button();
             labelErrorWhileGraphing = new System.Windows.Forms.Label();
@@ -93,6 +97,7 @@
             btnExample8 = new System.Windows.Forms.Button();
             btnExample9 = new System.Windows.Forms.Button();
             btnExample10 = new System.Windows.Forms.Button();
+            btnExampleSine = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -106,14 +111,14 @@
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle6;
             dataGridViewExpressions.Location = new System.Drawing.Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -156,7 +161,7 @@
             // 
             // btnTestChart
             // 
-            btnTestChart.Location = new System.Drawing.Point(453, 463);
+            btnTestChart.Location = new System.Drawing.Point(944, 475);
             btnTestChart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnTestChart.Name = "btnTestChart";
             btnTestChart.Size = new System.Drawing.Size(88, 27);
@@ -168,7 +173,7 @@
             // 
             // btnChartValues
             // 
-            btnChartValues.Location = new System.Drawing.Point(610, 455);
+            btnChartValues.Location = new System.Drawing.Point(433, 386);
             btnChartValues.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnChartValues.Name = "btnChartValues";
             btnChartValues.Size = new System.Drawing.Size(224, 43);
@@ -180,7 +185,7 @@
             // checkBoxKeepFramesConstant
             // 
             checkBoxKeepFramesConstant.AutoSize = true;
-            checkBoxKeepFramesConstant.Location = new System.Drawing.Point(433, 523);
+            checkBoxKeepFramesConstant.Location = new System.Drawing.Point(689, 388);
             checkBoxKeepFramesConstant.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
             checkBoxKeepFramesConstant.Size = new System.Drawing.Size(218, 19);
@@ -193,7 +198,7 @@
             // 
             nudGraphConstantFrameCount.Enabled = false;
             nudGraphConstantFrameCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            nudGraphConstantFrameCount.Location = new System.Drawing.Point(659, 521);
+            nudGraphConstantFrameCount.Location = new System.Drawing.Point(915, 386);
             nudGraphConstantFrameCount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             nudGraphConstantFrameCount.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudGraphConstantFrameCount.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -208,7 +213,7 @@
             checkBoxAutoUpdateGraph.AutoSize = true;
             checkBoxAutoUpdateGraph.Checked = true;
             checkBoxAutoUpdateGraph.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBoxAutoUpdateGraph.Location = new System.Drawing.Point(433, 549);
+            checkBoxAutoUpdateGraph.Location = new System.Drawing.Point(689, 414);
             checkBoxAutoUpdateGraph.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxAutoUpdateGraph.Name = "checkBoxAutoUpdateGraph";
             checkBoxAutoUpdateGraph.Size = new System.Drawing.Size(128, 19);
@@ -264,23 +269,11 @@
             btnHelpExpressionsForm.UseVisualStyleBackColor = true;
             btnHelpExpressionsForm.Click += btnHelpExpressionsForm_Click;
             // 
-            // btnExampleSine
-            // 
-            btnExampleSine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleSine.Location = new System.Drawing.Point(644, 575);
-            btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExampleSine.Name = "btnExampleSine";
-            btnExampleSine.Size = new System.Drawing.Size(185, 45);
-            btnExampleSine.TabIndex = 17;
-            btnExampleSine.Text = "sin(2*pi*t)";
-            btnExampleSine.UseVisualStyleBackColor = true;
-            btnExampleSine.Click += btnExampleSin_Click;
-            // 
             // labelExampleExpressionButtons
             // 
             labelExampleExpressionButtons.AutoSize = true;
             labelExampleExpressionButtons.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            labelExampleExpressionButtons.Location = new System.Drawing.Point(732, 550);
+            labelExampleExpressionButtons.Location = new System.Drawing.Point(618, 550);
             labelExampleExpressionButtons.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelExampleExpressionButtons.Name = "labelExampleExpressionButtons";
             labelExampleExpressionButtons.Size = new System.Drawing.Size(199, 22);
@@ -290,7 +283,7 @@
             // btnExampleCosine
             // 
             btnExampleCosine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleCosine.Location = new System.Drawing.Point(837, 575);
+            btnExampleCosine.Location = new System.Drawing.Point(632, 586);
             btnExampleCosine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleCosine.Name = "btnExampleCosine";
             btnExampleCosine.Size = new System.Drawing.Size(185, 45);
@@ -319,11 +312,11 @@
             groupBoxNormalizeRadiosClone.Controls.Add(radioNormalizeMaxRangesClone);
             groupBoxNormalizeRadiosClone.Controls.Add(radioNormalizeExtendedRangesClone);
             groupBoxNormalizeRadiosClone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            groupBoxNormalizeRadiosClone.Location = new System.Drawing.Point(429, 590);
+            groupBoxNormalizeRadiosClone.Location = new System.Drawing.Point(433, 437);
             groupBoxNormalizeRadiosClone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupBoxNormalizeRadiosClone.Name = "groupBoxNormalizeRadiosClone";
             groupBoxNormalizeRadiosClone.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            groupBoxNormalizeRadiosClone.Size = new System.Drawing.Size(191, 91);
+            groupBoxNormalizeRadiosClone.Size = new System.Drawing.Size(195, 86);
             groupBoxNormalizeRadiosClone.TabIndex = 45;
             groupBoxNormalizeRadiosClone.TabStop = false;
             // 
@@ -381,7 +374,7 @@
             // checkBoxAbsoluteMode
             // 
             checkBoxAbsoluteMode.AutoSize = true;
-            checkBoxAbsoluteMode.Location = new System.Drawing.Point(433, 687);
+            checkBoxAbsoluteMode.Location = new System.Drawing.Point(440, 525);
             checkBoxAbsoluteMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxAbsoluteMode.Name = "checkBoxAbsoluteMode";
             checkBoxAbsoluteMode.Size = new System.Drawing.Size(107, 19);
@@ -456,7 +449,7 @@
             // btnExampleExpSin
             // 
             btnExampleExpSin.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleExpSin.Location = new System.Drawing.Point(644, 625);
+            btnExampleExpSin.Location = new System.Drawing.Point(825, 587);
             btnExampleExpSin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleExpSin.Name = "btnExampleExpSin";
             btnExampleExpSin.Size = new System.Drawing.Size(185, 45);
@@ -468,7 +461,7 @@
             // btnExample4
             // 
             btnExample4.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample4.Location = new System.Drawing.Point(837, 625);
+            btnExample4.Location = new System.Drawing.Point(439, 638);
             btnExample4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample4.Name = "btnExample4";
             btnExample4.Size = new System.Drawing.Size(185, 45);
@@ -480,7 +473,7 @@
             // btnExample5
             // 
             btnExample5.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample5.Location = new System.Drawing.Point(644, 675);
+            btnExample5.Location = new System.Drawing.Point(632, 637);
             btnExample5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample5.Name = "btnExample5";
             btnExample5.Size = new System.Drawing.Size(185, 45);
@@ -492,7 +485,7 @@
             // btnExample6
             // 
             btnExample6.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample6.Location = new System.Drawing.Point(837, 675);
+            btnExample6.Location = new System.Drawing.Point(825, 638);
             btnExample6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample6.Name = "btnExample6";
             btnExample6.Size = new System.Drawing.Size(185, 45);
@@ -504,7 +497,7 @@
             // btnExample7
             // 
             btnExample7.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample7.Location = new System.Drawing.Point(644, 725);
+            btnExample7.Location = new System.Drawing.Point(439, 689);
             btnExample7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample7.Name = "btnExample7";
             btnExample7.Size = new System.Drawing.Size(185, 45);
@@ -516,7 +509,7 @@
             // btnExample8
             // 
             btnExample8.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExample8.Location = new System.Drawing.Point(837, 725);
+            btnExample8.Location = new System.Drawing.Point(632, 688);
             btnExample8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample8.Name = "btnExample8";
             btnExample8.Size = new System.Drawing.Size(185, 45);
@@ -528,7 +521,7 @@
             // btnExample9
             // 
             btnExample9.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample9.Location = new System.Drawing.Point(644, 775);
+            btnExample9.Location = new System.Drawing.Point(825, 689);
             btnExample9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample9.Name = "btnExample9";
             btnExample9.Size = new System.Drawing.Size(185, 45);
@@ -540,7 +533,7 @@
             // btnExample10
             // 
             btnExample10.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample10.Location = new System.Drawing.Point(837, 775);
+            btnExample10.Location = new System.Drawing.Point(439, 740);
             btnExample10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample10.Name = "btnExample10";
             btnExample10.Size = new System.Drawing.Size(185, 45);
@@ -548,6 +541,18 @@
             btnExample10.Text = "cos(2*pi*cos(4*pi*t))";
             btnExample10.UseVisualStyleBackColor = true;
             btnExample10.Click += btnExample10_Click;
+            // 
+            // btnExampleSine
+            // 
+            btnExampleSine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExampleSine.Location = new System.Drawing.Point(439, 587);
+            btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExampleSine.Name = "btnExampleSine";
+            btnExampleSine.Size = new System.Drawing.Size(185, 45);
+            btnExampleSine.TabIndex = 17;
+            btnExampleSine.Text = "sin(2*pi*t)";
+            btnExampleSine.UseVisualStyleBackColor = true;
+            btnExampleSine.Click += btnExampleSin_Click;
             // 
             // ExpressionsForm
             // 
@@ -616,7 +621,6 @@
         private System.Windows.Forms.Label labelMasterIndexClone;
         private System.Windows.Forms.Label labelNoGraphToggleParam;
         private System.Windows.Forms.Button btnHelpExpressionsForm;
-        private System.Windows.Forms.Button btnExampleSine;
         private System.Windows.Forms.Label labelExampleExpressionButtons;
         private System.Windows.Forms.Button btnExampleCosine;
         private System.Windows.Forms.Label labelErrorWhileGraphing;
@@ -641,5 +645,6 @@
         private System.Windows.Forms.Button btnExample8;
         private System.Windows.Forms.Button btnExample9;
         private System.Windows.Forms.Button btnExample10;
+        private System.Windows.Forms.Button btnExampleSine;
     }
 }
