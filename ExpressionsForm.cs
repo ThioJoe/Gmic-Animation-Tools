@@ -210,6 +210,12 @@ namespace GmicAnimate
             dataGridViewExpressions.AllowUserToAddRows = false;
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.EditMode = DataGridViewEditMode.EditOnEnter;
+
+            // Don't allow sorting - It messes up the master parameter index highlighting
+            foreach (DataGridViewColumn column in dataGridViewExpressions.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
         }
 
         public void UpdateEntireWindowWithNewFilter()
