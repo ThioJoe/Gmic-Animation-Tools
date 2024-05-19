@@ -1574,7 +1574,7 @@ namespace GmicFilterAnimatorApp
                 i++;
             }
             // Huge long command is to preserve transparency from PNG sequence to gif
-            string ffmpegCommand = $"ffmpeg -framerate 25 -i \"{outputDir}\\{fileNameWithoutExtension}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse\" \"{outputDir}\\{gifFileName}\"";
+            string ffmpegCommand = $"ffmpeg -framerate 25 -reinit_filter 0 -i \"{outputDir}\\{fileNameWithoutExtension}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse\" \"{outputDir}\\{gifFileName}\"";
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";

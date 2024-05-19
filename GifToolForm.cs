@@ -585,7 +585,7 @@ namespace GmicAnimate
             string ffmpegCommand = "";
             if (dropdownFFmpegMode.SelectedIndex == 0)
             {
-                ffmpegCommand = $"ffmpeg -framerate {frameRate} -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse\" \"{outputDir}\\{gifFileName}\"";
+                ffmpegCommand = $"ffmpeg -framerate {frameRate} -reinit_filter 0 -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse\" \"{outputDir}\\{gifFileName}\"";
             } 
             else if (dropdownFFmpegMode.SelectedIndex == 1)
             {
