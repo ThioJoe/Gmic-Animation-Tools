@@ -327,6 +327,33 @@ namespace GmicFilterAnimatorApp
             }
         }
 
+        public string ExponentModeRadioSetterMainForm
+        {
+            set
+            {
+                if (value == "NoExponents")
+                {
+                    rbNoExponents.Checked = true;
+                    rbNoExponents_CheckedChanged(null, null);
+                }
+                else if (value == "MasterExponent")
+                {
+                    rbMasterExponent.Checked = true;
+                    rbMasterExponent_CheckedChanged(null, null);
+                }
+                else if (value == "DefaultExponents")
+                {
+                    rbDefaultExponents.Checked = true;
+                    rbDefaultExponents_CheckedChanged(null, null);
+                }
+                else if (value == "CustomExponents")
+                {
+                    rbCustomExponents.Checked = true;
+                    rbCustomExponents_CheckedChanged(null, null);
+                }
+            }
+        }
+
         public string NormalizersChangeSetterMainForm
         {
             set
@@ -2436,10 +2463,6 @@ namespace GmicFilterAnimatorApp
 
             if (expressionForm == null)
             {
-                // First set exponent mode to custom array
-                rbCustomExponents.Checked = true;
-                rbCustomExponents_CheckedChanged(null, null);
-
                 // Form is not open, create and show it
                 expressionForm = new ExpressionsForm(
                     mainform: this,
@@ -2993,10 +3016,6 @@ namespace GmicFilterAnimatorApp
 
             if (toolForm == null)
             {
-                // First set exponent mode to custom array
-                rbCustomExponents.Checked = true;
-                rbCustomExponents_CheckedChanged(null, null);
-
                 // Form is not open, create and show it
                 toolForm = new ToolForm(
                     mainform: this

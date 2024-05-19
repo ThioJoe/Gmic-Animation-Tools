@@ -482,6 +482,9 @@ namespace GmicAnimate
                 mainForm.CustomExpressionArrayTextBoxChangeSetter = txtCurrentExpressionParamString.Text;
                 // Send only the master parameter expression to the master parameter text box
                 mainForm.CustomMasterExpressionTextBoxChangeSetter = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+
+                // Set the mode to custom exponents in main window
+                mainForm.ExponentModeRadioSetterMainForm = "CustomExponents";
             }
         }
 
