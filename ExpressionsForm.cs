@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -538,6 +539,7 @@ namespace GmicAnimate
         public void PlotGraph(bool silent = true)
         {
             labelErrorWhileGraphing.Visible = false;
+            labelReplacingXWithT.Visible = false;
             //If the parameter to be graphed is binary, don't graph
             if (FilterParameters.GetNonExponentableParamIndexes().Contains(masterParamIndexFromMainWindow))
             {
@@ -565,9 +567,12 @@ namespace GmicAnimate
 
             // Get the expression to evaluate from the master parameter text box
             string expressionToEvaluate = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+            //Remove spaces and make it lowercase
+            expressionToEvaluate = expressionToEvaluate.Replace(" ", "");
+            expressionToEvaluate = expressionToEvaluate.ToLower();
 
             // Determine if it's an expression or just an exponent, and if it's an exponent, convert it to an expression
-            if (!expressionToEvaluate.Contains("t"))
+            if (!ContainsStandaloneLetter(expressionToEvaluate, "t"))
             {
                 // If it's a number then add t^
                 if (double.TryParse(expressionToEvaluate, out double exponent))
@@ -587,7 +592,8 @@ namespace GmicAnimate
             // Additional variables allowed for absolute mode. Can allow x and t
             if (checkBoxAbsoluteMode.Checked)
             {
-                if (!expressionToEvaluate.Contains("t") && !expressionToEvaluate.Contains("x"))
+                // If it contains neither t nor x while in absolute mode
+                if (!ContainsStandaloneLetter(expressionToEvaluate, "t") && !ContainsStandaloneLetter(expressionToEvaluate, "x"))
                 {
                     if (!double.TryParse(expressionToEvaluate, out double exponent))
                     {
@@ -603,8 +609,10 @@ namespace GmicAnimate
                     }
                 }
             }
-            else if (!expressionToEvaluate.Contains("t"))
+            // If outside absolute mode and doesn't use t
+            else if (!ContainsStandaloneLetter(expressionToEvaluate, "t"))
             {
+                // If it's just a number then move on because it's an exponent - Otherwise display message about needing t
                 if (!double.TryParse(expressionToEvaluate, out double exponent))
                 {
                     if (!silent)
@@ -616,8 +624,23 @@ namespace GmicAnimate
                             "\n\nConstants like pi are allowed too.",
                             "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    labelErrorWhileGraphing.Visible = true;
-                    return;
+                    // If it contains an x, show a message that it's being replaced with t. Otherwise display error message. Be sure not to replace x part of something like exp()
+                    if (ContainsStandaloneLetter(expressionToEvaluate, "x"))
+                    {
+                        labelReplacingXWithT.Visible = true;
+                        // Replace x with t
+                        expressionToEvaluate = ReplaceStandaloneLetter(input: expressionToEvaluate, letterToReplace: "x", replacementLetter: "t");
+                    }
+                    else
+                    {
+                        labelErrorWhileGraphing.Visible = true;
+                        return;
+                    }
+                    
+                }
+                else
+                {
+                    // Here do nothing because it's just an exponent
                 }
             }
 
@@ -679,6 +702,34 @@ namespace GmicAnimate
                 labelErrorWhileGraphing.Visible = true;
                 return;
             }
+        }
+
+        static string ReplaceStandaloneLetter(string input, string letterToReplace, string replacementLetter)
+        {
+            // Escape special characters in the letterToReplace to safely include it in the regex pattern
+            string escapedLetterToReplace = Regex.Escape(letterToReplace);
+
+            // Regex pattern to match the letterToReplace not surrounded by alphanumeric characters
+            string pattern = $@"\b{escapedLetterToReplace}\b";
+
+            // Replace standalone letterToReplace with replacementLetter
+            string result = Regex.Replace(input, pattern, replacementLetter);
+
+            return result;
+        }
+
+        static bool ContainsStandaloneLetter(string input, string letterToCheck)
+        {
+            // Escape special characters in the letterToCheck to safely include it in the regex pattern
+            string escapedLetterToCheck = Regex.Escape(letterToCheck);
+
+            // Regex pattern to match the letterToCheck not surrounded by alphanumeric characters
+            string pattern = $@"\b{escapedLetterToCheck}\b";
+
+            // Check if the pattern exists in the input
+            bool contains = Regex.IsMatch(input, pattern);
+
+            return contains;
         }
 
         // Get interpolated data into graphable form
@@ -953,49 +1004,44 @@ namespace GmicAnimate
             }
         }
 
+        // --------------------------------------------------------------------------------------
+        // -------------------------- Example Buttons -------------------------------------------
+        // --------------------------------------------------------------------------------------
+
         private void btnExampleExpSin_Click(object sender, EventArgs e)
         {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleExpSin.Text;
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleExp.Text;
         }
 
-        private void btnExample4_Click(object sender, EventArgs e)
+
+        private void dropdownExampleNonLoops_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample4.Text;
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = dropdownExamplesNonLoops.SelectedItem;
+            // Reset other dropdowns - Remove handlers to prevent triggering extra events
+            ResetWackyDropdown();
         }
 
-        private void btnExample5_Click(object sender, EventArgs e)
+        private void dropdownExampleLoops_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample5.Text;
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = dropdownExampleLoops.SelectedItem;
+            // Reset other dropdowns - Remove handlers to prevent triggering extra events
+            ResetNonLoopDropdown();
         }
 
-        private void btnExample6_Click(object sender, EventArgs e)
+        // ---------------------------- Functions to reset each dropdown ----------------------------
+        private void ResetNonLoopDropdown()
         {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample6.Text;
+            dropdownExamplesNonLoops.SelectedIndexChanged -= dropdownExampleNonLoops_SelectedIndexChanged;
+            dropdownExamplesNonLoops.SelectedIndex = -1;
+            dropdownExamplesNonLoops.SelectedIndexChanged += dropdownExampleNonLoops_SelectedIndexChanged;
         }
 
-        private void btnExample7_Click(object sender, EventArgs e)
+        private void ResetWackyDropdown()
         {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample7.Text;
+            dropdownExampleLoops.SelectedIndexChanged -= dropdownExampleLoops_SelectedIndexChanged;
+            dropdownExampleLoops.SelectedIndex = -1;
+            dropdownExampleLoops.SelectedIndexChanged += dropdownExampleLoops_SelectedIndexChanged;
         }
 
-        private void btnExample8_Click(object sender, EventArgs e)
-        {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample8.Text;
-        }
-
-        private void btnExample9_Click(object sender, EventArgs e)
-        {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample9.Text;
-        }
-
-        private void btnExample10_Click(object sender, EventArgs e)
-        {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample10.Text;
-        }
-
-        private void dropdownExampleSelector_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = dropdownExampleSelector.SelectedItem;
-        }
     } //End form class
 } // End namespace

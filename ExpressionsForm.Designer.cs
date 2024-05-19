@@ -58,7 +58,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -89,16 +89,13 @@
             btnUncheckAll = new System.Windows.Forms.Button();
             btnResetExpressions = new System.Windows.Forms.Button();
             btnCheckAll = new System.Windows.Forms.Button();
-            btnExampleExpSin = new System.Windows.Forms.Button();
-            btnExample4 = new System.Windows.Forms.Button();
-            btnExample5 = new System.Windows.Forms.Button();
-            btnExample6 = new System.Windows.Forms.Button();
-            btnExample7 = new System.Windows.Forms.Button();
-            btnExample8 = new System.Windows.Forms.Button();
-            btnExample9 = new System.Windows.Forms.Button();
-            btnExample10 = new System.Windows.Forms.Button();
+            btnExampleExp = new System.Windows.Forms.Button();
             btnExampleSine = new System.Windows.Forms.Button();
-            dropdownExampleSelector = new System.Windows.Forms.ComboBox();
+            dropdownExamplesNonLoops = new System.Windows.Forms.ComboBox();
+            labelExamplesNonLoops = new System.Windows.Forms.Label();
+            dropdownExampleLoops = new System.Windows.Forms.ComboBox();
+            labelExamplesWacky = new System.Windows.Forms.Label();
+            labelReplacingXWithT = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -112,14 +109,14 @@
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle4;
             dataGridViewExpressions.Location = new System.Drawing.Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -284,12 +281,12 @@
             // btnExampleCosine
             // 
             btnExampleCosine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleCosine.Location = new System.Drawing.Point(632, 629);
+            btnExampleCosine.Location = new System.Drawing.Point(636, 669);
             btnExampleCosine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleCosine.Name = "btnExampleCosine";
             btnExampleCosine.Size = new System.Drawing.Size(185, 45);
             btnExampleCosine.TabIndex = 19;
-            btnExampleCosine.Text = "cos(4*pi*t)";
+            btnExampleCosine.Text = "cos(2*pi*t)";
             btnExampleCosine.UseVisualStyleBackColor = true;
             btnExampleCosine.Click += btnExampleCosine_Click;
             // 
@@ -447,106 +444,22 @@
             btnCheckAll.UseVisualStyleBackColor = true;
             btnCheckAll.Click += btnCheckAll_Click;
             // 
-            // btnExampleExpSin
+            // btnExampleExp
             // 
-            btnExampleExpSin.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleExpSin.Location = new System.Drawing.Point(825, 630);
-            btnExampleExpSin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExampleExpSin.Name = "btnExampleExpSin";
-            btnExampleExpSin.Size = new System.Drawing.Size(185, 45);
-            btnExampleExpSin.TabIndex = 56;
-            btnExampleExpSin.Text = "exp(sin(2*pi*t))";
-            btnExampleExpSin.UseVisualStyleBackColor = true;
-            btnExampleExpSin.Click += btnExampleExpSin_Click;
-            // 
-            // btnExample4
-            // 
-            btnExample4.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample4.Location = new System.Drawing.Point(439, 681);
-            btnExample4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExample4.Name = "btnExample4";
-            btnExample4.Size = new System.Drawing.Size(185, 45);
-            btnExample4.TabIndex = 57;
-            btnExample4.Text = "sin(4*pi*t)*exp(-t)";
-            btnExample4.UseVisualStyleBackColor = true;
-            btnExample4.Click += btnExample4_Click;
-            // 
-            // btnExample5
-            // 
-            btnExample5.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample5.Location = new System.Drawing.Point(632, 680);
-            btnExample5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExample5.Name = "btnExample5";
-            btnExample5.Size = new System.Drawing.Size(185, 45);
-            btnExample5.TabIndex = 58;
-            btnExample5.Text = "tanh(cos(2*pi*t))";
-            btnExample5.UseVisualStyleBackColor = true;
-            btnExample5.Click += btnExample5_Click;
-            // 
-            // btnExample6
-            // 
-            btnExample6.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample6.Location = new System.Drawing.Point(825, 681);
-            btnExample6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExample6.Name = "btnExample6";
-            btnExample6.Size = new System.Drawing.Size(185, 45);
-            btnExample6.TabIndex = 59;
-            btnExample6.Text = "sin(2*pi*sin(2*pi*t))";
-            btnExample6.UseVisualStyleBackColor = true;
-            btnExample6.Click += btnExample6_Click;
-            // 
-            // btnExample7
-            // 
-            btnExample7.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample7.Location = new System.Drawing.Point(439, 732);
-            btnExample7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExample7.Name = "btnExample7";
-            btnExample7.Size = new System.Drawing.Size(185, 45);
-            btnExample7.TabIndex = 60;
-            btnExample7.Text = "cos(2*pi*cos(2*pi*t))";
-            btnExample7.UseVisualStyleBackColor = true;
-            btnExample7.Click += btnExample7_Click;
-            // 
-            // btnExample8
-            // 
-            btnExample8.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExample8.Location = new System.Drawing.Point(632, 731);
-            btnExample8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExample8.Name = "btnExample8";
-            btnExample8.Size = new System.Drawing.Size(185, 45);
-            btnExample8.TabIndex = 61;
-            btnExample8.Text = "sin(2*pi*t)*\r\nexp(-sin(2*pi*t))";
-            btnExample8.UseVisualStyleBackColor = true;
-            btnExample8.Click += btnExample8_Click;
-            // 
-            // btnExample9
-            // 
-            btnExample9.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample9.Location = new System.Drawing.Point(825, 732);
-            btnExample9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExample9.Name = "btnExample9";
-            btnExample9.Size = new System.Drawing.Size(185, 45);
-            btnExample9.TabIndex = 62;
-            btnExample9.Text = "(sin(2*pi*t))^3";
-            btnExample9.UseVisualStyleBackColor = true;
-            btnExample9.Click += btnExample9_Click;
-            // 
-            // btnExample10
-            // 
-            btnExample10.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample10.Location = new System.Drawing.Point(439, 783);
-            btnExample10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            btnExample10.Name = "btnExample10";
-            btnExample10.Size = new System.Drawing.Size(185, 45);
-            btnExample10.TabIndex = 63;
-            btnExample10.Text = "cos(2*pi*cos(4*pi*t))";
-            btnExample10.UseVisualStyleBackColor = true;
-            btnExample10.Click += btnExample10_Click;
+            btnExampleExp.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnExampleExp.Location = new System.Drawing.Point(829, 670);
+            btnExampleExp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnExampleExp.Name = "btnExampleExp";
+            btnExampleExp.Size = new System.Drawing.Size(185, 45);
+            btnExampleExp.TabIndex = 56;
+            btnExampleExp.Text = "t^(2*e)";
+            btnExampleExp.UseVisualStyleBackColor = true;
+            btnExampleExp.Click += btnExampleExpSin_Click;
             // 
             // btnExampleSine
             // 
             btnExampleSine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleSine.Location = new System.Drawing.Point(439, 630);
+            btnExampleSine.Location = new System.Drawing.Point(443, 670);
             btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleSine.Name = "btnExampleSine";
             btnExampleSine.Size = new System.Drawing.Size(185, 45);
@@ -555,33 +468,77 @@
             btnExampleSine.UseVisualStyleBackColor = true;
             btnExampleSine.Click += btnExampleSin_Click;
             // 
-            // dropdownExampleSelector
+            // dropdownExamplesNonLoops
             // 
-            dropdownExampleSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            dropdownExampleSelector.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dropdownExampleSelector.FormattingEnabled = true;
-            dropdownExampleSelector.ItemHeight = 25;
-            dropdownExampleSelector.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))" });
-            dropdownExampleSelector.Location = new System.Drawing.Point(608, 576);
-            dropdownExampleSelector.Name = "dropdownExampleSelector";
-            dropdownExampleSelector.Size = new System.Drawing.Size(404, 33);
-            dropdownExampleSelector.TabIndex = 64;
-            dropdownExampleSelector.SelectedIndexChanged += dropdownExampleSelector_SelectedIndexChanged;
+            dropdownExamplesNonLoops.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            dropdownExamplesNonLoops.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dropdownExamplesNonLoops.FormattingEnabled = true;
+            dropdownExamplesNonLoops.ItemHeight = 25;
+            dropdownExamplesNonLoops.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))", "e/(t/3+.01)", "t^t", "abs(sin(pi*t))" });
+            dropdownExamplesNonLoops.Location = new System.Drawing.Point(537, 576);
+            dropdownExamplesNonLoops.Name = "dropdownExamplesNonLoops";
+            dropdownExamplesNonLoops.Size = new System.Drawing.Size(475, 33);
+            dropdownExamplesNonLoops.TabIndex = 64;
+            dropdownExamplesNonLoops.SelectedIndexChanged += dropdownExampleNonLoops_SelectedIndexChanged;
+            // 
+            // labelExamplesNonLoops
+            // 
+            labelExamplesNonLoops.AutoSize = true;
+            labelExamplesNonLoops.Font = new System.Drawing.Font("Segoe UI", 12F);
+            labelExamplesNonLoops.Location = new System.Drawing.Point(440, 582);
+            labelExamplesNonLoops.Name = "labelExamplesNonLoops";
+            labelExamplesNonLoops.Size = new System.Drawing.Size(91, 21);
+            labelExamplesNonLoops.TabIndex = 65;
+            labelExamplesNonLoops.Text = "Non-Loops:";
+            // 
+            // dropdownExampleLoops
+            // 
+            dropdownExampleLoops.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            dropdownExampleLoops.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dropdownExampleLoops.FormattingEnabled = true;
+            dropdownExampleLoops.ItemHeight = 25;
+            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "sin(4*pi*t)*exp(-t)" });
+            dropdownExampleLoops.Location = new System.Drawing.Point(537, 615);
+            dropdownExampleLoops.Name = "dropdownExampleLoops";
+            dropdownExampleLoops.Size = new System.Drawing.Size(477, 33);
+            dropdownExampleLoops.TabIndex = 66;
+            dropdownExampleLoops.SelectedIndexChanged += dropdownExampleLoops_SelectedIndexChanged;
+            // 
+            // labelExamplesWacky
+            // 
+            labelExamplesWacky.AutoSize = true;
+            labelExamplesWacky.Font = new System.Drawing.Font("Segoe UI", 12F);
+            labelExamplesWacky.Location = new System.Drawing.Point(425, 621);
+            labelExamplesWacky.Name = "labelExamplesWacky";
+            labelExamplesWacky.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            labelExamplesWacky.Size = new System.Drawing.Size(106, 21);
+            labelExamplesWacky.TabIndex = 67;
+            labelExamplesWacky.Text = "Perfect Loops:";
+            // 
+            // labelReplacingXWithT
+            // 
+            labelReplacingXWithT.AutoSize = true;
+            labelReplacingXWithT.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            labelReplacingXWithT.ForeColor = System.Drawing.Color.OrangeRed;
+            labelReplacingXWithT.Location = new System.Drawing.Point(520, 27);
+            labelReplacingXWithT.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            labelReplacingXWithT.Name = "labelReplacingXWithT";
+            labelReplacingXWithT.Size = new System.Drawing.Size(376, 30);
+            labelReplacingXWithT.TabIndex = 68;
+            labelReplacingXWithT.Text = "Warning: The 'x' in the expression will be evaluated as 't'.\r\nClick the graph preview button for details.";
+            labelReplacingXWithT.Visible = false;
             // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1045, 871);
-            Controls.Add(dropdownExampleSelector);
-            Controls.Add(btnExample10);
-            Controls.Add(btnExample9);
-            Controls.Add(btnExample8);
-            Controls.Add(btnExample7);
-            Controls.Add(btnExample6);
-            Controls.Add(btnExample5);
-            Controls.Add(btnExample4);
-            Controls.Add(btnExampleExpSin);
+            Controls.Add(labelReplacingXWithT);
+            Controls.Add(labelExamplesWacky);
+            Controls.Add(dropdownExampleLoops);
+            Controls.Add(labelExamplesNonLoops);
+            Controls.Add(dropdownExamplesNonLoops);
+            Controls.Add(btnExampleExp);
             Controls.Add(infoIconCopyAnimated);
             Controls.Add(btnCheckAll);
             Controls.Add(btnResetExpressions);
@@ -652,15 +609,12 @@
         private System.Windows.Forms.Button btnResetExpressions;
         private System.Windows.Forms.Button btnCheckAll;
         private System.Windows.Forms.PictureBox infoIconCopyAnimated;
-        private System.Windows.Forms.Button btnExampleExpSin;
-        private System.Windows.Forms.Button btnExample4;
-        private System.Windows.Forms.Button btnExample5;
-        private System.Windows.Forms.Button btnExample6;
-        private System.Windows.Forms.Button btnExample7;
-        private System.Windows.Forms.Button btnExample8;
-        private System.Windows.Forms.Button btnExample9;
-        private System.Windows.Forms.Button btnExample10;
+        private System.Windows.Forms.Button btnExampleExp;
         private System.Windows.Forms.Button btnExampleSine;
-        private System.Windows.Forms.ComboBox dropdownExampleSelector;
+        private System.Windows.Forms.ComboBox dropdownExamplesNonLoops;
+        private System.Windows.Forms.Label labelExamplesNonLoops;
+        private System.Windows.Forms.ComboBox dropdownExampleLoops;
+        private System.Windows.Forms.Label labelExamplesWacky;
+        private System.Windows.Forms.Label labelReplacingXWithT;
     }
 }
