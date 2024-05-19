@@ -615,7 +615,7 @@ namespace GmicAnimate
             int alphaThreshold = (int)nudAlphaThreshold.Value;
             if (dropdownFFmpegMode.SelectedIndex == 0)
             {
-                ffmpegCommand = $"ffmpeg -framerate {frameRate} -reinit_filter 0 -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse=alpha_threshold={alphaThreshold}\" \"{outputDir}\\{gifFileName}\"";
+                ffmpegCommand = $"ffmpeg -framerate {frameRate} -reinit_filter 0 -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" -gifflags -transdiff -gifflags +offsetting -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse=alpha_threshold={alphaThreshold}\" \"{outputDir}\\{gifFileName}\"";
             }
             else if (dropdownFFmpegMode.SelectedIndex == 1)
             {
