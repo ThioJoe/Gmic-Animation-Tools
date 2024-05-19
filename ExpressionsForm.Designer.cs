@@ -1,4 +1,6 @@
-﻿namespace GmicAnimate
+﻿using System.Drawing;
+
+namespace GmicAnimate
 {
     partial class ExpressionsForm
     {
@@ -21,6 +23,7 @@
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             chartCurve = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(chartCurve)).BeginInit();
             // 
@@ -38,6 +41,17 @@
             series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series1.Name = "ValueSeries";
             this.chartCurve.Series.Add(series1);
+
+            // Add series to use as comparison
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.MarkerSize = 6;
+            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Diamond;
+            series2.Name = "CompareSeries";
+            series2.Color = Color.IndianRed;
+            series2.BorderWidth = 2;
+            this.chartCurve.Series.Add(series2);
+
             this.chartCurve.Size = new System.Drawing.Size(600, 300);
             this.chartCurve.TabIndex = 7;
             this.chartCurve.Text = "Values vs Frames Chart";
@@ -84,6 +98,9 @@
             checkBoxAbsoluteMode = new System.Windows.Forms.CheckBox();
             toolTipExpressionsForm = new System.Windows.Forms.ToolTip(components);
             infoIconCopyAnimated = new System.Windows.Forms.PictureBox();
+            infoIconModeChangesCheckbox = new System.Windows.Forms.PictureBox();
+            infoIconImperfectLoops = new System.Windows.Forms.PictureBox();
+            infoIconAbsoluteModeExpressions = new System.Windows.Forms.PictureBox();
             btnApplyToChecked = new System.Windows.Forms.Button();
             btnApplyToAnimated = new System.Windows.Forms.Button();
             btnUncheckAll = new System.Windows.Forms.Button();
@@ -98,11 +115,17 @@
             labelReplacingXWithT = new System.Windows.Forms.Label();
             labelExamplesImperfectLoops = new System.Windows.Forms.Label();
             dropdownExamplesImperfectLoops = new System.Windows.Forms.ComboBox();
+            btnCompareSave = new System.Windows.Forms.Button();
+            btnResetCompare = new System.Windows.Forms.Button();
+            checkBoxCompareUpdateNormalization = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
             groupBoxNormalizeRadiosClone.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)infoIconCopyAnimated).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconModeChangesCheckbox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconImperfectLoops).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconAbsoluteModeExpressions).BeginInit();
             SuspendLayout();
             // 
             // dataGridViewExpressions
@@ -112,48 +135,48 @@
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewExpressions.Location = new System.Drawing.Point(10, 12);
+            dataGridViewExpressions.Location = new Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
             dataGridViewExpressions.RowHeadersWidth = 62;
             dataGridViewExpressions.RowTemplate.Height = 20;
-            dataGridViewExpressions.Size = new System.Drawing.Size(405, 703);
+            dataGridViewExpressions.Size = new Size(405, 703);
             dataGridViewExpressions.TabIndex = 0;
             dataGridViewExpressions.CellValueChanged += dataGridViewExpressions_CellValueChanged;
             // 
             // labelCurrentExpressionString
             // 
             labelCurrentExpressionString.AutoSize = true;
-            labelCurrentExpressionString.Location = new System.Drawing.Point(14, 729);
+            labelCurrentExpressionString.Location = new Point(14, 729);
             labelCurrentExpressionString.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelCurrentExpressionString.Name = "labelCurrentExpressionString";
-            labelCurrentExpressionString.Size = new System.Drawing.Size(228, 15);
+            labelCurrentExpressionString.Size = new Size(228, 15);
             labelCurrentExpressionString.TabIndex = 5;
             labelCurrentExpressionString.Text = "Current String of Exponents / Expressions:";
             // 
             // txtCurrentExpressionParamString
             // 
-            txtCurrentExpressionParamString.Location = new System.Drawing.Point(14, 747);
+            txtCurrentExpressionParamString.Location = new Point(14, 747);
             txtCurrentExpressionParamString.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtCurrentExpressionParamString.Name = "txtCurrentExpressionParamString";
             txtCurrentExpressionParamString.ReadOnly = true;
-            txtCurrentExpressionParamString.Size = new System.Drawing.Size(401, 23);
+            txtCurrentExpressionParamString.Size = new Size(401, 23);
             txtCurrentExpressionParamString.TabIndex = 4;
             // 
             // btnSendExpressionsStringToMainWindow
             // 
-            btnSendExpressionsStringToMainWindow.BackColor = System.Drawing.Color.LightGreen;
-            btnSendExpressionsStringToMainWindow.Location = new System.Drawing.Point(14, 785);
+            btnSendExpressionsStringToMainWindow.BackColor = Color.LightGreen;
+            btnSendExpressionsStringToMainWindow.Location = new Point(14, 785);
             btnSendExpressionsStringToMainWindow.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnSendExpressionsStringToMainWindow.Name = "btnSendExpressionsStringToMainWindow";
-            btnSendExpressionsStringToMainWindow.Size = new System.Drawing.Size(127, 27);
+            btnSendExpressionsStringToMainWindow.Size = new Size(127, 27);
             btnSendExpressionsStringToMainWindow.TabIndex = 6;
             btnSendExpressionsStringToMainWindow.Text = "Use Above Values";
             btnSendExpressionsStringToMainWindow.UseVisualStyleBackColor = false;
@@ -161,10 +184,10 @@
             // 
             // btnTestChart
             // 
-            btnTestChart.Location = new System.Drawing.Point(944, 475);
+            btnTestChart.Location = new Point(944, 785);
             btnTestChart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnTestChart.Name = "btnTestChart";
-            btnTestChart.Size = new System.Drawing.Size(88, 27);
+            btnTestChart.Size = new Size(88, 27);
             btnTestChart.TabIndex = 8;
             btnTestChart.Text = "Test";
             btnTestChart.UseVisualStyleBackColor = true;
@@ -173,22 +196,22 @@
             // 
             // btnChartValues
             // 
-            btnChartValues.Location = new System.Drawing.Point(433, 386);
+            btnChartValues.Location = new Point(433, 386);
             btnChartValues.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnChartValues.Name = "btnChartValues";
-            btnChartValues.Size = new System.Drawing.Size(224, 43);
+            btnChartValues.Size = new Size(224, 43);
             btnChartValues.TabIndex = 9;
-            btnChartValues.Text = "Graph Preview of Parameter Values";
+            btnChartValues.Text = "Graph Preview of Parameter Values (Manually Refresh)\r\n\r\n";
             btnChartValues.UseVisualStyleBackColor = true;
             btnChartValues.Click += btnChartValues_Click;
             // 
             // checkBoxKeepFramesConstant
             // 
             checkBoxKeepFramesConstant.AutoSize = true;
-            checkBoxKeepFramesConstant.Location = new System.Drawing.Point(689, 388);
+            checkBoxKeepFramesConstant.Location = new Point(670, 449);
             checkBoxKeepFramesConstant.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
-            checkBoxKeepFramesConstant.Size = new System.Drawing.Size(218, 19);
+            checkBoxKeepFramesConstant.Size = new Size(218, 19);
             checkBoxKeepFramesConstant.TabIndex = 10;
             checkBoxKeepFramesConstant.Text = "Preview With Constant Frame Count";
             checkBoxKeepFramesConstant.UseVisualStyleBackColor = true;
@@ -197,13 +220,13 @@
             // nudGraphConstantFrameCount
             // 
             nudGraphConstantFrameCount.Enabled = false;
-            nudGraphConstantFrameCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            nudGraphConstantFrameCount.Location = new System.Drawing.Point(915, 386);
+            nudGraphConstantFrameCount.Font = new Font("Microsoft Sans Serif", 10F);
+            nudGraphConstantFrameCount.Location = new Point(896, 447);
             nudGraphConstantFrameCount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             nudGraphConstantFrameCount.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudGraphConstantFrameCount.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudGraphConstantFrameCount.Name = "nudGraphConstantFrameCount";
-            nudGraphConstantFrameCount.Size = new System.Drawing.Size(84, 23);
+            nudGraphConstantFrameCount.Size = new Size(84, 23);
             nudGraphConstantFrameCount.TabIndex = 11;
             nudGraphConstantFrameCount.Value = new decimal(new int[] { 100, 0, 0, 0 });
             nudGraphConstantFrameCount.ValueChanged += nudGraphConstantFrameCount_ValueChanged;
@@ -213,10 +236,10 @@
             checkBoxAutoUpdateGraph.AutoSize = true;
             checkBoxAutoUpdateGraph.Checked = true;
             checkBoxAutoUpdateGraph.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBoxAutoUpdateGraph.Location = new System.Drawing.Point(689, 414);
+            checkBoxAutoUpdateGraph.Location = new Point(670, 475);
             checkBoxAutoUpdateGraph.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxAutoUpdateGraph.Name = "checkBoxAutoUpdateGraph";
-            checkBoxAutoUpdateGraph.Size = new System.Drawing.Size(128, 19);
+            checkBoxAutoUpdateGraph.Size = new Size(128, 19);
             checkBoxAutoUpdateGraph.TabIndex = 12;
             checkBoxAutoUpdateGraph.Text = "Auto Update Graph";
             checkBoxAutoUpdateGraph.UseVisualStyleBackColor = true;
@@ -224,13 +247,13 @@
             // 
             // nudMasterParamIndexClone
             // 
-            nudMasterParamIndexClone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            nudMasterParamIndexClone.Location = new System.Drawing.Point(433, 31);
+            nudMasterParamIndexClone.Font = new Font("Microsoft Sans Serif", 12F);
+            nudMasterParamIndexClone.Location = new Point(433, 31);
             nudMasterParamIndexClone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             nudMasterParamIndexClone.Maximum = new decimal(new int[] { 31, 0, 0, 0 });
             nudMasterParamIndexClone.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudMasterParamIndexClone.Name = "nudMasterParamIndexClone";
-            nudMasterParamIndexClone.Size = new System.Drawing.Size(58, 26);
+            nudMasterParamIndexClone.Size = new Size(58, 26);
             nudMasterParamIndexClone.TabIndex = 13;
             nudMasterParamIndexClone.Value = new decimal(new int[] { 1, 0, 0, 0 });
             nudMasterParamIndexClone.ValueChanged += nudMasterParamIndexClone_ValueChanged;
@@ -238,32 +261,32 @@
             // labelMasterIndexClone
             // 
             labelMasterIndexClone.AutoSize = true;
-            labelMasterIndexClone.Location = new System.Drawing.Point(429, 13);
+            labelMasterIndexClone.Location = new Point(429, 13);
             labelMasterIndexClone.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelMasterIndexClone.Name = "labelMasterIndexClone";
-            labelMasterIndexClone.Size = new System.Drawing.Size(64, 15);
+            labelMasterIndexClone.Size = new Size(64, 15);
             labelMasterIndexClone.TabIndex = 14;
             labelMasterIndexClone.Text = "Parameter:";
             // 
             // labelNoGraphToggleParam
             // 
             labelNoGraphToggleParam.AutoSize = true;
-            labelNoGraphToggleParam.BackColor = System.Drawing.SystemColors.Window;
-            labelNoGraphToggleParam.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            labelNoGraphToggleParam.Location = new System.Drawing.Point(531, 171);
+            labelNoGraphToggleParam.BackColor = SystemColors.Window;
+            labelNoGraphToggleParam.Font = new Font("Microsoft Sans Serif", 10F);
+            labelNoGraphToggleParam.Location = new Point(531, 171);
             labelNoGraphToggleParam.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelNoGraphToggleParam.Name = "labelNoGraphToggleParam";
-            labelNoGraphToggleParam.Size = new System.Drawing.Size(368, 17);
+            labelNoGraphToggleParam.Size = new Size(368, 17);
             labelNoGraphToggleParam.TabIndex = 15;
             labelNoGraphToggleParam.Text = "Graph Not Applicable - Parameter type can't be graphed.\r\n";
             labelNoGraphToggleParam.Visible = false;
             // 
             // btnHelpExpressionsForm
             // 
-            btnHelpExpressionsForm.Location = new System.Drawing.Point(926, 827);
+            btnHelpExpressionsForm.Location = new Point(926, 827);
             btnHelpExpressionsForm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnHelpExpressionsForm.Name = "btnHelpExpressionsForm";
-            btnHelpExpressionsForm.Size = new System.Drawing.Size(106, 32);
+            btnHelpExpressionsForm.Size = new Size(106, 32);
             btnHelpExpressionsForm.TabIndex = 16;
             btnHelpExpressionsForm.Text = "Help";
             btnHelpExpressionsForm.UseVisualStyleBackColor = true;
@@ -272,21 +295,21 @@
             // labelExampleExpressionButtons
             // 
             labelExampleExpressionButtons.AutoSize = true;
-            labelExampleExpressionButtons.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            labelExampleExpressionButtons.Location = new System.Drawing.Point(618, 542);
+            labelExampleExpressionButtons.Font = new Font("Arial", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelExampleExpressionButtons.Location = new Point(636, 540);
             labelExampleExpressionButtons.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelExampleExpressionButtons.Name = "labelExampleExpressionButtons";
-            labelExampleExpressionButtons.Size = new System.Drawing.Size(199, 22);
+            labelExampleExpressionButtons.Size = new Size(199, 22);
             labelExampleExpressionButtons.TabIndex = 18;
             labelExampleExpressionButtons.Text = "Example Expressions:";
             // 
             // btnExampleCosine
             // 
-            btnExampleCosine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleCosine.Location = new System.Drawing.Point(636, 695);
+            btnExampleCosine.Font = new Font("Cascadia Code", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnExampleCosine.Location = new Point(636, 705);
             btnExampleCosine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleCosine.Name = "btnExampleCosine";
-            btnExampleCosine.Size = new System.Drawing.Size(185, 45);
+            btnExampleCosine.Size = new Size(185, 45);
             btnExampleCosine.TabIndex = 19;
             btnExampleCosine.Text = "cos(2*pi*t)";
             btnExampleCosine.UseVisualStyleBackColor = true;
@@ -295,12 +318,12 @@
             // labelErrorWhileGraphing
             // 
             labelErrorWhileGraphing.AutoSize = true;
-            labelErrorWhileGraphing.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            labelErrorWhileGraphing.ForeColor = System.Drawing.Color.Red;
-            labelErrorWhileGraphing.Location = new System.Drawing.Point(520, 59);
+            labelErrorWhileGraphing.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelErrorWhileGraphing.ForeColor = Color.Red;
+            labelErrorWhileGraphing.Location = new Point(520, 59);
             labelErrorWhileGraphing.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelErrorWhileGraphing.Name = "labelErrorWhileGraphing";
-            labelErrorWhileGraphing.Size = new System.Drawing.Size(387, 15);
+            labelErrorWhileGraphing.Size = new Size(387, 15);
             labelErrorWhileGraphing.TabIndex = 20;
             labelErrorWhileGraphing.Text = "Error While Graphing: Click graph preview button for details";
             labelErrorWhileGraphing.Visible = false;
@@ -312,11 +335,11 @@
             groupBoxNormalizeRadiosClone.Controls.Add(radioNormalizeMaxRangesClone);
             groupBoxNormalizeRadiosClone.Controls.Add(radioNormalizeExtendedRangesClone);
             groupBoxNormalizeRadiosClone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            groupBoxNormalizeRadiosClone.Location = new System.Drawing.Point(433, 437);
+            groupBoxNormalizeRadiosClone.Location = new Point(433, 437);
             groupBoxNormalizeRadiosClone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupBoxNormalizeRadiosClone.Name = "groupBoxNormalizeRadiosClone";
             groupBoxNormalizeRadiosClone.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            groupBoxNormalizeRadiosClone.Size = new System.Drawing.Size(195, 86);
+            groupBoxNormalizeRadiosClone.Size = new Size(195, 86);
             groupBoxNormalizeRadiosClone.TabIndex = 45;
             groupBoxNormalizeRadiosClone.TabStop = false;
             // 
@@ -324,11 +347,11 @@
             // 
             radioNormalizeStartEndClone.AutoSize = true;
             radioNormalizeStartEndClone.Checked = true;
-            radioNormalizeStartEndClone.ForeColor = System.Drawing.SystemColors.ControlText;
-            radioNormalizeStartEndClone.Location = new System.Drawing.Point(7, 12);
+            radioNormalizeStartEndClone.ForeColor = SystemColors.ControlText;
+            radioNormalizeStartEndClone.Location = new Point(7, 12);
             radioNormalizeStartEndClone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             radioNormalizeStartEndClone.Name = "radioNormalizeStartEndClone";
-            radioNormalizeStartEndClone.Size = new System.Drawing.Size(169, 19);
+            radioNormalizeStartEndClone.Size = new Size(169, 19);
             radioNormalizeStartEndClone.TabIndex = 40;
             radioNormalizeStartEndClone.TabStop = true;
             radioNormalizeStartEndClone.Text = "Normalize Within Start/End";
@@ -338,10 +361,10 @@
             // radioNoNormalizeClone
             // 
             radioNoNormalizeClone.AutoSize = true;
-            radioNoNormalizeClone.Location = new System.Drawing.Point(7, 63);
+            radioNoNormalizeClone.Location = new Point(7, 63);
             radioNoNormalizeClone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             radioNoNormalizeClone.Name = "radioNoNormalizeClone";
-            radioNoNormalizeClone.Size = new System.Drawing.Size(111, 19);
+            radioNoNormalizeClone.Size = new Size(111, 19);
             radioNoNormalizeClone.TabIndex = 43;
             radioNoNormalizeClone.Text = "Don't Normalize";
             radioNoNormalizeClone.UseVisualStyleBackColor = true;
@@ -350,10 +373,10 @@
             // radioNormalizeMaxRangesClone
             // 
             radioNormalizeMaxRangesClone.AutoSize = true;
-            radioNormalizeMaxRangesClone.Location = new System.Drawing.Point(7, 29);
+            radioNormalizeMaxRangesClone.Location = new Point(7, 29);
             radioNormalizeMaxRangesClone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             radioNormalizeMaxRangesClone.Name = "radioNormalizeMaxRangesClone";
-            radioNormalizeMaxRangesClone.Size = new System.Drawing.Size(184, 19);
+            radioNormalizeMaxRangesClone.Size = new Size(184, 19);
             radioNormalizeMaxRangesClone.TabIndex = 41;
             radioNormalizeMaxRangesClone.Text = "Normalize Within Max Ranges";
             radioNormalizeMaxRangesClone.UseVisualStyleBackColor = true;
@@ -362,10 +385,10 @@
             // radioNormalizeExtendedRangesClone
             // 
             radioNormalizeExtendedRangesClone.AutoSize = true;
-            radioNormalizeExtendedRangesClone.Location = new System.Drawing.Point(7, 46);
+            radioNormalizeExtendedRangesClone.Location = new Point(7, 46);
             radioNormalizeExtendedRangesClone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             radioNormalizeExtendedRangesClone.Name = "radioNormalizeExtendedRangesClone";
-            radioNormalizeExtendedRangesClone.Size = new System.Drawing.Size(172, 19);
+            radioNormalizeExtendedRangesClone.Size = new Size(172, 19);
             radioNormalizeExtendedRangesClone.TabIndex = 42;
             radioNormalizeExtendedRangesClone.Text = "Normalize Extended Ranges";
             radioNormalizeExtendedRangesClone.UseVisualStyleBackColor = true;
@@ -374,10 +397,10 @@
             // checkBoxAbsoluteMode
             // 
             checkBoxAbsoluteMode.AutoSize = true;
-            checkBoxAbsoluteMode.Location = new System.Drawing.Point(440, 525);
+            checkBoxAbsoluteMode.Location = new Point(440, 525);
             checkBoxAbsoluteMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxAbsoluteMode.Name = "checkBoxAbsoluteMode";
-            checkBoxAbsoluteMode.Size = new System.Drawing.Size(107, 19);
+            checkBoxAbsoluteMode.Size = new Size(107, 19);
             checkBoxAbsoluteMode.TabIndex = 46;
             checkBoxAbsoluteMode.Text = "Absolute Mode";
             toolTipExpressionsForm.SetToolTip(checkBoxAbsoluteMode, resources.GetString("checkBoxAbsoluteMode.ToolTip"));
@@ -386,21 +409,57 @@
             // 
             // infoIconCopyAnimated
             // 
-            infoIconCopyAnimated.Image = (System.Drawing.Image)resources.GetObject("infoIconCopyAnimated.Image");
-            infoIconCopyAnimated.Location = new System.Drawing.Point(300, 820);
+            infoIconCopyAnimated.Image = (Image)resources.GetObject("infoIconCopyAnimated.Image");
+            infoIconCopyAnimated.Location = new Point(300, 820);
             infoIconCopyAnimated.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             infoIconCopyAnimated.Name = "infoIconCopyAnimated";
-            infoIconCopyAnimated.Size = new System.Drawing.Size(16, 16);
+            infoIconCopyAnimated.Size = new Size(16, 16);
             infoIconCopyAnimated.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             infoIconCopyAnimated.TabIndex = 55;
             infoIconCopyAnimated.TabStop = false;
             toolTipExpressionsForm.SetToolTip(infoIconCopyAnimated, resources.GetString("infoIconCopyAnimated.ToolTip"));
             // 
+            // infoIconModeChangesCheckbox
+            // 
+            infoIconModeChangesCheckbox.Image = (Image)resources.GetObject("infoIconModeChangesCheckbox.Image");
+            infoIconModeChangesCheckbox.Location = new Point(961, 416);
+            infoIconModeChangesCheckbox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            infoIconModeChangesCheckbox.Name = "infoIconModeChangesCheckbox";
+            infoIconModeChangesCheckbox.Size = new Size(16, 16);
+            infoIconModeChangesCheckbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            infoIconModeChangesCheckbox.TabIndex = 74;
+            infoIconModeChangesCheckbox.TabStop = false;
+            toolTipExpressionsForm.SetToolTip(infoIconModeChangesCheckbox, "Whether or not to update the graphed comparison\r\ndata when you change the normalization mode, \r\nabsolute mode, etc.\r\n\r\nIf disabled, the comparison values will remain\r\nexactly as-is.");
+            // 
+            // infoIconImperfectLoops
+            // 
+            infoIconImperfectLoops.Image = (Image)resources.GetObject("infoIconImperfectLoops.Image");
+            infoIconImperfectLoops.Location = new Point(1016, 665);
+            infoIconImperfectLoops.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            infoIconImperfectLoops.Name = "infoIconImperfectLoops";
+            infoIconImperfectLoops.Size = new Size(16, 16);
+            infoIconImperfectLoops.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            infoIconImperfectLoops.TabIndex = 75;
+            infoIconImperfectLoops.TabStop = false;
+            toolTipExpressionsForm.SetToolTip(infoIconImperfectLoops, resources.GetString("infoIconImperfectLoops.ToolTip"));
+            // 
+            // infoIconAbsoluteModeExpressions
+            // 
+            infoIconAbsoluteModeExpressions.Image = (Image)resources.GetObject("infoIconAbsoluteModeExpressions.Image");
+            infoIconAbsoluteModeExpressions.Location = new Point(544, 525);
+            infoIconAbsoluteModeExpressions.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            infoIconAbsoluteModeExpressions.Name = "infoIconAbsoluteModeExpressions";
+            infoIconAbsoluteModeExpressions.Size = new Size(16, 16);
+            infoIconAbsoluteModeExpressions.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            infoIconAbsoluteModeExpressions.TabIndex = 76;
+            infoIconAbsoluteModeExpressions.TabStop = false;
+            toolTipExpressionsForm.SetToolTip(infoIconAbsoluteModeExpressions, resources.GetString("infoIconAbsoluteModeExpressions.ToolTip"));
+            // 
             // btnApplyToChecked
             // 
-            btnApplyToChecked.Location = new System.Drawing.Point(176, 785);
+            btnApplyToChecked.Location = new Point(176, 785);
             btnApplyToChecked.Name = "btnApplyToChecked";
-            btnApplyToChecked.Size = new System.Drawing.Size(122, 27);
+            btnApplyToChecked.Size = new Size(122, 27);
             btnApplyToChecked.TabIndex = 47;
             btnApplyToChecked.Text = "Copy To Checked";
             btnApplyToChecked.UseVisualStyleBackColor = true;
@@ -408,9 +467,9 @@
             // 
             // btnApplyToAnimated
             // 
-            btnApplyToAnimated.Location = new System.Drawing.Point(176, 815);
+            btnApplyToAnimated.Location = new Point(176, 815);
             btnApplyToAnimated.Name = "btnApplyToAnimated";
-            btnApplyToAnimated.Size = new System.Drawing.Size(122, 27);
+            btnApplyToAnimated.Size = new Size(122, 27);
             btnApplyToAnimated.TabIndex = 48;
             btnApplyToAnimated.Text = "Copy To Animated";
             btnApplyToAnimated.UseVisualStyleBackColor = true;
@@ -418,9 +477,9 @@
             // 
             // btnUncheckAll
             // 
-            btnUncheckAll.Location = new System.Drawing.Point(332, 815);
+            btnUncheckAll.Location = new Point(332, 815);
             btnUncheckAll.Name = "btnUncheckAll";
-            btnUncheckAll.Size = new System.Drawing.Size(88, 27);
+            btnUncheckAll.Size = new Size(88, 27);
             btnUncheckAll.TabIndex = 49;
             btnUncheckAll.Text = "Uncheck All";
             btnUncheckAll.UseVisualStyleBackColor = true;
@@ -428,9 +487,9 @@
             // 
             // btnResetExpressions
             // 
-            btnResetExpressions.Location = new System.Drawing.Point(332, 718);
+            btnResetExpressions.Location = new Point(332, 718);
             btnResetExpressions.Name = "btnResetExpressions";
-            btnResetExpressions.Size = new System.Drawing.Size(83, 23);
+            btnResetExpressions.Size = new Size(83, 23);
             btnResetExpressions.TabIndex = 50;
             btnResetExpressions.Text = "Reset All";
             btnResetExpressions.UseVisualStyleBackColor = true;
@@ -438,9 +497,9 @@
             // 
             // btnCheckAll
             // 
-            btnCheckAll.Location = new System.Drawing.Point(332, 785);
+            btnCheckAll.Location = new Point(332, 785);
             btnCheckAll.Name = "btnCheckAll";
-            btnCheckAll.Size = new System.Drawing.Size(88, 27);
+            btnCheckAll.Size = new Size(88, 27);
             btnCheckAll.TabIndex = 51;
             btnCheckAll.Text = "Check All";
             btnCheckAll.UseVisualStyleBackColor = true;
@@ -448,11 +507,11 @@
             // 
             // btnExampleExp
             // 
-            btnExampleExp.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleExp.Location = new System.Drawing.Point(829, 696);
+            btnExampleExp.Font = new Font("Cascadia Code", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnExampleExp.Location = new Point(829, 706);
             btnExampleExp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleExp.Name = "btnExampleExp";
-            btnExampleExp.Size = new System.Drawing.Size(185, 45);
+            btnExampleExp.Size = new Size(185, 45);
             btnExampleExp.TabIndex = 56;
             btnExampleExp.Text = "t^(2*e)";
             btnExampleExp.UseVisualStyleBackColor = true;
@@ -460,11 +519,11 @@
             // 
             // btnExampleSine
             // 
-            btnExampleSine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleSine.Location = new System.Drawing.Point(443, 696);
+            btnExampleSine.Font = new Font("Cascadia Code", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnExampleSine.Location = new Point(443, 706);
             btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleSine.Name = "btnExampleSine";
-            btnExampleSine.Size = new System.Drawing.Size(185, 45);
+            btnExampleSine.Size = new Size(185, 45);
             btnExampleSine.TabIndex = 17;
             btnExampleSine.Text = "sin(2*pi*t)";
             btnExampleSine.UseVisualStyleBackColor = true;
@@ -473,59 +532,59 @@
             // dropdownExamplesNonLoops
             // 
             dropdownExamplesNonLoops.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            dropdownExamplesNonLoops.Font = new System.Drawing.Font("Cascadia Code", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dropdownExamplesNonLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExamplesNonLoops.FormattingEnabled = true;
             dropdownExamplesNonLoops.ItemHeight = 25;
             dropdownExamplesNonLoops.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))", "e/(t/3+.01)", "t^t", "abs(sin(pi*t))" });
-            dropdownExamplesNonLoops.Location = new System.Drawing.Point(553, 575);
+            dropdownExamplesNonLoops.Location = new Point(553, 575);
             dropdownExamplesNonLoops.Name = "dropdownExamplesNonLoops";
-            dropdownExamplesNonLoops.Size = new System.Drawing.Size(461, 33);
+            dropdownExamplesNonLoops.Size = new Size(461, 33);
             dropdownExamplesNonLoops.TabIndex = 64;
             dropdownExamplesNonLoops.SelectedIndexChanged += dropdownExampleNonLoops_SelectedIndexChanged;
             // 
             // labelExamplesNonLoops
             // 
             labelExamplesNonLoops.AutoSize = true;
-            labelExamplesNonLoops.Font = new System.Drawing.Font("Segoe UI", 12F);
-            labelExamplesNonLoops.Location = new System.Drawing.Point(456, 581);
+            labelExamplesNonLoops.Font = new Font("Segoe UI", 12F);
+            labelExamplesNonLoops.Location = new Point(456, 581);
             labelExamplesNonLoops.Name = "labelExamplesNonLoops";
-            labelExamplesNonLoops.Size = new System.Drawing.Size(91, 21);
+            labelExamplesNonLoops.Size = new Size(91, 21);
             labelExamplesNonLoops.TabIndex = 65;
             labelExamplesNonLoops.Text = "Non-Loops:";
             // 
             // dropdownExampleLoops
             // 
             dropdownExampleLoops.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            dropdownExampleLoops.Font = new System.Drawing.Font("Cascadia Code", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dropdownExampleLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExampleLoops.FormattingEnabled = true;
             dropdownExampleLoops.ItemHeight = 25;
             dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))" });
-            dropdownExampleLoops.Location = new System.Drawing.Point(553, 614);
+            dropdownExampleLoops.Location = new Point(553, 614);
             dropdownExampleLoops.Name = "dropdownExampleLoops";
-            dropdownExampleLoops.Size = new System.Drawing.Size(461, 33);
+            dropdownExampleLoops.Size = new Size(461, 33);
             dropdownExampleLoops.TabIndex = 66;
             dropdownExampleLoops.SelectedIndexChanged += dropdownExamplePerfectLoops_SelectedIndexChanged;
             // 
             // labelExamplesPerfectLoops
             // 
             labelExamplesPerfectLoops.AutoSize = true;
-            labelExamplesPerfectLoops.Font = new System.Drawing.Font("Segoe UI", 12F);
-            labelExamplesPerfectLoops.Location = new System.Drawing.Point(441, 620);
+            labelExamplesPerfectLoops.Font = new Font("Segoe UI", 12F);
+            labelExamplesPerfectLoops.Location = new Point(441, 620);
             labelExamplesPerfectLoops.Name = "labelExamplesPerfectLoops";
             labelExamplesPerfectLoops.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            labelExamplesPerfectLoops.Size = new System.Drawing.Size(106, 21);
+            labelExamplesPerfectLoops.Size = new Size(106, 21);
             labelExamplesPerfectLoops.TabIndex = 67;
             labelExamplesPerfectLoops.Text = "Perfect Loops:";
             // 
             // labelReplacingXWithT
             // 
             labelReplacingXWithT.AutoSize = true;
-            labelReplacingXWithT.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            labelReplacingXWithT.ForeColor = System.Drawing.Color.OrangeRed;
-            labelReplacingXWithT.Location = new System.Drawing.Point(520, 27);
+            labelReplacingXWithT.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelReplacingXWithT.ForeColor = Color.OrangeRed;
+            labelReplacingXWithT.Location = new Point(520, 27);
             labelReplacingXWithT.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelReplacingXWithT.Name = "labelReplacingXWithT";
-            labelReplacingXWithT.Size = new System.Drawing.Size(376, 30);
+            labelReplacingXWithT.Size = new Size(376, 30);
             labelReplacingXWithT.TabIndex = 68;
             labelReplacingXWithT.Text = "Warning: The 'x' in the expression will be evaluated as 't'.\r\nClick the graph preview button for details.";
             labelReplacingXWithT.Visible = false;
@@ -533,32 +592,71 @@
             // labelExamplesImperfectLoops
             // 
             labelExamplesImperfectLoops.AutoSize = true;
-            labelExamplesImperfectLoops.Font = new System.Drawing.Font("Segoe UI", 12F);
-            labelExamplesImperfectLoops.Location = new System.Drawing.Point(422, 660);
+            labelExamplesImperfectLoops.Font = new Font("Segoe UI", 12F);
+            labelExamplesImperfectLoops.Location = new Point(422, 660);
             labelExamplesImperfectLoops.Name = "labelExamplesImperfectLoops";
             labelExamplesImperfectLoops.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            labelExamplesImperfectLoops.Size = new System.Drawing.Size(125, 21);
+            labelExamplesImperfectLoops.Size = new Size(125, 21);
             labelExamplesImperfectLoops.TabIndex = 70;
             labelExamplesImperfectLoops.Text = "Imperfect Loops:";
             // 
             // dropdownExamplesImperfectLoops
             // 
             dropdownExamplesImperfectLoops.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            dropdownExamplesImperfectLoops.Font = new System.Drawing.Font("Cascadia Code", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dropdownExamplesImperfectLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExamplesImperfectLoops.FormattingEnabled = true;
             dropdownExamplesImperfectLoops.ItemHeight = 25;
             dropdownExamplesImperfectLoops.Items.AddRange(new object[] { "sin(4*pi*t)*exp(-t)" });
-            dropdownExamplesImperfectLoops.Location = new System.Drawing.Point(553, 653);
+            dropdownExamplesImperfectLoops.Location = new Point(553, 653);
             dropdownExamplesImperfectLoops.Name = "dropdownExamplesImperfectLoops";
-            dropdownExamplesImperfectLoops.Size = new System.Drawing.Size(461, 33);
+            dropdownExamplesImperfectLoops.Size = new Size(461, 33);
             dropdownExamplesImperfectLoops.TabIndex = 69;
             dropdownExamplesImperfectLoops.SelectedIndexChanged += dropdownExamplesImperfectLoops_SelectedIndexChanged;
             // 
+            // btnCompareSave
+            // 
+            btnCompareSave.Location = new Point(740, 386);
+            btnCompareSave.Name = "btnCompareSave";
+            btnCompareSave.Size = new Size(120, 23);
+            btnCompareSave.TabIndex = 71;
+            btnCompareSave.Text = "Save to Compare";
+            btnCompareSave.UseVisualStyleBackColor = true;
+            btnCompareSave.Click += btnCompareSave_Click;
+            // 
+            // btnResetCompare
+            // 
+            btnResetCompare.Location = new Point(866, 386);
+            btnResetCompare.Name = "btnResetCompare";
+            btnResetCompare.Size = new Size(120, 23);
+            btnResetCompare.TabIndex = 72;
+            btnResetCompare.Text = "Reset Comparison";
+            btnResetCompare.UseVisualStyleBackColor = true;
+            btnResetCompare.Click += btnResetCompare_Click;
+            // 
+            // checkBoxCompareUpdateNormalization
+            // 
+            checkBoxCompareUpdateNormalization.AutoSize = true;
+            checkBoxCompareUpdateNormalization.Checked = true;
+            checkBoxCompareUpdateNormalization.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBoxCompareUpdateNormalization.Location = new Point(740, 415);
+            checkBoxCompareUpdateNormalization.Name = "checkBoxCompareUpdateNormalization";
+            checkBoxCompareUpdateNormalization.Size = new Size(222, 19);
+            checkBoxCompareUpdateNormalization.TabIndex = 73;
+            checkBoxCompareUpdateNormalization.Text = "Apply Mode Changes to Comparison";
+            checkBoxCompareUpdateNormalization.UseVisualStyleBackColor = true;
+            checkBoxCompareUpdateNormalization.CheckedChanged += checkBoxCompareUpdateNormalization_CheckedChanged;
+            // 
             // ExpressionsForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1045, 871);
+            ClientSize = new Size(1045, 871);
+            Controls.Add(infoIconAbsoluteModeExpressions);
+            Controls.Add(infoIconImperfectLoops);
+            Controls.Add(infoIconModeChangesCheckbox);
+            Controls.Add(checkBoxCompareUpdateNormalization);
+            Controls.Add(btnResetCompare);
+            Controls.Add(btnCompareSave);
             Controls.Add(labelExamplesImperfectLoops);
             Controls.Add(dropdownExamplesImperfectLoops);
             Controls.Add(labelReplacingXWithT);
@@ -601,6 +699,9 @@
             groupBoxNormalizeRadiosClone.ResumeLayout(false);
             groupBoxNormalizeRadiosClone.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)infoIconCopyAnimated).EndInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconModeChangesCheckbox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconImperfectLoops).EndInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconAbsoluteModeExpressions).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -646,5 +747,11 @@
         private System.Windows.Forms.Label labelReplacingXWithT;
         private System.Windows.Forms.Label labelExamplesImperfectLoops;
         private System.Windows.Forms.ComboBox dropdownExamplesImperfectLoops;
+        private System.Windows.Forms.Button btnCompareSave;
+        private System.Windows.Forms.Button btnResetCompare;
+        private System.Windows.Forms.CheckBox checkBoxCompareUpdateNormalization;
+        private System.Windows.Forms.PictureBox infoIconModeChangesCheckbox;
+        private System.Windows.Forms.PictureBox infoIconImperfectLoops;
+        private System.Windows.Forms.PictureBox infoIconAbsoluteModeExpressions;
     }
 }

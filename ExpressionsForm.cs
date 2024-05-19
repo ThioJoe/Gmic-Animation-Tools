@@ -1,4 +1,5 @@
 ﻿using GmicFilterAnimatorApp;
+using MathNet.Numerics;
 using MathNet.Symbolics;
 using System;
 using System.Collections.Generic;
@@ -29,11 +30,18 @@ namespace GmicAnimate
         //Parameter count
         private int filterParameterCount = FilterParameters.GetActiveParameterCount();
 
+        // For storing any data used by compare series graph
+        private List<PointF> compareSeriesData;
+        private string compareSeriesExpression;
+
         public ExpressionsForm(MainForm mainform, string incomingExpressionParamString, int incomingMasterParamIndex, string incomingMasterParamExpression)
         {
             InitializeComponent();
             InitalizatManualComponents();
             InitializeDataGridView(); // Setup your DataGridView here
+
+            compareSeriesData = new List<PointF>();
+            compareSeriesExpression = "";
 
             // Create mouse scroll handler to properly scroll increment on master increment numeric updown
             nudMasterParamIndexClone.MouseWheel += new MouseEventHandler(this.ScrollHandlerFunction);
@@ -76,7 +84,6 @@ namespace GmicAnimate
             {
                 PlotGraph();
             }
-
 
         }
 
@@ -517,7 +524,7 @@ namespace GmicAnimate
                 var expression = SymbolicExpression.Parse(formula);
 
 
-                Series series = chartCurve.Series["ValueSeries"];
+                System.Windows.Forms.DataVisualization.Charting.Series series = chartCurve.Series["ValueSeries"];
                 series.Points.Clear();
 
 
@@ -550,7 +557,7 @@ namespace GmicAnimate
             if (FilterParameters.GetNonExponentableParamIndexes().Contains(masterParamIndexFromMainWindow))
             {
                 //Show empty graph
-                Series series = chartCurve.Series["ValueSeries"];
+                System.Windows.Forms.DataVisualization.Charting.Series series = chartCurve.Series["ValueSeries"];
                 series.Points.Clear();
                 labelNoGraphToggleParam.Visible = true;
                 return;
@@ -560,12 +567,13 @@ namespace GmicAnimate
                 labelNoGraphToggleParam.Visible = false;
             }
 
+            // If can't get data from main form, return (don't graph)
             if (mainForm == null)
             {
                 return;
             }
 
-            // If cell value is null, return
+            // If cell value is null, return (don't graph)
             if (dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value == null)
             {
                 return;
@@ -650,11 +658,12 @@ namespace GmicAnimate
                 }
             }
 
-            double[] valuesToGraph = null;
+            // Get data to graph the primary series
+            double[] primaryValuesToGraph = null;
             try
             {
                 // Get the interpolated values
-                valuesToGraph = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount);
+                primaryValuesToGraph = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount);
             }
             catch (Exception ex)
             {
@@ -666,22 +675,44 @@ namespace GmicAnimate
                 return;
             }
 
+            // Get data to graph the compare series using saved expression if there is one and the option to keep updated with normalization is checked
+            double[] comparedValuesToGraph = null;
+            if (!string.IsNullOrEmpty(compareSeriesExpression) && checkBoxCompareUpdateNormalization.Checked)
+            {
+                try
+                {
+                    comparedValuesToGraph = GetInterpolatedDataFromMainForm(compareSeriesExpression, masterParamIndexFromMainWindow, frameCount);
+                }
+                catch (Exception ex)
+                {
+                    if (!silent)
+                    {
+                        MessageBox.Show($"Error plotting the comparison function: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    labelErrorWhileGraphing.Visible = true;
+                    return;
+                }
+            }
 
             // Plot
             try
             {
-                Series series = chartCurve.Series["ValueSeries"];
+                // Clear any series to start fresh
+                System.Windows.Forms.DataVisualization.Charting.Series series = chartCurve.Series["ValueSeries"];
                 series.Points.Clear();
+                System.Windows.Forms.DataVisualization.Charting.Series compareSeries = chartCurve.Series["CompareSeries"];
+                compareSeries.Points.Clear();
 
-                for (int i = 0; i < valuesToGraph.Length; i++)
+                // Plot main series
+                for (int i = 0; i < primaryValuesToGraph.Length; i++)
                 {
-                    series.Points.AddXY(i, valuesToGraph[i]);
+                    series.Points.AddXY(i, primaryValuesToGraph[i]);
                 }
 
                 // If any values are negative, create zero line strip
-                if (valuesToGraph.Min() < 0)
+                if (primaryValuesToGraph.Min() < 0)
                 {
-                    // Create a new StripLine
+                    // Create a new StripLine (a thick line) on y=0 line if any value go below zero
                     StripLine zeroLineStrip = new StripLine();
                     zeroLineStrip.IntervalOffset = 0;  // Position at Y = 0
                     zeroLineStrip.StripWidth = 0;      // Set the width of the strip line to 0 for it to appear as a line
@@ -698,6 +729,23 @@ namespace GmicAnimate
                     if (chartCurve.ChartAreas[0].AxisY.StripLines.Count > 0)
                     {
                         chartCurve.ChartAreas[0].AxisY.StripLines.Clear();
+                    }
+                }
+
+                // If the compare series points exist, plot them
+                if (compareSeriesData.Count > 0 && !checkBoxCompareUpdateNormalization.Checked)
+                {
+                    foreach (var point in compareSeriesData)
+                    {
+                        compareSeries.Points.AddXY(point.X, point.Y);
+                    }
+                }
+                else if (comparedValuesToGraph != null)
+                {
+                    // Plot compare series
+                    for (int i = 0; i < comparedValuesToGraph.Length; i++)
+                    {
+                        compareSeries.Points.AddXY(i, comparedValuesToGraph[i]);
                     }
                 }
 
@@ -1004,6 +1052,39 @@ namespace GmicAnimate
             }
         }
 
+        // Saves the current expression and data points to compare with the main graph
+        // The expression is used to graph if the user wants to dynamically update the normalization of compared data
+        // The data points are used to graph if the user wants to keep the compared data exactly the same
+        private void btnCompareSave_Click(object sender, EventArgs e)
+        {
+            // Reset both the expression and any data points
+            compareSeriesData.Clear();
+            compareSeriesExpression = "";
+
+            // Save the expression in the master parameter row
+            compareSeriesExpression = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+
+            // Save the currently graphed points exactly as-is
+            foreach (var point in chartCurve.Series["ValueSeries"].Points)
+            {
+                compareSeriesData.Add(new PointF((float)point.XValue, (float)point.YValues[0]));
+            }
+            PlotGraph();
+        }
+
+        private void checkBoxCompareUpdateNormalization_CheckedChanged(object sender, EventArgs e)
+        {
+            PlotGraph();
+        }
+
+        private void btnResetCompare_Click(object sender, EventArgs e)
+        {
+            // Empty the compare series points and refresh the graph
+            compareSeriesData.Clear();
+            compareSeriesExpression = "";
+            PlotGraph();
+        }
+
         // --------------------------------------------------------------------------------------
         // -------------------------- Example Buttons -------------------------------------------
         // --------------------------------------------------------------------------------------
@@ -1077,6 +1158,5 @@ namespace GmicAnimate
             dropdownExamplesImperfectLoops.SelectedIndexChanged += dropdownExamplesImperfectLoops_SelectedIndexChanged;
         }
 
-        
     } //End form class
 } // End namespace
