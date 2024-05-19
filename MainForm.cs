@@ -2197,19 +2197,23 @@ namespace GmicFilterAnimatorApp
         // Function to parse out a filter name from the string with parameters in case it's there
         private string ParseAndMatchFilterNameFromParameterString(string inputString, bool activateIfFound)
         {
-            string filterName;
+            string filterNameToSearch;
             string[] splitString = inputString.Split(' ');
             if (splitString.Length > 0)
             {
-                filterName = splitString[0].Trim();
-                // Check against all filter names to see if it's a valid filter name
-                if (FilterParameters.GetListOfLoadedFilterCommands().Contains(filterName))
+                filterNameToSearch = splitString[0].Trim();
+
+                List<string>  filtersList = FilterParameters.GetListOfLoadedFilterCommands();
+                foreach (string filterFromList in filtersList)
                 {
-                    if (activateIfFound)
+                       if (filterNameToSearch.ToLower() == filterFromList.ToLower())
                     {
-                        ActivateFilter(filterName);
+                        if (activateIfFound)
+                        {
+                            ActivateFilter(filterFromList);
+                        }
+                        return filterFromList;
                     }
-                    return filterName;
                 }
             }
             return null;
@@ -2620,7 +2624,7 @@ namespace GmicFilterAnimatorApp
 
         private void txtSearchBoxMain_TextChanged(object sender, EventArgs e)
         {
-            string searchText = txtSearchBoxMain.Text.ToLower();
+            string searchText = txtSearchBoxMain.Text;
             string foundFilterName = null;
 
             // If there are commas in the search box, split them and search the first part
@@ -2629,7 +2633,6 @@ namespace GmicFilterAnimatorApp
                 string[] splitText = searchText.Split(',');
                 if (splitText.Length > 0)
                 {
-
                     foundFilterName = ParseAndMatchFilterNameFromParameterString(inputString: splitText[0], activateIfFound: false);
                     // Remove anything after the filter name
                     if (foundFilterName != null)
@@ -2644,7 +2647,7 @@ namespace GmicFilterAnimatorApp
             }
 
             var filteredItems = FilterParameters.Filters
-                .Where(f => f.FriendlyName.ToLower().Contains(searchText) || f.GmicCommand.ToLower().Contains(searchText))
+                .Where(f => f.FriendlyName.ToLower().Contains(searchText.ToLower()) || f.GmicCommand.ToLower().Contains(searchText.ToLower()))
                 .Select(f => $"{f.FriendlyName} -- ({f.GmicCommand})");
 
             listBoxFiltersMain.Items.Clear();

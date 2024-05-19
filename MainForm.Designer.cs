@@ -64,6 +64,7 @@
             checkBoxAbsoluteModeMain = new System.Windows.Forms.CheckBox();
             pictureBox1 = new System.Windows.Forms.PictureBox();
             infoIconSingleThread = new System.Windows.Forms.PictureBox();
+            infoIconRemoveBlankFrames = new System.Windows.Forms.PictureBox();
             btnShowParamNames = new System.Windows.Forms.Button();
             labelTotalFrames = new System.Windows.Forms.Label();
             TextLabelNearStartButton = new System.Windows.Forms.Label();
@@ -91,7 +92,7 @@
             progressBarGeneration = new System.Windows.Forms.ProgressBar();
             btnGifTools = new System.Windows.Forms.Button();
             checkBoxRemoveBlankFrames = new System.Windows.Forms.CheckBox();
-            infoIconRemoveBlankFrames = new System.Windows.Forms.PictureBox();
+            infoIconFilterSearch = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)nudTotalFrames).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIncrement).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndex).BeginInit();
@@ -105,9 +106,10 @@
             ((System.ComponentModel.ISupportInitialize)infoIconUseSameDirectory).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)infoIconSingleThread).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconRemoveBlankFrames).BeginInit();
             groupBoxNormalizeRadios.SuspendLayout();
             statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)infoIconRemoveBlankFrames).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconFilterSearch).BeginInit();
             SuspendLayout();
             // 
             // nudTotalFrames
@@ -492,6 +494,18 @@
             infoIconSingleThread.TabStop = false;
             toolTip1.SetToolTip(infoIconSingleThread, resources.GetString("infoIconSingleThread.ToolTip"));
             // 
+            // infoIconRemoveBlankFrames
+            // 
+            infoIconRemoveBlankFrames.Image = (System.Drawing.Image)resources.GetObject("infoIconRemoveBlankFrames.Image");
+            infoIconRemoveBlankFrames.Location = new System.Drawing.Point(175, 432);
+            infoIconRemoveBlankFrames.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            infoIconRemoveBlankFrames.Name = "infoIconRemoveBlankFrames";
+            infoIconRemoveBlankFrames.Size = new System.Drawing.Size(16, 16);
+            infoIconRemoveBlankFrames.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            infoIconRemoveBlankFrames.TabIndex = 61;
+            infoIconRemoveBlankFrames.TabStop = false;
+            toolTip1.SetToolTip(infoIconRemoveBlankFrames, resources.GetString("infoIconRemoveBlankFrames.ToolTip"));
+            // 
             // btnShowParamNames
             // 
             btnShowParamNames.BackColor = System.Drawing.Color.SkyBlue;
@@ -688,10 +702,10 @@
             // 
             // txtSearchBoxMain
             // 
-            txtSearchBoxMain.Location = new System.Drawing.Point(112, 596);
+            txtSearchBoxMain.Location = new System.Drawing.Point(126, 596);
             txtSearchBoxMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtSearchBoxMain.Name = "txtSearchBoxMain";
-            txtSearchBoxMain.Size = new System.Drawing.Size(343, 23);
+            txtSearchBoxMain.Size = new System.Drawing.Size(329, 23);
             txtSearchBoxMain.TabIndex = 48;
             txtSearchBoxMain.TextChanged += txtSearchBoxMain_TextChanged;
             // 
@@ -712,7 +726,7 @@
             // 
             labelFilterSearch.AutoSize = true;
             labelFilterSearch.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            labelFilterSearch.Location = new System.Drawing.Point(18, 599);
+            labelFilterSearch.Location = new System.Drawing.Point(35, 599);
             labelFilterSearch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelFilterSearch.Name = "labelFilterSearch";
             labelFilterSearch.Size = new System.Drawing.Size(86, 15);
@@ -794,23 +808,24 @@
             checkBoxRemoveBlankFrames.Text = "Remove Blank GIF Frames";
             checkBoxRemoveBlankFrames.UseVisualStyleBackColor = true;
             // 
-            // infoIconRemoveBlankFrames
+            // infoIconFilterSearch
             // 
-            infoIconRemoveBlankFrames.Image = (System.Drawing.Image)resources.GetObject("infoIconRemoveBlankFrames.Image");
-            infoIconRemoveBlankFrames.Location = new System.Drawing.Point(175, 432);
-            infoIconRemoveBlankFrames.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            infoIconRemoveBlankFrames.Name = "infoIconRemoveBlankFrames";
-            infoIconRemoveBlankFrames.Size = new System.Drawing.Size(16, 16);
-            infoIconRemoveBlankFrames.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            infoIconRemoveBlankFrames.TabIndex = 61;
-            infoIconRemoveBlankFrames.TabStop = false;
-            toolTip1.SetToolTip(infoIconRemoveBlankFrames, resources.GetString("infoIconRemoveBlankFrames.ToolTip"));
+            infoIconFilterSearch.Image = (System.Drawing.Image)resources.GetObject("infoIconFilterSearch.Image");
+            infoIconFilterSearch.Location = new System.Drawing.Point(18, 598);
+            infoIconFilterSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            infoIconFilterSearch.Name = "infoIconFilterSearch";
+            infoIconFilterSearch.Size = new System.Drawing.Size(16, 16);
+            infoIconFilterSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            infoIconFilterSearch.TabIndex = 62;
+            infoIconFilterSearch.TabStop = false;
+            toolTip1.SetToolTip(infoIconFilterSearch, resources.GetString("infoIconFilterSearch.ToolTip"));
             // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(478, 770);
+            Controls.Add(infoIconFilterSearch);
             Controls.Add(infoIconRemoveBlankFrames);
             Controls.Add(checkBoxRemoveBlankFrames);
             Controls.Add(btnGifTools);
@@ -886,11 +901,12 @@
             ((System.ComponentModel.ISupportInitialize)infoIconUseSameDirectory).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)infoIconSingleThread).EndInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconRemoveBlankFrames).EndInit();
             groupBoxNormalizeRadios.ResumeLayout(false);
             groupBoxNormalizeRadios.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)infoIconRemoveBlankFrames).EndInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconFilterSearch).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -961,5 +977,6 @@
         private System.Windows.Forms.Button btnGifTools;
         private System.Windows.Forms.CheckBox checkBoxRemoveBlankFrames;
         private System.Windows.Forms.PictureBox infoIconRemoveBlankFrames;
+        private System.Windows.Forms.PictureBox infoIconFilterSearch;
     }
 }

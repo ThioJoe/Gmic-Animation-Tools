@@ -389,9 +389,6 @@ This can be helpful if you have issues with frames not being generated.
 It might make generation time slower, but it could improve time in some
 situations because missed frames won't need to be re-attempted.</value>
   </data>
-  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>142, 17</value>
-  </metadata>
   <data name="infoIconRemoveBlankFrames.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
@@ -412,6 +409,31 @@ there would be black frames in the animation.
 
 All the image files will be re-numbered so they won't quite line up with
 the log file's frame numbers anymore.</value>
+  </data>
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>142, 17</value>
+  </metadata>
+  <data name="infoIconFilterSearch.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="infoIconFilterSearch.ToolTip" xml:space="preserve">
+    <value>Start typing the name of the filter (such as "Continuous Droste") or
+its corresponding command (such as "souphead_droste10").
+
+You can also paste in the full string copied from the GMIC GUI
+and it will automatically filter for that.
+
+For example, if you click copy from the GMIC GUI it will copy something
+like this: whatever_command 10,10,50,30,50
+Then you can just paste that whole thing into the search box and it will
+filter to anything matching "whatever_command"</value>
   </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>
