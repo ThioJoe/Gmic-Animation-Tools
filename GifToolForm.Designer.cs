@@ -49,6 +49,7 @@
             nudFrameRateSelect = new System.Windows.Forms.NumericUpDown();
             labelFrameRateSelect = new System.Windows.Forms.Label();
             btnViewOutputDirectory = new System.Windows.Forms.Button();
+            btnCheckAlpha = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)nudFadeDurationSeconds).BeginInit();
             ((System.ComponentModel.ISupportInitialize)infoIconFFmpegMode).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudFrameRateSelect).BeginInit();
@@ -186,7 +187,7 @@
             // 
             labelGifEditTitle.AutoSize = true;
             labelGifEditTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            labelGifEditTitle.Location = new System.Drawing.Point(100, 22);
+            labelGifEditTitle.Location = new System.Drawing.Point(122, 22);
             labelGifEditTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelGifEditTitle.Name = "labelGifEditTitle";
             labelGifEditTitle.Size = new System.Drawing.Size(129, 24);
@@ -400,11 +401,23 @@
             btnViewOutputDirectory.UseVisualStyleBackColor = true;
             btnViewOutputDirectory.Click += btnViewOutputDirectory_Click;
             // 
+            // btnCheckAlpha
+            // 
+            btnCheckAlpha.Location = new System.Drawing.Point(24, 440);
+            btnCheckAlpha.Name = "btnCheckAlpha";
+            btnCheckAlpha.Size = new System.Drawing.Size(148, 23);
+            btnCheckAlpha.TabIndex = 40;
+            btnCheckAlpha.Text = "Check Alpha Channel";
+            btnCheckAlpha.UseVisualStyleBackColor = true;
+            btnCheckAlpha.Visible = false;
+            btnCheckAlpha.Click += btnCheckAlpha_Click;
+            // 
             // ToolForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(749, 484);
+            ClientSize = new System.Drawing.Size(744, 484);
+            Controls.Add(btnCheckAlpha);
             Controls.Add(btnViewOutputDirectory);
             Controls.Add(infoIconFFmpegMode);
             Controls.Add(dropdownFFmpegMode);
@@ -480,6 +493,7 @@
         private System.Windows.Forms.NumericUpDown nudFrameRateSelect;
         private System.Windows.Forms.Label labelFrameRateSelect;
         private System.Windows.Forms.Button btnViewOutputDirectory;
+        private System.Windows.Forms.Button btnCheckAlpha;
     }
 }
 

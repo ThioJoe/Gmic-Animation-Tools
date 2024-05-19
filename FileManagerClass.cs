@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
@@ -216,6 +217,52 @@ public class FileManager
         }
 
         return result;
+    }
+
+    public static List<Dictionary<string, object>> CheckAlphaChannel(string imagePath, bool countAll = false)
+    {
+        int visiblePixelsCount = 0;
+        // Create list of dictionaries to store the pixel data - Including each pixel's ARGB values and coordinates
+        List<Dictionary<string, object>> pixelData = new List<Dictionary<string, object>>();
+
+        try
+        {
+            using (Bitmap bitmap = new Bitmap(imagePath))
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    for (int x = 0; x < bitmap.Width; x++)
+                    {
+                        Color pixelColor = bitmap.GetPixel(x, y);
+                        if (pixelColor.A != 0)
+                        {
+                            visiblePixelsCount++;
+                            Dictionary<string, object> pixelInfo = new Dictionary<string, object>
+                            {
+                                { "X", x },
+                                { "Y", y },
+                                { "A", pixelColor.A },
+                                { "R", pixelColor.R },
+                                { "G", pixelColor.G },
+                                { "B", pixelColor.B }
+                            };
+                            pixelData.Add(pixelInfo);
+                            if (!countAll)
+                            {
+                                return pixelData;
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            return pixelData;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+            return pixelData;
+        }
     }
 
 }

@@ -140,6 +140,12 @@ namespace GmicAnimate
 
         public static double FFProbeGetGifDurationInSeconds(string filePath)
         {
+            // If it's not a gif file, return 0
+            if (Path.GetExtension(filePath) != ".gif")
+            {
+                return 0;
+            }
+
             // Construct the command to execute
             string command = "ffprobe";
             string args = $"-v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 \"{filePath}\"";
@@ -347,15 +353,31 @@ namespace GmicAnimate
 
         private void txtGifFilePath_TextChanged(object sender, EventArgs e)
         {
+            string trimmedPath = txtGifFilePath.Text.Trim('"').Trim('\'');
+
+            // Update the box to not include quotes disable the textChanged handler while doing this to prevent infinite loop
+            txtGifFilePath.TextChanged -= txtGifFilePath_TextChanged;
+            txtGifFilePath.Text = trimmedPath;
+            txtGifFilePath.TextChanged += txtGifFilePath_TextChanged;
+
             // Check validity of filepath
-            if (!File.Exists(txtGifFilePath.Text))
+            if (!File.Exists(trimmedPath))
             {
                 txtAnalysisOutput.Text = "File not found.";
+                buttonAddCrossfade.Enabled = false;
+                return;
+            }
+            else if (Path.GetExtension(trimmedPath) != ".gif")
+            {
+                txtAnalysisOutput.Text = "Analysis is for GIF files only.";
+                // Disable the crossfade button if the file is not a gif
+                buttonAddCrossfade.Enabled = false;
                 return;
             }
             else
             {
-                UpdateGifAnalysisTextbox(txtGifFilePath.Text);
+                buttonAddCrossfade.Enabled = true;
+                UpdateGifAnalysisTextbox(trimmedPath);
             }
         }
 
@@ -734,6 +756,68 @@ namespace GmicAnimate
             {
                 MessageBox.Show("The folder path is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnCheckAlpha_Click(object sender, EventArgs e)
+        {
+            string gifFilePath = txtGifFilePath.Text;
+
+            List<Dictionary<string, object>> pixelData = FileManager.CheckAlphaChannel(gifFilePath, countAll: true);
+
+            if (pixelData.Count == 0)
+            {
+                MessageBox.Show("No visible pixels found.", "Alpha Channel Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                //MessageBox.Show($"Found {pixelData.Count} visible pixels.", "No Alpha Channel Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowCustomMessageBox(pixelData);
+            }
+        }
+
+        static void ShowCustomMessageBox(List<Dictionary<string, object>> pixelData)
+        {
+            Form messageBox = new Form();
+            messageBox.Text = "No Alpha Channel Found";
+            messageBox.StartPosition = FormStartPosition.CenterScreen;
+            messageBox.Width = 400;
+            messageBox.Height = 200;
+
+            Label messageLabel = new Label();
+            messageLabel.Text = $"Found {pixelData.Count} visible pixels.";
+            messageLabel.AutoSize = true;
+            messageLabel.Location = new Point(10, 20);
+            messageBox.Controls.Add(messageLabel);
+
+            Button okButton = new Button();
+            okButton.Text = "OK";
+            okButton.DialogResult = DialogResult.OK;
+            okButton.Location = new Point(50, 80);
+            messageBox.Controls.Add(okButton);
+
+            Button saveButton = new Button();
+            saveButton.Text = "Save to Log";
+            saveButton.Location = new Point(150, 80);
+            saveButton.Click += (sender, e) => SaveDataToLogFile(pixelData);
+            messageBox.Controls.Add(saveButton);
+
+            messageBox.AcceptButton = okButton;
+            messageBox.ShowDialog();
+        }
+
+        static void SaveDataToLogFile(List<Dictionary<string, object>> pixelData)
+        {
+            string logFilePath = "pixelDataLog.txt";
+
+            using (StreamWriter writer = new StreamWriter(logFilePath))
+            {
+                foreach (var pixel in pixelData)
+                {
+                    writer.WriteLine($"X: {pixel["X"]}, Y: {pixel["Y"]}, A: {pixel["A"]}, R: {pixel["R"]}, G: {pixel["G"]}, B: {pixel["B"]}");
+                }
+            }
+
+            MessageBox.Show("Data saved to log file.", "Save Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
