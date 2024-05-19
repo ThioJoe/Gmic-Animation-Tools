@@ -17,6 +17,7 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static FileManager;
 using static GmicFilterAnimatorApp.MainForm.NativeMethods;
 
 namespace GmicFilterAnimatorApp
@@ -613,6 +614,33 @@ namespace GmicFilterAnimatorApp
 
                 // Process each frame using the specified parameters and gmic.exe.
                 await Task.Run(() => ProcessFrames(outputDir, interpolatedParams, frameNumberStart, debugSetting));
+
+                // If option to delete blank frames is enabled, delete them
+                if (checkBoxRemoveBlankFrames.Checked)
+                {
+                    // Check each file in the directory and delete if it's blank. Just get a list of the PNGs
+                    int deletedCount = 0;
+                    string[] filesList = Directory.GetFiles(outputDir, "*.png");
+                    for (int i = 0; i < filesList.Length; i++)
+                    {
+                        // Check if the file is blank
+                        if (FileManager.CheckAlphaChannel(filesList[i]).Count == 0)
+                        {
+                            // Delete the file
+                            deletedCount++;
+                            //Rename the file to add .blank
+                            File.Move(filesList[i], filesList[i] + ".blank");
+                        }
+                    }
+                    // If any files were deleted, resequence the files
+                    if (deletedCount > 0)
+                    {
+                        FileManager fileManager = new FileManager();
+                        string baseFileName = fileManager.GetBaseFileNameWithinFolder(outputDir);
+                        SequenceFixResult sequenceFixResult = fileManager.FixDiscontinuousSequence(outputDir, baseFileName);
+                        PaddingUpdateResult paddingUpdateResult = fileManager.UpdateZeroPadding(outputDir, baseFileName);
+                    }
+                }
 
                 // Optionally create a GIF from the generated frames using ffmpeg.
                 if (createGif)
@@ -1310,7 +1338,6 @@ namespace GmicFilterAnimatorApp
                                     // Append to log contents
                                     logContents.AppendLine($"Frame {i + 1}:" +
                                         $"\nArguments: {arguments}" +
-                                        $"\nSingle Thread Mode: {useSingleThreadPerProcess}" +
                                         $"\n\nOutput:\n{errors}" +
                                         $"\n"); // GMIC only outputs as stderror, so using 'errors' as the regular output
                                 }

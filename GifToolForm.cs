@@ -365,6 +365,9 @@ namespace GmicAnimate
             {
                 txtAnalysisOutput.Text = "File not found.";
                 buttonAddCrossfade.Enabled = false;
+
+                btnCheckAlpha.Visible = false;
+
                 return;
             }
             else if (Path.GetExtension(trimmedPath) != ".gif")
@@ -372,11 +375,15 @@ namespace GmicAnimate
                 txtAnalysisOutput.Text = "Analysis is for GIF files only.";
                 // Disable the crossfade button if the file is not a gif
                 buttonAddCrossfade.Enabled = false;
+                // Enable alpha check button if the file is not a gif
+                btnCheckAlpha.Visible = true;
+
                 return;
             }
             else
             {
                 buttonAddCrossfade.Enabled = true;
+                btnCheckAlpha.Visible = false;
                 UpdateGifAnalysisTextbox(trimmedPath);
             }
         }
@@ -798,6 +805,7 @@ namespace GmicAnimate
             Button saveButton = new Button();
             saveButton.Text = "Save to Log";
             saveButton.Location = new Point(150, 80);
+            saveButton.Size = new Size(100, 30);
             saveButton.Click += (sender, e) => SaveDataToLogFile(pixelData);
             messageBox.Controls.Add(saveButton);
 
@@ -816,7 +824,6 @@ namespace GmicAnimate
                     writer.WriteLine($"X: {pixel["X"]}, Y: {pixel["Y"]}, A: {pixel["A"]}, R: {pixel["R"]}, G: {pixel["G"]}, B: {pixel["B"]}");
                 }
             }
-
             MessageBox.Show("Data saved to log file.", "Save Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
