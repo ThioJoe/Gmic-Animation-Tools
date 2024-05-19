@@ -94,8 +94,10 @@
             dropdownExamplesNonLoops = new System.Windows.Forms.ComboBox();
             labelExamplesNonLoops = new System.Windows.Forms.Label();
             dropdownExampleLoops = new System.Windows.Forms.ComboBox();
-            labelExamplesWacky = new System.Windows.Forms.Label();
+            labelExamplesPerfectLoops = new System.Windows.Forms.Label();
             labelReplacingXWithT = new System.Windows.Forms.Label();
+            labelExamplesImperfectLoops = new System.Windows.Forms.Label();
+            dropdownExamplesImperfectLoops = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -281,7 +283,7 @@
             // btnExampleCosine
             // 
             btnExampleCosine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleCosine.Location = new System.Drawing.Point(636, 669);
+            btnExampleCosine.Location = new System.Drawing.Point(636, 695);
             btnExampleCosine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleCosine.Name = "btnExampleCosine";
             btnExampleCosine.Size = new System.Drawing.Size(185, 45);
@@ -447,7 +449,7 @@
             // btnExampleExp
             // 
             btnExampleExp.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleExp.Location = new System.Drawing.Point(829, 670);
+            btnExampleExp.Location = new System.Drawing.Point(829, 696);
             btnExampleExp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleExp.Name = "btnExampleExp";
             btnExampleExp.Size = new System.Drawing.Size(185, 45);
@@ -459,7 +461,7 @@
             // btnExampleSine
             // 
             btnExampleSine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleSine.Location = new System.Drawing.Point(443, 670);
+            btnExampleSine.Location = new System.Drawing.Point(443, 696);
             btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleSine.Name = "btnExampleSine";
             btnExampleSine.Size = new System.Drawing.Size(185, 45);
@@ -475,9 +477,9 @@
             dropdownExamplesNonLoops.FormattingEnabled = true;
             dropdownExamplesNonLoops.ItemHeight = 25;
             dropdownExamplesNonLoops.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))", "e/(t/3+.01)", "t^t", "abs(sin(pi*t))" });
-            dropdownExamplesNonLoops.Location = new System.Drawing.Point(537, 576);
+            dropdownExamplesNonLoops.Location = new System.Drawing.Point(553, 575);
             dropdownExamplesNonLoops.Name = "dropdownExamplesNonLoops";
-            dropdownExamplesNonLoops.Size = new System.Drawing.Size(475, 33);
+            dropdownExamplesNonLoops.Size = new System.Drawing.Size(461, 33);
             dropdownExamplesNonLoops.TabIndex = 64;
             dropdownExamplesNonLoops.SelectedIndexChanged += dropdownExampleNonLoops_SelectedIndexChanged;
             // 
@@ -485,7 +487,7 @@
             // 
             labelExamplesNonLoops.AutoSize = true;
             labelExamplesNonLoops.Font = new System.Drawing.Font("Segoe UI", 12F);
-            labelExamplesNonLoops.Location = new System.Drawing.Point(440, 582);
+            labelExamplesNonLoops.Location = new System.Drawing.Point(456, 581);
             labelExamplesNonLoops.Name = "labelExamplesNonLoops";
             labelExamplesNonLoops.Size = new System.Drawing.Size(91, 21);
             labelExamplesNonLoops.TabIndex = 65;
@@ -497,23 +499,23 @@
             dropdownExampleLoops.Font = new System.Drawing.Font("Cascadia Code", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             dropdownExampleLoops.FormattingEnabled = true;
             dropdownExampleLoops.ItemHeight = 25;
-            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "sin(4*pi*t)*exp(-t)", "atan(sin(2*pi*t))" });
-            dropdownExampleLoops.Location = new System.Drawing.Point(537, 615);
+            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))" });
+            dropdownExampleLoops.Location = new System.Drawing.Point(553, 614);
             dropdownExampleLoops.Name = "dropdownExampleLoops";
-            dropdownExampleLoops.Size = new System.Drawing.Size(477, 33);
+            dropdownExampleLoops.Size = new System.Drawing.Size(461, 33);
             dropdownExampleLoops.TabIndex = 66;
-            dropdownExampleLoops.SelectedIndexChanged += dropdownExampleLoops_SelectedIndexChanged;
+            dropdownExampleLoops.SelectedIndexChanged += dropdownExamplePerfectLoops_SelectedIndexChanged;
             // 
-            // labelExamplesWacky
+            // labelExamplesPerfectLoops
             // 
-            labelExamplesWacky.AutoSize = true;
-            labelExamplesWacky.Font = new System.Drawing.Font("Segoe UI", 12F);
-            labelExamplesWacky.Location = new System.Drawing.Point(425, 621);
-            labelExamplesWacky.Name = "labelExamplesWacky";
-            labelExamplesWacky.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            labelExamplesWacky.Size = new System.Drawing.Size(106, 21);
-            labelExamplesWacky.TabIndex = 67;
-            labelExamplesWacky.Text = "Perfect Loops:";
+            labelExamplesPerfectLoops.AutoSize = true;
+            labelExamplesPerfectLoops.Font = new System.Drawing.Font("Segoe UI", 12F);
+            labelExamplesPerfectLoops.Location = new System.Drawing.Point(441, 620);
+            labelExamplesPerfectLoops.Name = "labelExamplesPerfectLoops";
+            labelExamplesPerfectLoops.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            labelExamplesPerfectLoops.Size = new System.Drawing.Size(106, 21);
+            labelExamplesPerfectLoops.TabIndex = 67;
+            labelExamplesPerfectLoops.Text = "Perfect Loops:";
             // 
             // labelReplacingXWithT
             // 
@@ -528,13 +530,39 @@
             labelReplacingXWithT.Text = "Warning: The 'x' in the expression will be evaluated as 't'.\r\nClick the graph preview button for details.";
             labelReplacingXWithT.Visible = false;
             // 
+            // labelExamplesImperfectLoops
+            // 
+            labelExamplesImperfectLoops.AutoSize = true;
+            labelExamplesImperfectLoops.Font = new System.Drawing.Font("Segoe UI", 12F);
+            labelExamplesImperfectLoops.Location = new System.Drawing.Point(422, 660);
+            labelExamplesImperfectLoops.Name = "labelExamplesImperfectLoops";
+            labelExamplesImperfectLoops.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            labelExamplesImperfectLoops.Size = new System.Drawing.Size(125, 21);
+            labelExamplesImperfectLoops.TabIndex = 70;
+            labelExamplesImperfectLoops.Text = "Imperfect Loops:";
+            // 
+            // dropdownExamplesImperfectLoops
+            // 
+            dropdownExamplesImperfectLoops.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            dropdownExamplesImperfectLoops.Font = new System.Drawing.Font("Cascadia Code", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dropdownExamplesImperfectLoops.FormattingEnabled = true;
+            dropdownExamplesImperfectLoops.ItemHeight = 25;
+            dropdownExamplesImperfectLoops.Items.AddRange(new object[] { "sin(4*pi*t)*exp(-t)" });
+            dropdownExamplesImperfectLoops.Location = new System.Drawing.Point(553, 653);
+            dropdownExamplesImperfectLoops.Name = "dropdownExamplesImperfectLoops";
+            dropdownExamplesImperfectLoops.Size = new System.Drawing.Size(461, 33);
+            dropdownExamplesImperfectLoops.TabIndex = 69;
+            dropdownExamplesImperfectLoops.SelectedIndexChanged += dropdownExamplesImperfectLoops_SelectedIndexChanged;
+            // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1045, 871);
+            Controls.Add(labelExamplesImperfectLoops);
+            Controls.Add(dropdownExamplesImperfectLoops);
             Controls.Add(labelReplacingXWithT);
-            Controls.Add(labelExamplesWacky);
+            Controls.Add(labelExamplesPerfectLoops);
             Controls.Add(dropdownExampleLoops);
             Controls.Add(labelExamplesNonLoops);
             Controls.Add(dropdownExamplesNonLoops);
@@ -614,7 +642,9 @@
         private System.Windows.Forms.ComboBox dropdownExamplesNonLoops;
         private System.Windows.Forms.Label labelExamplesNonLoops;
         private System.Windows.Forms.ComboBox dropdownExampleLoops;
-        private System.Windows.Forms.Label labelExamplesWacky;
+        private System.Windows.Forms.Label labelExamplesPerfectLoops;
         private System.Windows.Forms.Label labelReplacingXWithT;
+        private System.Windows.Forms.Label labelExamplesImperfectLoops;
+        private System.Windows.Forms.ComboBox dropdownExamplesImperfectLoops;
     }
 }

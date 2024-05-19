@@ -642,7 +642,7 @@ namespace GmicAnimate
                         labelErrorWhileGraphing.Visible = true;
                         return;
                     }
-                    
+
                 }
                 else
                 {
@@ -842,17 +842,6 @@ namespace GmicAnimate
             );
         }
 
-        private void btnExampleSin_Click(object sender, EventArgs e)
-        {
-            // Set the master parameter to a sine wave
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleSine.Text;
-        }
-
-        private void btnExampleCosine_Click(object sender, EventArgs e)
-        {
-            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleCosine.Text;
-        }
-
         private void radioNormalizeStartEndClone_CheckedChanged(object sender, EventArgs e)
         {
             // Uncheck the absolute mode checkbox if this is checked
@@ -980,6 +969,11 @@ namespace GmicAnimate
             // Split the string into an array of strings
             string[] expressions = customExpressionStringFromMainWindow.Split(',');
 
+            // Reset the dropdowns
+            ResetPerfectLoopsDropdown();
+            ResetImperfectLoopsDropdown();
+            ResetNonLoopDropdown();
+
             // Reset the expressions to the default values, only update enabled rows
             for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
             {
@@ -1017,21 +1011,48 @@ namespace GmicAnimate
         private void btnExampleExpSin_Click(object sender, EventArgs e)
         {
             dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleExp.Text;
+            ResetPerfectLoopsDropdown();
+            ResetImperfectLoopsDropdown();
+            ResetNonLoopDropdown();
         }
 
+        private void btnExampleSin_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleSine.Text;
+            ResetPerfectLoopsDropdown();
+            ResetImperfectLoopsDropdown();
+            ResetNonLoopDropdown();
+        }
+
+        private void btnExampleCosine_Click(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleCosine.Text;
+            ResetPerfectLoopsDropdown();
+            ResetImperfectLoopsDropdown();
+            ResetNonLoopDropdown();
+        }
 
         private void dropdownExampleNonLoops_SelectedIndexChanged(object sender, EventArgs e)
         {
             dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = dropdownExamplesNonLoops.SelectedItem;
             // Reset other dropdowns - Remove handlers to prevent triggering extra events
-            ResetWackyDropdown();
+            ResetPerfectLoopsDropdown();
+            ResetImperfectLoopsDropdown();
         }
 
-        private void dropdownExampleLoops_SelectedIndexChanged(object sender, EventArgs e)
+        private void dropdownExamplePerfectLoops_SelectedIndexChanged(object sender, EventArgs e)
         {
             dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = dropdownExampleLoops.SelectedItem;
             // Reset other dropdowns - Remove handlers to prevent triggering extra events
             ResetNonLoopDropdown();
+            ResetImperfectLoopsDropdown();
+        }
+
+        private void dropdownExamplesImperfectLoops_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = dropdownExamplesImperfectLoops.SelectedItem;
+            ResetNonLoopDropdown();
+            ResetPerfectLoopsDropdown();
         }
 
         // ---------------------------- Functions to reset each dropdown ----------------------------
@@ -1042,12 +1063,20 @@ namespace GmicAnimate
             dropdownExamplesNonLoops.SelectedIndexChanged += dropdownExampleNonLoops_SelectedIndexChanged;
         }
 
-        private void ResetWackyDropdown()
+        private void ResetPerfectLoopsDropdown()
         {
-            dropdownExampleLoops.SelectedIndexChanged -= dropdownExampleLoops_SelectedIndexChanged;
+            dropdownExampleLoops.SelectedIndexChanged -= dropdownExamplePerfectLoops_SelectedIndexChanged;
             dropdownExampleLoops.SelectedIndex = -1;
-            dropdownExampleLoops.SelectedIndexChanged += dropdownExampleLoops_SelectedIndexChanged;
+            dropdownExampleLoops.SelectedIndexChanged += dropdownExamplePerfectLoops_SelectedIndexChanged;
         }
 
+        private void ResetImperfectLoopsDropdown()
+        {
+            dropdownExamplesImperfectLoops.SelectedIndexChanged -= dropdownExamplesImperfectLoops_SelectedIndexChanged;
+            dropdownExamplesImperfectLoops.SelectedIndex = -1;
+            dropdownExamplesImperfectLoops.SelectedIndexChanged += dropdownExamplesImperfectLoops_SelectedIndexChanged;
+        }
+
+        
     } //End form class
 } // End namespace
