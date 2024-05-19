@@ -90,6 +90,8 @@
             statusStrip1 = new System.Windows.Forms.StatusStrip();
             progressBarGeneration = new System.Windows.Forms.ProgressBar();
             btnGifTools = new System.Windows.Forms.Button();
+            checkBoxRemoveBlankFrames = new System.Windows.Forms.CheckBox();
+            infoIconRemoveBlankFrames = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)nudTotalFrames).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIncrement).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndex).BeginInit();
@@ -105,6 +107,7 @@
             ((System.ComponentModel.ISupportInitialize)infoIconSingleThread).BeginInit();
             groupBoxNormalizeRadios.SuspendLayout();
             statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)infoIconRemoveBlankFrames).BeginInit();
             SuspendLayout();
             // 
             // nudTotalFrames
@@ -431,7 +434,7 @@
             // InfoIconCreateGif
             // 
             InfoIconCreateGif.Image = (System.Drawing.Image)resources.GetObject("InfoIconCreateGif.Image");
-            InfoIconCreateGif.Location = new System.Drawing.Point(105, 410);
+            InfoIconCreateGif.Location = new System.Drawing.Point(95, 410);
             InfoIconCreateGif.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             InfoIconCreateGif.Name = "InfoIconCreateGif";
             InfoIconCreateGif.Size = new System.Drawing.Size(16, 16);
@@ -468,7 +471,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new System.Drawing.Point(172, 448);
+            pictureBox1.Location = new System.Drawing.Point(172, 457);
             pictureBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(16, 16);
@@ -571,7 +574,7 @@
             // 
             labelFFmpegNotFound.AutoSize = true;
             labelFFmpegNotFound.ForeColor = System.Drawing.Color.Red;
-            labelFFmpegNotFound.Location = new System.Drawing.Point(129, 411);
+            labelFFmpegNotFound.Location = new System.Drawing.Point(117, 411);
             labelFFmpegNotFound.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelFFmpegNotFound.Name = "labelFFmpegNotFound";
             labelFFmpegNotFound.Size = new System.Drawing.Size(177, 15);
@@ -720,7 +723,7 @@
             // 
             dropdownDebugLog.FormattingEnabled = true;
             dropdownDebugLog.Items.AddRange(new object[] { "None", "Verbose 1", "Verbose 2", "Verbose 3", "Debug" });
-            dropdownDebugLog.Location = new System.Drawing.Point(89, 445);
+            dropdownDebugLog.Location = new System.Drawing.Point(89, 454);
             dropdownDebugLog.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             dropdownDebugLog.Name = "dropdownDebugLog";
             dropdownDebugLog.Size = new System.Drawing.Size(75, 23);
@@ -729,7 +732,7 @@
             // labelDebugLog
             // 
             labelDebugLog.AutoSize = true;
-            labelDebugLog.Location = new System.Drawing.Point(18, 448);
+            labelDebugLog.Location = new System.Drawing.Point(18, 457);
             labelDebugLog.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelDebugLog.Name = "labelDebugLog";
             labelDebugLog.Size = new System.Drawing.Size(68, 15);
@@ -779,11 +782,37 @@
             btnGifTools.UseVisualStyleBackColor = true;
             btnGifTools.Click += btnGifTools_Click;
             // 
+            // checkBoxRemoveBlankFrames
+            // 
+            checkBoxRemoveBlankFrames.AutoSize = true;
+            checkBoxRemoveBlankFrames.Checked = true;
+            checkBoxRemoveBlankFrames.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBoxRemoveBlankFrames.Location = new System.Drawing.Point(18, 432);
+            checkBoxRemoveBlankFrames.Name = "checkBoxRemoveBlankFrames";
+            checkBoxRemoveBlankFrames.Size = new System.Drawing.Size(162, 19);
+            checkBoxRemoveBlankFrames.TabIndex = 60;
+            checkBoxRemoveBlankFrames.Text = "Remove Blank GIF Frames";
+            checkBoxRemoveBlankFrames.UseVisualStyleBackColor = true;
+            // 
+            // infoIconRemoveBlankFrames
+            // 
+            infoIconRemoveBlankFrames.Image = (System.Drawing.Image)resources.GetObject("infoIconRemoveBlankFrames.Image");
+            infoIconRemoveBlankFrames.Location = new System.Drawing.Point(175, 432);
+            infoIconRemoveBlankFrames.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            infoIconRemoveBlankFrames.Name = "infoIconRemoveBlankFrames";
+            infoIconRemoveBlankFrames.Size = new System.Drawing.Size(16, 16);
+            infoIconRemoveBlankFrames.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            infoIconRemoveBlankFrames.TabIndex = 61;
+            infoIconRemoveBlankFrames.TabStop = false;
+            toolTip1.SetToolTip(infoIconRemoveBlankFrames, resources.GetString("infoIconRemoveBlankFrames.ToolTip"));
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(478, 770);
+            Controls.Add(infoIconRemoveBlankFrames);
+            Controls.Add(checkBoxRemoveBlankFrames);
             Controls.Add(btnGifTools);
             Controls.Add(progressBarGeneration);
             Controls.Add(statusStrip1);
@@ -861,6 +890,7 @@
             groupBoxNormalizeRadios.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)infoIconRemoveBlankFrames).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -929,5 +959,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ProgressBar progressBarGeneration;
         private System.Windows.Forms.Button btnGifTools;
+        private System.Windows.Forms.CheckBox checkBoxRemoveBlankFrames;
+        private System.Windows.Forms.PictureBox infoIconRemoveBlankFrames;
     }
 }

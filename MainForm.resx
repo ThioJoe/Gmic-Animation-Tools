@@ -392,6 +392,27 @@ situations because missed frames won't need to be re-attempted.</value>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>142, 17</value>
   </metadata>
+  <data name="infoIconRemoveBlankFrames.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="infoIconRemoveBlankFrames.ToolTip" xml:space="preserve">
+    <value>If checked, any blank image frames in the sequence will be deleted so
+to not be included in the final GIF.
+
+Note that this means if there are many blank frames in the middle of
+the sequence, it could cause jumping in the final GIF, but otherwise
+there would be black frames in the animation.
+
+All the image files will be re-numbered so they won't quite line up with
+the log file's frame numbers anymore.</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>
   </metadata>
