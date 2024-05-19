@@ -614,17 +614,26 @@ namespace GmicAnimate
             string ffmpegCommand = "";
             if (dropdownFFmpegMode.SelectedIndex == 0)
             {
-                ffmpegCommand = $"ffmpeg -framerate {frameRate} -reinit_filter 0 -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse\" \"{outputDir}\\{gifFileName}\"";
+                ffmpegCommand = $"ffmpeg -framerate {frameRate} -reinit_filter 0 -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse=alpha_threshold=1\" \"{outputDir}\\{gifFileName}\"";
             }
             else if (dropdownFFmpegMode.SelectedIndex == 1)
             {
                 ffmpegCommand = $"ffmpeg -framerate {frameRate} -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
             }
 
+            bool logffmpeg = false;
+            string logFilePath = "ffmpeg_log.txt";
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = $"/c {ffmpegCommand}";
+            if (logffmpeg)
+            {
+                startInfo.Arguments = $"/c {ffmpegCommand} > {logFilePath} 2>&1";
+            }
+            else
+            {
+                startInfo.Arguments = $"/c {ffmpegCommand}";
+            }
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true;
 
