@@ -143,4 +143,30 @@ very well with transparency.
 
 </value>
   </data>
+  <data name="infoIconAlphaThreshold.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAANdJREFUOE+lk7ENwjAQRb0ALEGXCWgtpcgCLEQXiQoGgCId1JkACDOhSOFedLaO
+        4ERAiied/7/7ih3bee9dnueWtXAWWqFTqC8CXuxl1hVFYTkKnXIX9gp10E9CnOmTdHEVaNgJS9UsCwGP
+        nhsasyGgUmODYTgoVqOH3ioEZCrwqbYR0GGo08vZZATULIxpWSkpj4CaAIabgRl4KCmvYTYElAMzMLYF
+        KL8JeCop7y1gbAtTAXELU4fYKikvHuLs34gwdpG2itU+LlIw/rvKFIbfH9O85+zdC8b3LMIYY2EGAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="infoIconAlphaThreshold.ToolTip" xml:space="preserve">
+    <value>GIFs can only support on/off transparency, not partial.
+
+So for the pixels of each image frame used in the GIF,
+this is the minimum value of the alpha channel
+(as in ARGB) that will be visible in the final GIF.
+
+FFMPEG's default is 128, but I set it to 1 because occasionally
+a GMIC filter will create frames that only have very low Alpha
+values, meaning with a threshold of 128 it ends up being a
+totally blank frame, which ends up causing issues in the 
+final GIF. 
+
+
+</value>
+  </data>
 </root>

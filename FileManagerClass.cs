@@ -162,13 +162,21 @@ public class FileManager
         if (searchPattern == null) searchPattern = "*.png";
 
         string[] files = Directory.GetFiles(folderPath, searchPattern);
-        if (files.Length == 0) return null;
+        if (files.Length == 0)
+        {
+            MessageBox.Show("No PNG files were found in the selected folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return null;
+        }
         string fileName = Path.GetFileName(files[0]);
         int underscoreIndex = fileName.LastIndexOf('_');
         if (underscoreIndex != -1)
         {
             return fileName.Substring(0, underscoreIndex);
         }
+        // Display error message
+        MessageBox.Show("A problem occurred trying to determine the base file name in the folder." +
+            "\n\nMake sure the images are all named and numbered like:\nWhateverBaseName_01.png" +
+            "\n\nThis could also be due to other PNGs in the folder that are not part of the sequence.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         return null;
     }
 
