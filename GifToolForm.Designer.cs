@@ -398,6 +398,7 @@
             btnViewOutputDirectory.TabIndex = 39;
             btnViewOutputDirectory.Text = "View Output Directory";
             btnViewOutputDirectory.UseVisualStyleBackColor = true;
+            btnViewOutputDirectory.Click += btnViewOutputDirectory_Click;
             // 
             // ToolForm
             // 

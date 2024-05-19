@@ -586,12 +586,12 @@ namespace GmicAnimate
             if (dropdownFFmpegMode.SelectedIndex == 0)
             {
                 ffmpegCommand = $"ffmpeg -framerate {frameRate} -reinit_filter 0 -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" -filter_complex \"[0:v] split [a][b];[a] palettegen=reserve_transparent=on:transparency_color=ffffff [p];[b][p] paletteuse\" \"{outputDir}\\{gifFileName}\"";
-            } 
+            }
             else if (dropdownFFmpegMode.SelectedIndex == 1)
             {
                 ffmpegCommand = $"ffmpeg -framerate {frameRate} -i \"{outputDir}\\{baseFileName}_%0{digitCount}d.png\" \"{outputDir}\\{gifFileName}\"";
             }
-            
+
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
@@ -720,6 +720,20 @@ namespace GmicAnimate
                             "GIF Edit Help",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
+        }
+
+        private void btnViewOutputDirectory_Click(object sender, EventArgs e)
+        {
+            // Open the folder in Windows Explorer
+            string folderPath = txtFramesFolderPath.Text;
+            if (Directory.Exists(folderPath))
+            {
+                Process.Start("explorer.exe", folderPath);
+            }
+            else
+            {
+                MessageBox.Show("The folder path is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
