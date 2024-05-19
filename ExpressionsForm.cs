@@ -202,7 +202,7 @@ namespace GmicAnimate
             DataGridViewTextBoxColumn expressionColumn = new DataGridViewTextBoxColumn();
             expressionColumn.HeaderText = "Exponent / Expression";
             expressionColumn.Name = "Expression";
-            expressionColumn.Width = 198;
+            expressionColumn.Width = 237;
             expressionColumn.ReadOnly = false;  // Set to false to allow user to enter expressions
             dataGridViewExpressions.Columns.Add(expressionColumn);
 
@@ -788,13 +788,11 @@ namespace GmicAnimate
         private void btnExampleSin_Click(object sender, EventArgs e)
         {
             // Set the master parameter to a sine wave
-            //dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "sin(2*pi*t)";
             dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleSine.Text;
         }
 
         private void btnExampleCosine_Click(object sender, EventArgs e)
         {
-            //dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = "cos(4*pi*t)";
             dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExampleCosine.Text;
         }
 
@@ -993,6 +991,11 @@ namespace GmicAnimate
         private void btnExample10_Click(object sender, EventArgs e)
         {
             dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = btnExample10.Text;
+        }
+
+        private void dropdownExampleSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value = dropdownExampleSelector.SelectedItem;
         }
     } //End form class
 } // End namespace

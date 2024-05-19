@@ -58,7 +58,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -98,6 +98,7 @@
             btnExample9 = new System.Windows.Forms.Button();
             btnExample10 = new System.Windows.Forms.Button();
             btnExampleSine = new System.Windows.Forms.Button();
+            dropdownExampleSelector = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -111,14 +112,14 @@
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewExpressions.Location = new System.Drawing.Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -273,7 +274,7 @@
             // 
             labelExampleExpressionButtons.AutoSize = true;
             labelExampleExpressionButtons.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            labelExampleExpressionButtons.Location = new System.Drawing.Point(618, 550);
+            labelExampleExpressionButtons.Location = new System.Drawing.Point(618, 542);
             labelExampleExpressionButtons.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelExampleExpressionButtons.Name = "labelExampleExpressionButtons";
             labelExampleExpressionButtons.Size = new System.Drawing.Size(199, 22);
@@ -283,7 +284,7 @@
             // btnExampleCosine
             // 
             btnExampleCosine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleCosine.Location = new System.Drawing.Point(632, 586);
+            btnExampleCosine.Location = new System.Drawing.Point(632, 629);
             btnExampleCosine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleCosine.Name = "btnExampleCosine";
             btnExampleCosine.Size = new System.Drawing.Size(185, 45);
@@ -449,7 +450,7 @@
             // btnExampleExpSin
             // 
             btnExampleExpSin.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleExpSin.Location = new System.Drawing.Point(825, 587);
+            btnExampleExpSin.Location = new System.Drawing.Point(825, 630);
             btnExampleExpSin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleExpSin.Name = "btnExampleExpSin";
             btnExampleExpSin.Size = new System.Drawing.Size(185, 45);
@@ -461,7 +462,7 @@
             // btnExample4
             // 
             btnExample4.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample4.Location = new System.Drawing.Point(439, 638);
+            btnExample4.Location = new System.Drawing.Point(439, 681);
             btnExample4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample4.Name = "btnExample4";
             btnExample4.Size = new System.Drawing.Size(185, 45);
@@ -473,7 +474,7 @@
             // btnExample5
             // 
             btnExample5.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample5.Location = new System.Drawing.Point(632, 637);
+            btnExample5.Location = new System.Drawing.Point(632, 680);
             btnExample5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample5.Name = "btnExample5";
             btnExample5.Size = new System.Drawing.Size(185, 45);
@@ -485,7 +486,7 @@
             // btnExample6
             // 
             btnExample6.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample6.Location = new System.Drawing.Point(825, 638);
+            btnExample6.Location = new System.Drawing.Point(825, 681);
             btnExample6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample6.Name = "btnExample6";
             btnExample6.Size = new System.Drawing.Size(185, 45);
@@ -497,7 +498,7 @@
             // btnExample7
             // 
             btnExample7.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample7.Location = new System.Drawing.Point(439, 689);
+            btnExample7.Location = new System.Drawing.Point(439, 732);
             btnExample7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample7.Name = "btnExample7";
             btnExample7.Size = new System.Drawing.Size(185, 45);
@@ -509,7 +510,7 @@
             // btnExample8
             // 
             btnExample8.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExample8.Location = new System.Drawing.Point(632, 688);
+            btnExample8.Location = new System.Drawing.Point(632, 731);
             btnExample8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample8.Name = "btnExample8";
             btnExample8.Size = new System.Drawing.Size(185, 45);
@@ -521,7 +522,7 @@
             // btnExample9
             // 
             btnExample9.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample9.Location = new System.Drawing.Point(825, 689);
+            btnExample9.Location = new System.Drawing.Point(825, 732);
             btnExample9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample9.Name = "btnExample9";
             btnExample9.Size = new System.Drawing.Size(185, 45);
@@ -533,7 +534,7 @@
             // btnExample10
             // 
             btnExample10.Font = new System.Drawing.Font("Cascadia Code", 10F);
-            btnExample10.Location = new System.Drawing.Point(439, 740);
+            btnExample10.Location = new System.Drawing.Point(439, 783);
             btnExample10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExample10.Name = "btnExample10";
             btnExample10.Size = new System.Drawing.Size(185, 45);
@@ -545,7 +546,7 @@
             // btnExampleSine
             // 
             btnExampleSine.Font = new System.Drawing.Font("Cascadia Code", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            btnExampleSine.Location = new System.Drawing.Point(439, 587);
+            btnExampleSine.Location = new System.Drawing.Point(439, 630);
             btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleSine.Name = "btnExampleSine";
             btnExampleSine.Size = new System.Drawing.Size(185, 45);
@@ -554,11 +555,25 @@
             btnExampleSine.UseVisualStyleBackColor = true;
             btnExampleSine.Click += btnExampleSin_Click;
             // 
+            // dropdownExampleSelector
+            // 
+            dropdownExampleSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            dropdownExampleSelector.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            dropdownExampleSelector.FormattingEnabled = true;
+            dropdownExampleSelector.ItemHeight = 25;
+            dropdownExampleSelector.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))" });
+            dropdownExampleSelector.Location = new System.Drawing.Point(608, 576);
+            dropdownExampleSelector.Name = "dropdownExampleSelector";
+            dropdownExampleSelector.Size = new System.Drawing.Size(404, 33);
+            dropdownExampleSelector.TabIndex = 64;
+            dropdownExampleSelector.SelectedIndexChanged += dropdownExampleSelector_SelectedIndexChanged;
+            // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1045, 871);
+            Controls.Add(dropdownExampleSelector);
             Controls.Add(btnExample10);
             Controls.Add(btnExample9);
             Controls.Add(btnExample8);
@@ -646,5 +661,6 @@
         private System.Windows.Forms.Button btnExample9;
         private System.Windows.Forms.Button btnExample10;
         private System.Windows.Forms.Button btnExampleSine;
+        private System.Windows.Forms.ComboBox dropdownExampleSelector;
     }
 }
