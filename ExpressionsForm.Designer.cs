@@ -72,7 +72,7 @@ namespace GmicAnimate
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -135,14 +135,14 @@ namespace GmicAnimate
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewExpressions.Location = new Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -209,7 +209,7 @@ namespace GmicAnimate
             // checkBoxKeepFramesConstant
             // 
             checkBoxKeepFramesConstant.AutoSize = true;
-            checkBoxKeepFramesConstant.Location = new Point(670, 449);
+            checkBoxKeepFramesConstant.Location = new Point(667, 464);
             checkBoxKeepFramesConstant.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
             checkBoxKeepFramesConstant.Size = new Size(218, 19);
@@ -222,7 +222,7 @@ namespace GmicAnimate
             // 
             nudGraphConstantFrameCount.Enabled = false;
             nudGraphConstantFrameCount.Font = new Font("Microsoft Sans Serif", 10F);
-            nudGraphConstantFrameCount.Location = new Point(896, 447);
+            nudGraphConstantFrameCount.Location = new Point(893, 462);
             nudGraphConstantFrameCount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             nudGraphConstantFrameCount.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudGraphConstantFrameCount.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -237,7 +237,7 @@ namespace GmicAnimate
             checkBoxAutoUpdateGraph.AutoSize = true;
             checkBoxAutoUpdateGraph.Checked = true;
             checkBoxAutoUpdateGraph.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBoxAutoUpdateGraph.Location = new Point(670, 475);
+            checkBoxAutoUpdateGraph.Location = new Point(667, 490);
             checkBoxAutoUpdateGraph.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxAutoUpdateGraph.Name = "checkBoxAutoUpdateGraph";
             checkBoxAutoUpdateGraph.Size = new Size(128, 19);
@@ -536,7 +536,7 @@ namespace GmicAnimate
             dropdownExamplesNonLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExamplesNonLoops.FormattingEnabled = true;
             dropdownExamplesNonLoops.ItemHeight = 25;
-            dropdownExamplesNonLoops.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))", "e/(t/3+.01)", "t^t", "abs(sin(pi*t))" });
+            dropdownExamplesNonLoops.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))", "e/(t/3+.01)", "t^t", "abs(sin(pi*t))", "atan(exp(t*5))", "atan(exp(t*-5))", "0.04*cos(3*t) + 0.02*cos(10*t)" });
             dropdownExamplesNonLoops.Location = new Point(553, 575);
             dropdownExamplesNonLoops.Name = "dropdownExamplesNonLoops";
             dropdownExamplesNonLoops.Size = new Size(461, 33);
@@ -559,7 +559,7 @@ namespace GmicAnimate
             dropdownExampleLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExampleLoops.FormattingEnabled = true;
             dropdownExampleLoops.ItemHeight = 25;
-            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))" });
+            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))", "airyai(sin(2*pi*t))", "sech(tan(2*pi*t))" });
             dropdownExampleLoops.Location = new Point(553, 614);
             dropdownExampleLoops.Name = "dropdownExampleLoops";
             dropdownExampleLoops.Size = new Size(461, 33);
@@ -607,7 +607,7 @@ namespace GmicAnimate
             dropdownExamplesImperfectLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExamplesImperfectLoops.FormattingEnabled = true;
             dropdownExamplesImperfectLoops.ItemHeight = 25;
-            dropdownExamplesImperfectLoops.Items.AddRange(new object[] { "sin(4*pi*t)*exp(-t)" });
+            dropdownExamplesImperfectLoops.Items.AddRange(new object[] { "sin(4*pi*t)*exp(-t)", "acos(sin(2*pi*t))", "atanh(sin(2*pi*t+.01))", "ln(abs(cos(2*pi*t)))", "coth(cos(2*pi*t))", "sec(tan(pi*(t)))", "atan(csc(2*pi*(t+.01-2*pi)))" });
             dropdownExamplesImperfectLoops.Location = new Point(553, 653);
             dropdownExamplesImperfectLoops.Name = "dropdownExamplesImperfectLoops";
             dropdownExamplesImperfectLoops.Size = new Size(461, 33);

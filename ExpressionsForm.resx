@@ -176,7 +176,10 @@ start and end values are different.</value>
 at the same value, but the rate of change of the
 values might be different at the beginning vs end,
 so loops might not look completely smooth in
-terms of animation speed.</value>
+terms of animation speed.
+
+Or if there are sharp changes in direction at some
+point in the function.</value>
   </data>
   <data name="infoIconAbsoluteModeExpressions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
