@@ -414,7 +414,7 @@ namespace GmicFilterAnimatorApp
             {
                 return (startValues, endValues);
             }
-            
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -477,7 +477,7 @@ namespace GmicFilterAnimatorApp
             createGif = chkCreateGif.Checked;
 
             // Get the start and end parameter values as a tuple of array of doubles.
-            double[] startValues = ParseParamsToDoublesArray(startParams, silent: false) ;
+            double[] startValues = ParseParamsToDoublesArray(startParams, silent: false);
             double[] endValues = ParseParamsToDoublesArray(endParams, silent: false);
             if (startValues == null || endValues == null)
             {
@@ -849,7 +849,7 @@ namespace GmicFilterAnimatorApp
         }
 
         // Create getter to use the InterpolateValues function in the MainForm class from the ExpressionsForm class
-        public (List<string>, List<Dictionary<string, object>>) GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false, bool silent=true)
+        public (List<string>, List<Dictionary<string, object>>) GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false, bool silent = true)
         {
             // Use data from this form to interpolate values
             double[] startValues = ParseParamsToDoublesArray(txtStartParams.Text, silent: silent);
@@ -1271,7 +1271,7 @@ namespace GmicFilterAnimatorApp
             }
             catch (Exception ex)
             {
-                string subbedExpression = ExpressionsForm.ReplaceStandaloneLetter(input: formula, letterToReplace:"t", replacementString: t.ToString());
+                string subbedExpression = ExpressionsForm.ReplaceStandaloneLetter(input: formula, letterToReplace: "t", replacementString: t.ToString());
                 subbedExpression = ExpressionsForm.ReplaceStandaloneLetter(input: subbedExpression, letterToReplace: "x", replacementString: frameNum.ToString());
 
                 return (0, (string)ex.Message, subbedExpression);
@@ -1321,7 +1321,7 @@ namespace GmicFilterAnimatorApp
             StringBuilder logContents = new StringBuilder();  // Create a StringBuilder to accumulate log data
             string verbosity = ""; // Set it to the verbose setting for Gmic, such as '-verbose 3', '-debug' etc
             bool useSingleThreadPerProcess = checkBoxSingleThreadMode.Checked;
-            
+
 
             double progressIncrement = 100.0 / totalFrames;
             double progressPercent = 0;
@@ -1993,8 +1993,8 @@ namespace GmicFilterAnimatorApp
             // Record the new value for the next time this event is triggered
             //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
 
-
             UpdateTotalFrames();
+            RefreshGraph();
         }
 
         private int CalculateDecimalPlaces(decimal number, int minPlaces, int maxPlaces)
@@ -2138,9 +2138,27 @@ namespace GmicFilterAnimatorApp
 
                 double[] startParamArray = ParseParamsToDoublesArray(rawsStartstring, silent: true);
                 double[] endParamArray = ParseParamsToDoublesArray(rawEndString, silent: true);
+
+                // Make box background colors red if the parameter strings are not empty but are invalid
+                if (startParamArray == null)
+                {
+                    txtStartParams.BackColor = Color.FromArgb(255, 215, 215);
+                }
+                else
+                {
+                    txtStartParams.BackColor = SystemColors.Window; ;
+                }
+
                 // Silently check if both parameter strings are valid
                 if (startParamArray != null && endParamArray != null)
                 {
+                    // Update listview in other window
+                    if (Application.OpenForms["ParamNamesForm"] != null)
+                    {
+                        ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                        paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                    }
+
                     //Check if the start and end parameters for master parameter are different
                     if (startParamArray[(int)nudMasterParamIndex.Value - 1] != endParamArray[(int)nudMasterParamIndex.Value - 1])
                     {
@@ -2194,9 +2212,26 @@ namespace GmicFilterAnimatorApp
                 double[] startParamArray = ParseParamsToDoublesArray(rawsStartstring, silent: true);
                 double[] endParamArray = ParseParamsToDoublesArray(rawEndString, silent: true);
 
+                // Make box background colors red if the parameter strings are not empty but are invalid
+                if (endParamArray == null)
+                {
+                    txtEndParams.BackColor = Color.FromArgb(255, 215, 215);
+                }
+                else
+                {
+                    txtEndParams.BackColor = SystemColors.Window; ;
+                }
+
                 // Check if both parameter strings are valid
                 if (startParamArray != null && endParamArray != null)
                 {
+                    // Update listview in other window
+                    if (Application.OpenForms["ParamNamesForm"] != null)
+                    {
+                        ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
+                        paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
+                    }
+
                     if (startParamArray[(int)nudMasterParamIndex.Value - 1] != endParamArray[(int)nudMasterParamIndex.Value - 1])
                     {
                         // Also ensure the parameter type is not text
@@ -2208,12 +2243,6 @@ namespace GmicFilterAnimatorApp
                             //UpdateTotalFrames();
                             nudTotalFrames.Value = totalFramesDefault;
 
-                            // Update listview in other window
-                            if (Application.OpenForms["ParamNamesForm"] != null)
-                            {
-                                ParamNamesForm paramNamesForm = (ParamNamesForm)Application.OpenForms["ParamNamesForm"];
-                                paramNamesForm.UpdateParamValues(ParseParamsToDoublesArray(txtStartParams.Text, silent: true), ParseParamsToDoublesArray(txtEndParams.Text, silent: true), (int)nudMasterParamIndex.Value - 1);
-                            }
                             // Return so the rest of the code is not executed, otherwise will disable the boxes again
                             return;
                         }
@@ -2235,10 +2264,10 @@ namespace GmicFilterAnimatorApp
             {
                 filterNameToSearch = splitString[0].Trim();
 
-                List<string>  filtersList = FilterParameters.GetListOfLoadedFilterCommands();
+                List<string> filtersList = FilterParameters.GetListOfLoadedFilterCommands();
                 foreach (string filterFromList in filtersList)
                 {
-                       if (filterNameToSearch.ToLower() == filterFromList.ToLower())
+                    if (filterNameToSearch.ToLower() == filterFromList.ToLower())
                     {
                         if (activateIfFound)
                         {
@@ -2475,7 +2504,8 @@ namespace GmicFilterAnimatorApp
             string tempCopyOfEnd = txtEndParams.Text;
             txtEndParams.Text = tempCopyOfStart;
             txtStartParams.Text = tempCopyOfEnd;
-
+            // Replot the graph on expressions window
+            RefreshGraph();
         }
 
         private void checkBoxLogOnly_CheckedChanged(object sender, EventArgs e)
@@ -3074,6 +3104,41 @@ namespace GmicFilterAnimatorApp
 
                 // Bring the existing form to the front
                 toolForm.BringToFront();
+            }
+        }
+
+        private void txtExponentArray_TextChanged(object sender, EventArgs e)
+        {
+            //If it's not empty and enabled, check there's enough parameters
+            if (!string.IsNullOrEmpty(txtExponentArray.Text) && txtExponentArray.Enabled)
+            {
+                // Check if the number of exponents matches the number of parameters
+                string[] exponentArray = txtExponentArray.Text.Split(',');
+
+                bool anyBlank = false;
+                for (int i = 0; i < exponentArray.Length; i++)
+                {
+                    if (exponentArray[i] == "")
+                    {
+                        anyBlank = true;
+                        break;
+                    }
+                }
+
+                if (exponentArray.Length != FilterParameters.GetActiveParameterCount() || anyBlank == true)
+                {
+                    txtExponentArray.BackColor = Color.FromArgb(255, 215, 215);
+                }
+                else
+                {
+                    // Set color to system window
+                    txtExponentArray.BackColor = SystemColors.Window;
+                }
+            }
+            else
+            {
+                // Set color to system window
+                txtExponentArray.BackColor = SystemColors.Window;
             }
         }
     }

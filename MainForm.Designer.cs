@@ -66,6 +66,7 @@
             infoIconSingleThread = new System.Windows.Forms.PictureBox();
             infoIconRemoveBlankFrames = new System.Windows.Forms.PictureBox();
             infoIconFilterSearch = new System.Windows.Forms.PictureBox();
+            infoIconAbsoluteModeMain = new System.Windows.Forms.PictureBox();
             btnShowParamNames = new System.Windows.Forms.Button();
             labelTotalFrames = new System.Windows.Forms.Label();
             TextLabelNearStartButton = new System.Windows.Forms.Label();
@@ -93,7 +94,6 @@
             progressBarGeneration = new System.Windows.Forms.ProgressBar();
             btnGifTools = new System.Windows.Forms.Button();
             checkBoxRemoveBlankFrames = new System.Windows.Forms.CheckBox();
-            infoIconAbsoluteModeMain = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)nudTotalFrames).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIncrement).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndex).BeginInit();
@@ -109,9 +109,9 @@
             ((System.ComponentModel.ISupportInitialize)infoIconSingleThread).BeginInit();
             ((System.ComponentModel.ISupportInitialize)infoIconRemoveBlankFrames).BeginInit();
             ((System.ComponentModel.ISupportInitialize)infoIconFilterSearch).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconAbsoluteModeMain).BeginInit();
             groupBoxNormalizeRadios.SuspendLayout();
             statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)infoIconAbsoluteModeMain).BeginInit();
             SuspendLayout();
             // 
             // nudTotalFrames
@@ -182,6 +182,7 @@
             // 
             // txtStartParams
             // 
+            txtStartParams.BackColor = System.Drawing.SystemColors.Window;
             txtStartParams.Location = new System.Drawing.Point(18, 88);
             txtStartParams.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtStartParams.Name = "txtStartParams";
@@ -314,6 +315,7 @@
             txtExponentArray.Name = "txtExponentArray";
             txtExponentArray.Size = new System.Drawing.Size(276, 23);
             txtExponentArray.TabIndex = 18;
+            txtExponentArray.TextChanged += txtExponentArray_TextChanged;
             // 
             // chkCreateGif
             // 
@@ -519,6 +521,18 @@
             infoIconFilterSearch.TabIndex = 62;
             infoIconFilterSearch.TabStop = false;
             toolTip1.SetToolTip(infoIconFilterSearch, resources.GetString("infoIconFilterSearch.ToolTip"));
+            // 
+            // infoIconAbsoluteModeMain
+            // 
+            infoIconAbsoluteModeMain.Image = (System.Drawing.Image)resources.GetObject("infoIconAbsoluteModeMain.Image");
+            infoIconAbsoluteModeMain.Location = new System.Drawing.Point(170, 90);
+            infoIconAbsoluteModeMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            infoIconAbsoluteModeMain.Name = "infoIconAbsoluteModeMain";
+            infoIconAbsoluteModeMain.Size = new System.Drawing.Size(16, 16);
+            infoIconAbsoluteModeMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            infoIconAbsoluteModeMain.TabIndex = 63;
+            infoIconAbsoluteModeMain.TabStop = false;
+            toolTip1.SetToolTip(infoIconAbsoluteModeMain, resources.GetString("infoIconAbsoluteModeMain.ToolTip"));
             // 
             // btnShowParamNames
             // 
@@ -823,18 +837,6 @@
             checkBoxRemoveBlankFrames.Text = "Remove Blank GIF Frames";
             checkBoxRemoveBlankFrames.UseVisualStyleBackColor = true;
             // 
-            // infoIconAbsoluteModeMain
-            // 
-            infoIconAbsoluteModeMain.Image = (System.Drawing.Image)resources.GetObject("infoIconAbsoluteModeMain.Image");
-            infoIconAbsoluteModeMain.Location = new System.Drawing.Point(170, 90);
-            infoIconAbsoluteModeMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            infoIconAbsoluteModeMain.Name = "infoIconAbsoluteModeMain";
-            infoIconAbsoluteModeMain.Size = new System.Drawing.Size(16, 16);
-            infoIconAbsoluteModeMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            infoIconAbsoluteModeMain.TabIndex = 63;
-            infoIconAbsoluteModeMain.TabStop = false;
-            toolTip1.SetToolTip(infoIconAbsoluteModeMain, resources.GetString("infoIconAbsoluteModeMain.ToolTip"));
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -918,11 +920,11 @@
             ((System.ComponentModel.ISupportInitialize)infoIconSingleThread).EndInit();
             ((System.ComponentModel.ISupportInitialize)infoIconRemoveBlankFrames).EndInit();
             ((System.ComponentModel.ISupportInitialize)infoIconFilterSearch).EndInit();
+            ((System.ComponentModel.ISupportInitialize)infoIconAbsoluteModeMain).EndInit();
             groupBoxNormalizeRadios.ResumeLayout(false);
             groupBoxNormalizeRadios.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)infoIconAbsoluteModeMain).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
