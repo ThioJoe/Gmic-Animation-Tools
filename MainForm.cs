@@ -606,7 +606,7 @@ namespace GmicFilterAnimatorApp
 
             // Calculate interpolated parameter values for each frame using the selected interpolation method.
             // Note - Master parameter is not passed in because it should just be set in the array, then the function will pull the value from the array
-            List<string> interpolatedParams = InterpolateValues(startValues, endValues, totalFrames, masterParamIndexAtTimeOfClick, masterParamIncrementAtTimeOfClick, exponents, exponentMode, absoluteMode: absoluteMode);
+            (List<string> interpolatedParams, List<Dictionary<string, object>> errorsInfoList) = InterpolateValues(startValues, endValues, totalFrames, masterParamIndexAtTimeOfClick, masterParamIncrementAtTimeOfClick, exponents, exponentMode, absoluteMode: absoluteMode);
 
             // Decide frame starting number
             int frameNumberStart = 1;
@@ -842,7 +842,7 @@ namespace GmicFilterAnimatorApp
         }
 
         // Create getter to use the InterpolateValues function in the MainForm class from the ExpressionsForm class
-        public List<string> GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false)
+        public (List<string>, List<Dictionary<string, object>>) GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false)
         {
             // Use data from this form to interpolate values
             double[] startValues = ParseParamsToDoublesArray(txtStartParams.Text);
@@ -877,16 +877,19 @@ namespace GmicFilterAnimatorApp
             // Always use custom-master mode for this function because the calling function will send in a full array with only the master parameter expression set
             string exponentMode = "custom-master";
 
+            // Returns the interpolated values for the graph and list of errors
             return InterpolateValues(startValues, endValues, totalFrames, masterParamIndex, (int)nudMasterParamIncrement.Value, allExpressionsList, exponentMode, masterParamOnly: true, absoluteMode: absoluteMode);
         }
 
         // Interpolates parameter values for each frame based on given start and end parameters, and the total number of frames.
-        // Returns a list of strings representing the interpolated parameter values for each frame.
-        private List<string> InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode, bool masterParamOnly = false, bool absoluteMode = false)
+        // Returns a list of strings representing the interpolated parameter values for each frame. Also returns a list of strings containing any errors that occurred during evaluation.
+        private (List<string>, List<Dictionary<string, object>>) InterpolateValues(double[] startValues, double[] endValues, int totalFrames, int masterIndex, double masterIncrement, string[] exponents, string exponentMode, bool masterParamOnly = false, bool absoluteMode = false)
         {
             double[] originalStartValues = startValues;
             double[] originalEndValues = endValues;
             List<int> exponentsUsingExpressions = new List<int>();
+            List<string> errorsList = new List<string>();
+            List<Dictionary<string, object>> errorsInfoList = new List<Dictionary<string, object>>();
 
             // List to store all interpolated values for each frame.
             //List<string> interpolatedValuesPerFrameStrings = new List<string>();
@@ -915,6 +918,7 @@ namespace GmicFilterAnimatorApp
                     double normalizedTime = (double)frame / (totalFrames - 1);
                     // Create variable to hold error if any
                     string evalErrorString = null;
+                    string subbedExpressionString = null;
 
                     // If absolute mode is enabled but exponent mode is not custom array or custom master, set change it to custom array
                     // This would only be if the graph is calling it so it doesn't really matter exponent mode is set
@@ -937,7 +941,7 @@ namespace GmicFilterAnimatorApp
                                 if (exponents[i].Contains("t") || (absoluteMode && (exponents[i].Contains("t") || (exponents[i].Contains("x")))))
                                 {
                                     // Evaluate the formula using the normalized time value
-                                    (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i], absoluteMode: absoluteMode, frameNum: frame);
+                                    (currentValue, evalErrorString, subbedExpressionString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i], absoluteMode: absoluteMode, frameNum: frame);
                                     // Add to indexes using expressions
                                     exponentsUsingExpressions.Add(i);
                                 }
@@ -961,7 +965,7 @@ namespace GmicFilterAnimatorApp
                             if (exponents[i].Contains("t") || (absoluteMode && (exponents[i].Contains("t") || (exponents[i].Contains("x")))))
                             {
                                 // Evaluate the formula using the normalized time value
-                                (currentValue, evalErrorString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i], absoluteMode: absoluteMode, frameNum: frame);
+                                (currentValue, evalErrorString, subbedExpressionString) = EvaluateFormulaWithSymbolics(exponents[i], normalizedTime, startValues[i], endValues[i], absoluteMode: absoluteMode, frameNum: frame);
                                 exponentsUsingExpressions.Add(i);
                             }
                             else
@@ -1000,6 +1004,19 @@ namespace GmicFilterAnimatorApp
                             // Apply linear interpolation for parameters where no specific mode is set.
                             currentValue = startValues[i] + (endValues[i] - startValues[i]) * normalizedTime;
                             break;
+                    }
+
+                    // If an error occurred during evaluation, add it to the errors list.
+                    if (!string.IsNullOrEmpty(evalErrorString))
+                    {
+                        Dictionary<string, object> errorInfo = new Dictionary<string, object>
+                        {
+                            { "frame", frame+1 },
+                            { "parameterIndex", i },
+                            { "message", evalErrorString },
+                            { "expression", subbedExpressionString }
+                        };
+                        errorsInfoList.Add(errorInfo);
                     }
 
                     // Round the interpolated value to three decimal places and add it to the current values array.
@@ -1088,7 +1105,7 @@ namespace GmicFilterAnimatorApp
             }
 
             // Return the list of interpolated values for all frames.
-            return interpolatedValuesPerFrameStrings;
+            return (interpolatedValuesPerFrameStrings, errorsInfoList);
         }
 
         private string RoundStepValues(string value, int parameterIndex)
@@ -1207,8 +1224,9 @@ namespace GmicFilterAnimatorApp
             // Add more constants as needed
         };
 
-        public (double interpolatedValue, string errorString) EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue, bool normalize = true, bool testing = false, bool absoluteMode = false, int frameNum = 0)
+        public (double interpolatedValue, string errorString, string subbedExpression) EvaluateFormulaWithSymbolics(string formula, double t, double startValue, double endValue, bool normalize = true, bool testing = false, bool absoluteMode = false, int frameNum = 0)
         {
+            SymbolicExpression expression = null;
             try
             {
                 // Convert the MathConstants dictionary to the required type and merge with the variable 't'
@@ -1222,7 +1240,7 @@ namespace GmicFilterAnimatorApp
                 variables["x"] = frameNum;
 
                 // Parse the formula as a symbolic expression
-                var expression = SymbolicExpression.Parse(formula);
+                expression = SymbolicExpression.Parse(formula);
 
                 // Evaluate the expression symbolically with these substitutions
                 var substitutedExpression = expression.Evaluate(variables);
@@ -1242,11 +1260,14 @@ namespace GmicFilterAnimatorApp
                     interpolatedValue = startValue + (endValue - startValue) * weightingFactor;
                 }
 
-                return (interpolatedValue, null);
+                return (interpolatedValue, null, null);
             }
             catch (Exception ex)
             {
-                return (0, (string)ex.Message);
+                string subbedExpression = ExpressionsForm.ReplaceStandaloneLetter(input: formula, letterToReplace:"t", replacementString: t.ToString());
+                subbedExpression = ExpressionsForm.ReplaceStandaloneLetter(input: subbedExpression, letterToReplace: "x", replacementString: frameNum.ToString());
+
+                return (0, (string)ex.Message, subbedExpression);
             }
         }
 
@@ -1255,7 +1276,7 @@ namespace GmicFilterAnimatorApp
         public (bool IsValid, string Reason) IsValidMathExpression(string input, double testStart = 1, double testEnd = 10, double testTime = 0.50, int testFrameNum = 10, bool absoluteMode = false)
         {
             // Check via MathNet.Symbolics if the input string is a valid mathematical expression
-            (double _, string errorString) = EvaluateFormulaWithSymbolics(formula: input, t: testTime, startValue: testStart, endValue: testEnd, testing: true, frameNum: testFrameNum, absoluteMode: absoluteMode);
+            (double _, string errorString, string subbedExpressionString) = EvaluateFormulaWithSymbolics(formula: input, t: testTime, startValue: testStart, endValue: testEnd, testing: true, frameNum: testFrameNum, absoluteMode: absoluteMode);
             // If no exception is thrown in other function, the expression is valid
             if (errorString == null)
             {

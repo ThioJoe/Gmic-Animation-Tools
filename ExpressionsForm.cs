@@ -2,6 +2,7 @@
 using MathNet.Numerics;
 using MathNet.Symbolics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -643,7 +644,7 @@ namespace GmicAnimate
                     {
                         labelReplacingXWithT.Visible = true;
                         // Replace x with t
-                        expressionToEvaluate = ReplaceStandaloneLetter(input: expressionToEvaluate, letterToReplace: "x", replacementLetter: "t");
+                        expressionToEvaluate = ReplaceStandaloneLetter(input: expressionToEvaluate, letterToReplace: "x", replacementString: "t");
                     }
                     else
                     {
@@ -660,10 +661,12 @@ namespace GmicAnimate
 
             // Get data to graph the primary series
             double[] primaryValuesToGraph = null;
+            List<Dictionary<string, object>> primaryErrorsList = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> compareErrorsList = new List<Dictionary<string, object>>();
             try
             {
                 // Get the interpolated values
-                primaryValuesToGraph = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount);
+                (primaryValuesToGraph, primaryErrorsList) = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount);
             }
             catch (Exception ex)
             {
@@ -681,7 +684,7 @@ namespace GmicAnimate
             {
                 try
                 {
-                    comparedValuesToGraph = GetInterpolatedDataFromMainForm(compareSeriesExpression, masterParamIndexFromMainWindow, frameCount);
+                    (comparedValuesToGraph, compareErrorsList) = GetInterpolatedDataFromMainForm(compareSeriesExpression, masterParamIndexFromMainWindow, frameCount);
                 }
                 catch (Exception ex)
                 {
@@ -692,6 +695,21 @@ namespace GmicAnimate
                     labelErrorWhileGraphing.Visible = true;
                     return;
                 }
+            }
+
+            // If there are any errors, display the number of them and the first error
+            if (primaryErrorsList.Count > 0)
+            {
+                if (!silent)
+                {
+                    string errorToDisplay = ErrorMessageConstructor(primaryErrorsList);
+                    MessageBox.Show($"{errorToDisplay}",
+                        "Error", 
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Error);
+                }
+                labelErrorWhileGraphing.Visible = true;
+                return;
             }
 
             // Plot
@@ -758,7 +776,100 @@ namespace GmicAnimate
             }
         }
 
-        static string ReplaceStandaloneLetter(string input, string letterToReplace, string replacementLetter)
+        private string ErrorMessageConstructor(List<Dictionary<string, object>> errorList)
+        {
+            // Check if all the errors are the same by comparing the "message" key in each dictionary
+            bool allErrorsSame = errorList.All(x => x["message"].Equals(errorList[0]["message"]));
+
+            // Get list of unique errors based on the "message" key. Also store info about which frames, and the first instance of an expression that caused each error
+            var uniqueErrors = errorList
+                .GroupBy(x => x["message"])
+                .Select(g => new
+                {
+                    Message = g.Key,
+                    Count = g.Count(),
+                    Frames = g.Select(e => e["frame"]).ToList(),
+                    Expression = g.First()["expression"]
+                })
+                .ToList();
+
+            string errorToDisplay = "";
+            if (allErrorsSame)
+            {
+                errorToDisplay = $"{errorList.Count} errors of the same kind occurred while graphing the expression." +
+                    $"\n\nError:\n{errorList[0]["message"]}" +
+                    $"\nExpression example from frame {uniqueErrors[0].Frames[0]}:" +
+                    $"\n{uniqueErrors[0].Expression}";
+            }
+            else
+            {
+                errorToDisplay = $"{errorList.Count} errors occurred while graphing the expression." +
+                    $"\nOf those, there were {uniqueErrors.Count} different types of errors." +
+                    $"\n--------------------------";
+
+                if (uniqueErrors.Count > 10)
+                {
+                    errorToDisplay += $"\n\nFirst 10 errors:\n\n";
+                    for (int i = 0; i < 10; i++)
+                    {
+                        var error = uniqueErrors[i];
+                        errorToDisplay += $"\n{error.Message}" +
+                            $"\n - (Occurred on frames: {string.Join(", ", error.Frames)})" +
+                            $"\n - Expression example from Frame {error.Frames[0]}:\n{error.Expression}" +
+                            $"\n-----------------------------------------------";
+                    }
+                }
+                else
+                {
+                    errorToDisplay += $"\n\nErrors:\n";
+                    foreach (var error in uniqueErrors)
+                    {
+                        errorToDisplay += $"\n{error.Message}" +
+                            $"\n - (Occurred on frames: {string.Join(", ", error.Frames)})" +
+                            $"\n - Expression example from Frame {error.Frames[0]}:\n{error.Expression}" +
+                            $"\n-----------------------------------------------";
+                    }
+                }
+            }
+
+            // Handle specific error messages if they're among the list
+            if (uniqueErrors.Any(item => item.Message.ToString().Contains("failed to find symbol", StringComparison.OrdinalIgnoreCase)))
+            {
+                // Self explanatory error message
+            }
+            if (uniqueErrors.Any(item => item.Message.ToString().Contains("the given key was not present in the dictionary", StringComparison.OrdinalIgnoreCase)))
+            {
+                errorToDisplay += "\n\nAbout Error: \"The given key was not present in the dictionary\"\n" +
+                    "This might mean that a function or operation you tried to use is not supported or using the wrong name. Refer to the 'supported functions' button.";
+            }
+            if (uniqueErrors.Any(item => item.Message.ToString().Contains("value not convertible to a real number", StringComparison.OrdinalIgnoreCase)))
+            {
+                errorToDisplay += "\n\nAbout Error: \"Value not convertible to a real number\"\n" +
+                    "This might mean one of the frames calculated value is not a real number, such as a division by zero or imaginary number result.";
+            }
+
+            return errorToDisplay;
+        }
+
+        public class DictionaryComparer : IEqualityComparer<Dictionary<string, object>>
+        {
+            public bool Equals(Dictionary<string, object> x, Dictionary<string, object> y)
+            {
+                if (x == null || y == null)
+                {
+                    return false;
+                }
+
+                return x["message"].Equals(y["message"]);
+            }
+
+            public int GetHashCode(Dictionary<string, object> obj)
+            {
+                return obj["message"].GetHashCode();
+            }
+        }
+
+        public static string ReplaceStandaloneLetter(string input, string letterToReplace, string replacementString)
         {
             // Escape special characters in the letterToReplace to safely include it in the regex pattern
             string escapedLetterToReplace = Regex.Escape(letterToReplace);
@@ -766,8 +877,8 @@ namespace GmicAnimate
             // Regex pattern to match the letterToReplace not surrounded by alphanumeric characters
             string pattern = $@"\b{escapedLetterToReplace}\b";
 
-            // Replace standalone letterToReplace with replacementLetter
-            string result = Regex.Replace(input, pattern, replacementLetter);
+            // Replace standalone letterToReplace with replacementString
+            string result = Regex.Replace(input, pattern, replacementString);
 
             return result;
         }
@@ -787,9 +898,10 @@ namespace GmicAnimate
         }
 
         // Get interpolated data into graphable form
-        private double[] GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex, int frameCount)
+        private (double[], List<Dictionary<string, object>>) GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex, int frameCount)
         {
             List<string> interpolatedValuesPerFrameArray = new List<string>();
+            List<Dictionary<string, object>> errorsInfoList = new List<Dictionary<string, object>>();
             if (mainForm != null)
             {
                 // Send an array with 1 for everything except the master parameter's expression
@@ -809,7 +921,7 @@ namespace GmicAnimate
                 // Absolute mode enabled if the check box is checked. This forces the InterpolateValues function even if exponent mode isn't set to custom array or custom master
                 bool absoluteMode = checkBoxAbsoluteMode.Checked;
 
-                interpolatedValuesPerFrameArray = mainForm.GetInterpolatedValuesForGraph(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount, absoluteMode: absoluteMode);
+                (interpolatedValuesPerFrameArray, errorsInfoList) = mainForm.GetInterpolatedValuesForGraph(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount, absoluteMode: absoluteMode);
 
                 double[] allFrameValuesForMasterParameter = new double[interpolatedValuesPerFrameArray.Count];
                 // Get the interpolated values for the master parameter
@@ -824,10 +936,14 @@ namespace GmicAnimate
                     // Add the value to the list
                     allFrameValuesForMasterParameter[i] = interpolatedValue;
                 }
-                return allFrameValuesForMasterParameter;
+                return (allFrameValuesForMasterParameter, errorsInfoList);
 
             }
-            return null;
+            else
+            {
+                return (null, errorsInfoList);
+            }
+            
         }
 
         private void checkBoxKeepFramesConstant_CheckedChanged(object sender, EventArgs e)
