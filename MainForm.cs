@@ -2758,6 +2758,7 @@ namespace GmicFilterAnimatorApp
 
             // Set master parameter to the first one because if you switch to a new filter that doesn't have that many it will be problematic
             nudMasterParamIndex.Value = 1;
+            nudMasterParamIndex.Maximum = FilterParameters.GetActiveParameterCount();
 
             // Reset the parameter info window
             if (Application.OpenForms["ParamNamesForm"] != null)
