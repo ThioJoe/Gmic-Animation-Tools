@@ -703,7 +703,7 @@ namespace GmicAnimate
             {
                 if (!silent)
                 {
-                    string errorToDisplay = ErrorMessageConstructor(primaryErrorsList);
+                    string errorToDisplay = ErrorMessageConstructor(errorList: primaryErrorsList, totalFrames: primaryValuesToGraph.Count());
                     MessageBox.Show($"{errorToDisplay}",
                         "Error",
                         MessageBoxButtons.OK,
@@ -799,7 +799,7 @@ namespace GmicAnimate
             return frameIndexesFrom0;
         }
 
-        private string ErrorMessageConstructor(List<Dictionary<string, object>> errorList)
+        private string ErrorMessageConstructor(List<Dictionary<string, object>> errorList, int totalFrames)
         {
             // Check if all the errors are the same by comparing the "message" key in each dictionary
             bool allErrorsSame = errorList.All(x => x["message"].Equals(errorList[0]["message"]));
@@ -825,8 +825,16 @@ namespace GmicAnimate
                     $"\nExpression example from frame {uniqueErrors[0].Frames[0]}:" +
                     $"\n{uniqueErrors[0].Expression}";
 
-                // Add this to display last because the list of frames might be very long, don't want it pushing the error message off the screen
-                stringToDisplayLast += $"\n\nThe error occurred on the following frames:\n{string.Join(", ", uniqueErrors[0].Frames)}";
+                // If the number of frames is the same as number of errors
+                if (totalFrames == errorList.Count)
+                {
+                    errorToDisplay += $"\n\nThe error ocurred on all {totalFrames} frames.";
+                }
+                else
+                {
+                    // Add this to display last because the list of frames might be very long, don't want it pushing the error message off the screen
+                    stringToDisplayLast += $"\n\nThe error occurred on the following frames:\n{string.Join(", ", uniqueErrors[0].Frames)}";
+                }
             }
             else
             {
@@ -873,6 +881,11 @@ namespace GmicAnimate
             {
                 errorToDisplay += "\n\nAbout Error: \"Value not convertible to a real number\"\n" +
                     "This might mean one of the frames calculated value is not a real number, such as a division by zero or imaginary number result.";
+            }
+            if (uniqueErrors.Any(item => item.Message.ToString().Contains("expecting: end of input or infix operator", StringComparison.OrdinalIgnoreCase)))
+            {
+                errorToDisplay += "\n\nAbout Error: \"Expecting: end of input or infix operator\"\n" +
+                    "This error might mean you forgot to put an operator symbol between values. For example if you put \"2(cos(t))\" instead of \"2*(cos(t))\", leaving out the * multiplication sign after the 2.";
             }
 
             errorToDisplay += stringToDisplayLast;
