@@ -1649,10 +1649,10 @@ namespace GmicFilterAnimatorApp
 
             // Decide on name for file to not overwrite gif file
             int i = 2;
-            string gifFileName = $"{folderName}_combined.gif";
+            string gifFileName = $"animated_{folderName}.gif";
             while (File.Exists(Path.Combine(outputDir, gifFileName)))
             {
-                gifFileName = $"{folderName}_combined_{i}.gif";
+                gifFileName = $"animated_{folderName}_{i}.gif";
                 i++;
             }
             // Huge long command is to preserve transparency from PNG sequence to gif

@@ -603,10 +603,10 @@ namespace GmicAnimate
 
             // Decide on name for file to not overwrite gif file
             int i = 2;
-            string gifFileName = $"{baseFileName}_combined.gif";
+            string gifFileName = $"animated_{baseFileName}.gif";
             while (File.Exists(Path.Combine(outputDir, gifFileName)))
             {
-                gifFileName = $"{baseFileName}_combined_{i}.gif";
+                gifFileName = $"animated_{baseFileName}_{i}.gif";
                 i++;
             }
 
