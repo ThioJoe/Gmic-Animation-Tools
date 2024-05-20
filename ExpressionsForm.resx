@@ -179,8 +179,7 @@ loops might not look completely smooth in
 terms of animation speed.
 
 It also contains loops that are periodic but
-have sharp changes in direction, or are
-discontinuous (they go to +/- infinity).</value>
+are discontinuous (they go to +/- infinity).</value>
   </data>
   <data name="infoIconAbsoluteModeExpressions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

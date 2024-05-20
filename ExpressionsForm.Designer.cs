@@ -536,7 +536,7 @@ namespace GmicAnimate
             dropdownExamplesNonLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExamplesNonLoops.FormattingEnabled = true;
             dropdownExamplesNonLoops.ItemHeight = 25;
-            dropdownExamplesNonLoops.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))", "e/(t/3+.01)", "t^t", "abs(sin(pi*t))", "atan(exp(t*5))", "atan(exp(t*-5))", "0.04*cos(3*t) + 0.02*cos(10*t)" });
+            dropdownExamplesNonLoops.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))", "e/(t/3+.01)", "t^t", "abs(sin(pi*t))", "atan(exp(t*5))", "atan(exp(t*-5))", "0.04*cos(3*t) + 0.02*cos(10*t)", "-1*(t+sin(t*5*pi)/4)", "(t+sin(t*5*pi)/4)", "cos(exp(t*pi))" });
             dropdownExamplesNonLoops.Location = new Point(553, 575);
             dropdownExamplesNonLoops.Name = "dropdownExamplesNonLoops";
             dropdownExamplesNonLoops.Size = new Size(461, 33);
@@ -559,7 +559,7 @@ namespace GmicAnimate
             dropdownExampleLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExampleLoops.FormattingEnabled = true;
             dropdownExampleLoops.ItemHeight = 25;
-            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))", "airyai(sin(2*pi*t))", "sech(tan(2*pi*t))" });
+            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))", "airyai(sin(2*pi*t))", "sech(tan(2*pi*t))", "acos(sin(2*pi*t))", "atanh(sin(2*pi*t+.01))", "ln(abs(cos(2*pi*t)))", "abs(sin(2*pi*t) + cos(4*pi*t))" });
             dropdownExampleLoops.Location = new Point(553, 614);
             dropdownExampleLoops.Name = "dropdownExampleLoops";
             dropdownExampleLoops.Size = new Size(461, 33);
@@ -607,7 +607,7 @@ namespace GmicAnimate
             dropdownExamplesImperfectLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExamplesImperfectLoops.FormattingEnabled = true;
             dropdownExamplesImperfectLoops.ItemHeight = 25;
-            dropdownExamplesImperfectLoops.Items.AddRange(new object[] { "sin(4*pi*t)*exp(-t)", "acos(sin(2*pi*t))", "atanh(sin(2*pi*t+.01))", "ln(abs(cos(2*pi*t)))", "coth(cos(2*pi*t))", "sec(tan(pi*(t)))", "atan(csc(2*pi*(t+.01-2*pi)))" });
+            dropdownExamplesImperfectLoops.Items.AddRange(new object[] { "sin(4*pi*t)*exp(-t)", "coth(cos(2*pi*t))", "sec(tan(pi*(t)))", "atan(csc(2*pi*(t+.01-2*pi)))" });
             dropdownExamplesImperfectLoops.Location = new Point(553, 653);
             dropdownExamplesImperfectLoops.Name = "dropdownExamplesImperfectLoops";
             dropdownExamplesImperfectLoops.Size = new Size(461, 33);
