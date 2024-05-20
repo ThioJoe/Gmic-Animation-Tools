@@ -47,6 +47,8 @@ namespace GmicFilterAnimatorApp
         // Flag to indicate if a cancellation has been requested by the user. To stop image generation process
         private bool cancellationRequested = false;
 
+        decimal totalFramesDefault = 100;
+
         // Setting a default array of exponents for use with exponential interpolation if no custom array is provided.
         // These are arbitrarily chosen values based on experience.
         //private static double[] defaultExponents = new double[] { 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
@@ -128,6 +130,9 @@ namespace GmicFilterAnimatorApp
 
             // This has to go after the parameter strings are loaded or else it won't be able to tell if it's a valid parameter
             nudMasterParamIndex.Value = Program.Config.DefaultMasterParameterIndex;
+
+            // Set the master frame default value to default (probably 100)
+            nudTotalFrames.Value = totalFramesDefault;
 
         }
 
@@ -1905,6 +1910,8 @@ namespace GmicFilterAnimatorApp
         private void nudTotalFrames_ValueChanged(object sender, EventArgs e)
         {
             UpdateMasterParamIncrement();
+            // Set the new default to keep what user put
+            totalFramesDefault = nudTotalFrames.Value;
             RefreshGraph();
         }
 
@@ -2138,7 +2145,8 @@ namespace GmicFilterAnimatorApp
                         // Enable the total frames and master increment boxes
                         EnableFrameAndMasterParamBoxes();
                         // Update total frames
-                        UpdateTotalFrames();
+                        //UpdateTotalFrames();
+                        nudTotalFrames.Value = totalFramesDefault;
 
                         // Update listview in other window
                         if (Application.OpenForms["ParamNamesForm"] != null)
@@ -2195,7 +2203,8 @@ namespace GmicFilterAnimatorApp
                             // Enable the total frames and master increment boxes
                             EnableFrameAndMasterParamBoxes();
                             // Update total frames
-                            UpdateTotalFrames();
+                            //UpdateTotalFrames();
+                            nudTotalFrames.Value = totalFramesDefault;
 
                             // Update listview in other window
                             if (Application.OpenForms["ParamNamesForm"] != null)
@@ -2312,7 +2321,8 @@ namespace GmicFilterAnimatorApp
                     // Update total frames and master increment
                     EnableFrameAndMasterParamBoxes();
 
-                    UpdateTotalFrames();
+                    //UpdateTotalFrames();
+                    nudTotalFrames.Value = totalFramesDefault;
 
                     if (!checkBoxAbsoluteModeMain.Checked)
                     {
@@ -2601,7 +2611,7 @@ namespace GmicFilterAnimatorApp
                 }
                 else
                 {
-                    nudTotalFrames.Value = 50;
+                    nudTotalFrames.Value = totalFramesDefault;
                 }
 
                 // Disable the increment NUD
