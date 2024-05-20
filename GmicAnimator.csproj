@@ -62,12 +62,15 @@
   <ItemGroup>
     <Compile Remove="bin.bak\**" />
     <Compile Remove="obj.bak\**" />
+    <Compile Remove="PowerShell\**" />
     <Compile Remove="Releases.bak\**" />
     <EmbeddedResource Remove="bin.bak\**" />
     <EmbeddedResource Remove="obj.bak\**" />
+    <EmbeddedResource Remove="PowerShell\**" />
     <EmbeddedResource Remove="Releases.bak\**" />
     <None Remove="bin.bak\**" />
     <None Remove="obj.bak\**" />
+    <None Remove="PowerShell\**" />
     <None Remove="Releases.bak\**" />
   </ItemGroup>
   <ItemGroup>

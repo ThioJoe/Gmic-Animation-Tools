@@ -477,8 +477,8 @@ namespace GmicFilterAnimatorApp
             createGif = chkCreateGif.Checked;
 
             // Get the start and end parameter values as a tuple of array of doubles.
-            double[] startValues = ParseParamsToDoublesArray(startParams);
-            double[] endValues = ParseParamsToDoublesArray(endParams);
+            double[] startValues = ParseParamsToDoublesArray(startParams, silent: false) ;
+            double[] endValues = ParseParamsToDoublesArray(endParams, silent: false);
             if (startValues == null || endValues == null)
             {
                 return;
@@ -850,8 +850,8 @@ namespace GmicFilterAnimatorApp
         public (List<string>, List<Dictionary<string, object>>) GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false)
         {
             // Use data from this form to interpolate values
-            double[] startValues = ParseParamsToDoublesArray(txtStartParams.Text);
-            double[] endValues = ParseParamsToDoublesArray(txtEndParams.Text);
+            double[] startValues = ParseParamsToDoublesArray(txtStartParams.Text, silent: true);
+            double[] endValues = ParseParamsToDoublesArray(txtEndParams.Text, silent: true);
 
             // If the start and end values are null, just set them to 1 and 100 as general case
             if (startValues == null || endValues == null)

@@ -49,7 +49,10 @@ namespace GmicAnimate
             nudMasterParamIndexClone.MouseWheel += new MouseEventHandler(this.ScrollHandlerFunction);
 
             string[] expressions = null;
-            if (!string.IsNullOrEmpty(incomingExpressionParamString))
+            // Count number of expressions in the incoming string
+            int expressionCount = incomingExpressionParamString.Count(c => c == ',') + 1;
+
+            if (!string.IsNullOrEmpty(incomingExpressionParamString) && expressionCount == filterParameterCount)
             {
                 customExpressionStringFromMainWindow = incomingExpressionParamString;
             }
