@@ -710,7 +710,7 @@ namespace GmicAnimate
                         MessageBoxIcon.Error);
                 }
                 labelErrorWhileGraphing.Visible = true;
-                return;
+                //return;
             }
 
             // Plot
@@ -781,6 +781,7 @@ namespace GmicAnimate
         {
             // Check if all the errors are the same by comparing the "message" key in each dictionary
             bool allErrorsSame = errorList.All(x => x["message"].Equals(errorList[0]["message"]));
+            string stringToDisplayLast = "";
 
             // Get list of unique errors based on the "message" key. Also store info about which frames, and the first instance of an expression that caused each error
             var uniqueErrors = errorList
@@ -801,6 +802,9 @@ namespace GmicAnimate
                     $"\n\nError:\n{errorList[0]["message"]}" +
                     $"\nExpression example from frame {uniqueErrors[0].Frames[0]}:" +
                     $"\n{uniqueErrors[0].Expression}";
+
+                // Add this to display last because the list of frames might be very long, don't want it pushing the error message off the screen
+                stringToDisplayLast += $"\n\nThe error occurred on the following frames:\n{string.Join(", ", uniqueErrors[0].Frames)}";
             }
             else
             {
@@ -848,6 +852,8 @@ namespace GmicAnimate
                 errorToDisplay += "\n\nAbout Error: \"Value not convertible to a real number\"\n" +
                     "This might mean one of the frames calculated value is not a real number, such as a division by zero or imaginary number result.";
             }
+
+            errorToDisplay += stringToDisplayLast;
 
             return errorToDisplay;
         }
