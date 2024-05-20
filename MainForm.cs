@@ -703,7 +703,7 @@ namespace GmicFilterAnimatorApp
             {
                 if (!silent)
                 {
-                    MessageBox.Show("Please enter the parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Must enter values for parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return null;
             }
@@ -715,12 +715,14 @@ namespace GmicFilterAnimatorApp
             // Split the parameters string into an array.
             string[] paramsArray = paramsString.Split(',');
 
-            // Ensure the parameter array has exactly 31 elements.
+            // Ensure the parameter array has exactly correct amount of elements.
             if (paramsArray.Length != FilterParameters.GetActiveParameterCount())
             {
                 if (!silent)
                 {
-                    MessageBox.Show($"Parameter array must contain {FilterParameters.GetActiveParameterCount()} comma-separated values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Parameter arrays must contain {FilterParameters.GetActiveParameterCount()} comma-separated values." +
+                        $"\n\nFound only {paramsArray.Length}" +
+                        $"\n\nCurrent parameter array:\n{paramsString}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return null;
             }
@@ -847,11 +849,11 @@ namespace GmicFilterAnimatorApp
         }
 
         // Create getter to use the InterpolateValues function in the MainForm class from the ExpressionsForm class
-        public (List<string>, List<Dictionary<string, object>>) GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false)
+        public (List<string>, List<Dictionary<string, object>>) GetInterpolatedValuesForGraph(int masterParamIndex, string[] allExpressionsList, int frameCount, bool absoluteMode = false, bool silent=true)
         {
             // Use data from this form to interpolate values
-            double[] startValues = ParseParamsToDoublesArray(txtStartParams.Text, silent: true);
-            double[] endValues = ParseParamsToDoublesArray(txtEndParams.Text, silent: true);
+            double[] startValues = ParseParamsToDoublesArray(txtStartParams.Text, silent: silent);
+            double[] endValues = ParseParamsToDoublesArray(txtEndParams.Text, silent: silent);
 
             // If the start and end values are null, just set them to 1 and 100 as general case
             if (startValues == null || endValues == null)

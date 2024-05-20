@@ -670,7 +670,7 @@ namespace GmicAnimate
             try
             {
                 // Get the interpolated values
-                (primaryValuesToGraph, primaryErrorsList) = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount);
+                (primaryValuesToGraph, primaryErrorsList) = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount, silent:silent);
             }
             catch (Exception ex)
             {
@@ -688,7 +688,7 @@ namespace GmicAnimate
             {
                 try
                 {
-                    (comparedValuesToGraph, compareErrorsList) = GetInterpolatedDataFromMainForm(compareSeriesExpression, masterParamIndexFromMainWindow, frameCount);
+                    (comparedValuesToGraph, compareErrorsList) = GetInterpolatedDataFromMainForm(compareSeriesExpression, masterParamIndexFromMainWindow, frameCount, silent: silent);
                 }
                 catch (Exception ex)
                 {
@@ -944,7 +944,7 @@ namespace GmicAnimate
         }
 
         // Get interpolated data into graphable form
-        private (double[], List<Dictionary<string, object>>) GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex, int frameCount)
+        private (double[], List<Dictionary<string, object>>) GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex, int frameCount, bool silent=true)
         {
             List<string> interpolatedValuesPerFrameArray = new List<string>();
             List<Dictionary<string, object>> errorsInfoList = new List<Dictionary<string, object>>();
@@ -967,7 +967,7 @@ namespace GmicAnimate
                 // Absolute mode enabled if the check box is checked. This forces the InterpolateValues function even if exponent mode isn't set to custom array or custom master
                 bool absoluteMode = checkBoxAbsoluteMode.Checked;
 
-                (interpolatedValuesPerFrameArray, errorsInfoList) = mainForm.GetInterpolatedValuesForGraph(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount, absoluteMode: absoluteMode);
+                (interpolatedValuesPerFrameArray, errorsInfoList) = mainForm.GetInterpolatedValuesForGraph(masterParamIndex: masterParamIndex, allExpressionsList: expressionsArray, frameCount: frameCount, absoluteMode: absoluteMode, silent: silent);
 
                 double[] allFrameValuesForMasterParameter = new double[interpolatedValuesPerFrameArray.Count];
                 // Get the interpolated values for the master parameter
