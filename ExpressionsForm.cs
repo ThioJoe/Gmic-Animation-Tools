@@ -1,4 +1,5 @@
-﻿using GmicFilterAnimatorApp;
+﻿using GmicDrosteAnimate;
+using GmicFilterAnimatorApp;
 using MathNet.Numerics;
 using MathNet.Symbolics;
 using System;
@@ -704,8 +705,8 @@ namespace GmicAnimate
                 {
                     string errorToDisplay = ErrorMessageConstructor(primaryErrorsList);
                     MessageBox.Show($"{errorToDisplay}",
-                        "Error", 
-                        MessageBoxButtons.OK, 
+                        "Error",
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
                 labelErrorWhileGraphing.Visible = true;
@@ -943,7 +944,7 @@ namespace GmicAnimate
             {
                 return (null, errorsInfoList);
             }
-            
+
         }
 
         private void checkBoxKeepFramesConstant_CheckedChanged(object sender, EventArgs e)
@@ -1274,5 +1275,11 @@ namespace GmicAnimate
             dropdownExamplesImperfectLoops.SelectedIndexChanged += dropdownExamplesImperfectLoops_SelectedIndexChanged;
         }
 
+        private void btnShowFunctionInfo_Click(object sender, EventArgs e)
+        {
+            // Open MathFunctionInfo form
+            MathFunctionInfo mathFunctionInfo = new MathFunctionInfo();
+            mathFunctionInfo.Show();
+        }
     } //End form class
 } // End namespace

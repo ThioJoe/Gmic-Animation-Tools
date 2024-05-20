@@ -72,7 +72,7 @@ namespace GmicAnimate
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -118,6 +118,7 @@ namespace GmicAnimate
             btnCompareSave = new System.Windows.Forms.Button();
             btnResetCompare = new System.Windows.Forms.Button();
             checkBoxCompareUpdateNormalization = new System.Windows.Forms.CheckBox();
+            btnShowFunctionInfo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -134,14 +135,14 @@ namespace GmicAnimate
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridViewExpressions.Location = new Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -184,7 +185,7 @@ namespace GmicAnimate
             // 
             // btnTestChart
             // 
-            btnTestChart.Location = new Point(944, 785);
+            btnTestChart.Location = new Point(10, 842);
             btnTestChart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnTestChart.Name = "btnTestChart";
             btnTestChart.Size = new Size(88, 27);
@@ -646,11 +647,22 @@ namespace GmicAnimate
             checkBoxCompareUpdateNormalization.UseVisualStyleBackColor = true;
             checkBoxCompareUpdateNormalization.CheckedChanged += checkBoxCompareUpdateNormalization_CheckedChanged;
             // 
+            // btnShowFunctionInfo
+            // 
+            btnShowFunctionInfo.Location = new Point(774, 827);
+            btnShowFunctionInfo.Name = "btnShowFunctionInfo";
+            btnShowFunctionInfo.Size = new Size(145, 32);
+            btnShowFunctionInfo.TabIndex = 77;
+            btnShowFunctionInfo.Text = "Supported Functions";
+            btnShowFunctionInfo.UseVisualStyleBackColor = true;
+            btnShowFunctionInfo.Click += btnShowFunctionInfo_Click;
+            // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new Size(1045, 871);
+            Controls.Add(btnShowFunctionInfo);
             Controls.Add(infoIconAbsoluteModeExpressions);
             Controls.Add(infoIconImperfectLoops);
             Controls.Add(infoIconModeChangesCheckbox);
@@ -753,5 +765,6 @@ namespace GmicAnimate
         private System.Windows.Forms.PictureBox infoIconModeChangesCheckbox;
         private System.Windows.Forms.PictureBox infoIconImperfectLoops;
         private System.Windows.Forms.PictureBox infoIconAbsoluteModeExpressions;
+        private System.Windows.Forms.Button btnShowFunctionInfo;
     }
 }
