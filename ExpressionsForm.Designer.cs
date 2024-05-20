@@ -119,6 +119,8 @@ namespace GmicAnimate
             btnResetCompare = new System.Windows.Forms.Button();
             checkBoxCompareUpdateNormalization = new System.Windows.Forms.CheckBox();
             btnShowFunctionInfo = new System.Windows.Forms.Button();
+            txtComparedExpression = new System.Windows.Forms.TextBox();
+            labelComparisonExpressionTextBox = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -209,7 +211,7 @@ namespace GmicAnimate
             // checkBoxKeepFramesConstant
             // 
             checkBoxKeepFramesConstant.AutoSize = true;
-            checkBoxKeepFramesConstant.Location = new Point(667, 464);
+            checkBoxKeepFramesConstant.Location = new Point(669, 478);
             checkBoxKeepFramesConstant.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxKeepFramesConstant.Name = "checkBoxKeepFramesConstant";
             checkBoxKeepFramesConstant.Size = new Size(218, 19);
@@ -222,7 +224,7 @@ namespace GmicAnimate
             // 
             nudGraphConstantFrameCount.Enabled = false;
             nudGraphConstantFrameCount.Font = new Font("Microsoft Sans Serif", 10F);
-            nudGraphConstantFrameCount.Location = new Point(893, 462);
+            nudGraphConstantFrameCount.Location = new Point(890, 475);
             nudGraphConstantFrameCount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             nudGraphConstantFrameCount.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudGraphConstantFrameCount.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -237,7 +239,7 @@ namespace GmicAnimate
             checkBoxAutoUpdateGraph.AutoSize = true;
             checkBoxAutoUpdateGraph.Checked = true;
             checkBoxAutoUpdateGraph.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBoxAutoUpdateGraph.Location = new Point(667, 490);
+            checkBoxAutoUpdateGraph.Location = new Point(669, 504);
             checkBoxAutoUpdateGraph.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxAutoUpdateGraph.Name = "checkBoxAutoUpdateGraph";
             checkBoxAutoUpdateGraph.Size = new Size(128, 19);
@@ -297,7 +299,7 @@ namespace GmicAnimate
             // 
             labelExampleExpressionButtons.AutoSize = true;
             labelExampleExpressionButtons.Font = new Font("Arial", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelExampleExpressionButtons.Location = new Point(636, 540);
+            labelExampleExpressionButtons.Location = new Point(636, 552);
             labelExampleExpressionButtons.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             labelExampleExpressionButtons.Name = "labelExampleExpressionButtons";
             labelExampleExpressionButtons.Size = new Size(199, 22);
@@ -307,7 +309,7 @@ namespace GmicAnimate
             // btnExampleCosine
             // 
             btnExampleCosine.Font = new Font("Cascadia Code", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExampleCosine.Location = new Point(636, 705);
+            btnExampleCosine.Location = new Point(636, 717);
             btnExampleCosine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleCosine.Name = "btnExampleCosine";
             btnExampleCosine.Size = new Size(185, 45);
@@ -435,7 +437,7 @@ namespace GmicAnimate
             // infoIconImperfectLoops
             // 
             infoIconImperfectLoops.Image = (Image)resources.GetObject("infoIconImperfectLoops.Image");
-            infoIconImperfectLoops.Location = new Point(1016, 665);
+            infoIconImperfectLoops.Location = new Point(1016, 677);
             infoIconImperfectLoops.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             infoIconImperfectLoops.Name = "infoIconImperfectLoops";
             infoIconImperfectLoops.Size = new Size(16, 16);
@@ -509,7 +511,7 @@ namespace GmicAnimate
             // btnExampleExp
             // 
             btnExampleExp.Font = new Font("Cascadia Code", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExampleExp.Location = new Point(829, 706);
+            btnExampleExp.Location = new Point(829, 718);
             btnExampleExp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleExp.Name = "btnExampleExp";
             btnExampleExp.Size = new Size(185, 45);
@@ -521,7 +523,7 @@ namespace GmicAnimate
             // btnExampleSine
             // 
             btnExampleSine.Font = new Font("Cascadia Code", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExampleSine.Location = new Point(443, 706);
+            btnExampleSine.Location = new Point(443, 718);
             btnExampleSine.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnExampleSine.Name = "btnExampleSine";
             btnExampleSine.Size = new Size(185, 45);
@@ -537,7 +539,7 @@ namespace GmicAnimate
             dropdownExamplesNonLoops.FormattingEnabled = true;
             dropdownExamplesNonLoops.ItemHeight = 25;
             dropdownExamplesNonLoops.Items.AddRange(new object[] { "-tanh(2*cos(0.5*pi*t+pi*0.5))", "e/(t/3+.01)", "t^t", "abs(sin(pi*t))", "atan(exp(t*5))", "atan(exp(t*-5))", "0.04*cos(3*t) + 0.02*cos(10*t)", "-1*(t+sin(t*5*pi)/4)", "(t+sin(t*5*pi)/4)", "cos(exp(t*pi))" });
-            dropdownExamplesNonLoops.Location = new Point(553, 575);
+            dropdownExamplesNonLoops.Location = new Point(553, 587);
             dropdownExamplesNonLoops.Name = "dropdownExamplesNonLoops";
             dropdownExamplesNonLoops.Size = new Size(461, 33);
             dropdownExamplesNonLoops.TabIndex = 64;
@@ -547,7 +549,7 @@ namespace GmicAnimate
             // 
             labelExamplesNonLoops.AutoSize = true;
             labelExamplesNonLoops.Font = new Font("Segoe UI", 12F);
-            labelExamplesNonLoops.Location = new Point(456, 581);
+            labelExamplesNonLoops.Location = new Point(456, 593);
             labelExamplesNonLoops.Name = "labelExamplesNonLoops";
             labelExamplesNonLoops.Size = new Size(91, 21);
             labelExamplesNonLoops.TabIndex = 65;
@@ -560,7 +562,7 @@ namespace GmicAnimate
             dropdownExampleLoops.FormattingEnabled = true;
             dropdownExampleLoops.ItemHeight = 25;
             dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))", "airyai(sin(2*pi*t))", "sech(tan(2*pi*t))", "-acsc(abs(sec(pi*(t))))", "atanh(sin(2*pi*t+.01))", "ln(abs(cos(pi*t)))", "abs(sin(2*pi*t) + cos(4*pi*t))", "acos(sech(tan(pi*t)))", "abs(sech(csc(2*pi*(t+.01))))" });
-            dropdownExampleLoops.Location = new Point(553, 614);
+            dropdownExampleLoops.Location = new Point(553, 626);
             dropdownExampleLoops.Name = "dropdownExampleLoops";
             dropdownExampleLoops.Size = new Size(461, 33);
             dropdownExampleLoops.TabIndex = 66;
@@ -570,7 +572,7 @@ namespace GmicAnimate
             // 
             labelExamplesPerfectLoops.AutoSize = true;
             labelExamplesPerfectLoops.Font = new Font("Segoe UI", 12F);
-            labelExamplesPerfectLoops.Location = new Point(441, 620);
+            labelExamplesPerfectLoops.Location = new Point(441, 632);
             labelExamplesPerfectLoops.Name = "labelExamplesPerfectLoops";
             labelExamplesPerfectLoops.RightToLeft = System.Windows.Forms.RightToLeft.No;
             labelExamplesPerfectLoops.Size = new Size(106, 21);
@@ -594,7 +596,7 @@ namespace GmicAnimate
             // 
             labelExamplesImperfectLoops.AutoSize = true;
             labelExamplesImperfectLoops.Font = new Font("Segoe UI", 12F);
-            labelExamplesImperfectLoops.Location = new Point(422, 660);
+            labelExamplesImperfectLoops.Location = new Point(422, 672);
             labelExamplesImperfectLoops.Name = "labelExamplesImperfectLoops";
             labelExamplesImperfectLoops.RightToLeft = System.Windows.Forms.RightToLeft.No;
             labelExamplesImperfectLoops.Size = new Size(125, 21);
@@ -607,8 +609,8 @@ namespace GmicAnimate
             dropdownExamplesImperfectLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExamplesImperfectLoops.FormattingEnabled = true;
             dropdownExamplesImperfectLoops.ItemHeight = 25;
-            dropdownExamplesImperfectLoops.Items.AddRange(new object[] { "sin(4*pi*t)*exp(-t)", "coth(cos(2*pi*t))", "sec(tan(pi*(t)))", "atan(csc(2*pi*(t+.01-2*pi)))" });
-            dropdownExamplesImperfectLoops.Location = new Point(553, 653);
+            dropdownExamplesImperfectLoops.Items.AddRange(new object[] { "sin(4*pi*t)*exp(-t)", "coth(cos(2*pi*t))", "sec(tan(pi*(t)))", "atan(1/4*csc(pi/2+pi*(t)))" });
+            dropdownExamplesImperfectLoops.Location = new Point(553, 665);
             dropdownExamplesImperfectLoops.Name = "dropdownExamplesImperfectLoops";
             dropdownExamplesImperfectLoops.Size = new Size(461, 33);
             dropdownExamplesImperfectLoops.TabIndex = 69;
@@ -657,11 +659,32 @@ namespace GmicAnimate
             btnShowFunctionInfo.UseVisualStyleBackColor = true;
             btnShowFunctionInfo.Click += btnShowFunctionInfo_Click;
             // 
+            // txtComparedExpression
+            // 
+            txtComparedExpression.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtComparedExpression.Location = new Point(815, 437);
+            txtComparedExpression.Name = "txtComparedExpression";
+            txtComparedExpression.ReadOnly = true;
+            txtComparedExpression.Size = new Size(171, 23);
+            txtComparedExpression.TabIndex = 78;
+            // 
+            // labelComparisonExpressionTextBox
+            // 
+            labelComparisonExpressionTextBox.AutoSize = true;
+            labelComparisonExpressionTextBox.Enabled = false;
+            labelComparisonExpressionTextBox.Location = new Point(734, 442);
+            labelComparisonExpressionTextBox.Name = "labelComparisonExpressionTextBox";
+            labelComparisonExpressionTextBox.Size = new Size(75, 15);
+            labelComparisonExpressionTextBox.TabIndex = 79;
+            labelComparisonExpressionTextBox.Text = "Comparison:";
+            // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new Size(1045, 871);
+            Controls.Add(labelComparisonExpressionTextBox);
+            Controls.Add(txtComparedExpression);
             Controls.Add(btnShowFunctionInfo);
             Controls.Add(infoIconAbsoluteModeExpressions);
             Controls.Add(infoIconImperfectLoops);
@@ -766,5 +789,7 @@ namespace GmicAnimate
         private System.Windows.Forms.PictureBox infoIconImperfectLoops;
         private System.Windows.Forms.PictureBox infoIconAbsoluteModeExpressions;
         private System.Windows.Forms.Button btnShowFunctionInfo;
+        private System.Windows.Forms.TextBox txtComparedExpression;
+        private System.Windows.Forms.Label labelComparisonExpressionTextBox;
     }
 }

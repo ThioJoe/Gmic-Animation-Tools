@@ -1229,6 +1229,10 @@ namespace GmicAnimate
                 compareSeriesData.Add(new PointF((float)point.XValue, (float)point.YValues[0]));
             }
             PlotGraph();
+
+            // Show text box with equation in it
+            txtComparedExpression.Text = compareSeriesExpression;
+            labelComparisonExpressionTextBox.Enabled = true;
         }
 
         private void checkBoxCompareUpdateNormalization_CheckedChanged(object sender, EventArgs e)
@@ -1242,6 +1246,10 @@ namespace GmicAnimate
             compareSeriesData.Clear();
             compareSeriesExpression = "";
             PlotGraph();
+
+            // Hide text box with equation in it
+            txtComparedExpression.Text = "";
+            labelComparisonExpressionTextBox.Enabled = false;
         }
 
         // --------------------------------------------------------------------------------------
