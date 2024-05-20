@@ -885,7 +885,8 @@ namespace GmicAnimate
             if (uniqueErrors.Any(item => item.Message.ToString().Contains("expecting: end of input or infix operator", StringComparison.OrdinalIgnoreCase)))
             {
                 errorToDisplay += "\n\nAbout Error: \"Expecting: end of input or infix operator\"\n" +
-                    "This error might mean you forgot to put an operator symbol between values. For example if you put \"2(cos(t))\" instead of \"2*(cos(t))\", leaving out the * multiplication sign after the 2.";
+                    "This error might mean you forgot to put an operator symbol between values. For example if you put \"2(cos(t))\" instead of \"2*(cos(t))\", leaving out the * multiplication sign after the 2." +
+                    "It could also mean you used an unknown operator such as %.";
             }
 
             errorToDisplay += stringToDisplayLast;
