@@ -559,7 +559,7 @@ namespace GmicAnimate
             dropdownExampleLoops.Font = new Font("Cascadia Code", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dropdownExampleLoops.FormattingEnabled = true;
             dropdownExampleLoops.ItemHeight = 25;
-            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(2*pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))", "airyai(sin(2*pi*t))", "sech(tan(2*pi*t))", "-acsc(abs(sec(pi*(t))))", "atanh(sin(2*pi*t+.01))", "ln(abs(cos(2*pi*t)))", "abs(sin(2*pi*t) + cos(4*pi*t))", "acos(sech(tan(pi*t)))", "abs(sech(csc(2*pi*(t+.01))))" });
+            dropdownExampleLoops.Items.AddRange(new object[] { "exp(sin(2*pi*t))", "sin(2*pi*sin(2*pi*t))", "cos(2*pi*cos(pi*t))", "sin(2*pi*t)* exp(-sin(2*pi*t))", "(sin(2*pi*t))^3", "tanh(cos(2*pi*t))", "cos(2*pi*t)*exp(-cos(2*pi*t))", "atan(sin(2*pi*t))", "airyai(sin(2*pi*t))", "sech(tan(2*pi*t))", "-acsc(abs(sec(pi*(t))))", "atanh(sin(2*pi*t+.01))", "ln(abs(cos(pi*t)))", "abs(sin(2*pi*t) + cos(4*pi*t))", "acos(sech(tan(pi*t)))", "abs(sech(csc(2*pi*(t+.01))))" });
             dropdownExampleLoops.Location = new Point(553, 614);
             dropdownExampleLoops.Name = "dropdownExampleLoops";
             dropdownExampleLoops.Size = new Size(461, 33);
