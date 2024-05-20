@@ -48,7 +48,7 @@ namespace GmicAnimate
             series2.MarkerSize = 6;
             series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Diamond;
             series2.Name = "CompareSeries";
-            series2.Color = Color.IndianRed;
+            series2.Color = Color.DarkViolet;
             series2.BorderWidth = 2;
             this.chartCurve.Series.Add(series2);
 
