@@ -722,10 +722,21 @@ namespace GmicAnimate
                 System.Windows.Forms.DataVisualization.Charting.Series compareSeries = chartCurve.Series["CompareSeries"];
                 compareSeries.Points.Clear();
 
+                List<int> framesWithErrorsIndexedFrom0 = GetFrameIndexesWithErrors(primaryErrorsList);
                 // Plot main series
                 for (int i = 0; i < primaryValuesToGraph.Length; i++)
                 {
-                    series.Points.AddXY(i, primaryValuesToGraph[i]);
+                    var point = new System.Windows.Forms.DataVisualization.Charting.DataPoint(i, primaryValuesToGraph[i]);
+
+                    // Check if index is in the list of frame indexes with errors
+                    if (framesWithErrorsIndexedFrom0.Contains(i))
+                    {
+                        point.Color = Color.Red;
+                        point.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
+                        point.MarkerSize = 10; // Adjust marker size as needed
+                    }
+
+                    series.Points.Add(point);
                 }
 
                 // If any values are negative, create zero line strip
@@ -775,6 +786,17 @@ namespace GmicAnimate
                 labelErrorWhileGraphing.Visible = true;
                 return;
             }
+
+        }
+
+        private List<int> GetFrameIndexesWithErrors(List<Dictionary<string, object>> errorList)
+        {
+            List<int> frameIndexesFrom0 = new List<int>();
+            foreach (var error in errorList)
+            {
+                frameIndexesFrom0.Add((int)error["frame"]-1);
+            }
+            return frameIndexesFrom0;
         }
 
         private string ErrorMessageConstructor(List<Dictionary<string, object>> errorList)
