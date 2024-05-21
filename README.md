@@ -63,7 +63,12 @@ This C# Windows Forms application leverages the G'MIC image processing engine to
 - Additional option to log and save console output of G'MIC itself for debugging
 - Optional use of config file to customize the settings applied at application startup
 
-## Getting Started
+
+# Getting Started
+
+### ➤ Quick Start Guide available on the [Wiki Here](https://github.com/ThioJoe/Gmic-Animation-Tools/wiki)
+
+----
 
 ### Prerequisites
 - Download [G'MIC](https://gmic.eu/) CLI and ensure `gmic.exe` is the application directory.
