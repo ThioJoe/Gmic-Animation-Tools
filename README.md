@@ -91,17 +91,16 @@ This C# Windows Forms application leverages the G'MIC image processing engine to
 <table>
   <tr>
     <td align="center">
-      <img width="400" alt="Main Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/1032a66d-b20e-4174-b6e8-c7c400a69495">
+      <img width="368" alt="Main Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/7e952161-c5ff-4daa-b28d-2c96338fcc53">
     </td>
-    <td align="center">
-      <img width="400" alt="Parameter Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/27eea291-f4a8-4b56-9a86-33b2ba8c065c">
+    <td align="center"><img width="400" alt="Parameter Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/48d13686-cf8f-48a5-b8a6-41e6619ffb38">
     </td>
   </tr>
 </table>
 
 ### Mathematical Expressions Window
-<img width="650" alt="Expressions Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/0b279fb7-1a07-4062-a93a-79c9218d302d">
+<img width="650" alt="Expressions Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/0dc9b7b5-64ab-45a4-9e62-66a029b1744c">
 
 ### GIF Tools Window
-<img width="570" alt="Gif Tools Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/3592a334-772e-4641-aca9-1f953fc0e206">
+<img width="567" alt="Gif Tools Window" src="https://github.com/ThioJoe/Gmic-Animation-Tools/assets/12518330/dd4f5bff-28dd-424a-a457-ee63fc4434e5">
 
