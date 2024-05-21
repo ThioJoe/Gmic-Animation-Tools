@@ -5,8 +5,10 @@ using MathNet.Symbolics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -41,6 +43,7 @@ namespace GmicAnimate
             InitializeComponent();
             InitalizatManualComponents();
             InitializeDataGridView(); // Setup your DataGridView here
+            //AttachHandlersToAllDataGridViewEvents(dataGridViewExpressions);
 
             compareSeriesData = new List<PointF>();
             compareSeriesExpression = "";
@@ -74,6 +77,8 @@ namespace GmicAnimate
             }
 
             expressions = incomingExpressionParamString.Split(',');
+
+            UpdateAnimatedParamHighlighting();
 
             UpdateExpressionsDataGridView(expressions: expressions, incomingMasterParamIndex);
 
@@ -111,7 +116,9 @@ namespace GmicAnimate
                 {
                     PlotGraph();
                 }
+                UpdateAnimatedParamHighlighting();
             }
+
         }
 
         public string NormalizersChangeSetterExpressionsForm
@@ -257,6 +264,9 @@ namespace GmicAnimate
             // Get default exponent values if needed. Assuming exponents are for initialization or defaults.
             double[] defaultExponents = FilterParameters.GetParameterValuesAsList("DefaultExponent");
 
+            // Get animated parameter indexes to highlight
+            List<int> animatedParamIndexes = GetAnimatedParamIndexes();
+
             for (int i = 0; i < paramNames.Length; i++)
             {
                 int idx = dataGridViewExpressions.Rows.Add();
@@ -286,10 +296,14 @@ namespace GmicAnimate
                     row.Cells["Expression"].Value = (paramType == "Continuous" || paramType == "Step") ? defaultExponents[i].ToString() : "";
                 }
 
-                // Highlight the master parameter row, if specified
+                // Special highlighting rules for master parameter and animated parameters. Master parameter takes precedence
                 if (i == masterParamIndex)
                 {
                     row.DefaultCellStyle.BackColor = Color.LightGreen;  // Choose a highlighting color that suits your UI design
+                }
+                else if (animatedParamIndexes.Contains(i))
+                {
+                    row.DefaultCellStyle.BackColor = Color.LemonChiffon;  // Choose a highlighting color that suits your UI design
                 }
 
                 // Set font of set-expressions column cells to Consolas - but only for applicable types
@@ -302,19 +316,22 @@ namespace GmicAnimate
             // Disable checkboxes for binary parameters, gray out the entire row
             for (int i = 0; i < paramNames.Length; i++)
             {
-                string paramType = FilterParameters.GetParameterType(i);
+                SetRowDisabledIfNecessary(rowIndex: i);
+            }
+            UpdateAnimatedParamHighlighting();
+        }
 
-                if (!(paramType == "Continuous") && !(paramType == "Step"))
-                {
-                    dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledBackgroundColor; // Assuming you have a color defined for this
-                    dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor = disabledForeColor; // Assuming you have a color defined for this
-                    dataGridViewExpressions.Rows[i].DefaultCellStyle.Font = new Font("Arial", 7); // Smaller font for disabled rows
-                    dataGridViewExpressions.Rows[i].Height = 12; // Smaller height for less important data
-
-                    //dataGridViewExpressions.Rows[i].Cells["CheckBox"].ReadOnly = true;
-                    dataGridViewExpressions.Rows[i].Cells["Expression"].ReadOnly = true;
-                    // Optionally set other styles or properties as needed
-                }
+        // Function to set row as disabled if necesary
+        private void SetRowDisabledIfNecessary(int rowIndex)
+        {
+            if (FilterParameters.GetNonExponentableParamIndexes().Contains(rowIndex))
+            {
+                dataGridViewExpressions.Rows[rowIndex].DefaultCellStyle.BackColor = disabledBackgroundColor;
+                dataGridViewExpressions.Rows[rowIndex].DefaultCellStyle.ForeColor = disabledForeColor;
+                dataGridViewExpressions.Rows[rowIndex].DefaultCellStyle.Font = new Font("Arial", 7);
+                dataGridViewExpressions.Rows[rowIndex].Height = 12; // Smaller height for less important data
+                //dataGridViewExpressions.Rows[i].Cells["CheckBox"].ReadOnly = true;
+                dataGridViewExpressions.Rows[rowIndex].Cells["Expression"].ReadOnly = true;
             }
         }
 
@@ -346,40 +363,51 @@ namespace GmicAnimate
         // Update master exponent highlighting
         private void UpdateMasterExponentHighlighting(int masterParamIndex)
         {
+
+            if (dataGridViewExpressions.IsCurrentCellInEditMode)
+            {
+                dataGridViewExpressions.EndEdit();
+            }
+
             // Get current expression values in the grid even if null
             //string[] currentExpressionValuesBeforeUpdate = ValuesFromDataTable(dataGridView: dataGridViewExpressions, columnName: "Expression");
+            List<int> disabledRows = FilterParameters.GetNonExponentableParamIndexes();
+
             ClearDataGridViewStyles();
             for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
             {
+                SetRowDisabledIfNecessary(i);
 
                 // If the row is the master parameter row
                 if (i == masterParamIndex)
                 {
                     // If it's disabled then set it as darker green
-                    if (dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor == disabledForeColor)
+                    if (disabledRows.Contains(i))
                     {
                         dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledMasterBackgroundColor;
-                        //dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = disabledMasterBackgroundColor;
+                        dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = disabledMasterBackgroundColor;
                     }
                     // If it's not disabled, set it as light green
                     else
                     {
                         dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = Color.LightGreen;
-                        //dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = Color.LightGreen;
+                        dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = Color.LightGreen;
                     }
                 }
                 // If the cell is not the master parameter row and it's not disabled
-                else if (dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor != disabledForeColor)
+                else if (!disabledRows.Contains(i))
                 {
                     dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = Color.White;
-                    //dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = Color.White;
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = Color.White;
                 }
+                // If the cell is not the master parameter row and it is disabled
                 else
                 {
                     dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = disabledBackgroundColor;
-                    //dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = disabledBackgroundColor;
+                    dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = disabledBackgroundColor;
                 }
             }
+            UpdateAnimatedParamHighlighting();
         }
 
         // Function to set current start param string from array
@@ -682,7 +710,7 @@ namespace GmicAnimate
             try
             {
                 // Get the interpolated values
-                (primaryValuesToGraph, primaryErrorsList) = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount, silent:silent);
+                (primaryValuesToGraph, primaryErrorsList) = GetInterpolatedDataFromMainForm(expressionToEvaluate, masterParamIndexFromMainWindow, frameCount, silent: silent);
             }
             catch (Exception ex)
             {
@@ -809,7 +837,7 @@ namespace GmicAnimate
             List<int> frameIndexesFrom0 = new List<int>();
             foreach (var error in errorList)
             {
-                frameIndexesFrom0.Add((int)error["frame"]-1);
+                frameIndexesFrom0.Add((int)error["frame"] - 1);
             }
             return frameIndexesFrom0;
         }
@@ -956,7 +984,7 @@ namespace GmicAnimate
         }
 
         // Get interpolated data into graphable form
-        private (double[], List<Dictionary<string, object>>) GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex, int frameCount, bool silent=true)
+        private (double[], List<Dictionary<string, object>>) GetInterpolatedDataFromMainForm(string expressionToEvaluate, int masterParamIndex, int frameCount, bool silent = true)
         {
             List<string> interpolatedValuesPerFrameArray = new List<string>();
             List<Dictionary<string, object>> errorsInfoList = new List<Dictionary<string, object>>();
@@ -1027,6 +1055,10 @@ namespace GmicAnimate
         private void nudMasterParamIndexClone_ValueChanged(object sender, EventArgs e)
         {
             // Send the new value to the numeric updown in the main form and trigger its event handler
+            if (dataGridViewExpressions.IsCurrentCellInEditMode)
+            {
+                dataGridViewExpressions.EndEdit();
+            }
             mainForm.MasterParamIndexNUDChangeSetter = nudMasterParamIndexClone.Value;
         }
 
@@ -1055,7 +1087,7 @@ namespace GmicAnimate
                 "You can also still calcualte exclusively with 't'. Setting the expression to 1 effectively makes the expression t^1 for example., which is why it calculates linearly in that case." +
                 "\n\nTry some more complicated expressions including sin(t), cos(t), e^t + 2t, etc. Also try the various normalization options on the main window." +
                 "\n\nYou can even use mathematical constants such as pi and e in your expressions, such as sin(t*2*pi)" +
-                "\n\nThe master parameter is highlighted in green and is the one that is graphed." +
+                "\n\nThe master parameter is highlighted in green and is the one that is graphed. Other parameters that will be animated (they have a change in start/end values) are highlighted in yellow." +
                 "\n\nThe \"Use Above Values\" button will send the currently set exponents/expressions back to the main window to use. " +
                 "\n\nTip: Try using sine and cosine functions (or others) to make perfect loops! (Example buttons provided)",
             "Help",
@@ -1135,20 +1167,9 @@ namespace GmicAnimate
         // Copy the expression in the current master parameter row to any rows for which the parameters change, as long as they are not disabled
         private void btnApplyToAnimated_Click(object sender, EventArgs e)
         {
-            // First get the parameter values from the main form
-            double[] startValues;
-            double[] endValues;
-            (startValues, endValues) = mainForm.CurrentParameterValuesGetter();
-
             // Get a list of the parameter indexes that have different start and end values
-            List<int> animatedParamIndexes = new List<int>();
-            for (int i = 0; i < startValues.Length; i++)
-            {
-                if (startValues[i] != endValues[i])
-                {
-                    animatedParamIndexes.Add(i);
-                }
-            }
+            List<int> animatedParamIndexes;
+            animatedParamIndexes = GetAnimatedParamIndexes();
 
             // Copy the expression to the rows that have different start and end values and are not disabled
             string expressionToCopy = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
@@ -1157,6 +1178,56 @@ namespace GmicAnimate
                 if (animatedParamIndexes.Contains(i) && dataGridViewExpressions.Rows[i].DefaultCellStyle.ForeColor != disabledForeColor)
                 {
                     dataGridViewExpressions.Rows[i].Cells["Expression"].Value = expressionToCopy;
+                }
+            }
+        }
+
+        private List<int> GetAnimatedParamIndexes()
+        {
+            // First get the parameter values from the main form
+            double[] startValues;
+            double[] endValues;
+
+            // List to store indexes
+            List<int> animatedParamIndexes = new List<int>();
+
+            if (mainForm != null)
+            {
+                (startValues, endValues) = mainForm.CurrentParameterValuesGetter();
+            }
+            else
+            {
+                return animatedParamIndexes; // At this point it is empty
+            }
+
+            for (int i = 0; i < startValues.Length; i++)
+            {
+                if (startValues[i] != endValues[i])
+                {
+                    animatedParamIndexes.Add(i);
+                }
+            }
+            return animatedParamIndexes;
+        }
+
+        private void UpdateAnimatedParamHighlighting()
+        {
+            // Get the parameter indexes that have different start and end values, then update the colors of the rows to light yellow
+            List<int> animatedParamIndexes = GetAnimatedParamIndexes();
+            Color animatedRowColor = Color.LemonChiffon;
+            List<int> diabledRows = FilterParameters.GetNonExponentableParamIndexes();
+
+            for (int i = 0; i < dataGridViewExpressions.Rows.Count; i++)
+            {
+                // Only update the color of the row if it's not disabled
+                if (!diabledRows.Contains(i))
+                {
+                    if (animatedParamIndexes.Contains(i) && masterParamIndexFromMainWindow != i)
+                    {
+                        dataGridViewExpressions.Rows[i].DefaultCellStyle.BackColor = animatedRowColor;
+                        dataGridViewExpressions.Rows[i].DefaultCellStyle.SelectionBackColor = animatedRowColor;
+
+                    }
                 }
             }
         }
@@ -1346,5 +1417,34 @@ namespace GmicAnimate
             MathFunctionInfo mathFunctionInfo = new MathFunctionInfo();
             mathFunctionInfo.Show();
         }
+
+        // ------------------------------------------------------------------------------------
+
+        private void dataGridViewExpressions_CellClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            // When user clicks on a cell, set that row as the master parameter
+            // Also make sure it's within the range of the filter parameters and not a disabled row
+            if (e.RowIndex >= 0 && e.RowIndex < filterParameterCount)
+            {
+                if (!FilterParameters.GetNonExponentableParamIndexes().Contains(e.RowIndex))
+                {
+                    nudMasterParamIndexClone.Value = e.RowIndex + 1;
+                    UpdateMasterExponentHighlighting(e.RowIndex);
+                }
+            }
+        }
+
+        private void dataGridViewExpressions_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+
+            dataGridViewExpressions.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+        }
+
+        private void dataGridViewExpressions_CellEndEdit_1(object sender, DataGridViewCellEventArgs e)
+        {
+            // Set text forecolor back to black
+            dataGridViewExpressions.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.Black;
+        }
+
     } //End form class
 } // End namespace

@@ -153,6 +153,9 @@ namespace GmicAnimate
             dataGridViewExpressions.RowTemplate.Height = 20;
             dataGridViewExpressions.Size = new Size(405, 703);
             dataGridViewExpressions.TabIndex = 0;
+            dataGridViewExpressions.CellBeginEdit += dataGridViewExpressions_CellBeginEdit;
+            dataGridViewExpressions.CellClick += dataGridViewExpressions_CellClick_1;
+            dataGridViewExpressions.CellEndEdit += dataGridViewExpressions_CellEndEdit_1;
             dataGridViewExpressions.CellValueChanged += dataGridViewExpressions_CellValueChanged;
             // 
             // labelCurrentExpressionString
