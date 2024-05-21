@@ -17,6 +17,7 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using static FileManager;
 using static GmicFilterAnimatorApp.MainForm.NativeMethods;
 
@@ -769,7 +770,7 @@ namespace GmicFilterAnimatorApp
 
         private string CreateOutputDirectory(string inputFilePath)
         {
-            string outputDir = "Output";
+            string outputDir;
             // If checkbox to use same directory is checked, get the latest directory and use that
             if (checkBoxUseSameOutputDir.Checked)
             {
@@ -784,14 +785,18 @@ namespace GmicFilterAnimatorApp
             return outputDir;
         }
 
-        private string DecideLogFilePath(string directoryName)
+        private string DecideLogFilePath(string outputDirPath)
         {
-            string logFilePath = Path.Combine(directoryName, $"{directoryName}_log.txt");
+            // Get deepest folder name
+            string[] directoryParts = outputDirPath.Split(Path.DirectorySeparatorChar);
+            string folderName = directoryParts[directoryParts.Length - 1];
+
+            string logFilePath = Path.Combine(outputDirPath, $"{folderName}_log.txt");
             int logFileNumber = 2;
             // Check if log file already exists, count up until available number
             while (File.Exists(logFilePath))
             {
-                logFilePath = Path.Combine(directoryName, $"{directoryName}_log_{logFileNumber}.txt");
+                logFilePath = Path.Combine(outputDirPath, $"{folderName}_log_{logFileNumber}.txt");
                 logFileNumber++;
             }
 
@@ -814,11 +819,14 @@ namespace GmicFilterAnimatorApp
         // Get the latest directory that exists already, or none if none exist. Uses the input file name as a base, returns the latest directory with the same name.
         private string GetLatestDirectory(string inputFilePath, bool getNextAvailable = false)
         {
+            string rootOutputFolder = "Output";
             // Extract the file name without extension from the input file path
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFilePath);
+            string outputDirBase = Path.Combine(rootOutputFolder, fileNameWithoutExtension);
 
             // Initialize the output directory name to the file name without extension
-            string availableDir = fileNameWithoutExtension;
+            // Combine the base output folder with the file name without extension to create the initial directory name
+            string availableDir = outputDirBase;
             // This variable will store the name of the latest existing directory found
             string latestExisting = null;
 
@@ -830,7 +838,7 @@ namespace GmicFilterAnimatorApp
             {
                 latestExisting = availableDir;
                 folderCount++;
-                availableDir = $"{fileNameWithoutExtension}_{folderCount}";
+                availableDir = $"{outputDirBase}_{folderCount}";
             }
 
             // If getNextAvailable is true, return the next directory name that does not exist
