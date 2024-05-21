@@ -72,7 +72,7 @@ namespace GmicAnimate
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionsForm));
             dataGridViewExpressions = new System.Windows.Forms.DataGridView();
             labelCurrentExpressionString = new System.Windows.Forms.Label();
@@ -121,6 +121,7 @@ namespace GmicAnimate
             btnShowFunctionInfo = new System.Windows.Forms.Button();
             txtComparedExpression = new System.Windows.Forms.TextBox();
             labelComparisonExpressionTextBox = new System.Windows.Forms.Label();
+            checkBoxAutoUpdateMainWindow = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewExpressions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGraphConstantFrameCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMasterParamIndexClone).BeginInit();
@@ -137,14 +138,14 @@ namespace GmicAnimate
             dataGridViewExpressions.AllowUserToDeleteRows = false;
             dataGridViewExpressions.AllowUserToResizeRows = false;
             dataGridViewExpressions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewExpressions.DefaultCellStyle = dataGridViewCellStyle4;
             dataGridViewExpressions.Location = new Point(10, 12);
             dataGridViewExpressions.Margin = new System.Windows.Forms.Padding(2);
             dataGridViewExpressions.Name = "dataGridViewExpressions";
@@ -239,7 +240,7 @@ namespace GmicAnimate
             checkBoxAutoUpdateGraph.AutoSize = true;
             checkBoxAutoUpdateGraph.Checked = true;
             checkBoxAutoUpdateGraph.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBoxAutoUpdateGraph.Location = new Point(669, 504);
+            checkBoxAutoUpdateGraph.Location = new Point(669, 500);
             checkBoxAutoUpdateGraph.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBoxAutoUpdateGraph.Name = "checkBoxAutoUpdateGraph";
             checkBoxAutoUpdateGraph.Size = new Size(128, 19);
@@ -678,11 +679,24 @@ namespace GmicAnimate
             labelComparisonExpressionTextBox.TabIndex = 79;
             labelComparisonExpressionTextBox.Text = "Comparison:";
             // 
+            // checkBoxAutoUpdateMainWindow
+            // 
+            checkBoxAutoUpdateMainWindow.AutoSize = true;
+            checkBoxAutoUpdateMainWindow.Checked = true;
+            checkBoxAutoUpdateMainWindow.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBoxAutoUpdateMainWindow.Location = new Point(669, 522);
+            checkBoxAutoUpdateMainWindow.Name = "checkBoxAutoUpdateMainWindow";
+            checkBoxAutoUpdateMainWindow.Size = new Size(279, 19);
+            checkBoxAutoUpdateMainWindow.TabIndex = 80;
+            checkBoxAutoUpdateMainWindow.Text = "Auto Update Main Window Custom Expressions";
+            checkBoxAutoUpdateMainWindow.UseVisualStyleBackColor = true;
+            // 
             // ExpressionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new Size(1045, 871);
+            Controls.Add(checkBoxAutoUpdateMainWindow);
             Controls.Add(labelComparisonExpressionTextBox);
             Controls.Add(txtComparedExpression);
             Controls.Add(btnShowFunctionInfo);
@@ -791,5 +805,6 @@ namespace GmicAnimate
         private System.Windows.Forms.Button btnShowFunctionInfo;
         private System.Windows.Forms.TextBox txtComparedExpression;
         private System.Windows.Forms.Label labelComparisonExpressionTextBox;
+        private System.Windows.Forms.CheckBox checkBoxAutoUpdateMainWindow;
     }
 }

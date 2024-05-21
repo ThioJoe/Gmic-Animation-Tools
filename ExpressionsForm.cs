@@ -442,6 +442,18 @@ namespace GmicAnimate
                 {
                     PlotGraph();
                 }
+                if (checkBoxAutoUpdateMainWindow.Checked)
+                {
+                    // Doing these instead of sending button event because I don't want to change the exponent mode
+                    if (mainForm != null)
+                    {
+                        // Send the full string to the custom array text box
+                        mainForm.CustomExpressionArrayTextBoxChangeSetter = txtCurrentExpressionParamString.Text;
+                        // Send only the master parameter expression to the master parameter text box
+                        mainForm.CustomMasterExpressionTextBoxChangeSetter = dataGridViewExpressions.Rows[masterParamIndexFromMainWindow].Cells["Expression"].Value.ToString();
+                    }
+                    
+                }
             }
             // Update highlighting again
             UpdateMasterExponentHighlighting(masterParamIndexFromMainWindow);
