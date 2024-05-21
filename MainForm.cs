@@ -97,10 +97,6 @@ namespace GmicFilterAnimatorApp
             // Load parameters of current filter
             LoadActiveFilterParameters();
 
-            // Store data about master increment NUD to properly increment up down arrows
-            //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
-            //nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
-
             UpdateParameterUI();
             Console.WriteLine("Finished Loading Main Form.");
 
@@ -1470,6 +1466,7 @@ namespace GmicFilterAnimatorApp
             }));
         }
 
+        // A bunch of stuff for running the process with affinity and capturing the output
         public static class NativeMethods
         {
             [DllImport("kernel32.dll", SetLastError = true)]
@@ -1550,6 +1547,7 @@ namespace GmicFilterAnimatorApp
         }
 
         // Define a modified StartProcessWithAffinity to include process output handling
+        // This lets us run the process with a specific affinity mask (aka how many CPU cores it can use) and capture the output
         private (string Output, string Errors) StartProcessWithAffinity(string exePath, string arguments, IntPtr affinityMask, string outputFile)
         {
             SECURITY_ATTRIBUTES saAttr = new SECURITY_ATTRIBUTES();
@@ -1919,60 +1917,6 @@ namespace GmicFilterAnimatorApp
 
         private void nudMasterParamIncrement_ValueChanged(object sender, EventArgs e)
         {
-            //// Determined desired increment value based on previous value
-            //int previousOrderOfMagnitude = (int)Math.Floor(Math.Log10((double)previousMasterIncrementNUDValue));
-            //decimal previousIncrement = (decimal)Math.Pow(10, previousOrderOfMagnitude);
-            //int newOrderOfMagnitude = (int)Math.Floor(Math.Log10((double)nudMasterParamIncrement.Value));
-
-            //// Use previous value to determine whether to override the increment value. Will do so when going between orders of magnitude
-            //if (previousMasterIncrementNUDValue != nudMasterParamIncrement.Value) // This ensures it doesn't change if value didn't change like it hit a limit
-            //{
-            //    // Ensure the change was not due to the user typing in the box, by checking if change was by the increment
-            //    if (Math.Abs(previousMasterIncrementNUDValue - nudMasterParamIncrement.Value) != nudMasterParamIncrement.Increment)
-            //    {
-            //        // Do nothing
-            //    }
-            //    else
-            //    {
-            //        int incrementMinDecimalPlaces = 5;
-            //        int incrementMaxDecimalPlaces = 5;
-
-            //        // If the actual value went up
-            //        if (previousMasterIncrementNUDValue < nudMasterParamIncrement.Value)
-            //        {
-            //            // Change the increment of the box and override value change
-            //            decimal newIncrement = (decimal)Math.Pow(10, newOrderOfMagnitude);
-            //            nudMasterParamIncrement.Increment = newIncrement;
-            //            // Set decimal places to match the number of decimal places in the increment, but set min and maximum
-            //            nudMasterParamIncrement.DecimalPlaces = CalculateDecimalPlaces(number: newIncrement, minPlaces: incrementMinDecimalPlaces, maxPlaces: incrementMaxDecimalPlaces);
-            //            // Disable then re-enable the ValueChanged event of nudMasterParamIncrement so it doesn't create circular calls
-            //            // Only use new order of magnitude if already on it
-            //            if (newOrderOfMagnitude == previousOrderOfMagnitude)
-            //            {
-            //                nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
-            //                nudMasterParamIncrement.Value = previousMasterIncrementNUDValue + newIncrement;
-            //                nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
-            //            }
-            //        }
-            //        // If the actual value went down
-            //        else
-            //        {
-            //            // Change the increment and override the value to only change by the new increment in same way as above
-            //            decimal newIncrement = (decimal)Math.Pow(10, newOrderOfMagnitude);
-            //            nudMasterParamIncrement.Increment = newIncrement;
-            //            nudMasterParamIncrement.DecimalPlaces = CalculateDecimalPlaces(number: newIncrement, minPlaces: incrementMinDecimalPlaces, maxPlaces: incrementMaxDecimalPlaces);
-            //            // Use new order of magnitude if using old one would to zero or below
-            //            if (previousMasterIncrementNUDValue - previousIncrement <= 0)
-            //            {
-            //                nudMasterParamIncrement.ValueChanged -= nudMasterParamIncrement_ValueChanged;
-            //                nudMasterParamIncrement.Value = previousMasterIncrementNUDValue - newIncrement;
-            //                nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
-            //            }
-            //        }
-            //    }
-            //}
-            // -----------------------------
-
             //Ensure increment doesn't go higher than the difference between start and end values
             if (!string.IsNullOrEmpty(txtStartParams.Text) && !string.IsNullOrEmpty(txtEndParams.Text))
             {
@@ -1989,9 +1933,6 @@ namespace GmicFilterAnimatorApp
                     nudMasterParamIncrement.ValueChanged += nudMasterParamIncrement_ValueChanged;
                 }
             }
-
-            // Record the new value for the next time this event is triggered
-            //previousMasterIncrementNUDValue = nudMasterParamIncrement.Value;
 
             UpdateTotalFrames();
             RefreshGraph();
