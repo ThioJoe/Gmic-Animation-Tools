@@ -58,7 +58,7 @@ This C# Windows Forms application leverages the G'MIC image processing engine to
 - **The Expressions window allows users to enter mathematical expressions to control how parameters change over time.**
 - A graph in the Expressions window provides a visual preview of how the expression will affect the animation.
 
-- ### Other Notable Features
+### Other Notable Features
 - **Automatic logging of each run's details for reproducability - Including parameters used and other settings**
 - Additional option to log and save console output of G'MIC itself for debugging
 - Optional use of config file to customize the settings applied at application startup
